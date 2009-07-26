@@ -45,6 +45,8 @@ namespace Weland {
 	Color gridLineColor = new Color(0.5, 0.5, 0.5);
 	Color gridPointColor = new Color(0, 0.75, 0.75);
 	Color objectColor = new Color(1, 1, 0);
+	Color playerColor = new Color(1, 1, 0);
+	Color monsterColor = new Color(1, 0, 0);
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 	    Context context = Gdk.CairoHelper.Create(GdkWindow);
@@ -191,14 +193,38 @@ namespace Weland {
 	    context.Fill();
 	}
 
-	void DrawObject(Context context, MapObject obj) {
-	    PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-	    context.MoveTo(p);
+	void DrawTriangle(Context context, double X, double Y, double angle) {
+	    double rads = angle * Math.PI / 180;
+	    PointD p1 = new PointD(X + 8 * Math.Cos(rads), Y + 8 * Math.Sin(rads));
+	    PointD p2 = new PointD(X + 10 * Math.Cos(rads + 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads + 2 * Math.PI * 0.4));
+	    PointD p3 = new PointD(X + 10 * Math.Cos(rads - 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads - 2 * Math.PI * 0.4));
+
+	    context.MoveTo(p1);
+	    context.LineTo(p2);
+	    context.LineTo(p3);
 	    context.ClosePath();
-	    context.LineCap = LineCap.Round;
-	    context.Color = objectColor;
-	    context.LineWidth = 2.5;
-	    context.Stroke();	    
+	    context.FillPreserve();
+	    context.Color = new Color(0, 0, 0);
+	    context.LineWidth = 1.0;
+	    context.Stroke();
+	}
+
+	void DrawObject(Context context, MapObject obj) {
+	    if (obj.Type == MapObject.Types.Player) {
+		context.Color = playerColor;
+		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+	    } else if (obj.Type == MapObject.Types.Monster) {
+		context.Color = monsterColor;
+		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+	    } else {
+		PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		context.MoveTo(p);
+		context.ClosePath();
+		context.LineCap = LineCap.Round;
+		context.Color = objectColor;
+		context.LineWidth = 2.5;
+		context.Stroke();
+	    }
 	}
     }
 }
