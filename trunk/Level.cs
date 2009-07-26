@@ -7,6 +7,7 @@ namespace Weland {
 	public List<Point> Endpoints = new List<Point> ();
 	public List<Line> Lines = new List<Line>();
 	public List<Polygon> Polygons = new List<Polygon>();
+	public List<MapObject> Objects = new List<MapObject>();
 
 	public const uint Tag = 0x4d696e66; // Minf
 	public short Environment;
@@ -70,6 +71,16 @@ namespace Weland {
 		    Polygon polygon = new Polygon();
 		    polygon.Load(reader);
 		    Polygons.Add(polygon);
+		}
+	    }
+
+	    if (wad.Chunks.ContainsKey(MapObject.Tag)) {
+		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[MapObject.Tag]));
+		Objects.Clear();
+		while (reader.BaseStream.Position < reader.BaseStream.Length) {
+		    MapObject mapObject = new MapObject();
+		    mapObject.Load(reader);
+		    Objects.Add(mapObject);
 		}
 	    }
 	}
