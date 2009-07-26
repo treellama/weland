@@ -43,15 +43,12 @@ namespace Weland {
 
 	    MenuBar mb = new MenuBar();
 	    Menu fileMenu = new Menu();
-	    MenuItem openItem = new MenuItem("Open");
-	    openItem.AddAccelerator("activate", agr, new AccelKey(Gdk.Key.o, Gdk.ModifierType.ControlMask, AccelFlags.Visible));
+	    ImageMenuItem openItem = new ImageMenuItem(Stock.Open, agr);
 	    openItem.Activated += new EventHandler(OpenFile);
 
 	    fileMenu.Append(openItem);
 
-	    MenuItem exitItem = new MenuItem("Quit");
-
-	    exitItem.AddAccelerator("activate", agr, new AccelKey(Gdk.Key.q, Gdk.ModifierType.ControlMask, AccelFlags.Visible));
+	    ImageMenuItem exitItem = new ImageMenuItem(Stock.Quit, agr);
 	    exitItem.Activated += new EventHandler(
 		    delegate(object obj, EventArgs a) {
 			    Application.Quit();
