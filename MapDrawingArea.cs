@@ -44,33 +44,38 @@ namespace Weland {
 	Color polygonColor = new Color(0.75, 0.75, 0.75);
 	Color gridLineColor = new Color(0.5, 0.5, 0.5);
 	Color gridPointColor = new Color(0, 0.75, 0.75);
+	Color objectColor = new Color(1, 1, 0);
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 	    Context context = Gdk.CairoHelper.Create(GdkWindow);
-
+	    
 	    context.Color = backgroundColor;
 	    context.Paint();
-
+	    
 	    DrawGrid(context);
-
+	    
 	    if (Level != null) {
-		    
-		    foreach (Polygon polygon in Level.Polygons) {
-			    DrawPolygon(context, polygon);
-		    }
-		    
-		    foreach (Line line in Level.Lines) {
-			    DrawLine(context, line);
-		    }
-		    
-		    foreach (Point point in Level.Endpoints) {
-			    DrawPoint(context, point);
-		    }
+		
+		foreach (Polygon polygon in Level.Polygons) {
+		    DrawPolygon(context, polygon);
+		}
+		
+		foreach (Line line in Level.Lines) {
+		    DrawLine(context, line);
+		}
+		
+		foreach (Point point in Level.Endpoints) {
+		    DrawPoint(context, point);
+		}
+		
+		foreach (MapObject obj in Level.Objects) {
+		    DrawObject(context, obj);
+		}
 	    }
-		    
+	    
 	    ((IDisposable) context.Target).Dispose();
 	    ((IDisposable) context).Dispose();
-
+	    
 	    return true;
 	}
 
@@ -184,6 +189,16 @@ namespace Weland {
 	    context.Color = polygonColor;
 	    context.ClosePath();
 	    context.Fill();
+	}
+
+	void DrawObject(Context context, MapObject obj) {
+	    PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+	    context.MoveTo(p);
+	    context.ClosePath();
+	    context.LineCap = LineCap.Round;
+	    context.Color = objectColor;
+	    context.LineWidth = 2.5;
+	    context.Stroke();	    
 	}
     }
 }
