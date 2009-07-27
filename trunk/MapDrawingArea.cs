@@ -50,7 +50,7 @@ namespace Weland {
 	    itemImages[MapObject.Item.InvincibilityPowerup] = new ImageSurface("resources/invinc.png");
 	    itemImages[MapObject.Item.InfravisionPowerup] = new ImageSurface("resources/powerup.png");
 	    itemImages[MapObject.Item.AlienShotgun] = new ImageSurface("resources/alien-gun.png");
-	    itemImages[MapObject.Item.Flamethrower] = new ImageSurface("tozt.png");
+	    itemImages[MapObject.Item.Flamethrower] = new ImageSurface("resources/tozt.png");
 	    itemImages[MapObject.Item.FlamethrowerCanister] = new ImageSurface("resources/tozt-ammo.png");
 	    itemImages[MapObject.Item.ExtravisionPowerup] = new ImageSurface("resources/powerup.png");
 	    itemImages[MapObject.Item.OxygenPowerup] = new ImageSurface("resources/oxygen.png");
