@@ -1,5 +1,6 @@
 using System;
 using Cairo;
+using System.Collections.Generic;
 
 namespace Weland {
     public class Transform {
@@ -35,7 +36,34 @@ namespace Weland {
 	public Level Level;
 	public short GridResolution = 1024;
 
-	public MapDrawingArea() { }
+	public MapDrawingArea() { 
+	    itemImages[MapObject.Item.Magnum] = new ImageSurface("resources/pistol.png");
+	    itemImages[MapObject.Item.MagnumMagazine] = new ImageSurface("resources/pistol-ammo.png");
+	    itemImages[MapObject.Item.PlasmaPistol] = new ImageSurface("resources/fusion.png");
+	    itemImages[MapObject.Item.PlasmaMagazine] = new ImageSurface("resources/fusion-ammo.png");
+	    itemImages[MapObject.Item.AssaultRifle] = new ImageSurface("resources/ar.png");
+	    itemImages[MapObject.Item.AssaultRifleMagazine] = new ImageSurface("resources/ar-ammo.png");
+	    itemImages[MapObject.Item.AssaultGrenadeMagazine] = new ImageSurface("resources/ar-grenades.png");
+	    itemImages[MapObject.Item.MissileLauncher] = new ImageSurface("resources/rl.png");
+	    itemImages[MapObject.Item.MissileLauncherMagazine] = new ImageSurface("resources/rl-ammo.png");
+	    itemImages[MapObject.Item.InvisibilityPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[MapObject.Item.InvincibilityPowerup] = new ImageSurface("resources/invinc.png");
+	    itemImages[MapObject.Item.InfravisionPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[MapObject.Item.AlienShotgun] = new ImageSurface("resources/alien-gun.png");
+	    itemImages[MapObject.Item.Flamethrower] = new ImageSurface("tozt.png");
+	    itemImages[MapObject.Item.FlamethrowerCanister] = new ImageSurface("resources/tozt-ammo.png");
+	    itemImages[MapObject.Item.ExtravisionPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[MapObject.Item.OxygenPowerup] = new ImageSurface("resources/oxygen.png");
+	    itemImages[MapObject.Item.EnergyPowerup] = new ImageSurface("resources/1x.png");
+	    itemImages[MapObject.Item.DoubleEnergyPowerup] = new ImageSurface("resources/2x.png");
+	    itemImages[MapObject.Item.TripleEnergyPowerup] = new ImageSurface("resources/3x.png");
+	    itemImages[MapObject.Item.Shotgun] = new ImageSurface("resources/shotgun.png");
+	    itemImages[MapObject.Item.ShotgunMagazine] = new ImageSurface("resources/shotgun-ammo.png");
+	    itemImages[MapObject.Item.SphtDoorKey] = new ImageSurface("resources/uplink-chip.png");
+	    itemImages[MapObject.Item.Ball] = new ImageSurface("resources/skull.png");
+	    itemImages[MapObject.Item.Smg] = new ImageSurface("resources/smg.png");
+	    itemImages[MapObject.Item.SmgAmmo] = new ImageSurface("resources/smg-ammo.png");
+	}
 
 	Color backgroundColor = new Color(0.25, 0.25, 0.25);
 	Color pointColor = new Color(1, 0, 0);
@@ -47,6 +75,12 @@ namespace Weland {
 	Color objectColor = new Color(1, 1, 0);
 	Color playerColor = new Color(1, 1, 0);
 	Color monsterColor = new Color(1, 0, 0);
+
+	ImageSurface sceneryImage = new ImageSurface("resources/flower.png");
+	ImageSurface soundImage = new ImageSurface("resources/sound.png");
+	ImageSurface goalImage = new ImageSurface("resources/flag.png");
+
+	Dictionary<MapObject.Item, ImageSurface> itemImages = new Dictionary<MapObject.Item, ImageSurface>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 	    Context context = Gdk.CairoHelper.Create(GdkWindow);
@@ -209,6 +243,11 @@ namespace Weland {
 	    context.Stroke();
 	}
 
+	void DrawImage(Context context, ImageSurface surface, double X, double Y) {
+	    context.SetSourceSurface(surface, (int) X - surface.Width / 2, (int) Y - surface.Height / 2);
+	    context.Paint();
+	}
+
 	void DrawObject(Context context, MapObject obj) {
 	    if (obj.Type == MapObject.Types.Player) {
 		context.Color = playerColor;
@@ -216,14 +255,24 @@ namespace Weland {
 	    } else if (obj.Type == MapObject.Types.Monster) {
 		context.Color = monsterColor;
 		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
-	    } else {
-		PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-		context.MoveTo(p);
-		context.ClosePath();
-		context.LineCap = LineCap.Round;
-		context.Color = objectColor;
-		context.LineWidth = 2.5;
-		context.Stroke();
+	    } else if (obj.Type == MapObject.Types.Scenery) {
+		DrawImage(context, sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+	    } else if (obj.Type == MapObject.Types.Sound) {
+		DrawImage(context, soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+	    } else if (obj.Type == MapObject.Types.Goal) {
+		DrawImage(context, goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+	    } else if (obj.Type == MapObject.Types.Item) {
+		if (itemImages.ContainsKey((MapObject.Item) obj.Index)) {
+		    DrawImage(context, itemImages[(MapObject.Item) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		} else {
+		    PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    context.MoveTo(p);
+		    context.ClosePath();
+		    context.LineCap = LineCap.Round;
+		    context.Color = objectColor;
+		    context.LineWidth = 2.5;
+		    context.Stroke();
+		}
 	    }
 	}
     }
