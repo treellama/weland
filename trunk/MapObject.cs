@@ -3,7 +3,7 @@ namespace Weland {
 	public const uint Tag = 0x4f424a53; // OBJS
 	public const int Size = 16;
 
-	public enum Types {
+	public enum Types : short {
 	    Monster,
 	    Scenery,
 	    Item,
@@ -11,6 +11,45 @@ namespace Weland {
 	    Goal,
 	    Sound
 	};
+	
+	public enum Item {
+	    Knife,
+	    Magnum,
+	    MagnumMagazine,
+	    PlasmaPistol,
+	    PlasmaMagazine,
+	    AssaultRifle,
+	    AssaultRifleMagazine,
+	    AssaultGrenadeMagazine,
+	    MissileLauncher,
+	    MissileLauncherMagazine,
+	    InvisibilityPowerup,
+	    InvincibilityPowerup,
+	    InfravisionPowerup,
+	    AlienShotgun,
+	    AlienShotgunMagazine,
+	    Flamethrower,
+	    FlamethrowerCanister,
+	    ExtravisionPowerup,
+	    OxygenPowerup,
+	    EnergyPowerup,
+	    DoubleEnergyPowerup,
+	    TripleEnergyPowerup,
+	    Shotgun,
+	    ShotgunMagazine,
+	    SphtDoorKey,
+	    UplinkChip,
+	    Ball,
+	    RedBall,
+	    VioletBall,
+	    YellowBall,
+	    BrownBall,
+	    OrangeBall,
+	    BlueBall, // heh heh
+	    GreenBall,
+	    Smg,
+	    SmgAmmo
+	}
 
 	public Types Type;
 	public short Index;
