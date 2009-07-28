@@ -16,6 +16,7 @@ namespace Weland {
 
 	public MapWindow(string title) : base(title) {
 	    AllowShrink = true;
+	    ScrollEvent += new ScrollEventHandler(Scroll);
 			
 	    Table table = new Table(2, 2, false);
 
@@ -95,8 +96,8 @@ namespace Weland {
 		drawingArea.Transform.YOffset = (short) VUpper;
 	    }
 
-	    vadjust.StepIncrement = 24.0 / scale;
-	    vadjust.PageIncrement = 240.0 / scale;
+	    vadjust.StepIncrement = 32.0 / scale;
+	    vadjust.PageIncrement = 256.0 / scale;
 
 	    hadjust.Lower = short.MinValue;
 	    double HUpper = short.MaxValue - width / scale;
@@ -108,8 +109,8 @@ namespace Weland {
 		drawingArea.Transform.XOffset = (short) HUpper;
 	    }
 
-	    hadjust.StepIncrement = 24.0 / scale;
-	    hadjust.PageIncrement = 240.0 / scale;
+	    hadjust.StepIncrement = 32.0 / scale;
+	    hadjust.PageIncrement = 256.0 / scale;
 
 	    drawingArea.QueueDrawArea(0, 0, width, height);
 	}
@@ -129,6 +130,19 @@ namespace Weland {
 	void ConfigureDrawingArea(object obj, ConfigureEventArgs args) {
 	    AdjustScrollRange();
 	    args.RetVal = true;
+	}
+
+	void Scroll(object obj, ScrollEventArgs args) {
+		if (args.Event.Direction == Gdk.ScrollDirection.Down) {
+			vscroll.Value += 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == Gdk.ScrollDirection.Up) {
+			vscroll.Value -= 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == Gdk.ScrollDirection.Right) {
+			hscroll.Value += 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == Gdk.ScrollDirection.Left) {
+			hscroll.Value -= 32.0 / drawingArea.Transform.Scale;
+		}
+		args.RetVal = true;
 	}
 
 	void ButtonPress(object obj, ButtonPressEventArgs args) {
