@@ -183,20 +183,34 @@ namespace Weland {
 	}
 
 	public void OpenFile(string filename) {
-	    wadfile = new Wadfile();
-	    wadfile.Load(filename);
-	    Menu menu = new Menu();
-	    foreach (var kvp in wadfile.Directory) {
-		if (kvp.Value.Chunks.ContainsKey(Level.Tag)) {
-		    MenuItem item = new MenuItem(kvp.Value.LevelName);
-		    int levelNumber = kvp.Key;
-		    item.Activated += new EventHandler(delegate(object obj, EventArgs args) { SelectLevel(levelNumber); });
-		    menu.Append(item);
+	    try {
+		wadfile = new Wadfile();
+		wadfile.Load(filename);
+		Menu menu = new Menu();
+		foreach (var kvp in wadfile.Directory) {
+		    if (kvp.Value.Chunks.ContainsKey(Level.Tag)) {
+			MenuItem item = new MenuItem(kvp.Value.LevelName);
+			int levelNumber = kvp.Key;
+			item.Activated += new EventHandler(delegate(object obj, EventArgs args) { SelectLevel(levelNumber); });
+			menu.Append(item);
+		    }
 		}
+		menu.ShowAll();
+		levelMenu.Submenu = menu;
+		SelectLevel(0);
 	    }
-	    menu.ShowAll();
-	    levelMenu.Submenu = menu;
-	    SelectLevel(0);
+	    catch (Wadfile.BadMapException e) {
+		MessageDialog dialog = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+		dialog.Run();
+		dialog.Destroy();
+
+		Level = null;
+		drawingArea.Transform = new Transform();
+		Center(0, 0);
+		AdjustScrollRange();
+		Title = "Weland";
+		levelMenu.Submenu = null;
+	    }
 	}
 
 	void OpenFile(object obj, EventArgs args) {
