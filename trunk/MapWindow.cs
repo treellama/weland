@@ -184,8 +184,9 @@ namespace Weland {
 
 	public void OpenFile(string filename) {
 	    try {
-		wadfile = new Wadfile();
-		wadfile.Load(filename);
+		Wadfile w = new Wadfile();
+		w.Load(filename);
+		wadfile = w;
 		Menu menu = new Menu();
 		foreach (var kvp in wadfile.Directory) {
 		    if (kvp.Value.Chunks.ContainsKey(Level.Tag)) {
@@ -203,13 +204,6 @@ namespace Weland {
 		MessageDialog dialog = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
 		dialog.Run();
 		dialog.Destroy();
-
-		Level = null;
-		drawingArea.Transform = new Transform();
-		Center(0, 0);
-		AdjustScrollRange();
-		Title = "Weland";
-		levelMenu.Submenu = null;
 	    }
 	}
 
