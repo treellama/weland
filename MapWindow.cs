@@ -61,7 +61,21 @@ namespace Weland {
 	    levelMenu = new MenuItem("Level");
 	    mb.Append(levelMenu);
 	    box.PackStart(mb, false, false, 0);
-	    box.Add(table);
+
+	    Toolbar toolbar = new Toolbar();
+	    toolbar.Orientation = Orientation.Vertical;
+	    toolbar.ToolbarStyle = ToolbarStyle.Icons;
+
+	    ToggleToolButton zoomButton = new ToggleToolButton();
+	    zoomButton.IconWidget = new Image("resources/zoom.png");
+	    zoomButton.Active = true;
+	    toolbar.Insert(zoomButton, -1);
+	    
+
+	    HBox hb = new HBox();
+	    hb.PackStart(toolbar, false, false, 0);
+	    hb.Add(table);
+	    box.Add(hb);
 		
 	    Add(box);
 
