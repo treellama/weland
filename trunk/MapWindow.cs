@@ -1,18 +1,87 @@
 using Gtk;
+using Gdk;
 using System;
+using System.Collections.Generic;
 
 namespace Weland {
     // resizable, scrollable map view
     public class MapWindow : Gtk.Window {
 	public Level Level {
 	    get { return drawingArea.Level; }
-	    set { drawingArea.Level = value; }
+	    set { 
+		drawingArea.Level = value;
+		editor.Level = value;
+	    }
 	}
 
 	Wadfile wadfile = new Wadfile();
+	Editor editor = new Editor();
 
 	MenuItem levelMenu;
 	MenuItem fileItem;
+	MenuBar menuBar;
+
+	Toolbar toolbar;
+
+	Dictionary<Tool, ToggleToolButton> toolButtons = new Dictionary<Tool, ToggleToolButton>();
+
+	void BuildToolbar() {
+	    toolbar = new Toolbar();
+	    toolbar.Orientation = Orientation.Horizontal;
+	    toolbar.ToolbarStyle = ToolbarStyle.Icons;
+
+	    ToolButton newButton = new ToolButton(Stock.New);
+	    newButton.Clicked += new EventHandler(NewLevel);
+	    toolbar.Insert(newButton, -1);
+
+	    ToolButton openButton = new ToolButton(Stock.Open);
+	    openButton.Clicked += new EventHandler(OpenFile);
+	    toolbar.Insert(openButton, -1);
+
+	    toolbar.Insert(new SeparatorToolItem(), -1);
+
+	    RadioToolButton zoomButton = new RadioToolButton(new GLib.SList(IntPtr.Zero));
+	    zoomButton.IconWidget = new Gtk.Image("resources/zoom.png");
+	    zoomButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Zoom); });
+	    toolButtons[Tool.Zoom] = zoomButton;
+	    toolbar.Insert(zoomButton, -1);
+
+	    RadioToolButton moveButton = new RadioToolButton(zoomButton);
+	    moveButton.IconWidget = new Gtk.Image("resources/move.png");
+	    moveButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Move); });
+	    toolButtons[Tool.Move] = moveButton;
+	    toolbar.Insert(moveButton, -1);
+	}
+
+	void BuildMenubar() {
+	    AccelGroup agr = new AccelGroup();
+	    AddAccelGroup(agr);
+
+	    menuBar = new MenuBar();
+	    Menu fileMenu = new Menu();
+
+	    ImageMenuItem newItem = new ImageMenuItem(Stock.New, agr);
+	    newItem.Activated += new EventHandler(NewLevel);
+	    fileMenu.Append(newItem);
+
+	    ImageMenuItem openItem = new ImageMenuItem(Stock.Open, agr);
+	    openItem.Activated += new EventHandler(OpenFile);
+	    fileMenu.Append(openItem);
+
+	    fileMenu.Append(new SeparatorMenuItem());
+	    
+	    ImageMenuItem exitItem = new ImageMenuItem(Stock.Quit, agr);
+	    exitItem.Activated += new EventHandler(
+						   delegate(object obj, EventArgs a) {
+						       Application.Quit();
+						   });
+	    fileMenu.Append(exitItem);
+	    fileItem = new MenuItem("File");
+	    fileItem.Submenu = fileMenu;
+	    menuBar.Append(fileItem);
+	    levelMenu = new MenuItem("Level");
+	    menuBar.Append(levelMenu);
+	}
 
 	public MapWindow(string title) : base(title) {
 	    AllowShrink = true;
@@ -22,7 +91,8 @@ namespace Weland {
 
 	    drawingArea.ConfigureEvent += new ConfigureEventHandler(ConfigureDrawingArea);
 	    drawingArea.ButtonPressEvent += new ButtonPressEventHandler(ButtonPress);
-	    drawingArea.Events = Gdk.EventMask.ExposureMask | Gdk.EventMask.ButtonPressMask;
+	    drawingArea.MotionNotifyEvent += new MotionNotifyEventHandler(Motion);
+	    drawingArea.Events = EventMask.ExposureMask | EventMask.ButtonPressMask | EventMask.ButtonMotionMask;
 	    drawingArea.SetSizeRequest(600, 400);
 
 	    hadjust = new Adjustment(0, 0, 0, 0, 0, 0);
@@ -37,48 +107,19 @@ namespace Weland {
 	    table.Attach(hscroll, 0, 1, 1, 2, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0, 0);
 	    table.Attach(vscroll, 1, 2, 0, 1, 0, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
 	    
-	    AccelGroup agr = new AccelGroup();
-	    AddAccelGroup(agr);
-
 	    VBox box = new VBox();
 
-	    MenuBar mb = new MenuBar();
-	    Menu fileMenu = new Menu();
-	    ImageMenuItem openItem = new ImageMenuItem(Stock.Open, agr);
-	    openItem.Activated += new EventHandler(OpenFile);
+	    BuildMenubar();
+	    box.PackStart(menuBar, false, false, 0);
 
-	    fileMenu.Append(openItem);
+	    BuildToolbar();
+	    box.PackStart(toolbar, false, false, 0);
 
-	    ImageMenuItem exitItem = new ImageMenuItem(Stock.Quit, agr);
-	    exitItem.Activated += new EventHandler(
-		    delegate(object obj, EventArgs a) {
-			    Application.Quit();
-		    });
-	    fileMenu.Append(exitItem);
-	    fileItem = new MenuItem("File");
-	    fileItem.Submenu = fileMenu;
-	    mb.Append(fileItem);
-	    levelMenu = new MenuItem("Level");
-	    mb.Append(levelMenu);
-	    box.PackStart(mb, false, false, 0);
-
-	    Toolbar toolbar = new Toolbar();
-	    toolbar.Orientation = Orientation.Vertical;
-	    toolbar.ToolbarStyle = ToolbarStyle.Icons;
-
-	    ToggleToolButton zoomButton = new ToggleToolButton();
-	    zoomButton.IconWidget = new Image("resources/zoom.png");
-	    zoomButton.Active = true;
-	    toolbar.Insert(zoomButton, -1);
-	    
-
-	    HBox hb = new HBox();
-	    hb.PackStart(toolbar, false, false, 0);
-	    hb.Add(table);
-	    box.Add(hb);
+	    box.Add(table);
 		
 	    Add(box);
 
+	    editor.Tool = Tool.Zoom;
 	}
 
 	MapDrawingArea drawingArea = new MapDrawingArea();
@@ -147,30 +188,51 @@ namespace Weland {
 	}
 
 	void Scroll(object obj, ScrollEventArgs args) {
-		if (args.Event.Direction == Gdk.ScrollDirection.Down) {
+		if (args.Event.Direction == ScrollDirection.Down) {
 			vscroll.Value += 32.0 / drawingArea.Transform.Scale;
-		} else if (args.Event.Direction == Gdk.ScrollDirection.Up) {
+		} else if (args.Event.Direction == ScrollDirection.Up) {
 			vscroll.Value -= 32.0 / drawingArea.Transform.Scale;
-		} else if (args.Event.Direction == Gdk.ScrollDirection.Right) {
+		} else if (args.Event.Direction == ScrollDirection.Right) {
 			hscroll.Value += 32.0 / drawingArea.Transform.Scale;
-		} else if (args.Event.Direction == Gdk.ScrollDirection.Left) {
+		} else if (args.Event.Direction == ScrollDirection.Left) {
 			hscroll.Value -= 32.0 / drawingArea.Transform.Scale;
 		}
 		args.RetVal = true;
 	}
 
+	double xDown;
+	double yDown;
+	short xOffsetDown;
+	short yOffsetDown;
+	
 	void ButtonPress(object obj, ButtonPressEventArgs args) {
-	    Gdk.EventButton ev = args.Event;
+	    EventButton ev = args.Event;
 	    short X = drawingArea.Transform.ToMapX(ev.X);
 	    short Y = drawingArea.Transform.ToMapY(ev.Y);
-	    if (ev.Button == 1) {
-		drawingArea.Transform.Scale *= Math.Sqrt(2.0);
-	    } else if (ev.Button == 3) {
-		drawingArea.Transform.Scale /= Math.Sqrt(2.0);
+
+	    if (editor.Tool == Tool.Zoom) {
+		if (ev.Button == 1) {
+		    drawingArea.Transform.Scale *= Math.Sqrt(2.0);
+		} else if (ev.Button == 3) {
+		    drawingArea.Transform.Scale /= Math.Sqrt(2.0);
+		}
+		Center(X, Y);
+		AdjustScrollRange();
+	    } else if (editor.Tool == Tool.Move) {
+		xDown = ev.X;
+		yDown = ev.Y;
+		xOffsetDown = drawingArea.Transform.XOffset;
+		yOffsetDown = drawingArea.Transform.YOffset;
 	    }
-	    Center(X, Y);
-	    AdjustScrollRange();
 	    args.RetVal = true;
+	}
+
+	void Motion(object obj, MotionNotifyEventArgs args) {
+	    if (editor.Tool == Tool.Move) {
+		hscroll.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
+		vscroll.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
+		args.RetVal = true;
+	    }
 	}
 
 	public void SelectLevel(int n) {
@@ -213,6 +275,30 @@ namespace Weland {
 		OpenFile(d.Filename);
 	    }
 	    d.Destroy();
+	}
+
+	void NewLevel() {
+	    wadfile = new Wadfile();
+	    Level = new Level();
+	    drawingArea.Transform = new Transform();
+	    Center(0, 0);
+	    AdjustScrollRange();
+	    Title = "Untitled Level";
+	}
+
+	void NewLevel(object obj, EventArgs args) {
+	    NewLevel();
+	}
+
+	void ChooseTool(Tool tool) {
+	    editor.Tool = tool;
+	    if (tool == Tool.Zoom) {
+		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Target);
+	    } else if (tool == Tool.Move) {
+		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
+	    } else {
+		drawingArea.GdkWindow.Cursor = null;
+	    }
 	}
     }
 }

@@ -1,6 +1,6 @@
 CC= mcs
 
-SOURCES=BinaryReaderBE.cs Level.cs Line.cs MapDrawingArea.cs		\
+SOURCES=BinaryReaderBE.cs Editor.cs Level.cs Line.cs MapDrawingArea.cs	\
 MapObject.cs MapWindow.cs Point.cs Polygon.cs Wadfile.cs Weland.cs
 
 all:
