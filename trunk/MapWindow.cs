@@ -280,6 +280,7 @@ namespace Weland {
 	void NewLevel() {
 	    wadfile = new Wadfile();
 	    Level = new Level();
+	    levelMenu.Submenu = null;
 	    drawingArea.Transform = new Transform();
 	    Center(0, 0);
 	    AdjustScrollRange();
