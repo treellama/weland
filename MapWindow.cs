@@ -23,8 +23,6 @@ namespace Weland {
 
 	Toolbar toolbar;
 
-	Dictionary<Tool, ToggleToolButton> toolButtons = new Dictionary<Tool, ToggleToolButton>();
-
 	void BuildToolbar() {
 	    toolbar = new Toolbar();
 	    toolbar.Orientation = Orientation.Horizontal;
@@ -43,14 +41,17 @@ namespace Weland {
 	    RadioToolButton zoomButton = new RadioToolButton(new GLib.SList(IntPtr.Zero));
 	    zoomButton.IconWidget = new Gtk.Image("resources/zoom.png");
 	    zoomButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Zoom); });
-	    toolButtons[Tool.Zoom] = zoomButton;
 	    toolbar.Insert(zoomButton, -1);
 
 	    RadioToolButton moveButton = new RadioToolButton(zoomButton);
 	    moveButton.IconWidget = new Gtk.Image("resources/move.png");
 	    moveButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Move); });
-	    toolButtons[Tool.Move] = moveButton;
 	    toolbar.Insert(moveButton, -1);
+
+	    RadioToolButton lineButton = new RadioToolButton(zoomButton);
+	    lineButton.IconWidget = new Gtk.Image("resources/line.png");
+	    lineButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Line); });
+	    toolbar.Insert(lineButton, -1);
 	}
 
 	void BuildMenubar() {
@@ -91,8 +92,9 @@ namespace Weland {
 
 	    drawingArea.ConfigureEvent += new ConfigureEventHandler(ConfigureDrawingArea);
 	    drawingArea.ButtonPressEvent += new ButtonPressEventHandler(ButtonPress);
+	    drawingArea.ButtonReleaseEvent += new ButtonReleaseEventHandler(ButtonRelease);
 	    drawingArea.MotionNotifyEvent += new MotionNotifyEventHandler(Motion);
-	    drawingArea.Events = EventMask.ExposureMask | EventMask.ButtonPressMask | EventMask.ButtonMotionMask;
+	    drawingArea.Events = EventMask.ExposureMask | EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.ButtonMotionMask;
 	    drawingArea.SetSizeRequest(600, 400);
 
 	    hadjust = new Adjustment(0, 0, 0, 0, 0, 0);
@@ -218,12 +220,22 @@ namespace Weland {
 		}
 		Center(X, Y);
 		AdjustScrollRange();
+		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    } else if (editor.Tool == Tool.Move) {
 		xDown = ev.X;
 		yDown = ev.Y;
 		xOffsetDown = drawingArea.Transform.XOffset;
 		yOffsetDown = drawingArea.Transform.YOffset;
+	    } else {
+		editor.ButtonPress(X, Y);
+		drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
 	    }
+	    args.RetVal = true;
+	}
+
+	void ButtonRelease(object obj, ButtonReleaseEventArgs args) {
+	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
+	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
 	    args.RetVal = true;
 	}
 
@@ -232,6 +244,9 @@ namespace Weland {
 		hscroll.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
 		vscroll.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
 		args.RetVal = true;
+	    } else {
+		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
+		drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
 	    }
 	}
 
@@ -282,6 +297,7 @@ namespace Weland {
 	    Level = new Level();
 	    levelMenu.Submenu = null;
 	    drawingArea.Transform = new Transform();
+	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    Center(0, 0);
 	    AdjustScrollRange();
 	    Title = "Untitled Level";
@@ -297,6 +313,8 @@ namespace Weland {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Target);
 	    } else if (tool == Tool.Move) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
+	    } else if (tool == Tool.Line) {
+		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
 	    } else {
 		drawingArea.GdkWindow.Cursor = null;
 	    }

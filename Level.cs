@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 
 namespace Weland {
-    public class Level {
+    public partial class Level {
 	public List<Point> Endpoints = new List<Point> ();
 	public List<Line> Lines = new List<Line>();
 	public List<Polygon> Polygons = new List<Polygon>();

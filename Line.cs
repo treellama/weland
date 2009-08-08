@@ -8,10 +8,10 @@ namespace Weland {
 	public short[] EndpointIndexes = new short[2];
 	public ushort Flags;
 	    
-	public short ClockwisePolygonSideIndex;
-	public short CounterclockwisePolygonSideIndex;
-	public short ClockwisePolygonOwner;
-	public short CounterclockwisePolygonOwner;
+	public short ClockwisePolygonSideIndex = -1;
+	public short CounterclockwisePolygonSideIndex = -1;
+	public short ClockwisePolygonOwner = -1;
+	public short CounterclockwisePolygonOwner = -1;
 
 	public void Load(BinaryReaderBE reader) {
 	    EndpointIndexes[0] = reader.ReadInt16();
