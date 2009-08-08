@@ -292,7 +292,7 @@ namespace Weland {
 	    d.Destroy();
 	}
 
-	void NewLevel() {
+	public void NewLevel() {
 	    wadfile = new Wadfile();
 	    Level = new Level();
 	    levelMenu.Submenu = null;

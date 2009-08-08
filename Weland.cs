@@ -12,6 +12,8 @@ namespace Weland {
 	    
 	    if (args.Length == 1)
 		window.OpenFile(args[0]);
+	    else
+		window.NewLevel();
 	    
 	    window.ShowAll();
 	    Application.Run();
