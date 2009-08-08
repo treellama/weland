@@ -69,6 +69,7 @@ namespace Weland {
 	Color pointColor = new Color(1, 0, 0);
 	Color solidLineColor = new Color(0, 0, 0);
 	Color transparentLineColor = new Color(0, 0.75, 0.75);
+	Color selectedLineColor = new Color(1, 1, 0);
 	Color polygonColor = new Color(0.75, 0.75, 0.75);
 	Color gridLineColor = new Color(0.5, 0.5, 0.5);
 	Color gridPointColor = new Color(0, 0.75, 0.75);
@@ -99,7 +100,16 @@ namespace Weland {
 		foreach (Line line in Level.Lines) {
 		    DrawLine(context, line);
 		}
-		
+
+		if (Level.TemporaryLineStartIndex != -1) {
+		    // draw the temporarily drawn line
+		    context.MoveTo(Transform.ToScreenPointD(Level.Endpoints[Level.TemporaryLineStartIndex]));
+		    context.LineTo(Transform.ToScreenPointD(Level.TemporaryLineEnd));
+		    context.Color = selectedLineColor;
+		    context.LineWidth = 1.0;
+		    context.Stroke();
+		}
+
 		foreach (Point point in Level.Endpoints) {
 		    DrawPoint(context, point);
 		}

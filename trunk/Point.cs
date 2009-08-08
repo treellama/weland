@@ -5,6 +5,11 @@ namespace Weland {
 
 	public short X;
 	public short Y;
+
+	public Point(short x, short y) {
+	    X = x;
+	    Y = y;
+	}
 	    
 	public void Load(BinaryReaderBE reader) {
 	    X = reader.ReadInt16();
