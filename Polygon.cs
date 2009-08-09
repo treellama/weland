@@ -96,5 +96,13 @@ namespace Weland {
 
 	    reader.BaseStream.Seek(2, SeekOrigin.Current);
 	}
+
+	public void DeleteLine(short index) {
+	    for (int i = 0; i < VertexCount; ++i) {
+		if (LineIndexes[i] > index) {
+		    --LineIndexes[i];
+		}
+	    }
+	}
     }
 }
