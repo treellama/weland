@@ -254,6 +254,7 @@ namespace Weland {
 	    Level = new Level();
 	    Level.Load(wadfile.Directory[n]);
 	    drawingArea.Transform = new Transform();
+	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    Center(0, 0);
 	    AdjustScrollRange();
 	    Title = wadfile.Directory[n].LevelName;
