@@ -4,7 +4,21 @@ using System.IO;
 using System.Collections.Generic;
 
 namespace Weland {
+    enum WadfileVersion {
+	PreEntryPoint,
+	HasDirectoryEntry,
+	SupportsOverlays,
+	HasInfinityStuff
+    }
+
+    enum WadfileDataVersion {
+	Marathon,
+	MarathonTwo
+    }
+
     public class Wadfile {
+	const int headerSize = 128;
+
 	public short Version {
 	    get {
 		return version;
@@ -14,6 +28,7 @@ namespace Weland {
 
 	public short DataVersion;
 	public string Filename;
+	const int maxFilename = 64;
 	public uint Checksum {
 	    get {
 		return checksum;
@@ -48,22 +63,34 @@ namespace Weland {
 	}
 
 	public class DirectoryEntry {
+	    internal const short BaseSize = 10;
+
 	    public short MissionFlags;
 	    public short EnvironmentFlags;
 	    public int EntryPointFlags;
 	    public string LevelName;
 	    public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]> ();
 		
-	    internal const int DataSize = 74;
+	    internal const short DataSize = 74;
+	    internal const short HeaderSize = 16;
 	    internal int Offset;
-	    internal int Size;
 	    internal short Index;
+	    public int Size {
+		get {
+		    int total = 0;
+		    foreach (var kvp in Chunks) {
+			total += kvp.Value.Length + HeaderSize;
+		    }
+		    return total;
+		}
+	    }
 
-	    internal void LoadEntry(BinaryReaderBE reader) {
+ 	    internal void LoadEntry(BinaryReaderBE reader) {
 		Offset = reader.ReadInt32();
-		Size = reader.ReadInt32();
+		reader.ReadInt32(); // size
 		Index = reader.ReadInt16();
 	    }
+	    
 			
 	    internal void LoadData(BinaryReaderBE reader) {
 		MissionFlags = reader.ReadInt16();
@@ -87,6 +114,49 @@ namespace Weland {
 		    if (nextOffset > 0) 
 			reader.BaseStream.Seek(position + nextOffset, SeekOrigin.Begin);
 		} while (nextOffset > 0);
+	    }
+
+	    internal void SaveEntry(BinaryWriterBE writer) {
+		writer.Write(Offset);
+		writer.Write((int) Size);
+		writer.Write(Index);
+	    }	
+
+	    readonly uint[] TagOrder = { Point.Tag, Line.Tag, Polygon.Tag };
+	    
+	    internal void SaveChunks(BinaryWriterBE writer) {
+		// build a list of tags to write in order
+		HashSet<uint> Used = new HashSet<uint>();
+		List<uint> Tags = new List<uint>();
+
+		foreach (uint tag in TagOrder) {
+		    if (Chunks.ContainsKey(tag)) {
+			Tags.Add(tag);
+			Used.Add(tag);
+		    }
+		}
+
+		foreach (var kvp in Chunks) {
+		    if (!Used.Contains(kvp.Key)) {
+			Tags.Add(kvp.Key);
+			Used.Add(kvp.Key);
+		    }
+		}
+
+		int offset = 0;
+
+		foreach (uint tag in Tags) {
+		    writer.Write(tag);
+		    if (tag == Tags[Tags.Count - 1]) {
+			writer.Write((uint) 0);
+		    } else {
+			writer.Write((int) offset + HeaderSize + Chunks[tag].Length);
+		    }
+		    writer.Write((int) Chunks[tag].Length);
+		    writer.Write((int) 0);
+		    writer.Write(Chunks[tag]);
+		    offset += Chunks[tag].Length + HeaderSize;
+		}
 	    }
 	}
 
@@ -127,7 +197,7 @@ namespace Weland {
 		// read the header
 		version = reader.ReadInt16();
 		DataVersion = reader.ReadInt16();
-		Filename = reader.ReadMacString(64);
+		Filename = reader.ReadMacString(maxFilename);
 		checksum = reader.ReadUInt32();
 		directoryOffset = reader.ReadInt32();
 		short wadCount = reader.ReadInt16();
@@ -168,16 +238,76 @@ namespace Weland {
 	    }
 	}
 
+	public void Save(string filename) {
+	    BinaryWriterBE writer = new BinaryWriterBE(File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write));
+
+	    // set up the header
+	    if (Directory.Count == 1) {
+		version = (short) WadfileVersion.SupportsOverlays;
+	    } else {
+		version = (short) WadfileVersion.HasInfinityStuff;
+	    }
+	    
+	    DataVersion = (short) WadfileDataVersion.MarathonTwo;
+	    checksum = 0;
+	    directoryOffset = headerSize;
+	    foreach (var kvp in Directory) {
+		kvp.Value.Offset = directoryOffset;
+		kvp.Value.Index = (short) kvp.Key;
+		directoryOffset += kvp.Value.Size;
+	    }
+	    if (Directory.Count == 1) {
+		applicationSpecificDirectoryDataSize = 0;
+	    } else {
+		applicationSpecificDirectoryDataSize = DirectoryEntry.DataSize;
+	    }
+	    entryHeaderSize = DirectoryEntry.HeaderSize;
+	    directoryEntryBaseSize = DirectoryEntry.BaseSize;
+	    ParentChecksum = 0;
+	    
+	    // write the header
+	    writer.Write(version);
+	    writer.Write(DataVersion);
+	    writer.WriteMacString(filename, maxFilename);
+	    writer.Write(checksum);
+	    writer.Write(directoryOffset);
+	    writer.Write((short) Directory.Count);
+	    writer.Write(applicationSpecificDirectoryDataSize);
+	    writer.Write(entryHeaderSize);
+	    writer.Write(directoryEntryBaseSize);
+	    writer.Write(ParentChecksum);
+	    writer.Write(new byte[2 * 20]);
+
+	    // write wads
+	    foreach (var kvp in Directory) {
+		kvp.Value.SaveChunks(writer);
+	    }
+
+	    // write directory
+	    foreach (var kvp in Directory) {
+		kvp.Value.SaveEntry(writer);
+		if (applicationSpecificDirectoryDataSize > 0) {
+		    // update the directory and write it; Weland only writes
+		    // single levels, so it doesn't do this yet
+		    writer.Write(new byte[applicationSpecificDirectoryDataSize]);
+		}
+	    }
+
+	    // fix the checksum!
+	    
+	}
+
 	static public void Main(string[] args) {
-	    if (args.Length == 1) {
+	    if (args.Length == 2) {
 		Wadfile wadfile = new Wadfile();
 		wadfile.Load(args[0]);
-		Console.WriteLine("{0}: 0x{1:x}", wadfile.Filename, wadfile.Checksum);
-		foreach (KeyValuePair<int, DirectoryEntry> kvp in wadfile.Directory) {
-		    Console.WriteLine("{0}\t{1}\t{2}", kvp.Key, kvp.Value.Chunks.Count, kvp.Value.LevelName);
-		}
+
+		Wadfile export = new Wadfile();
+		export.Directory[0] = wadfile.Directory[0];
+		export.Save(args[1]);
+		Console.WriteLine("DirectoryOffset: {0}", export.directoryOffset);
 	    } else {
-		Console.WriteLine("Test usage: wadfile.exe <wadfile>");
+		Console.WriteLine("Test usage: wadfile.exe <wadfile> <export>");
 	    }
 	}
     }
