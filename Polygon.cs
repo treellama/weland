@@ -10,6 +10,7 @@ namespace Weland {
 	public ushort Flags;
 	public short Permutation;
 	public ushort VertexCount;
+
 	public short[] EndpointIndexes = new short[MaxVertexCount];
 	public short[] LineIndexes = new short[MaxVertexCount];
 	
@@ -39,17 +40,26 @@ namespace Weland {
 	
 	public short AmbientSound;
 	public short RandomSound;
+
+	public Polygon() {
+	    for (int i = 0; i < MaxVertexCount; ++i) {
+		EndpointIndexes[i] = -1;
+		LineIndexes[i] = -1;
+		AdjacentPolygonIndexes[i] = -1;
+		SideIndexes[i] = -1;
+	    }
+	}
 	
 	public void Load(BinaryReaderBE reader) {
 	    Type = reader.ReadInt16();
 	    Flags = reader.ReadUInt16();
 	    Permutation = reader.ReadInt16();
 	    VertexCount = reader.ReadUInt16();
-	    for (int i = 0; i < EndpointIndexes.Length; ++i) {
+	    for (int i = 0; i < MaxVertexCount; ++i) {
 		EndpointIndexes[i] = reader.ReadInt16();
 	    }
 
-	    for (int i = 0; i < LineIndexes.Length; ++i) {
+	    for (int i = 0; i < MaxVertexCount; ++i) {
 		LineIndexes[i] = reader.ReadInt16();
 	    }
 
@@ -69,7 +79,7 @@ namespace Weland {
 	    FloorTransferMode = reader.ReadInt16();
 	    CeilingTransferMode = reader.ReadInt16();
 	    
-	    for (int i = 0; i < AdjacentPolygonIndexes.Length; ++i) {
+	    for (int i = 0; i < MaxVertexCount; ++i) {
 		AdjacentPolygonIndexes[i] = reader.ReadInt16();
 	    }
 
@@ -95,6 +105,62 @@ namespace Weland {
 	    RandomSound = reader.ReadInt16();
 
 	    reader.BaseStream.Seek(2, SeekOrigin.Current);
+	}
+
+	public void Save(BinaryWriterBE writer) {
+	    writer.Write(Type);
+	    writer.Write(Flags);
+	    writer.Write(Permutation);
+	    writer.Write(VertexCount);
+	    for (int i = 0; i < MaxVertexCount; ++i) {
+		writer.Write(EndpointIndexes[i]);
+	    }
+	    
+	    for (int i = 0; i < MaxVertexCount; ++i) {
+		writer.Write(LineIndexes[i]);
+	    }
+
+	    writer.Write(FloorTexture);
+	    writer.Write(CeilingTexture);
+	    writer.Write(FloorHeight);
+	    writer.Write(CeilingHeight);
+	    writer.Write(FloorLight);
+	    writer.Write(CeilingLight);
+	    
+	    writer.Write((int) 0); // area
+	    writer.Write(FirstObjectIndex);
+	    
+	    writer.Write((short) -1); // first exclusion zone index
+	    writer.Write((short) -1); // line exclusion zone count
+	    writer.Write((short) -1); // point exclusion zone count
+	    writer.Write(FloorTransferMode);
+	    writer.Write(CeilingTransferMode);
+
+	    for (int i = 0; i < MaxVertexCount; ++i) {
+		writer.Write(AdjacentPolygonIndexes[i]);
+	    }
+
+	    writer.Write((short) -1); // first neighbor index
+	    writer.Write((short) -1); // neighbor count
+	    writer.Write((short) 0); // center.x
+	    writer.Write((short) 0); // center.y
+
+	    for (int i = 0; i < MaxVertexCount; ++i) {
+		writer.Write(SideIndexes[i]);
+	    }
+
+	    FloorOrigin.Save(writer);
+	    CeilingOrigin.Save(writer);
+	    
+	    writer.Write(MediaIndex);
+	    writer.Write(MediaLight);
+	    
+	    writer.Write((short) -1); // sound source indexes
+	    
+	    writer.Write(AmbientSound);
+	    writer.Write(RandomSound);
+	    
+	    writer.Write(new byte[2]);
 	}
 
 	public void DeleteLine(short index) {
