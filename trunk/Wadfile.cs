@@ -96,8 +96,7 @@ namespace Weland {
 		MissionFlags = (MissionFlags) reader.ReadInt16();
 		EnvironmentFlags = (EnvironmentFlags) reader.ReadInt16();
 		EntryPointFlags = (EntryPointFlags) reader.ReadInt32();
-		const int kLevelNameLength = 66;
-		LevelName = reader.ReadMacString(kLevelNameLength);
+		LevelName = reader.ReadMacString(MapInfo.LevelNameLength);
 	    }
 
 	    internal void LoadChunks(BinaryReaderBE reader) {
@@ -121,6 +120,13 @@ namespace Weland {
 		writer.Write((int) Size);
 		writer.Write(Index);
 	    }	
+
+	    internal void SaveData(BinaryWriterBE writer) {
+		writer.Write((short) MissionFlags);
+		writer.Write((short) EnvironmentFlags);
+		writer.Write((int) EntryPointFlags);
+		writer.WriteMacString(LevelName, MapInfo.LevelNameLength);
+	    }
 
 	    readonly uint[] TagOrder = { Point.Tag, Line.Tag, Polygon.Tag };
 	    
@@ -301,9 +307,7 @@ namespace Weland {
 	    foreach (var kvp in Directory) {
 		kvp.Value.SaveEntry(writer);
 		if (applicationSpecificDirectoryDataSize > 0) {
-		    // update the directory and write it; Weland only writes
-		    // single levels, so it doesn't do this yet
-		    writer.Write(new byte[applicationSpecificDirectoryDataSize]);
+		    kvp.Value.SaveData(writer);
 		}
 	    }
 
