@@ -70,6 +70,17 @@ namespace Weland {
 	    Z = reader.ReadInt16();
 	    Flags = reader.ReadInt16();
 	}
+
+	public void Save(BinaryWriterBE writer) {
+	    writer.Write((short) Type);
+	    writer.Write(Index);
+	    writer.Write(Facing);
+	    writer.Write(PolygonIndex);
+	    writer.Write(X);
+	    writer.Write(Y);
+	    writer.Write(Z);
+	    writer.Write(Flags);
+	}
     }
 }
  

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Weland {
     interface ISerializableBE {
 	void Load(BinaryReaderBE reader);
-	//void Save(BinaryWriterBE writer);
+	void Save(BinaryWriterBE writer);
     }
 
     public partial class Level {
