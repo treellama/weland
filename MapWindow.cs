@@ -267,7 +267,7 @@ namespace Weland {
 		wadfile = w;
 		Menu menu = new Menu();
 		foreach (var kvp in wadfile.Directory) {
-		    if (kvp.Value.Chunks.ContainsKey(Level.Tag)) {
+		    if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
 			MenuItem item = new MenuItem(kvp.Value.LevelName);
 			int levelNumber = kvp.Key;
 			item.Activated += new EventHandler(delegate(object obj, EventArgs args) { SelectLevel(levelNumber); });

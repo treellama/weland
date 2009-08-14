@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Weland {
+namespace Weland{
     [Flags] 
     public enum EnvironmentFlags : short {
 	Normal = 0x0000,
@@ -35,7 +35,7 @@ namespace Weland {
 	CaptureTheFlag = 0x80
     }
 	
-    public class MapInfo {
+    public class MapInfo : ISerializableBE {
 	// Marathon 2 calls this static_data
 	public const uint Tag = 0x4d696e66; // Minf
 	public const int Size = 88;

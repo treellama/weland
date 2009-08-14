@@ -1,5 +1,5 @@
 namespace Weland {
-    public struct Point {
+    public struct Point : ISerializableBE {
 	public const uint Tag = 0x504e5453; // PNTS
 	public const int Size = 4;
 
@@ -17,7 +17,7 @@ namespace Weland {
 	}
     }
 	 
-    public class Endpoint {
+    public class Endpoint : ISerializableBE {
 	public const uint Tag = 0x45504e54; // EPNT
 	public const int Size = 16;
 

@@ -1,5 +1,5 @@
 namespace Weland {
-    public class MapObject {
+    public class MapObject : ISerializableBE {
 	public const uint Tag = 0x4f424a53; // OBJS
 	public const int Size = 16;
 
