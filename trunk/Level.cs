@@ -3,69 +3,69 @@ using System.IO;
 using System.Collections.Generic;
 
 namespace Weland {
+    interface ISerializableBE {
+	void Load(BinaryReaderBE reader);
+	//void Save(BinaryWriterBE writer);
+    }
+
     public partial class Level {
 	public List<Point> Endpoints = new List<Point> ();
 	public List<Line> Lines = new List<Line>();
 	public List<Polygon> Polygons = new List<Polygon>();
 	public List<MapObject> Objects = new List<MapObject>();
 
-	public const uint Tag = 0x4d696e66; // Minf
 	public MapInfo MapInfo = new MapInfo();
+
+	void LoadChunk(ISerializableBE chunk, byte[] data) {
+	    chunk.Load(new BinaryReaderBE(new MemoryStream(data)));
+	}
+
+	void LoadChunkList<T>(List<T> list, byte[] data) where T : ISerializableBE, new() {
+	    BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(data));
+	    list.Clear();
+	    while (reader.BaseStream.Position < reader.BaseStream.Length) {
+		T t = new T();
+		t.Load(reader);
+		list.Add(t);
+	    }
+	}
 
 	public void Load(Wadfile.DirectoryEntry wad) {
 	    if (wad.Chunks.ContainsKey(MapInfo.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Tag]));
-		MapInfo.Load(reader);
+		LoadChunk(MapInfo, wad.Chunks[MapInfo.Tag]);
+	    } else {
+		throw new Wadfile.BadMapException("Incomplete level: missing map info chunk");
 	    }
 
 	    if (wad.Chunks.ContainsKey(Point.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Point.Tag]));
-		Endpoints.Clear();
-		while (reader.BaseStream.Position < reader.BaseStream.Length) {
-		    Point point = new Point();
-		    point.Load(reader);
-		    Endpoints.Add(point);
-		}
+		LoadChunkList<Point>(Endpoints, wad.Chunks[Point.Tag]);
 	    } else if (wad.Chunks.ContainsKey(Endpoint.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Endpoint.Tag]));
 		Endpoints.Clear();
-		while (reader.BaseStream.Position < reader.BaseStream.Length) {
-		    Endpoint endpoint = new Endpoint();
-		    endpoint.Load(reader);
-		    Endpoints.Add(endpoint.Vertex);
+		List<Endpoint> endpointList = new List<Endpoint>();
+		LoadChunkList<Endpoint>(endpointList, wad.Chunks[Endpoint.Tag]);
+		foreach (Endpoint e in endpointList) {
+		    Endpoints.Add(e.Vertex);
 		}
 	    } else {
-		Console.WriteLine("Directory Entry contains no points!");
+		throw new Wadfile.BadMapException("Incomplete level: missing points chunk");
 	    }
 
 	    if (wad.Chunks.ContainsKey(Line.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Line.Tag]));
-		Lines.Clear();
-		while (reader.BaseStream.Position < reader.BaseStream.Length) {
-		    Line line = new Line();
-		    line.Load(reader);
-		    Lines.Add(line);
-		}
+		LoadChunkList<Line>(Lines, wad.Chunks[Line.Tag]);
+	    } else {
+		throw new Wadfile.BadMapException("Incomplete level: missing lines chunk");
 	    }
 
 	    if (wad.Chunks.ContainsKey(Polygon.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Polygon.Tag]));
-		Polygons.Clear();
-		while (reader.BaseStream.Position < reader.BaseStream.Length) {
-		    Polygon polygon = new Polygon();
-		    polygon.Load(reader);
-		    Polygons.Add(polygon);
-		}
+		LoadChunkList<Polygon>(Polygons, wad.Chunks[Polygon.Tag]);
+	    } else {
+		throw new Wadfile.BadMapException("Incomplete level: missing polygons chunk");
 	    }
 
 	    if (wad.Chunks.ContainsKey(MapObject.Tag)) {
-		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[MapObject.Tag]));
-		Objects.Clear();
-		while (reader.BaseStream.Position < reader.BaseStream.Length) {
-		    MapObject mapObject = new MapObject();
-		    mapObject.Load(reader);
-		    Objects.Add(mapObject);
-		}
+		LoadChunkList<MapObject>(Objects, wad.Chunks[MapObject.Tag]);
+	    } else {
+		throw new Wadfile.BadMapException("Incomplete level: missing map objects chunk");
 	    }
 	}
 	

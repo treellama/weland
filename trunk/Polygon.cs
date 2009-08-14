@@ -1,7 +1,7 @@
 using System.IO;
 
 namespace Weland {
-    public class Polygon {
+    public class Polygon : ISerializableBE {
 	public const uint Tag = 0x504f4c59; // POLY
 	public const int Size = 128;
 	public const int MaxVertexCount = 8;

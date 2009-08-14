@@ -1,7 +1,7 @@
 using System.IO;
 
 namespace Weland {
-    public class Line {
+    public class Line : ISerializableBE {
 	public const uint Tag = 0x4c494e53; // LINS
 	public const int Size = 32;
 	    
