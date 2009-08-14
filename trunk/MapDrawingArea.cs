@@ -60,7 +60,7 @@ namespace Weland {
 	    itemImages[ItemType.Shotgun] = new ImageSurface("resources/shotgun.png");
 	    itemImages[ItemType.ShotgunMagazine] = new ImageSurface("resources/shotgun-ammo.png");
 	    itemImages[ItemType.SphtDoorKey] = new ImageSurface("resources/uplink-chip.png");
-	    itemImages[ItemType.Ball] = new ImageSurface("resources/skull.png");
+	    itemImages[ItemType.RedBall] = new ImageSurface("resources/skull.png");
 	    itemImages[ItemType.Smg] = new ImageSurface("resources/smg.png");
 	    itemImages[ItemType.SmgAmmo] = new ImageSurface("resources/smg-ammo.png");
 	}
