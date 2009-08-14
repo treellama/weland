@@ -65,9 +65,9 @@ namespace Weland {
 	public class DirectoryEntry {
 	    internal const short BaseSize = 10;
 
-	    public short MissionFlags;
-	    public short EnvironmentFlags;
-	    public int EntryPointFlags;
+	    public MissionFlags MissionFlags;
+	    public EnvironmentFlags EnvironmentFlags;
+	    public EntryPointFlags EntryPointFlags;
 	    public string LevelName;
 	    public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]> ();
 		
@@ -93,9 +93,9 @@ namespace Weland {
 	    
 			
 	    internal void LoadData(BinaryReaderBE reader) {
-		MissionFlags = reader.ReadInt16();
-		EnvironmentFlags = reader.ReadInt16();
-		EntryPointFlags = reader.ReadInt32();
+		MissionFlags = (MissionFlags) reader.ReadInt16();
+		EnvironmentFlags = (EnvironmentFlags) reader.ReadInt16();
+		EntryPointFlags = (EntryPointFlags) reader.ReadInt32();
 		const int kLevelNameLength = 66;
 		LevelName = reader.ReadMacString(kLevelNameLength);
 	    }
@@ -232,6 +232,20 @@ namespace Weland {
 		foreach (KeyValuePair<int, DirectoryEntry> kvp in Directory) {
 		    reader.BaseStream.Seek(kvp.Value.Offset + fork_start, SeekOrigin.Begin);
 		    kvp.Value.LoadChunks(reader);
+		}
+		
+		if (applicationSpecificDirectoryDataSize != DirectoryEntry.DataSize) {
+		    foreach(var kvp in Directory) {
+			if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
+			    MapInfo info = new MapInfo();
+			    BinaryReaderBE chunkReader = new BinaryReaderBE(new MemoryStream(kvp.Value.Chunks[MapInfo.Tag]));
+			    info.Load(chunkReader);
+			    kvp.Value.MissionFlags = info.MissionFlags;
+			    kvp.Value.EnvironmentFlags = info.EnvironmentFlags;
+			    kvp.Value.EntryPointFlags = info.EntryPointFlags;
+			    kvp.Value.LevelName = info.Name;
+			}
+		    }
 		}
 	    } finally {
 		reader.Close();

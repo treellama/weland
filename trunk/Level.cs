@@ -10,28 +10,12 @@ namespace Weland {
 	public List<MapObject> Objects = new List<MapObject>();
 
 	public const uint Tag = 0x4d696e66; // Minf
-	public short Environment;
-	public short PhysicsModel;
-	public short Landscape;
-	public short MissionFlags;
-	public short EnvironmentFlags;
-	
-	public string Name;
-	public uint EntryPointFlags;
+	public MapInfo MapInfo = new MapInfo();
 
 	public void Load(Wadfile.DirectoryEntry wad) {
-	    if (wad.Chunks.ContainsKey(Tag)) {
+	    if (wad.Chunks.ContainsKey(MapInfo.Tag)) {
 		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Tag]));
-		Environment = reader.ReadInt16();
-		PhysicsModel = reader.ReadInt16();
-		Landscape = reader.ReadInt16();
-		MissionFlags = reader.ReadInt16();
-		EnvironmentFlags = reader.ReadInt16();
-		
-		reader.BaseStream.Seek(8, SeekOrigin.Current);
-		const int kLevelNameLength = 66;
-		Name = reader.ReadMacString(kLevelNameLength);
-		EntryPointFlags = reader.ReadUInt32();
+		MapInfo.Load(reader);
 	    }
 
 	    if (wad.Chunks.ContainsKey(Point.Tag)) {
@@ -92,7 +76,7 @@ namespace Weland {
 
 		Level level = new Level();
 		level.Load(wadfile.Directory[0]);
-		Console.WriteLine("\"{0}\"", level.Name);
+		Console.WriteLine("\"{0}\"", level.MapInfo.Name);
 		Console.WriteLine("{0} Points", level.Endpoints.Count);
 		Console.WriteLine("{0} Lines", level.Lines.Count);
 		Console.WriteLine("{0} Polygons", level.Polygons.Count);
