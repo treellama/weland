@@ -37,32 +37,32 @@ namespace Weland {
 	public short GridResolution = 1024;
 
 	public MapDrawingArea() { 
-	    itemImages[MapObject.Item.Magnum] = new ImageSurface("resources/pistol.png");
-	    itemImages[MapObject.Item.MagnumMagazine] = new ImageSurface("resources/pistol-ammo.png");
-	    itemImages[MapObject.Item.PlasmaPistol] = new ImageSurface("resources/fusion.png");
-	    itemImages[MapObject.Item.PlasmaMagazine] = new ImageSurface("resources/fusion-ammo.png");
-	    itemImages[MapObject.Item.AssaultRifle] = new ImageSurface("resources/ar.png");
-	    itemImages[MapObject.Item.AssaultRifleMagazine] = new ImageSurface("resources/ar-ammo.png");
-	    itemImages[MapObject.Item.AssaultGrenadeMagazine] = new ImageSurface("resources/ar-grenades.png");
-	    itemImages[MapObject.Item.MissileLauncher] = new ImageSurface("resources/rl.png");
-	    itemImages[MapObject.Item.MissileLauncherMagazine] = new ImageSurface("resources/rl-ammo.png");
-	    itemImages[MapObject.Item.InvisibilityPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[MapObject.Item.InvincibilityPowerup] = new ImageSurface("resources/invinc.png");
-	    itemImages[MapObject.Item.InfravisionPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[MapObject.Item.AlienShotgun] = new ImageSurface("resources/alien-gun.png");
-	    itemImages[MapObject.Item.Flamethrower] = new ImageSurface("resources/tozt.png");
-	    itemImages[MapObject.Item.FlamethrowerCanister] = new ImageSurface("resources/tozt-ammo.png");
-	    itemImages[MapObject.Item.ExtravisionPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[MapObject.Item.OxygenPowerup] = new ImageSurface("resources/oxygen.png");
-	    itemImages[MapObject.Item.EnergyPowerup] = new ImageSurface("resources/1x.png");
-	    itemImages[MapObject.Item.DoubleEnergyPowerup] = new ImageSurface("resources/2x.png");
-	    itemImages[MapObject.Item.TripleEnergyPowerup] = new ImageSurface("resources/3x.png");
-	    itemImages[MapObject.Item.Shotgun] = new ImageSurface("resources/shotgun.png");
-	    itemImages[MapObject.Item.ShotgunMagazine] = new ImageSurface("resources/shotgun-ammo.png");
-	    itemImages[MapObject.Item.SphtDoorKey] = new ImageSurface("resources/uplink-chip.png");
-	    itemImages[MapObject.Item.Ball] = new ImageSurface("resources/skull.png");
-	    itemImages[MapObject.Item.Smg] = new ImageSurface("resources/smg.png");
-	    itemImages[MapObject.Item.SmgAmmo] = new ImageSurface("resources/smg-ammo.png");
+	    itemImages[ItemType.Magnum] = new ImageSurface("resources/pistol.png");
+	    itemImages[ItemType.MagnumMagazine] = new ImageSurface("resources/pistol-ammo.png");
+	    itemImages[ItemType.PlasmaPistol] = new ImageSurface("resources/fusion.png");
+	    itemImages[ItemType.PlasmaMagazine] = new ImageSurface("resources/fusion-ammo.png");
+	    itemImages[ItemType.AssaultRifle] = new ImageSurface("resources/ar.png");
+	    itemImages[ItemType.AssaultRifleMagazine] = new ImageSurface("resources/ar-ammo.png");
+	    itemImages[ItemType.AssaultGrenadeMagazine] = new ImageSurface("resources/ar-grenades.png");
+	    itemImages[ItemType.MissileLauncher] = new ImageSurface("resources/rl.png");
+	    itemImages[ItemType.MissileLauncherMagazine] = new ImageSurface("resources/rl-ammo.png");
+	    itemImages[ItemType.InvisibilityPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[ItemType.InvincibilityPowerup] = new ImageSurface("resources/invinc.png");
+	    itemImages[ItemType.InfravisionPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[ItemType.AlienShotgun] = new ImageSurface("resources/alien-gun.png");
+	    itemImages[ItemType.Flamethrower] = new ImageSurface("resources/tozt.png");
+	    itemImages[ItemType.FlamethrowerCanister] = new ImageSurface("resources/tozt-ammo.png");
+	    itemImages[ItemType.ExtravisionPowerup] = new ImageSurface("resources/powerup.png");
+	    itemImages[ItemType.OxygenPowerup] = new ImageSurface("resources/oxygen.png");
+	    itemImages[ItemType.EnergyPowerup] = new ImageSurface("resources/1x.png");
+	    itemImages[ItemType.DoubleEnergyPowerup] = new ImageSurface("resources/2x.png");
+	    itemImages[ItemType.TripleEnergyPowerup] = new ImageSurface("resources/3x.png");
+	    itemImages[ItemType.Shotgun] = new ImageSurface("resources/shotgun.png");
+	    itemImages[ItemType.ShotgunMagazine] = new ImageSurface("resources/shotgun-ammo.png");
+	    itemImages[ItemType.SphtDoorKey] = new ImageSurface("resources/uplink-chip.png");
+	    itemImages[ItemType.Ball] = new ImageSurface("resources/skull.png");
+	    itemImages[ItemType.Smg] = new ImageSurface("resources/smg.png");
+	    itemImages[ItemType.SmgAmmo] = new ImageSurface("resources/smg-ammo.png");
 	}
 
 	Color backgroundColor = new Color(0.25, 0.25, 0.25);
@@ -81,7 +81,7 @@ namespace Weland {
 	ImageSurface soundImage = new ImageSurface("resources/sound.png");
 	ImageSurface goalImage = new ImageSurface("resources/flag.png");
 
-	Dictionary<MapObject.Item, ImageSurface> itemImages = new Dictionary<MapObject.Item, ImageSurface>();
+	Dictionary<ItemType, ImageSurface> itemImages = new Dictionary<ItemType, ImageSurface>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 	    Context context = Gdk.CairoHelper.Create(GdkWindow);
@@ -259,21 +259,21 @@ namespace Weland {
 	}
 
 	void DrawObject(Context context, MapObject obj) {
-	    if (obj.Type == MapObject.Types.Player) {
+	    if (obj.Type == ObjectType.Player) {
 		context.Color = playerColor;
 		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
-	    } else if (obj.Type == MapObject.Types.Monster) {
+	    } else if (obj.Type == ObjectType.Monster) {
 		context.Color = monsterColor;
 		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
-	    } else if (obj.Type == MapObject.Types.Scenery) {
+	    } else if (obj.Type == ObjectType.Scenery) {
 		DrawImage(context, sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-	    } else if (obj.Type == MapObject.Types.Sound) {
+	    } else if (obj.Type == ObjectType.Sound) {
 		DrawImage(context, soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-	    } else if (obj.Type == MapObject.Types.Goal) {
+	    } else if (obj.Type == ObjectType.Goal) {
 		DrawImage(context, goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-	    } else if (obj.Type == MapObject.Types.Item) {
-		if (itemImages.ContainsKey((MapObject.Item) obj.Index)) {
-		    DrawImage(context, itemImages[(MapObject.Item) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+	    } else if (obj.Type == ObjectType.Item) {
+		if (itemImages.ContainsKey((ItemType) obj.Index) && itemImages[(ItemType) obj.Index] != null) {
+		    DrawImage(context, itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 		} else {
 		    PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 		    context.MoveTo(p);
