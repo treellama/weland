@@ -111,7 +111,7 @@ namespace Weland {
 
 	    return wad;
 	}
-	
+
 	static public void Main(string[] args) {
 	    if (args.Length == 1) {
 		Wadfile wadfile = new Wadfile();

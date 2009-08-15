@@ -94,6 +94,17 @@ namespace Weland {
 	    fileItem = new MenuItem("File");
 	    fileItem.Submenu = fileMenu;
 	    menuBar.Append(fileItem);
+
+	    Menu editMenu = new Menu();
+	    ImageMenuItem undoItem = new ImageMenuItem(Stock.Undo, agr);
+	    undoItem.Activated += new EventHandler(delegate(object obj, EventArgs a) { editor.Undo(); Redraw(); });
+	    editMenu.Append(undoItem);
+
+	    MenuItem editItem = new MenuItem("Edit");
+	    editItem.Submenu = editMenu;
+	    
+	    menuBar.Append(editItem);
+
 	    levelMenu = new MenuItem("Level");
 	    menuBar.Append(levelMenu);
 	}
@@ -183,24 +194,26 @@ namespace Weland {
 	    hadjust.StepIncrement = 32.0 / scale;
 	    hadjust.PageIncrement = 256.0 / scale;
 
-	    drawingArea.QueueDrawArea(0, 0, width, height);
+	    Redraw();
 	}
 
 	void HValueChangedEvent(object obj, EventArgs e) {
 	    drawingArea.Transform.XOffset = (short) hscroll.Value;
-			
-	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+	    Redraw();
 	}
 
 	void VValueChangedEvent(object obj, EventArgs e) {
 	    drawingArea.Transform.YOffset = (short) vscroll.Value;
-
-	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+	    Redraw();
 	}
 
 	void ConfigureDrawingArea(object obj, ConfigureEventArgs args) {
 	    AdjustScrollRange();
 	    args.RetVal = true;
+	}
+
+	void Redraw() {
+	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
 	}
 
 	void Scroll(object obj, ScrollEventArgs args) {
@@ -242,14 +255,14 @@ namespace Weland {
 		yOffsetDown = drawingArea.Transform.YOffset;
 	    } else {
 		editor.ButtonPress(X, Y);
-		drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+		Redraw();
 	    }
 	    args.RetVal = true;
 	}
 
 	void ButtonRelease(object obj, ButtonReleaseEventArgs args) {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
-	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+	    Redraw();
 	    args.RetVal = true;
 	}
 

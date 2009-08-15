@@ -6,8 +6,11 @@ namespace Weland {
 	Move,
 	Line
     }
+
     public class Editor {
 	public bool Changed = false;
+
+	Wadfile.DirectoryEntry undoState;
 
 	public short Snap;
 	public Level Level;
@@ -17,6 +20,7 @@ namespace Weland {
 	public Point LineEnd;
 
 	public void StartLine(short X, short Y) {
+	    SetUndo();
 	    Point p = new Point(X, Y);
 	    short index = Level.GetClosestPoint(p);
 	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
@@ -106,6 +110,16 @@ namespace Weland {
 	    if (Tool == Tool.Line) {
 		ConnectLine(X, Y);
 	    }
+	}
+
+	public void SetUndo() {
+	    undoState = Level.Save().Clone();
+	}
+
+	public void Undo() {
+	    Wadfile.DirectoryEntry redo = Level.Save().Clone();
+	    Level.Load(undoState);
+	    undoState = redo;
 	}
     }
 }

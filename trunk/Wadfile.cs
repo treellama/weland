@@ -168,6 +168,15 @@ namespace Weland {
 		    offset += Chunks[tag].Length + HeaderSize;
 		}
 	    }
+
+	    public DirectoryEntry Clone() {
+		DirectoryEntry clone = (DirectoryEntry) MemberwiseClone();
+		clone.Chunks = new Dictionary<uint, byte[]>();
+		foreach (var kvp in Chunks) {
+		    clone.Chunks[kvp.Key] = (byte[]) kvp.Value.Clone();
+		}
+		return clone;
+	    }
 	}
 
 	bool MacBinaryHeader(byte[] header) {
