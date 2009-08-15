@@ -35,6 +35,7 @@ namespace Weland {
 	public Transform Transform = new Transform();
 	public Level Level;
 	public short GridResolution = 1024;
+	public bool ShowGrid = true;
 
 	public MapDrawingArea() { 
 	    itemImages[ItemType.Magnum] = new ImageSurface("resources/pistol.png");
@@ -89,7 +90,9 @@ namespace Weland {
 	    context.Color = backgroundColor;
 	    context.Paint();
 	    
-	    DrawGrid(context);
+	    if (ShowGrid) {
+		DrawGrid(context);
+	    }
 	    
 	    if (Level != null) {
 		
