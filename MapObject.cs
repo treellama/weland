@@ -48,7 +48,7 @@ namespace Weland {
     }
 
     public class MapObject : ISerializableBE {
-	public const uint Tag = 0x4f424a53; // OBJS
+	public static readonly uint Tag = Wadfile.Chunk("OBJS");
 	public const int Size = 16;
 
 	public ObjectType Type;

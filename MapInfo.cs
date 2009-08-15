@@ -37,7 +37,7 @@ namespace Weland{
 	
     public class MapInfo : ISerializableBE {
 	// Marathon 2 calls this static_data
-	public const uint Tag = 0x4d696e66; // Minf
+	public static readonly uint Tag = Wadfile.Chunk("Minf");
 	public const int Size = 88;
 	
 	public short Environment;

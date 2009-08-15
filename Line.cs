@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Weland {
     public class Line : ISerializableBE {
-	public const uint Tag = 0x4c494e53; // LINS
+	public static readonly uint Tag = Wadfile.Chunk("LINS");
 	public const int Size = 32;
 	    
 	public short[] EndpointIndexes = new short[2];
