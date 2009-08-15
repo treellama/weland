@@ -16,6 +16,7 @@ namespace Weland {
 		window.NewLevel();
 	    
 	    window.ShowAll();
+	    window.Focus = null;
 	    Application.Run();
 	    return 0;
 	}
