@@ -96,7 +96,7 @@ namespace Weland {
 	    menuBar.Append(fileItem);
 
 	    Menu editMenu = new Menu();
-	    ImageMenuItem undoItem = new ImageMenuItem(Stock.Undo);
+	    ImageMenuItem undoItem = new ImageMenuItem(Stock.Undo, agr);
 	    undoItem.AddAccelerator("activate", agr, new AccelKey(Gdk.Key.z, Gdk.ModifierType.ControlMask, AccelFlags.Visible));
 	    undoItem.Activated += new EventHandler(delegate(object obj, EventArgs a) { editor.Undo(); Redraw(); });
 	    editMenu.Append(undoItem);
