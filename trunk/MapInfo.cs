@@ -46,7 +46,7 @@ namespace Weland{
 	public MissionFlags MissionFlags;
 	public EnvironmentFlags EnvironmentFlags;
 
-	public string Name;
+	public string Name = "Untitled Level";
 	public const int LevelNameLength = 66;
 	public EntryPointFlags EntryPointFlags;
 

@@ -7,6 +7,8 @@ namespace Weland {
 	Line
     }
     public class Editor {
+	public bool Changed = false;
+
 	public short Snap;
 	public Level Level;
 	public Tool Tool = Tool.Zoom;
@@ -31,6 +33,8 @@ namespace Weland {
 		    Level.TemporaryLineEnd = new Point(X, Y);
 		}
 	    }
+
+	    Changed = true;
 	}
 
 	public void UpdateLine(short X, short Y) {
@@ -42,7 +46,9 @@ namespace Weland {
 	    } else {
 		Level.TemporaryLineEnd.X = X;
 		Level.TemporaryLineEnd.Y = Y;
-	    }	    
+	    }	
+
+	    Changed = true;
 	}
 
 	public void ConnectLine(short X, short Y) {
@@ -79,7 +85,9 @@ namespace Weland {
 		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(X, Y));
 		}
 	    }
-	    Level.TemporaryLineStartIndex = -1;	    
+	    Level.TemporaryLineStartIndex = -1;	   
+
+	    Changed = true;
 	}
 
 	public void ButtonPress(short X, short Y) {

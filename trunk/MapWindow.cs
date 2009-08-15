@@ -23,6 +23,8 @@ namespace Weland {
 
 	Toolbar toolbar;
 
+	string Filename;
+
 	void BuildToolbar() {
 	    toolbar = new Toolbar();
 	    toolbar.Orientation = Orientation.Horizontal;
@@ -35,6 +37,10 @@ namespace Weland {
 	    ToolButton openButton = new ToolButton(Stock.Open);
 	    openButton.Clicked += new EventHandler(OpenFile);
 	    toolbar.Insert(openButton, -1);
+
+	    ToolButton saveButton = new ToolButton(Stock.Save);
+	    saveButton.Clicked += new EventHandler(Save);
+	    toolbar.Insert(saveButton, -1);
 
 	    toolbar.Insert(new SeparatorToolItem(), -1);
 
@@ -68,6 +74,14 @@ namespace Weland {
 	    ImageMenuItem openItem = new ImageMenuItem(Stock.Open, agr);
 	    openItem.Activated += new EventHandler(OpenFile);
 	    fileMenu.Append(openItem);
+
+	    ImageMenuItem saveItem = new ImageMenuItem(Stock.Save, agr);
+	    saveItem.Activated += new EventHandler(Save);
+	    fileMenu.Append(saveItem);
+
+	    ImageMenuItem saveAsItem = new ImageMenuItem(Stock.SaveAs, agr);
+	    saveAsItem.Activated += new EventHandler(SaveAs);
+	    fileMenu.Append(saveAsItem);
 
 	    fileMenu.Append(new SeparatorMenuItem());
 	    
@@ -250,14 +264,31 @@ namespace Weland {
 	    }
 	}
 
+	public bool CheckSave() {
+	    if (editor.Changed) {
+		MessageDialog dialog = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "Do you wish to save changes?");
+		if (dialog.Run() == (int) ResponseType.Yes) {
+		    dialog.Destroy();
+		    return Save();
+		} else {
+		    dialog.Destroy();
+		    return true;
+		}
+	    } else {
+		return true;
+	    }
+	}
+
 	public void SelectLevel(int n) {
-	    Level = new Level();
-	    Level.Load(wadfile.Directory[n]);
-	    drawingArea.Transform = new Transform();
-	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
-	    Center(0, 0);
-	    AdjustScrollRange();
-	    Title = wadfile.Directory[n].LevelName;
+	    if (CheckSave()) {
+		Level = new Level();
+		Level.Load(wadfile.Directory[n]);
+		drawingArea.Transform = new Transform();
+		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+		Center(0, 0);
+		AdjustScrollRange();
+		Title = wadfile.Directory[n].LevelName;
+	    }
 	}
 
 	public void OpenFile(string filename) {
@@ -265,6 +296,11 @@ namespace Weland {
 		Wadfile w = new Wadfile();
 		w.Load(filename);
 		wadfile = w;
+		if (wadfile.Directory.Count > 1) {
+		    Filename =  "";
+		} else {
+		    Filename = filename;
+		}
 		Menu menu = new Menu();
 		foreach (var kvp in wadfile.Directory) {
 		    if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
@@ -276,6 +312,7 @@ namespace Weland {
 		}
 		menu.ShowAll();
 		levelMenu.Submenu = menu;
+		editor.Changed = false;
 		SelectLevel(0);
 	    }
 	    catch (Wadfile.BadMapException e) {
@@ -286,11 +323,13 @@ namespace Weland {
 	}
 
 	void OpenFile(object obj, EventArgs args) {
-	    FileChooserDialog d = new FileChooserDialog("Choose the file to open", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
-	    if (d.Run() == (int) ResponseType.Accept) {
-		OpenFile(d.Filename);
+	    if (CheckSave()) {
+		FileChooserDialog d = new FileChooserDialog("Choose the file to open", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+		if (d.Run() == (int) ResponseType.Accept) {
+		    OpenFile(d.Filename);
+		}
+		d.Destroy();
 	    }
-	    d.Destroy();
 	}
 
 	public void NewLevel() {
@@ -302,10 +341,55 @@ namespace Weland {
 	    Center(0, 0);
 	    AdjustScrollRange();
 	    Title = "Untitled Level";
+	    Filename = "";
 	}
 
 	void NewLevel(object obj, EventArgs args) {
-	    NewLevel();
+	    if (CheckSave()) {
+		NewLevel();
+	    }
+	}
+	
+	bool SaveAs() {
+	    bool saved = false;
+	    string message;
+	    if (wadfile.Directory.Count > 1) {
+		message = "Export level";
+	    } else {
+		message = "Save level as";
+	    }
+	    FileChooserDialog d = new FileChooserDialog(message, this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    if (d.Run() == (int) ResponseType.Accept) {
+		wadfile = new Wadfile();
+		wadfile.Directory[0] = Level.Save();
+		wadfile.Save(d.Filename);
+		Filename = d.Filename;
+
+		editor.Changed = false;
+		saved = true;
+	    }
+	    d.Destroy();
+
+	    return saved;
+	}
+
+	void SaveAs(object obj, EventArgs args) {
+	    SaveAs();
+	}
+
+	bool Save() {
+	    if (Filename == "") {
+		return SaveAs();
+	    } else {
+		wadfile.Directory[0] = Level.Save();
+		wadfile.Save(Filename);
+		editor.Changed = false;
+		return true;
+	    }
+	}
+
+	void Save(object obj, EventArgs args) {
+	    Save();
 	}
 
 	void ChooseTool(Tool tool) {
