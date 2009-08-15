@@ -32,14 +32,17 @@ namespace Weland {
 
 	    ToolButton newButton = new ToolButton(Stock.New);
 	    newButton.Clicked += new EventHandler(NewLevel);
+	    newButton.TooltipText = "New Level";
 	    toolbar.Insert(newButton, -1);
 
 	    ToolButton openButton = new ToolButton(Stock.Open);
 	    openButton.Clicked += new EventHandler(OpenFile);
+	    openButton.TooltipText = "Open";
 	    toolbar.Insert(openButton, -1);
 
 	    ToolButton saveButton = new ToolButton(Stock.Save);
 	    saveButton.Clicked += new EventHandler(Save);
+	    saveButton.TooltipText = "Save";
 	    toolbar.Insert(saveButton, -1);
 
 	    toolbar.Insert(new SeparatorToolItem(), -1);
@@ -58,6 +61,16 @@ namespace Weland {
 	    lineButton.IconWidget = new Gtk.Image("resources/line.png");
 	    lineButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Line); });
 	    toolbar.Insert(lineButton, -1);
+
+	    toolbar.Insert(new SeparatorToolItem(), -1);
+	    
+	    ToggleToolButton showGridButton = new ToggleToolButton();
+	    showGridButton.IconWidget = new Gtk.Image("resources/grid.png");
+	    showGridButton.Active = true;
+	    showGridButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowGrid = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showGridButton.TooltipText = "Show Grid";
+
+	    toolbar.Insert(showGridButton, -1);
 	}
 
 	void BuildMenubar() {
