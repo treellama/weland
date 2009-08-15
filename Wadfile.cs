@@ -265,58 +265,62 @@ namespace Weland {
 	public void Save(string filename) {
 	    BinaryWriterBE writer = new BinaryWriterBE(File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write));
 
-	    // set up the header
-	    if (Directory.Count == 1) {
-		version = (short) WadfileVersion.SupportsOverlays;
-	    } else {
-		version = (short) WadfileVersion.HasInfinityStuff;
-	    }
-	    
-	    DataVersion = (short) WadfileDataVersion.MarathonTwo;
-	    checksum = 0;
-	    directoryOffset = headerSize;
-	    foreach (var kvp in Directory) {
-		kvp.Value.Offset = directoryOffset;
-		kvp.Value.Index = (short) kvp.Key;
-		directoryOffset += kvp.Value.Size;
-	    }
-	    if (Directory.Count == 1) {
-		applicationSpecificDirectoryDataSize = 0;
-	    } else {
-		applicationSpecificDirectoryDataSize = DirectoryEntry.DataSize;
-	    }
-	    entryHeaderSize = DirectoryEntry.HeaderSize;
-	    directoryEntryBaseSize = DirectoryEntry.BaseSize;
-	    ParentChecksum = 0;
-	    
-	    // write the header
-	    writer.Write(version);
-	    writer.Write(DataVersion);
-	    writer.WriteMacString(filename, maxFilename);
-	    writer.Write(checksum);
-	    writer.Write(directoryOffset);
-	    writer.Write((short) Directory.Count);
-	    writer.Write(applicationSpecificDirectoryDataSize);
-	    writer.Write(entryHeaderSize);
-	    writer.Write(directoryEntryBaseSize);
-	    writer.Write(ParentChecksum);
-	    writer.Write(new byte[2 * 20]);
+	    try {
 
-	    // write wads
-	    foreach (var kvp in Directory) {
-		kvp.Value.SaveChunks(writer);
-	    }
-
-	    // write directory
-	    foreach (var kvp in Directory) {
-		kvp.Value.SaveEntry(writer);
-		if (applicationSpecificDirectoryDataSize > 0) {
-		    kvp.Value.SaveData(writer);
+		// set up the header
+		if (Directory.Count == 1) {
+		    version = (short) WadfileVersion.SupportsOverlays;
+		} else {
+		    version = (short) WadfileVersion.HasInfinityStuff;
 		}
-	    }
-
-	    // fix the checksum!
 	    
+		DataVersion = (short) WadfileDataVersion.MarathonTwo;
+		checksum = 0;
+		directoryOffset = headerSize;
+		foreach (var kvp in Directory) {
+		    kvp.Value.Offset = directoryOffset;
+		    kvp.Value.Index = (short) kvp.Key;
+		    directoryOffset += kvp.Value.Size;
+		}
+		if (Directory.Count == 1) {
+		    applicationSpecificDirectoryDataSize = 0;
+		} else {
+		    applicationSpecificDirectoryDataSize = DirectoryEntry.DataSize;
+		}
+		entryHeaderSize = DirectoryEntry.HeaderSize;
+		directoryEntryBaseSize = DirectoryEntry.BaseSize;
+		ParentChecksum = 0;
+	    
+		// write the header
+		writer.Write(version);
+		writer.Write(DataVersion);
+		writer.WriteMacString(filename, maxFilename);
+		writer.Write(checksum);
+		writer.Write(directoryOffset);
+		writer.Write((short) Directory.Count);
+		writer.Write(applicationSpecificDirectoryDataSize);
+		writer.Write(entryHeaderSize);
+		writer.Write(directoryEntryBaseSize);
+		writer.Write(ParentChecksum);
+		writer.Write(new byte[2 * 20]);
+
+		// write wads
+		foreach (var kvp in Directory) {
+		    kvp.Value.SaveChunks(writer);
+		}
+
+		// write directory
+		foreach (var kvp in Directory) {
+		    kvp.Value.SaveEntry(writer);
+		    if (applicationSpecificDirectoryDataSize > 0) {
+			kvp.Value.SaveData(writer);
+		    }
+		}
+
+		// fix the checksum!
+	    } finally {
+		writer.Close();
+	    }
 	}
 
 	static public void Main(string[] args) {

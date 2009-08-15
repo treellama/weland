@@ -13,11 +13,25 @@ namespace Weland {
 	public List<Line> Lines = new List<Line>();
 	public List<Polygon> Polygons = new List<Polygon>();
 	public List<MapObject> Objects = new List<MapObject>();
+	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 
 	public MapInfo MapInfo = new MapInfo();
 
+	List<uint> ChunkFilter = new List<uint> {
+	    Wadfile.Chunk("iidx"),
+	    Wadfile.Chunk("EPNT"),
+	    Wadfile.Chunk("PLAT"), // for simplicity
+	};
+
 	void LoadChunk(ISerializableBE chunk, byte[] data) {
 	    chunk.Load(new BinaryReaderBE(new MemoryStream(data)));
+	}
+	
+	byte[] SaveChunk(ISerializableBE chunk) {
+	    MemoryStream stream = new MemoryStream();
+	    BinaryWriterBE writer = new BinaryWriterBE(stream);
+	    chunk.Save(writer);
+	    return stream.ToArray();
 	}
 
 	void LoadChunkList<T>(List<T> list, byte[] data) where T : ISerializableBE, new() {
@@ -30,7 +44,19 @@ namespace Weland {
 	    }
 	}
 
+	byte[] SaveChunk<T>(List<T> list) where T : ISerializableBE, new() {
+		MemoryStream stream = new MemoryStream();
+		BinaryWriterBE writer = new BinaryWriterBE(stream);
+		foreach (T t in list) {
+		    t.Save(writer);
+		}
+		
+		return stream.ToArray();
+	    }
+	
 	public void Load(Wadfile.DirectoryEntry wad) {
+	    Chunks = wad.Chunks;
+
 	    if (wad.Chunks.ContainsKey(MapInfo.Tag)) {
 		LoadChunk(MapInfo, wad.Chunks[MapInfo.Tag]);
 	    } else {
@@ -67,6 +93,23 @@ namespace Weland {
 	    } else {
 		throw new Wadfile.BadMapException("Incomplete level: missing map objects chunk");
 	    }
+	}
+
+	public Wadfile.DirectoryEntry Save() {
+	    Wadfile.DirectoryEntry wad = new Wadfile.DirectoryEntry();
+	    wad.Chunks = Chunks;
+	    wad.Chunks[MapInfo.Tag] = SaveChunk(MapInfo);
+	    wad.Chunks[Point.Tag] = SaveChunk(Endpoints);
+	    wad.Chunks[Line.Tag] = SaveChunk(Lines);
+	    wad.Chunks[Polygon.Tag] = SaveChunk(Polygons);
+	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
+	    
+	    // remove merge-type chunks
+	    foreach (uint tag in ChunkFilter) {
+		wad.Chunks.Remove(tag);
+	    }
+
+	    return wad;
 	}
 	
 	static public void Main(string[] args) {
