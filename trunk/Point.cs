@@ -1,6 +1,6 @@
 namespace Weland {
     public struct Point : ISerializableBE {
-	public const uint Tag = 0x504e5453; // PNTS
+	public static readonly uint Tag = Wadfile.Chunk("PNTS");
 	public const int Size = 4;
 
 	public short X;
@@ -23,7 +23,7 @@ namespace Weland {
     }
 	 
     public class Endpoint : ISerializableBE {
-	public const uint Tag = 0x45504e54; // EPNT
+	public static readonly uint Tag = Wadfile.Chunk("EPNT");
 	public const int Size = 16;
 
 	public short Flags;

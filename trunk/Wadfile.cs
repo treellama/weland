@@ -19,6 +19,10 @@ namespace Weland {
     public class Wadfile {
 	const int headerSize = 128;
 
+	public static uint Chunk(string s) {
+	    return (uint) ((((byte) s[0]) << 24) | (((byte) s[1]) << 16) | (((byte) s[2]) << 8) | ((byte) s[3]));
+	}
+
 	public short Version {
 	    get {
 		return version;
