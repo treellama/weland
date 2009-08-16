@@ -87,6 +87,7 @@ namespace Weland {
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 	    drawer = new CairoDrawer(GdkWindow);
+	    //drawer = new GdkDrawer(GdkWindow);
 
 	    drawer.Clear(backgroundColor);
 	    
