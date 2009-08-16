@@ -28,6 +28,10 @@ namespace Weland {
 	public PointD ToScreenPointD(Point p) {
 	    return new PointD(ToScreenX(p.X) + 0.5, ToScreenY(p.Y) + 0.5);
 	}
+
+	public Drawer.Point ToScreenPoint(Point p) {
+	    return new Drawer.Point(ToScreenX(p.X) + 0.5, ToScreenY(p.Y) + 0.5);
+	}
     }
 
     public class MapDrawingArea : Gtk.DrawingArea {
@@ -37,94 +41,89 @@ namespace Weland {
 	public short GridResolution = 1024;
 	public bool ShowGrid = true;
 
+	Drawer drawer;
+
 	public MapDrawingArea() { 
-	    itemImages[ItemType.Magnum] = new ImageSurface("resources/pistol.png");
-	    itemImages[ItemType.MagnumMagazine] = new ImageSurface("resources/pistol-ammo.png");
-	    itemImages[ItemType.PlasmaPistol] = new ImageSurface("resources/fusion.png");
-	    itemImages[ItemType.PlasmaMagazine] = new ImageSurface("resources/fusion-ammo.png");
-	    itemImages[ItemType.AssaultRifle] = new ImageSurface("resources/ar.png");
-	    itemImages[ItemType.AssaultRifleMagazine] = new ImageSurface("resources/ar-ammo.png");
-	    itemImages[ItemType.AssaultGrenadeMagazine] = new ImageSurface("resources/ar-grenades.png");
-	    itemImages[ItemType.MissileLauncher] = new ImageSurface("resources/rl.png");
-	    itemImages[ItemType.MissileLauncherMagazine] = new ImageSurface("resources/rl-ammo.png");
-	    itemImages[ItemType.InvisibilityPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[ItemType.InvincibilityPowerup] = new ImageSurface("resources/invinc.png");
-	    itemImages[ItemType.InfravisionPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[ItemType.AlienShotgun] = new ImageSurface("resources/alien-gun.png");
-	    itemImages[ItemType.Flamethrower] = new ImageSurface("resources/tozt.png");
-	    itemImages[ItemType.FlamethrowerCanister] = new ImageSurface("resources/tozt-ammo.png");
-	    itemImages[ItemType.ExtravisionPowerup] = new ImageSurface("resources/powerup.png");
-	    itemImages[ItemType.OxygenPowerup] = new ImageSurface("resources/oxygen.png");
-	    itemImages[ItemType.EnergyPowerup] = new ImageSurface("resources/1x.png");
-	    itemImages[ItemType.DoubleEnergyPowerup] = new ImageSurface("resources/2x.png");
-	    itemImages[ItemType.TripleEnergyPowerup] = new ImageSurface("resources/3x.png");
-	    itemImages[ItemType.Shotgun] = new ImageSurface("resources/shotgun.png");
-	    itemImages[ItemType.ShotgunMagazine] = new ImageSurface("resources/shotgun-ammo.png");
-	    itemImages[ItemType.SphtDoorKey] = new ImageSurface("resources/uplink-chip.png");
-	    itemImages[ItemType.RedBall] = new ImageSurface("resources/skull.png");
-	    itemImages[ItemType.Smg] = new ImageSurface("resources/smg.png");
-	    itemImages[ItemType.SmgAmmo] = new ImageSurface("resources/smg-ammo.png");
+	    itemImages[ItemType.Magnum] = new Gdk.Pixbuf("resources/pistol.png");
+	    itemImages[ItemType.MagnumMagazine] = new Gdk.Pixbuf("resources/pistol-ammo.png");
+	    itemImages[ItemType.PlasmaPistol] = new Gdk.Pixbuf("resources/fusion.png");
+	    itemImages[ItemType.PlasmaMagazine] = new Gdk.Pixbuf("resources/fusion-ammo.png");
+	    itemImages[ItemType.AssaultRifle] = new Gdk.Pixbuf("resources/ar.png");
+	    itemImages[ItemType.AssaultRifleMagazine] = new Gdk.Pixbuf("resources/ar-ammo.png");
+	    itemImages[ItemType.AssaultGrenadeMagazine] = new Gdk.Pixbuf("resources/ar-grenades.png");
+	    itemImages[ItemType.MissileLauncher] = new Gdk.Pixbuf("resources/rl.png");
+	    itemImages[ItemType.MissileLauncherMagazine] = new Gdk.Pixbuf("resources/rl-ammo.png");
+	    itemImages[ItemType.InvisibilityPowerup] = new Gdk.Pixbuf("resources/powerup.png");
+	    itemImages[ItemType.InvincibilityPowerup] = new Gdk.Pixbuf("resources/invinc.png");
+	    itemImages[ItemType.InfravisionPowerup] = new Gdk.Pixbuf("resources/powerup.png");
+	    itemImages[ItemType.AlienShotgun] = new Gdk.Pixbuf("resources/alien-gun.png");
+	    itemImages[ItemType.Flamethrower] = new Gdk.Pixbuf("resources/tozt.png");
+	    itemImages[ItemType.FlamethrowerCanister] = new Gdk.Pixbuf("resources/tozt-ammo.png");
+	    itemImages[ItemType.ExtravisionPowerup] = new Gdk.Pixbuf("resources/powerup.png");
+	    itemImages[ItemType.OxygenPowerup] = new Gdk.Pixbuf("resources/oxygen.png");
+	    itemImages[ItemType.EnergyPowerup] = new Gdk.Pixbuf("resources/1x.png");
+	    itemImages[ItemType.DoubleEnergyPowerup] = new Gdk.Pixbuf("resources/2x.png");
+	    itemImages[ItemType.TripleEnergyPowerup] = new Gdk.Pixbuf("resources/3x.png");
+	    itemImages[ItemType.Shotgun] = new Gdk.Pixbuf("resources/shotgun.png");
+	    itemImages[ItemType.ShotgunMagazine] = new Gdk.Pixbuf("resources/shotgun-ammo.png");
+	    itemImages[ItemType.SphtDoorKey] = new Gdk.Pixbuf("resources/uplink-chip.png");
+	    itemImages[ItemType.RedBall] = new Gdk.Pixbuf("resources/skull.png");
+	    itemImages[ItemType.Smg] = new Gdk.Pixbuf("resources/smg.png");
+	    itemImages[ItemType.SmgAmmo] = new Gdk.Pixbuf("resources/smg-ammo.png");
 	}
 
-	Color backgroundColor = new Color(0.25, 0.25, 0.25);
-	Color pointColor = new Color(1, 0, 0);
-	Color solidLineColor = new Color(0, 0, 0);
-	Color transparentLineColor = new Color(0, 0.75, 0.75);
-	Color selectedLineColor = new Color(1, 1, 0);
-	Color polygonColor = new Color(0.75, 0.75, 0.75);
-	Color gridLineColor = new Color(0.5, 0.5, 0.5);
-	Color gridPointColor = new Color(0, 0.75, 0.75);
-	Color objectColor = new Color(1, 1, 0);
-	Color playerColor = new Color(1, 1, 0);
-	Color monsterColor = new Color(1, 0, 0);
+	Drawer.Color backgroundColor = new Drawer.Color(0.25, 0.25, 0.25);
+	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
+	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
+	Drawer.Color transparentLineColor = new Drawer.Color(0, 0.75, 0.75);
+	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
+	Drawer.Color polygonColor = new Drawer.Color(0.75, 0.75, 0.75);
+	Drawer.Color gridLineColor = new Drawer.Color(0.5, 0.5, 0.5);
+	Drawer.Color gridPointColor = new Drawer.Color(0, 0.75, 0.75);
+	Drawer.Color objectColor = new Drawer.Color(1, 1, 0);
+	Drawer.Color playerColor = new Drawer.Color(1, 1, 0);
+	Drawer.Color monsterColor = new Drawer.Color(1, 0, 0);
 
-	ImageSurface sceneryImage = new ImageSurface("resources/flower.png");
-	ImageSurface soundImage = new ImageSurface("resources/sound.png");
-	ImageSurface goalImage = new ImageSurface("resources/flag.png");
+	Gdk.Pixbuf sceneryImage = new Gdk.Pixbuf("resources/flower.png");
+	Gdk.Pixbuf soundImage = new Gdk.Pixbuf("resources/sound.png");
+	Gdk.Pixbuf goalImage = new Gdk.Pixbuf("resources/flag.png");
 
-	Dictionary<ItemType, ImageSurface> itemImages = new Dictionary<ItemType, ImageSurface>();
+	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-	    Context context = Gdk.CairoHelper.Create(GdkWindow);
-	    
-	    context.Color = backgroundColor;
-	    context.Paint();
+	    drawer = new CairoDrawer(GdkWindow);
+
+	    drawer.Clear(backgroundColor);
 	    
 	    if (ShowGrid) {
-		DrawGrid(context);
+		DrawGrid();
 	    }
 	    
 	    if (Level != null) {
 		
 		foreach (Polygon polygon in Level.Polygons) {
-		    DrawPolygon(context, polygon);
+		    DrawPolygon(polygon);
 		}
 		
 		foreach (Line line in Level.Lines) {
-		    DrawLine(context, line);
+		    DrawLine(line);
 		}
 
 		if (Level.TemporaryLineStartIndex != -1) {
 		    // draw the temporarily drawn line
-		    context.MoveTo(Transform.ToScreenPointD(Level.Endpoints[Level.TemporaryLineStartIndex]));
-		    context.LineTo(Transform.ToScreenPointD(Level.TemporaryLineEnd));
-		    context.Color = selectedLineColor;
-		    context.LineWidth = 1.0;
-		    context.Stroke();
+		    drawer.DrawLine(selectedLineColor, Transform.ToScreenPoint(Level.Endpoints[Level.TemporaryLineStartIndex]), Transform.ToScreenPoint(Level.TemporaryLineEnd));
 		}
 
 		foreach (Point point in Level.Endpoints) {
-		    DrawPoint(context, point);
+		    DrawPoint(point);
 		}
 		
 		foreach (MapObject obj in Level.Objects) {
-		    DrawObject(context, obj);
+		    DrawObject(obj);
 		}
 	    }
 	    
-	    ((IDisposable) context.Target).Dispose();
-	    ((IDisposable) context).Dispose();
-	    
+	    drawer.Dispose();
 	    return true;
 	}
 
@@ -133,16 +132,11 @@ namespace Weland {
 	    Transform.YOffset = (short) (Y - Allocation.Height / 2 / Transform.Scale);
 	}
 
-	void DrawPoint(Context context, Point point) {
-	    context.MoveTo(Transform.ToScreenPointD(point));
-	    context.ClosePath();
-	    context.LineCap = LineCap.Round;
-	    context.Color = pointColor;
-	    context.LineWidth = 2.5;
-	    context.Stroke();
+	void DrawPoint(Point point) {
+	    drawer.DrawPoint(pointColor, Transform.ToScreenPoint(point));
 	}
 
-	void DrawGrid(Context context) {
+	void DrawGrid() {
 	    Point p1 = new Point();
 	    Point p2 = new Point();
 
@@ -152,139 +146,97 @@ namespace Weland {
 		p2.X = short.MaxValue;
 		p2.Y = (short) i;
 
-		context.MoveTo(Transform.ToScreenPointD(p1));
-		context.LineTo(Transform.ToScreenPointD(p2));
+		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 
 		p1.Y = (short) -i;
 		p2.Y = (short) -i;
-			
-		context.MoveTo(Transform.ToScreenPointD(p1));
-		context.LineTo(Transform.ToScreenPointD(p2));
+
+		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 
 		p1.X = (short) i;
 		p1.Y = short.MinValue;
 		p2.X = (short) i;
 		p2.Y = short.MaxValue;
 
-		context.MoveTo(Transform.ToScreenPointD(p1));
-		context.LineTo(Transform.ToScreenPointD(p2));
+		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 
 		p1.X = (short) -i;
 		p2.X = (short) -i;
 			
-		context.MoveTo(Transform.ToScreenPointD(p1));
-		context.LineTo(Transform.ToScreenPointD(p2));
+		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	    }
-
-	    context.Color = gridLineColor;
-	    context.LineWidth = 1.0;
-	    context.Stroke();
 
 	    for (int i = 0; i < short.MaxValue; i += 1024) {
 		for (int j = 0; j < short.MaxValue; j += 1024) {
 		    p1.X = (short) i;
 		    p1.Y = (short) j;
-		    
-		    context.MoveTo(Transform.ToScreenPointD(p1));
-		    context.ClosePath();
+		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
 
 		    p1.X = (short) -i;
-
-		    context.MoveTo(Transform.ToScreenPointD(p1));
-		    context.ClosePath();
+		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
 
 		    p1.Y = (short) -j;
-		    
-		    context.MoveTo(Transform.ToScreenPointD(p1));
-		    context.ClosePath();
+		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
 
 		    p1.X = (short) i;
-		    
-		    context.MoveTo(Transform.ToScreenPointD(p1));
-		    context.ClosePath();
+		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
 		}
 	    }
-
-	    context.LineCap = LineCap.Round;
-	    context.Color = gridPointColor;
-	    context.LineWidth = 2.0;
-	    context.Stroke();
 	}		
 	    
 
-	void DrawLine(Context context, Line line) {
+	void DrawLine(Line line) {
 	    Point p1 = Level.Endpoints[line.EndpointIndexes[0]];
 	    Point p2 = Level.Endpoints[line.EndpointIndexes[1]];
-	    
-	    context.MoveTo(Transform.ToScreenPointD(p1));
-	    context.LineTo(Transform.ToScreenPointD(p2));
+
+	    Drawer.Color color;
 	    if (line.ClockwisePolygonOwner != -1 && line.CounterclockwisePolygonOwner != -1) {
-		context.Color = transparentLineColor;
+		color = transparentLineColor;
 	    } else {
-		context.Color = solidLineColor;
+		color = solidLineColor;
 	    }
 
-	    context.LineWidth = 1.0;
-	    context.Stroke();
+	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	}
 
-	void DrawPolygon(Context context, Polygon polygon) {
-	    Point p = Level.Endpoints[polygon.EndpointIndexes[0]];
-	    context.MoveTo(Transform.ToScreenPointD(p));
-	    for (int i = 1; i < polygon.VertexCount; ++i) {
-		context.LineTo(Transform.ToScreenPointD(Level.Endpoints[polygon.EndpointIndexes[i]]));
+	void DrawPolygon(Polygon polygon) {
+	    List<Drawer.Point> points = new List<Drawer.Point>();
+	    for (int i = 0; i < polygon.VertexCount; ++i) {
+		points.Add(Transform.ToScreenPoint(Level.Endpoints[polygon.EndpointIndexes[i]]));
 	    }
-
-	    context.Color = polygonColor;
-	    context.ClosePath();
-	    context.Fill();
+	    drawer.FillPolygon(polygonColor, points);
 	}
-
-	void DrawTriangle(Context context, double X, double Y, double angle) {
+	
+	void DrawTriangle(Drawer.Color c, double X, double Y, double angle) {
 	    double rads = angle * Math.PI / 180;
-	    PointD p1 = new PointD(X + 8 * Math.Cos(rads), Y + 8 * Math.Sin(rads));
-	    PointD p2 = new PointD(X + 10 * Math.Cos(rads + 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads + 2 * Math.PI * 0.4));
-	    PointD p3 = new PointD(X + 10 * Math.Cos(rads - 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads - 2 * Math.PI * 0.4));
-
-	    context.MoveTo(p1);
-	    context.LineTo(p2);
-	    context.LineTo(p3);
-	    context.ClosePath();
-	    context.FillPreserve();
-	    context.Color = new Color(0, 0, 0);
-	    context.LineWidth = 1.0;
-	    context.Stroke();
+	    List<Drawer.Point> points = new List<Drawer.Point>();
+	    points.Add(new Drawer.Point(X + 8 * Math.Cos(rads), Y + 8 * Math.Sin(rads)));
+	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads + 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads + 2 * Math.PI * 0.4)));
+	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads - 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads - 2 * Math.PI * 0.4)));
+	    
+	    drawer.FillStrokePolygon(c, new Drawer.Color(0, 0, 0), points);
 	}
 
-	void DrawImage(Context context, ImageSurface surface, double X, double Y) {
-	    context.SetSourceSurface(surface, (int) X - surface.Width / 2, (int) Y - surface.Height / 2);
-	    context.Paint();
+	void DrawImage(Gdk.Pixbuf image, double X, double Y) {
+	    GdkWindow.DrawPixbuf(new Gdk.GC(GdkWindow), image, 0, 0, (int) X - image.Width / 2, (int) Y - image.Height / 2, -1, -1, Gdk.RgbDither.Normal, 0, 0);
 	}
 
-	void DrawObject(Context context, MapObject obj) {
+	void DrawObject(MapObject obj) {
 	    if (obj.Type == ObjectType.Player) {
-		context.Color = playerColor;
-		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
 	    } else if (obj.Type == ObjectType.Monster) {
-		context.Color = monsterColor;
-		DrawTriangle(context, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		DrawTriangle(monsterColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
 	    } else if (obj.Type == ObjectType.Scenery) {
-		DrawImage(context, sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		DrawImage(sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 	    } else if (obj.Type == ObjectType.Sound) {
-		DrawImage(context, soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		DrawImage(soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 	    } else if (obj.Type == ObjectType.Goal) {
-		DrawImage(context, goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		DrawImage(goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 	    } else if (obj.Type == ObjectType.Item) {
 		if (itemImages.ContainsKey((ItemType) obj.Index) && itemImages[(ItemType) obj.Index] != null) {
-		    DrawImage(context, itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    DrawImage(itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
 		} else {
-		    PointD p = new PointD(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-		    context.MoveTo(p);
-		    context.ClosePath();
-		    context.LineCap = LineCap.Round;
-		    context.Color = objectColor;
-		    context.LineWidth = 2.5;
-		    context.Stroke();
+		    drawer.DrawPoint(objectColor, new Drawer.Point(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y)));
 		}
 	    }
 	}
