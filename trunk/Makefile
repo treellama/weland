@@ -1,7 +1,7 @@
 CC= mcs
 
-SOURCES=BinaryReaderBE.cs BinaryWriterBE.cs Editor.cs Geometry.cs	\
-Level.cs Line.cs MapDrawingArea.cs MapInfo.cs MapObject.cs		\
+SOURCES=BinaryReaderBE.cs BinaryWriterBE.cs CairoDrawer.cs Drawer.cs Editor.cs		\
+Geometry.cs Level.cs Line.cs MapDrawingArea.cs MapInfo.cs MapObject.cs	\
 MapWindow.cs Point.cs Polygon.cs Wadfile.cs Weland.cs
 
 all:
