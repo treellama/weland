@@ -86,9 +86,9 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-	    //drawer = new CairoDrawer(GdkWindow);
+	    drawer = new CairoDrawer(GdkWindow);
 	    //drawer = new GdkDrawer(GdkWindow);
-	    drawer = new SystemDrawer(GdkWindow);
+	    //drawer = new SystemDrawer(GdkWindow);
 
 	    drawer.Clear(backgroundColor);
 	    
