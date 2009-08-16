@@ -25,7 +25,7 @@ namespace Weland {
 	}
 
 	public Drawer.Point ToScreenPoint(Point p) {
-	    return new Drawer.Point(ToScreenX(p.X) + 0.5, ToScreenY(p.Y) + 0.5);
+	    return new Drawer.Point(ToScreenX(p.X), ToScreenY(p.Y));
 	}
     }
 
@@ -86,8 +86,9 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-	    drawer = new CairoDrawer(GdkWindow);
+	    //drawer = new CairoDrawer(GdkWindow);
 	    //drawer = new GdkDrawer(GdkWindow);
+	    drawer = new SystemDrawer(GdkWindow);
 
 	    drawer.Clear(backgroundColor);
 	    
