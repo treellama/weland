@@ -1,5 +1,4 @@
 using System;
-using Cairo;
 using System.Collections.Generic;
 
 namespace Weland {
@@ -23,10 +22,6 @@ namespace Weland {
 
 	public short ToMapY(double Y) {
 	    return (short) ((double) (Y / Scale) + YOffset);
-	}
-
-	public PointD ToScreenPointD(Point p) {
-	    return new PointD(ToScreenX(p.X) + 0.5, ToScreenY(p.Y) + 0.5);
 	}
 
 	public Drawer.Point ToScreenPoint(Point p) {
