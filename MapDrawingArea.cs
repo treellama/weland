@@ -86,6 +86,7 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
+	    DateTime start = DateTime.Now;
 	    drawer = new CairoDrawer(GdkWindow);
 	    //drawer = new GdkDrawer(GdkWindow);
 	    //drawer = new SystemDrawer(GdkWindow);
@@ -121,6 +122,7 @@ namespace Weland {
 	    }
 	    
 	    drawer.Dispose();
+	    Console.WriteLine("{0}", DateTime.Now - start);
 	    return true;
 	}
 
@@ -137,49 +139,40 @@ namespace Weland {
 	    Point p1 = new Point();
 	    Point p2 = new Point();
 
-	    for (int i = 0; i < short.MaxValue; i += GridResolution) {
-		p1.X = short.MinValue;
-		p1.Y = (short) i;
-		p2.X = short.MaxValue;
-		p2.Y = (short) i;
-
-		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
-
-		p1.Y = (short) -i;
-		p2.Y = (short) -i;
-
-		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
-
-		p1.X = (short) i;
-		p1.Y = short.MinValue;
-		p2.X = (short) i;
-		p2.Y = short.MaxValue;
-
-		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
-
-		p1.X = (short) -i;
-		p2.X = (short) -i;
-			
+	    short Left = Transform.ToMapX(0);
+	    short Right = Transform.ToMapX(Allocation.Width);
+	    short Top = Transform.ToMapY(0);
+	    short Bottom = Transform.ToMapY(Allocation.Height);
+	    
+	    // draw horizontal map lines
+	    for (int j = (Top / GridResolution) * GridResolution; j < Bottom; j += GridResolution) {
+		p1.X = Left;
+		p1.Y = (short) j;
+		p2.X = Right;
+		p2.Y = (short) j;
+		
 		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	    }
 
-	    for (int i = 0; i < short.MaxValue; i += 1024) {
-		for (int j = 0; j < short.MaxValue; j += 1024) {
+	    // draw vertical map lines
+	    for (int i = (Left  / GridResolution) * GridResolution; i < Right; i += GridResolution) {
+		p1.X = (short) i;
+		p1.Y = Top;
+		p2.X = (short) i;
+		p2.Y = Bottom;
+		
+		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
+	    }
+
+	    // draw grid intersects
+	    for (int i = (Left / 1024) * 1024; i < Right; i += 1024) {
+		for (int j = (Top / 1024) * 1024; j < Bottom; j += 1024) {
 		    p1.X = (short) i;
 		    p1.Y = (short) j;
 		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
-
-		    p1.X = (short) -i;
-		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
-
-		    p1.Y = (short) -j;
-		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
-
-		    p1.X = (short) i;
-		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
 		}
 	    }
-	}		
+	}
 	    
 
 	void DrawLine(Line line) {
