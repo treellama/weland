@@ -1,6 +1,5 @@
 using Gtk;
 using System;
-using Cairo;
 
 namespace Weland {
     public class Weland {
