@@ -48,24 +48,24 @@ namespace Weland {
 	    toolbar.Insert(new SeparatorToolItem(), -1);
 
 	    RadioToolButton zoomButton = new RadioToolButton(new GLib.SList(IntPtr.Zero));
-	    zoomButton.IconWidget = new Gtk.Image("resources/zoom.png");
+	    zoomButton.IconWidget = new Gtk.Image(null, "zoom.png");
 	    zoomButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Zoom); });
 	    toolbar.Insert(zoomButton, -1);
 
 	    RadioToolButton moveButton = new RadioToolButton(zoomButton);
-	    moveButton.IconWidget = new Gtk.Image("resources/move.png");
+	    moveButton.IconWidget = new Gtk.Image(null, "move.png");
 	    moveButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Move); });
 	    toolbar.Insert(moveButton, -1);
 
 	    RadioToolButton lineButton = new RadioToolButton(zoomButton);
-	    lineButton.IconWidget = new Gtk.Image("resources/line.png");
+	    lineButton.IconWidget = new Gtk.Image(null, "line.png");
 	    lineButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Line); });
 	    toolbar.Insert(lineButton, -1);
 
 	    toolbar.Insert(new SeparatorToolItem(), -1);
 	    
 	    ToggleToolButton showGridButton = new ToggleToolButton();
-	    showGridButton.IconWidget = new Gtk.Image("resources/grid.png");
+	    showGridButton.IconWidget = new Gtk.Image(null, "grid.png");
 	    showGridButton.Active = true;
 	    showGridButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowGrid = ((ToggleToolButton) obj).Active; Redraw(); });
 	    showGridButton.TooltipText = "Show Grid";
