@@ -2,6 +2,14 @@ using System;
 using System.Collections.Generic;
 
 namespace Weland {
+    [Flags] public enum CohenSutherland {
+	Inside = 0x0,
+	Top = 0x1,
+	Bottom = 0x2,
+	Left = 0x4,
+	Right = 0x8
+    }
+    
     public class Transform {
 	public Transform() { }
 	public double Scale = 1.0 / 32.0;
@@ -9,11 +17,11 @@ namespace Weland {
 	public short YOffset = 0;
 
 	public double ToScreenX(short x) { 
-	    return (x - XOffset) * Scale;
+	    return Math.Floor((x - XOffset) * Scale);
 	}
 
 	public double ToScreenY(short y) {
-	    return (y - YOffset) * Scale;
+	    return Math.Floor((y - YOffset) * Scale);
 	}
 
 	public short ToMapX(double X) {
@@ -98,26 +106,63 @@ namespace Weland {
 	    }
 	    
 	    if (Level != null) {
+
+		// clipping area to Map
+		int Left, Right, Top, Bottom;
+		Left = Transform.ToMapX(args.Area.X);
+		Right = Transform.ToMapX(args.Area.Width + args.Area.X);
+		Top = Transform.ToMapY(args.Area.Y);
+		Bottom = Transform.ToMapY(args.Area.Height + args.Area.Y);
+
+		CohenSutherland[] Points = new CohenSutherland[Level.Endpoints.Count];
+
+		for (short i = 0; i < Level.Endpoints.Count; ++i) {
+		    Point p = Level.Endpoints[i];
+		    Points[i] = CohenSutherland.Inside;
+		    if (p.X < Left) {
+			Points[i] |= CohenSutherland.Left;
+		    } else if (p.X > Right) {
+			Points[i] |= CohenSutherland.Right;
+		    }
+
+		    if (p.Y < Top) {
+			Points[i] |= CohenSutherland.Top;
+		    } else if (p.Y > Bottom) {
+			Points[i] |= CohenSutherland.Bottom;
+		    }
+		}
 		
 		foreach (Polygon polygon in Level.Polygons) {
-		    DrawPolygon(polygon);
+		    CohenSutherland code = ~CohenSutherland.Inside;
+		    for (short i = 0; i < polygon.VertexCount; ++i) {
+			code &= Points[polygon.EndpointIndexes[i]];
+		    }
+		    if (code == CohenSutherland.Inside) 
+			DrawPolygon(polygon);
 		}
 		
 		foreach (Line line in Level.Lines) {
-		    DrawLine(line);
+		    if ((Points[line.EndpointIndexes[0]] & Points[line.EndpointIndexes[1]]) == CohenSutherland.Inside) {
+			DrawLine(line);
+		    }
+		}
+
+		for (short i = 0; i < Level.Endpoints.Count; ++i) {
+		    if (Points[i] == CohenSutherland.Inside) {
+			DrawPoint(Level.Endpoints[i]);
+		    }
+		}
+		
+		foreach (MapObject obj in Level.Objects) {
+		    int ObjectSize = (int) (16 / 2 / Transform.Scale);
+		    if (obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
+			DrawObject(obj);
+		    }
 		}
 
 		if (Level.TemporaryLineStartIndex != -1) {
 		    // draw the temporarily drawn line
 		    drawer.DrawLine(selectedLineColor, Transform.ToScreenPoint(Level.Endpoints[Level.TemporaryLineStartIndex]), Transform.ToScreenPoint(Level.TemporaryLineEnd));
-		}
-
-		foreach (Point point in Level.Endpoints) {
-		    DrawPoint(point);
-		}
-		
-		foreach (MapObject obj in Level.Objects) {
-		    DrawObject(obj);
 		}
 	    }
 
