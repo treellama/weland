@@ -8,6 +8,9 @@ namespace Weland {
     }
 
     public class Editor {
+	public bool Dirty = false;
+	public short RedrawTop, RedrawBottom, RedrawLeft, RedrawRight;
+
 	public bool Changed = false;
 
 	Wadfile.DirectoryEntry undoState;
@@ -43,6 +46,8 @@ namespace Weland {
 
 	public void UpdateLine(short X, short Y) {
 	    Point p = new Point(X, Y);
+	    AddDirty(Level.Endpoints[Level.TemporaryLineStartIndex]);
+	    AddDirty(Level.TemporaryLineEnd);
 	    short index = Level.GetClosestPoint(p);
 	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
 		Level.TemporaryLineEnd.X = Level.Endpoints[index].X;
@@ -50,7 +55,8 @@ namespace Weland {
 	    } else {
 		Level.TemporaryLineEnd.X = X;
 		Level.TemporaryLineEnd.Y = Y;
-	    }	
+	    }
+	    AddDirty(Level.TemporaryLineEnd);
 
 	    Changed = true;
 	}
@@ -120,6 +126,32 @@ namespace Weland {
 	    Wadfile.DirectoryEntry redo = Level.Save().Clone();
 	    Level.Load(undoState);
 	    undoState = redo;
+	}
+
+	// add to the dirty rectangle
+	void AddDirty(Point p) {
+	    if (!Dirty) {
+		Dirty = true;
+		RedrawTop = RedrawBottom = p.Y;
+		RedrawLeft = RedrawRight = p.X;
+	    } else {
+		if (p.X < RedrawLeft) {
+		    RedrawLeft = p.X;
+		} 
+		if (p.X > RedrawRight) {
+		    RedrawRight = p.X;
+		}
+		if (p.Y > RedrawBottom) {
+		    RedrawBottom = p.Y;
+		} 
+		if (p.Y < RedrawTop) {
+		    RedrawTop = p.Y;
+		}
+	    }
+	}
+
+	public void ClearDirty() {
+	    Dirty = false;
 	}
     }
 }
