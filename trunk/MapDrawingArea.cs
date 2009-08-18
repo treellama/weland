@@ -91,7 +91,6 @@ namespace Weland {
 #else
 	    drawer = new SystemDrawer(GdkWindow);
 #endif
-
 	    drawer.Clear(backgroundColor);
 	    
 	    if (ShowGrid) {
@@ -121,7 +120,7 @@ namespace Weland {
 		    DrawObject(obj);
 		}
 	    }
-	    
+
 	    drawer.Dispose();
 	    return true;
 	}

@@ -228,6 +228,18 @@ namespace Weland {
 
 	void Redraw() {
 	    drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+	    editor.ClearDirty();
+	}
+
+	void RedrawDirty() {
+	    if (editor.Dirty) {
+		int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - 1;
+		int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - 1;
+		int X2 = (int) drawingArea.Transform.ToScreenX(editor.RedrawRight) + 1;
+		int Y2 = (int) drawingArea.Transform.ToScreenY(editor.RedrawBottom) + 1;
+		drawingArea.QueueDrawArea(X1, Y1, X2 -X1, Y2 - Y1);
+		editor.ClearDirty();
+	    }
 	}
 
 	void Scroll(object obj, ScrollEventArgs args) {
@@ -287,7 +299,7 @@ namespace Weland {
 		args.RetVal = true;
 	    } else {
 		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
-		drawingArea.QueueDrawArea(0, 0, drawingArea.Allocation.Width, drawingArea.Allocation.Height);
+		RedrawDirty();
 	    }
 	}
 
