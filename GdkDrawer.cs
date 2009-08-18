@@ -34,7 +34,7 @@ namespace Weland {
 	    Gdk.GC g = new Gdk.GC(window);
 	    
 	    g.RgbFgColor = GdkColor(c);
-	    window.DrawLine(g, (int) Math.Round(p1.X), (int) Math.Round(p1.Y), (int) Math.Round(p2.X), (int) Math.Round(p2.Y));
+	    window.DrawLine(g, (int) p1.X, (int) p1.Y, (int) p2.X, (int) p2.Y);
 	}
 
 	public override void FillPolygon(Color c, List<Point> points) { 
@@ -63,7 +63,13 @@ namespace Weland {
 	    window.DrawPolygon(g, false, pointArray);
 	}
 
-	public override void DrawGridIntersect(Color c, Point p) { }
+	public override void DrawGridIntersect(Color c, Point p) { 
+	    Gdk.GC g = new Gdk.GC(window);
+	    g.RgbFgColor = GdkColor(c);
+	    window.DrawLine(g, (int) p.X, (int) (p.Y - 1), (int) p.X, (int) (p.Y + 1));
+	    window.DrawLine(g, (int) (p.X - 1), (int) p.Y, (int) (p.X + 1), (int) p.Y);
+	}
+
 	public override void Dispose() {
 	    window = null;
 	}
