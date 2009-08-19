@@ -153,8 +153,8 @@ namespace Weland {
 		    }
 		}
 		
+		int ObjectSize = (int) (16 / 2 / Transform.Scale);
 		foreach (MapObject obj in Level.Objects) {
-		    int ObjectSize = (int) (16 / 2 / Transform.Scale);
 		    if (obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
 			DrawObject(obj);
 		    }
