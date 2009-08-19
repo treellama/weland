@@ -39,7 +39,7 @@ namespace Weland {
 	    context.ClosePath();
 
 	    context.MoveTo(new PointD(p.X + 0.5, p.Y - 0.5));
-	    context.MoveTo(new PointD(p.X + 0.5, p.Y + 1.5));
+	    context.LineTo(new PointD(p.X + 0.5, p.Y + 1.5));
 	    context.ClosePath();
 
 	    context.Color = new Cairo.Color(c.R, c.G, c.B);
