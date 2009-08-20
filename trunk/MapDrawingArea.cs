@@ -12,7 +12,7 @@ namespace Weland {
     
     public class Transform {
 	public Transform() { }
-	public double Scale = 1.0 / 32.0;
+	public double Scale = 1.0 / 16.0;
 	public short XOffset = 0;
 	public short YOffset = 0;
 
@@ -75,14 +75,14 @@ namespace Weland {
 	    itemImages[ItemType.SmgAmmo] = new Gdk.Pixbuf(null, "smg-ammo.png");
 	}
 
-	Drawer.Color backgroundColor = new Drawer.Color(0.25, 0.25, 0.25);
+	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
 	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
 	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
-	Drawer.Color transparentLineColor = new Drawer.Color(0, 0.75, 0.75);
+	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
 	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
-	Drawer.Color polygonColor = new Drawer.Color(0.75, 0.75, 0.75);
-	Drawer.Color gridLineColor = new Drawer.Color(0.5, 0.5, 0.5);
-	Drawer.Color gridPointColor = new Drawer.Color(0, 0.75, 0.75);
+	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
+	Drawer.Color gridLineColor = new Drawer.Color(0.6, 0.6, 0.6);
+	Drawer.Color gridPointColor = new Drawer.Color(0, 0.8, 0.8);
 	Drawer.Color objectColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color playerColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color monsterColor = new Drawer.Color(1, 0, 0);

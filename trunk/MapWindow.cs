@@ -76,35 +76,35 @@ namespace Weland {
 	    RadioToolButton grid2048Button = new RadioToolButton((new GLib.SList(IntPtr.Zero)));
 	    grid2048Button.Label = "2";
 	    grid2048Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 2048; Redraw(); });
-	    grid2048Button.TooltipText = "2 WU";
+	    grid2048Button.TooltipText = "2 World";
 
 	    toolbar.Insert(grid2048Button, -1);
 
 	    RadioToolButton grid1024Button = new RadioToolButton(grid2048Button);
 	    grid1024Button.Label = "1";
 	    grid1024Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 1024; Redraw(); });
-	    grid1024Button.TooltipText = "1 WU";
+	    grid1024Button.TooltipText = "World";
 	    
 	    toolbar.Insert(grid1024Button, -1);
 
 	    RadioToolButton grid512Button = new RadioToolButton(grid2048Button);
 	    grid512Button.Label = "1/2";
 	    grid512Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 512; Redraw(); });
-	    grid512Button.TooltipText = "1/2 WU";
+	    grid512Button.TooltipText = "1/2 World";
 	    
 	    toolbar.Insert(grid512Button, -1);
 
 	    RadioToolButton grid256Button = new RadioToolButton(grid2048Button);
 	    grid256Button.Label = "1/4";
 	    grid256Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 256; Redraw(); });
-	    grid256Button.TooltipText = "1/4 WU";
+	    grid256Button.TooltipText = "1/4 World";
 	    
 	    toolbar.Insert(grid256Button, -1);
 
 	    RadioToolButton grid128Button = new RadioToolButton(grid2048Button);
 	    grid128Button.Label = "1/8";
 	    grid128Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 128; Redraw(); });
-	    grid128Button.TooltipText = "1/8 WU";
+	    grid128Button.TooltipText = "1/8 World";
 	    
 	    toolbar.Insert(grid128Button, -1);
 
