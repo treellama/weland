@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Weland {
     public class GdkDrawer : Drawer {
 	Gdk.Window window;
-	public GdkDrawer(Gdk.Window w) : base(w) { 
+	public GdkDrawer(Gdk.Window w) { 
 	    window = w;
 	}
 

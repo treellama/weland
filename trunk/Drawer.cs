@@ -25,7 +25,6 @@ namespace Weland {
 	    }
 	}
 
-	public Drawer(Gdk.Window window) { }
 	public abstract void Clear(Color c);
 	public abstract void DrawPoint(Color c, Point p);
 	public abstract void DrawLine(Color c, Point p1, Point p2);

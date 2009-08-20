@@ -5,8 +5,11 @@ using System.Collections.Generic;
 namespace Weland {
     public class CairoDrawer : Drawer {
 	Context context;
-	public CairoDrawer(Gdk.Window window) : base(window) {
+	public CairoDrawer(Gdk.Window window, bool antialias) {
 	    context = Gdk.CairoHelper.Create(window);
+	    if (!antialias) {
+		context.Antialias = Antialias.None;
+	    }
 	}
 
 	public override void Clear(Color c) {
