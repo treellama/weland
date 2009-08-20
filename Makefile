@@ -13,5 +13,4 @@ Weland.app: Weland.exe
 
 clean: .FORCE
 	rm -f Weland.exe
-	rm -f WelandMac.exe
 	rm -rf Weland.app
