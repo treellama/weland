@@ -209,8 +209,9 @@ namespace Weland {
 	    }
 
 	    // draw grid intersects
-	    for (int i = (Left / 1024) * 1024; i < Right; i += 1024) {
-		for (int j = (Top / 1024) * 1024; j < Bottom; j += 1024) {
+	    int wu = Math.Max(1024, (int) GridResolution);
+	    for (int i = (Left / wu) * wu; i < Right; i += wu) {
+		for (int j = (Top / wu) * wu; j < Bottom; j += wu) {
 		    p1.X = (short) i;
 		    p1.Y = (short) j;
 		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
