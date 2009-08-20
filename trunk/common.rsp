@@ -4,6 +4,7 @@
 
 BinaryReaderBE.cs
 BinaryWriterBE.cs
+CrcStream.cs
 Drawer.cs
 Editor.cs
 GdkDrawer.cs
