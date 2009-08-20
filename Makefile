@@ -5,12 +5,11 @@ all: .FORCE
 
 .FORCE:
 
-WelandMac.exe: .FORCE
-	gmcs @mac.rsp
-
-Weland.app: WelandMac.exe
+windows: .FORCE
+	gmcs @windows.rsp
+Weland.app: Weland.exe
 	rm -rf Weland.app
-	macpack -n Weland -m cocoa -i icons/Weland.icns WelandMac.exe
+	macpack -n Weland -m cocoa -i icons/Weland.icns Weland.exe
 
 clean: .FORCE
 	rm -f Weland.exe
