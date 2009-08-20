@@ -4,9 +4,11 @@ using System.Collections.Generic;
 namespace Weland {
     public class SystemDrawer : Drawer {
 	Graphics graphics;
-	public SystemDrawer(Gdk.Window window) : base(window) {
+	public SystemDrawer(Gdk.Window window, bool antialias) {
 	    graphics = Gtk.DotNet.Graphics.FromDrawable(window);
-	    //	    graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+	    if (antialias) {
+		graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+	    }
 	}
 
 	System.Drawing.Color SystemColor(Color c) {

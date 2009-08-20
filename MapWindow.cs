@@ -207,6 +207,7 @@ namespace Weland {
 	public MapWindow(string title) : base(title) {
 	    AllowShrink = true;
 	    ScrollEvent += new ScrollEventHandler(Scroll);
+	    KeyPressEvent += new KeyPressEventHandler(KeyPress);
 			
 	    Table table = new Table(2, 2, false);
 
@@ -382,6 +383,15 @@ namespace Weland {
 		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 		RedrawDirty();
 	    }
+	}
+
+	void KeyPress(object obj, KeyPressEventArgs args) {
+	    if (args.Event.Key == Gdk.Key.F3) {
+		drawingArea.Antialias = !drawingArea.Antialias;
+		Redraw();
+		args.RetVal = true;
+	    }
+
 	}
 
 	public bool CheckSave() {

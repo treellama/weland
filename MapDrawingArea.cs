@@ -49,6 +49,7 @@ namespace Weland {
 	public bool ShowPlayers = true;
 	public bool ShowGoals = true;
 	public bool ShowSounds = true;
+	public bool Antialias = true;
 
 	Drawer drawer;
 
@@ -101,9 +102,9 @@ namespace Weland {
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 #if SYSTEM_DRAWING
-	    drawer = new SystemDrawer(GdkWindow);
+	    drawer = new SystemDrawer(GdkWindow, Antialias);
 #else
-	    drawer = new CairoDrawer(GdkWindow);
+	    drawer = new CairoDrawer(GdkWindow, Antialias);
 #endif
 	    drawer.Clear(backgroundColor);
 	    
