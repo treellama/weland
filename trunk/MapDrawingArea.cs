@@ -25,11 +25,11 @@ namespace Weland {
 	}
 
 	public short ToMapX(double X) {
-	    return (short) ((double) (X / Scale) + XOffset);
+	    return (short) Math.Min(short.MaxValue, Math.Max(short.MinValue, ((double) (X / Scale) + XOffset)));
 	}
 
 	public short ToMapY(double Y) {
-	    return (short) ((double) (Y / Scale) + YOffset);
+	    return (short) Math.Min(short.MaxValue, Math.Max(short.MinValue, ((double) (Y / Scale) + YOffset)));
 	}
 
 	public Drawer.Point ToScreenPoint(Point p) {
