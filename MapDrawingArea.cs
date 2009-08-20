@@ -43,6 +43,12 @@ namespace Weland {
 	public Level Level;
 	public short GridResolution = 1024;
 	public bool ShowGrid = true;
+	public bool ShowMonsters = true;
+	public bool ShowObjects = true;
+	public bool ShowScenery = true;
+	public bool ShowPlayers = true;
+	public bool ShowGoals = true;
+	public bool ShowSounds = true;
 
 	Drawer drawer;
 
@@ -258,20 +264,32 @@ namespace Weland {
 
 	void DrawObject(MapObject obj) {
 	    if (obj.Type == ObjectType.Player) {
-		DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		if (ShowPlayers) {
+		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		}
 	    } else if (obj.Type == ObjectType.Monster) {
-		DrawTriangle(monsterColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		if (ShowMonsters) {
+		    DrawTriangle(monsterColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		}
 	    } else if (obj.Type == ObjectType.Scenery) {
-		DrawImage(sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		if (ShowScenery) {
+		    DrawImage(sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		}
 	    } else if (obj.Type == ObjectType.Sound) {
-		DrawImage(soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		if (ShowSounds) {
+		    DrawImage(soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		}
 	    } else if (obj.Type == ObjectType.Goal) {
-		DrawImage(goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		if (ShowGoals) {
+		    DrawImage(goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		}
 	    } else if (obj.Type == ObjectType.Item) {
-		if (itemImages.ContainsKey((ItemType) obj.Index) && itemImages[(ItemType) obj.Index] != null) {
-		    DrawImage(itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
-		} else {
-		    drawer.DrawPoint(objectColor, new Drawer.Point(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y)));
+		if (ShowObjects) {
+		    if (itemImages.ContainsKey((ItemType) obj.Index) && itemImages[(ItemType) obj.Index] != null) {
+			DrawImage(itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    } else {
+			drawer.DrawPoint(objectColor, new Drawer.Point(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y)));
+		    }
 		}
 	    }
 	}

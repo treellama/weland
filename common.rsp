@@ -34,10 +34,12 @@ Weland.cs
 /resource:images/grid.png
 /resource:images/invinc.png
 /resource:images/line.png
+/resource:images/monster.png
 /resource:images/move.png
 /resource:images/oxygen.png
 /resource:images/pistol-ammo.png
 /resource:images/pistol.png
+/resource:images/player.png
 /resource:images/powerup.png
 /resource:images/rl-ammo.png
 /resource:images/rl.png
