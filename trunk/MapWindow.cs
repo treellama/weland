@@ -71,6 +71,49 @@ namespace Weland {
 	    showGridButton.TooltipText = "Show Grid";
 
 	    toolbar.Insert(showGridButton, -1);
+
+	    ToggleToolButton showMonstersButton = new ToggleToolButton();
+	    showMonstersButton.IconWidget = new Gtk.Image(null, "monster.png");
+	    showMonstersButton.Active = true;
+	    showMonstersButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowMonsters = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showMonstersButton.TooltipText = "Show Monsters";
+	    toolbar.Insert(showMonstersButton, -1);
+
+	    ToggleToolButton showObjectsButton = new ToggleToolButton();
+	    showObjectsButton.IconWidget = new Gtk.Image(null, "pistol-ammo.png");
+	    showObjectsButton.Active = true;
+	    showObjectsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowObjects = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showObjectsButton.TooltipText = "Show Objects";
+	    toolbar.Insert(showObjectsButton, -1);
+
+	    ToggleToolButton showSceneryButton = new ToggleToolButton();
+	    showSceneryButton.IconWidget = new Gtk.Image(null, "flower.png");
+	    showSceneryButton.Active = true;
+	    showSceneryButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowScenery = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showSceneryButton.TooltipText = "Show Scenery";
+	    toolbar.Insert(showSceneryButton, -1);
+
+	    ToggleToolButton showPlayersButton = new ToggleToolButton();
+	    showPlayersButton.IconWidget = new Gtk.Image(null, "player.png");
+	    showPlayersButton.Active = true;
+	    showPlayersButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowPlayers = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showPlayersButton.TooltipText = "Show Players";
+	    toolbar.Insert(showPlayersButton, -1);
+
+	    ToggleToolButton showGoalsButton = new ToggleToolButton();
+	    showGoalsButton.IconWidget = new Gtk.Image(null, "flag.png");
+	    showGoalsButton.Active = true;
+	    showGoalsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowGoals = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showGoalsButton.TooltipText = "Show Goals";
+	    toolbar.Insert(showGoalsButton, -1);
+
+	    ToggleToolButton showSoundsButton = new ToggleToolButton();
+	    showSoundsButton.IconWidget = new Gtk.Image(null, "sound.png");
+	    showSoundsButton.Active = true;
+	    showSoundsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowSounds = ((ToggleToolButton) obj).Active; Redraw(); });
+	    showSoundsButton.TooltipText = "Show Sounds";
+	    toolbar.Insert(showSoundsButton, -1);
+
 	    toolbar.Insert(new SeparatorToolItem(), -1);
 
 	    RadioToolButton grid2048Button = new RadioToolButton((new GLib.SList(IntPtr.Zero)));
