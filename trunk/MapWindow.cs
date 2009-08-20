@@ -71,6 +71,44 @@ namespace Weland {
 	    showGridButton.TooltipText = "Show Grid";
 
 	    toolbar.Insert(showGridButton, -1);
+	    toolbar.Insert(new SeparatorToolItem(), -1);
+
+	    RadioToolButton grid2048Button = new RadioToolButton((new GLib.SList(IntPtr.Zero)));
+	    grid2048Button.Label = "2";
+	    grid2048Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 2048; Redraw(); });
+	    grid2048Button.TooltipText = "2 WU";
+
+	    toolbar.Insert(grid2048Button, -1);
+
+	    RadioToolButton grid1024Button = new RadioToolButton(grid2048Button);
+	    grid1024Button.Label = "1";
+	    grid1024Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 1024; Redraw(); });
+	    grid1024Button.TooltipText = "1 WU";
+	    
+	    toolbar.Insert(grid1024Button, -1);
+
+	    RadioToolButton grid512Button = new RadioToolButton(grid2048Button);
+	    grid512Button.Label = "1/2";
+	    grid512Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 512; Redraw(); });
+	    grid512Button.TooltipText = "1/2 WU";
+	    
+	    toolbar.Insert(grid512Button, -1);
+
+	    RadioToolButton grid256Button = new RadioToolButton(grid2048Button);
+	    grid256Button.Label = "1/4";
+	    grid256Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 256; Redraw(); });
+	    grid256Button.TooltipText = "1/4 WU";
+	    
+	    toolbar.Insert(grid256Button, -1);
+
+	    RadioToolButton grid128Button = new RadioToolButton(grid2048Button);
+	    grid128Button.Label = "1/8";
+	    grid128Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 128; Redraw(); });
+	    grid128Button.TooltipText = "1/8 WU";
+	    
+	    toolbar.Insert(grid128Button, -1);
+
+	    grid1024Button.Active = true;
 	}
 
 	void BuildMenubar() {
