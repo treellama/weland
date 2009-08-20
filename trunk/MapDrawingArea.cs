@@ -94,10 +94,10 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-#if CAIRO_DRAWER
-	    drawer = new CairoDrawer(GdkWindow);
-#else
+#if SYSTEM_DRAWING
 	    drawer = new SystemDrawer(GdkWindow);
+#else
+	    drawer = new CairoDrawer(GdkWindow);
 #endif
 	    drawer.Clear(backgroundColor);
 	    

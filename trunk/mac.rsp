@@ -1,6 +1,0 @@
-/out:WelandMac.exe
-/r:Mono.Cairo
-/define:CAIRO_DRAWER
-
-@common.rsp
-CairoDrawer.cs
