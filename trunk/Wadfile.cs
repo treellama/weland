@@ -272,9 +272,9 @@ namespace Weland {
 	}
 
 	public void Save(string filename) {
-	    BinaryWriterBE writer = new BinaryWriterBE(File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write));
-
-	    try {
+	    using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write)) {
+		CrcStream crcStream = new CrcStream(fs);
+		BinaryWriterBE writer = new BinaryWriterBE(crcStream);
 
 		// set up the header
 		if (Directory.Count == 1) {
@@ -303,7 +303,7 @@ namespace Weland {
 		// write the header
 		writer.Write(version);
 		writer.Write(DataVersion);
-		writer.WriteMacString(filename, maxFilename);
+		writer.WriteMacString(filename.Split('.')[0], maxFilename);
 		writer.Write(checksum);
 		writer.Write(directoryOffset);
 		writer.Write((short) Directory.Count);
@@ -327,8 +327,9 @@ namespace Weland {
 		}
 
 		// fix the checksum!
-	    } finally {
-		writer.Close();
+		checksum = crcStream.GetCRC();
+		fs.Seek(68, SeekOrigin.Begin);
+		writer.Write(checksum);
 	    }
 	}
 
