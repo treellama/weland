@@ -94,6 +94,7 @@ namespace Weland {
 	Drawer.Color objectColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color playerColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color monsterColor = new Drawer.Color(1, 0, 0);
+	Drawer.Color civilianColor = new Drawer.Color(0, 0, 1);
 
 	Gdk.Pixbuf sceneryImage = new Gdk.Pixbuf(null, "flower.png");
 	Gdk.Pixbuf soundImage = new Gdk.Pixbuf(null, "sound.png");
@@ -273,7 +274,14 @@ namespace Weland {
 		}
 	    } else if (obj.Type == ObjectType.Monster) {
 		if (ShowMonsters) {
-		    DrawTriangle(monsterColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		    Drawer.Color color;
+		    if ((obj.Index >= 12 && obj.Index <= 15) || (obj.Index >= 43 && obj.Index <= 46)) {
+			color = civilianColor;
+		    } else {
+			color = monsterColor;
+		    }
+		    
+		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
 		}
 	    } else if (obj.Type == ObjectType.Scenery) {
 		if (ShowScenery) {
