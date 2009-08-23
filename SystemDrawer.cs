@@ -49,7 +49,7 @@ namespace Weland {
 	public override void DrawGridIntersect(Color c, Point p) { 
 	    Pen pen = new Pen(SystemColor(c));
 	    graphics.DrawLine(pen, (float) (p.X - 1), (float) p.Y, (float) (p.X + 1), (float) p.Y);
-	    graphics.DrawLine(pen, (float) (p.X), (float) (p.Y - 1), (float) p.X, (float) (p.Y - 1));
+	    graphics.DrawLine(pen, (float) (p.X), (float) (p.Y - 1), (float) p.X, (float) (p.Y + 1));
 	}
 
 	public override void Dispose() { 
