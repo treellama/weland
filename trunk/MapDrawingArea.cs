@@ -103,7 +103,7 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	bool IsMac() {
-	    return (System.Environment.OSVersion.Platform == PlatformID.MacOSX || 
+	    return ((int) System.Environment.OSVersion.Platform == 6 || 
 		    // ugh, Mono
 		    (System.Environment.OSVersion.Platform == PlatformID.Unix && System.Environment.OSVersion.Version.Major == 9));
 	}
