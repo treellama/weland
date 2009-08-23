@@ -84,7 +84,8 @@ namespace Weland {
 
 	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
 	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
-	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
+	Drawer.Color solidLineColor = new Drawer.Color(0.2, 0.98, 0.48);
+	Drawer.Color lineColor = new Drawer.Color(0, 0, 0);
 	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
 	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
@@ -234,8 +235,10 @@ namespace Weland {
 	    Drawer.Color color;
 	    if ((line.Flags & LineFlags.Transparent) == LineFlags.Transparent) {
 		color = transparentLineColor;
-	    } else {
+	    } else if (line.CounterclockwisePolygonOwner != -1 && line.ClockwisePolygonOwner != -1) {
 		color = solidLineColor;
+	    } else {
+		color = lineColor;;
 	    }
 
 	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
