@@ -219,12 +219,51 @@ namespace Weland {
 	}
 
 	internal void OnKeyPressed(object obj, KeyPressEventArgs args) {
-	    if (args.Event.Key == Gdk.Key.F3) {
+	    bool caught = true;
+	    switch (args.Event.Key) {
+	    case Gdk.Key.F3:
 		drawingArea.Antialias = !drawingArea.Antialias;
 		Redraw();
-		args.RetVal = true;
+		break;
+	    case Gdk.Key.z:
+	    case Gdk.Key.Z:
+		zoomButton.Active = true;
+		break;
+	    case Gdk.Key.l:
+	    case Gdk.Key.L:
+		lineButton.Active = true;
+		break;
+	    case Gdk.Key.f:
+	    case Gdk.Key.F:
+		fillButton.Active = true;
+		break;
+	    case Gdk.Key.h:
+	    case Gdk.Key.H:
+		moveButton.Active = true;
+		break;
+	    case Gdk.Key.Key_1:
+		twoWUButton.Active = true;
+		break;
+	    case Gdk.Key.Key_2:
+		oneWUButton.Active = true;
+		break;
+	    case Gdk.Key.Key_3:
+		halfWUButton.Active = true;
+		break;
+	    case Gdk.Key.Key_4:
+		quarterWUButton.Active = true;
+		break;
+	    case Gdk.Key.Key_5:
+		eighthWUButton.Active = true;
+		break;
+	    case Gdk.Key.numbersign:
+		showGridButton.Active = !showGridButton.Active;
+		break;
+	    default:
+		caught = false;
+		break;
 	    }
-
+	    args.RetVal = caught;
 	}
 
 	public bool CheckSave() {
