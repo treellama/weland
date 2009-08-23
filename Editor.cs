@@ -106,7 +106,10 @@ namespace Weland {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
 	    } else if (Tool == Tool.Fill) {
-		Wadfile.DirectoryEntry prevUndo = undoState.Clone();
+		Wadfile.DirectoryEntry prevUndo = null;
+		if (undoState != null) {
+		    prevUndo = undoState.Clone();
+		}
 		SetUndo();
 		if (!Level.FillPolygon(X, Y)) {
 		    undoState = prevUndo;
@@ -131,9 +134,11 @@ namespace Weland {
 	}
 
 	public void Undo() {
-	    Wadfile.DirectoryEntry redo = Level.Save().Clone();
-	    Level.Load(undoState);
-	    undoState = redo;
+	    if (undoState != null) {
+		Wadfile.DirectoryEntry redo = Level.Save().Clone();
+		Level.Load(undoState);
+		undoState = redo;
+	    }
 	}
 
 	// add to the dirty rectangle
