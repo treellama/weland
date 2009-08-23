@@ -232,7 +232,7 @@ namespace Weland {
 	    Point p2 = Level.Endpoints[line.EndpointIndexes[1]];
 
 	    Drawer.Color color;
-	    if (line.ClockwisePolygonOwner != -1 && line.CounterclockwisePolygonOwner != -1) {
+	    if ((line.Flags & LineFlags.Transparent) == LineFlags.Transparent) {
 		color = transparentLineColor;
 	    } else {
 		color = solidLineColor;

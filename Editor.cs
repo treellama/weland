@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace Weland {
     public enum Tool {
 	Zoom,
 	Move,
-	Line
+	Line,
+	Fill
     }
 
     public class Editor {
@@ -103,6 +105,12 @@ namespace Weland {
 	public void ButtonPress(short X, short Y) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
+	    } else if (Tool == Tool.Fill) {
+		Wadfile.DirectoryEntry prevUndo = undoState.Clone();
+		SetUndo();
+		if (!Level.FillPolygon(X, Y)) {
+		    undoState = prevUndo;
+		}
 	    }
 	}
 

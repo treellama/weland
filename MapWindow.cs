@@ -62,6 +62,11 @@ namespace Weland {
 	    lineButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Line); });
 	    toolbar.Insert(lineButton, -1);
 
+	    RadioToolButton fillButton = new RadioToolButton(zoomButton);
+	    fillButton.Label = "F";
+	    fillButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Fill); });
+	    toolbar.Insert(fillButton, -1);
+
 	    toolbar.Insert(new SeparatorToolItem(), -1);
 	    
 	    ToggleToolButton showGridButton = new ToggleToolButton();
@@ -530,6 +535,8 @@ namespace Weland {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
 	    } else if (tool == Tool.Line) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
+	    } else if (tool == Tool.Fill) {
+		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Spraycan);
 	    } else {
 		drawingArea.GdkWindow.Cursor = null;
 	    }
