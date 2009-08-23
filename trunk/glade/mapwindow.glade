@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 23 18:14:59 2009 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 23 18:37:11 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="window1">
     <property name="visible">True</property>
@@ -241,7 +241,7 @@
             <child>
               <widget class="GtkToggleToolButton" id="showGridButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Grid</property>
+                <property name="tooltip" translatable="yes">Show Grid (#)</property>
                 <property name="active">True</property>
                 <signal name="toggled" handler="OnToggleVisible"/>
               </widget>
@@ -401,6 +401,7 @@
                     <property name="visible">True</property>
                     <property name="has_tooltip">True</property>
                     <property name="tooltip_text">Zoom</property>
+                    <property name="tooltip" translatable="yes">Zoom (Z)</property>
                     <property name="stock_id">gtk-zoom-in</property>
                     <property name="active">True</property>
                     <signal name="toggled" handler="OnChooseTool"/>
@@ -412,7 +413,7 @@
                 <child>
                   <widget class="GtkRadioToolButton" id="moveButton">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Move</property>
+                    <property name="tooltip" translatable="yes">Move (H)</property>
                     <property name="group">zoomButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
                   </widget>
@@ -423,7 +424,7 @@
                 <child>
                   <widget class="GtkRadioToolButton" id="lineButton">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Draw Lines</property>
+                    <property name="tooltip" translatable="yes">Draw Lines (L)</property>
                     <property name="group">zoomButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
                   </widget>
@@ -434,7 +435,7 @@
                 <child>
                   <widget class="GtkRadioToolButton" id="fillButton">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Fill Polygons</property>
+                    <property name="tooltip" translatable="yes">Fill Polygons (F)</property>
                     <property name="group">zoomButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
                   </widget>
