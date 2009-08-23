@@ -1,12 +1,22 @@
+using System;
 using System.IO;
 
 namespace Weland {
+    [Flags] public enum LineFlags : ushort {
+	HasTransparentSide = 0x200,
+	VariableElevation = 0x400,
+	Elevation = 0x800,
+	Landscape = 0x1000,
+	Transparent = 0x2000,
+	Solid = 0x4000
+    }
+
     public class Line : ISerializableBE {
 	public static readonly uint Tag = Wadfile.Chunk("LINS");
 	public const int Size = 32;
 	    
 	public short[] EndpointIndexes = new short[2];
-	public ushort Flags;
+	public LineFlags Flags;
 
 	public short Length;
 	public short HighestAdjacentFloor;
@@ -20,7 +30,7 @@ namespace Weland {
 	public void Load(BinaryReaderBE reader) {
 	    EndpointIndexes[0] = reader.ReadInt16();
 	    EndpointIndexes[1] = reader.ReadInt16();
-	    Flags = reader.ReadUInt16();
+	    Flags = (LineFlags) reader.ReadUInt16();
 	    Length = reader.ReadInt16();
 	    HighestAdjacentFloor = reader.ReadInt16();
 	    LowestAdjacentFloor = reader.ReadInt16();
@@ -34,7 +44,7 @@ namespace Weland {
 	public void Save(BinaryWriterBE writer) {
 	    writer.Write(EndpointIndexes[0]);
 	    writer.Write(EndpointIndexes[1]);
-	    writer.Write(Flags);
+	    writer.Write((ushort) Flags);
 	    writer.Write(Length);
 	    writer.Write(HighestAdjacentFloor);
 	    writer.Write(LowestAdjacentFloor);
