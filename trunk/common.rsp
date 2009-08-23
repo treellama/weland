@@ -1,6 +1,7 @@
 /target:winexe
 /main:Weland.Weland
 /pkg:gtk-sharp-2.0
+/pkg:glade-sharp-2.0
 
 BinaryReaderBE.cs
 BinaryWriterBE.cs
@@ -27,6 +28,7 @@ Weland.cs
 /resource:images/ar-ammo.png
 /resource:images/ar-grenades.png
 /resource:images/ar.png
+/resource:images/fill.png
 /resource:images/flag.png
 /resource:images/flower.png,flower.png
 /resource:images/fusion-ammo.png
@@ -53,3 +55,4 @@ Weland.cs
 /resource:images/tozt.png
 /resource:images/uplink-chip.png
 /resource:images/zoom.png
+/resource:glade/mapwindow.glade
