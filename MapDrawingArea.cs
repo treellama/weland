@@ -102,11 +102,21 @@ namespace Weland {
 
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
+	bool IsMac() {
+	    return (System.Environment.OSVersion.Platform == PlatformID.MacOSX || 
+		    // ugh, Mono
+		    (System.Environment.OSVersion.Platform == PlatformID.Unix && System.Environment.OSVersion.Version.Major == 9));
+	}
+
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 #if SYSTEM_DRAWING
 	    drawer = new SystemDrawer(GdkWindow, Antialias);
 #else
-	    drawer = new CairoDrawer(GdkWindow, Antialias);
+	    if (!Antialias && !IsMac()) {
+		drawer = new GdkDrawer(GdkWindow);
+	    } else {
+		drawer = new CairoDrawer(GdkWindow, Antialias);
+	    }	
 #endif
 	    drawer.Clear(backgroundColor);
 	    
