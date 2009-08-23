@@ -159,7 +159,15 @@ namespace Weland {
 
 	bool BuildLoop(short target, short prev, short current, int depth, short starter, List<short> list) {
 	    if (current == target) {
-		return true;
+		int other_index = Lines[list[list.Count - 1]].EndpointIndexes[0];
+		if (other_index == current)
+		    other_index = Lines[list[list.Count - 1]].EndpointIndexes[1];
+		double cross = Cross(Diff(Endpoints[prev], Endpoints[current]), Diff(Endpoints[other_index], Endpoints[current]));
+		if (cross >= 0.0) {
+		    return true;
+		} else {
+                    return false;
+		}	
 	    } else if (depth > 8) {
 		return false;
 	    }
@@ -223,12 +231,9 @@ namespace Weland {
 		tightest = Lines[firstNeighbor].EndpointIndexes[0];
 	    }
 
-	    if (BuildLoop(target, current, tightest, depth + 1, starter, list)) {
-		list.Insert(0, firstNeighbor);
-		return true;
-	    } else {
-		return false;
-	    }
+	    list.Insert(0, firstNeighbor);
+	    return (BuildLoop(target, current, tightest, depth + 1, starter, list));
+
 	}
 	List<short> GetPointRingFromLineRing(List<short> lines) {
 	    List<short> points = new List<short>();
@@ -285,9 +290,9 @@ namespace Weland {
 		}
 
 		List<short> lines = new List<short>();
+		lines.Add(kvp.Value);
 		if (BuildLoop(p0, p0, p1, 0, kvp.Value, lines)) {
 		    // make sure the points enclose X, Y!
-		    lines.Add(kvp.Value);
 		    List<short> points = GetPointRingFromLineRing(lines);
 		    if (PointLoopEnclosesPoint(new Point(X, Y), points)) {
 			return lines;
