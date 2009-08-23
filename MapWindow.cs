@@ -1,11 +1,12 @@
 using Gtk;
 using Gdk;
+using Glade;
 using System;
 using System.Collections.Generic;
 
 namespace Weland {
     // resizable, scrollable map view
-    public class MapWindow : Gtk.Window {
+    public class MapWindow {
 	public Level Level {
 	    get { return drawingArea.Level; }
 	    set { 
@@ -17,250 +18,77 @@ namespace Weland {
 	Wadfile wadfile = new Wadfile();
 	Editor editor = new Editor();
 
-	MenuItem levelMenu;
-	MenuItem fileItem;
-	MenuBar menuBar;
+	[Widget] Gtk.Window window1;
+	[Widget] VScrollbar vscrollbar1;
+	[Widget] HScrollbar hscrollbar1;
+	[Widget] MenuItem levelItem;
+	[Widget] Table table1;
 
-	Toolbar toolbar;
+	[Widget] RadioToolButton zoomButton;
+	[Widget] RadioToolButton moveButton;
+	[Widget] RadioToolButton lineButton;
+	[Widget] RadioToolButton fillButton;
+
+	[Widget] ToggleToolButton showGridButton;
+	[Widget] ToggleToolButton showMonstersButton;
+	[Widget] ToggleToolButton showObjectsButton;
+	[Widget] ToggleToolButton showSceneryButton;
+	[Widget] ToggleToolButton showPlayersButton;
+	[Widget] ToggleToolButton showGoalsButton;
+	[Widget] ToggleToolButton showSoundsButton;
 
 	string Filename;
 
-	void BuildToolbar() {
-	    toolbar = new Toolbar();
-	    toolbar.Orientation = Orientation.Horizontal;
-	    toolbar.ToolbarStyle = ToolbarStyle.Icons;
+	void SetupDrawingArea() {
+	    drawingArea.ConfigureEvent += OnConfigure;
+	    drawingArea.MotionNotifyEvent += OnMotion;
+	    drawingArea.ButtonPressEvent += OnButtonPressed;
+	    drawingArea.ButtonReleaseEvent += OnButtonReleased;
+	    drawingArea.Events = 
+		EventMask.ExposureMask | 
+		EventMask.ButtonPressMask | 
+		EventMask.ButtonReleaseMask | 
+		EventMask.ButtonMotionMask;
 
-	    ToolButton newButton = new ToolButton(Stock.New);
-	    newButton.Clicked += new EventHandler(NewLevel);
-	    newButton.TooltipText = "New Level";
-	    toolbar.Insert(newButton, -1);
+	    table1.Attach(drawingArea, 0, 1, 0, 1, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
 
-	    ToolButton openButton = new ToolButton(Stock.Open);
-	    openButton.Clicked += new EventHandler(OpenFile);
-	    openButton.TooltipText = "Open";
-	    toolbar.Insert(openButton, -1);
-
-	    ToolButton saveButton = new ToolButton(Stock.Save);
-	    saveButton.Clicked += new EventHandler(Save);
-	    saveButton.TooltipText = "Save";
-	    toolbar.Insert(saveButton, -1);
-
-	    toolbar.Insert(new SeparatorToolItem(), -1);
-
-	    RadioToolButton zoomButton = new RadioToolButton(new GLib.SList(IntPtr.Zero));
-	    zoomButton.IconWidget = new Gtk.Image(null, "zoom.png");
-	    zoomButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Zoom); });
-	    toolbar.Insert(zoomButton, -1);
-
-	    RadioToolButton moveButton = new RadioToolButton(zoomButton);
-	    moveButton.IconWidget = new Gtk.Image(null, "move.png");
-	    moveButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Move); });
-	    toolbar.Insert(moveButton, -1);
-
-	    RadioToolButton lineButton = new RadioToolButton(zoomButton);
-	    lineButton.IconWidget = new Gtk.Image(null, "line.png");
-	    lineButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Line); });
-	    toolbar.Insert(lineButton, -1);
-
-	    RadioToolButton fillButton = new RadioToolButton(zoomButton);
-	    fillButton.Label = "F";
-	    fillButton.Clicked += new EventHandler(delegate(object obj, EventArgs args) { ChooseTool(Tool.Fill); });
-	    toolbar.Insert(fillButton, -1);
-
-	    toolbar.Insert(new SeparatorToolItem(), -1);
-	    
-	    ToggleToolButton showGridButton = new ToggleToolButton();
-	    showGridButton.IconWidget = new Gtk.Image(null, "grid.png");
-	    showGridButton.Active = true;
-	    showGridButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowGrid = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showGridButton.TooltipText = "Show Grid";
-
-	    toolbar.Insert(showGridButton, -1);
-
-	    ToggleToolButton showMonstersButton = new ToggleToolButton();
-	    showMonstersButton.IconWidget = new Gtk.Image(null, "monster.png");
-	    showMonstersButton.Active = true;
-	    showMonstersButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowMonsters = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showMonstersButton.TooltipText = "Show Monsters";
-	    toolbar.Insert(showMonstersButton, -1);
-
-	    ToggleToolButton showObjectsButton = new ToggleToolButton();
-	    showObjectsButton.IconWidget = new Gtk.Image(null, "pistol-ammo.png");
-	    showObjectsButton.Active = true;
-	    showObjectsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowObjects = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showObjectsButton.TooltipText = "Show Objects";
-	    toolbar.Insert(showObjectsButton, -1);
-
-	    ToggleToolButton showSceneryButton = new ToggleToolButton();
-	    showSceneryButton.IconWidget = new Gtk.Image(null, "flower.png");
-	    showSceneryButton.Active = true;
-	    showSceneryButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowScenery = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showSceneryButton.TooltipText = "Show Scenery";
-	    toolbar.Insert(showSceneryButton, -1);
-
-	    ToggleToolButton showPlayersButton = new ToggleToolButton();
-	    showPlayersButton.IconWidget = new Gtk.Image(null, "player.png");
-	    showPlayersButton.Active = true;
-	    showPlayersButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowPlayers = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showPlayersButton.TooltipText = "Show Players";
-	    toolbar.Insert(showPlayersButton, -1);
-
-	    ToggleToolButton showGoalsButton = new ToggleToolButton();
-	    showGoalsButton.IconWidget = new Gtk.Image(null, "flag.png");
-	    showGoalsButton.Active = true;
-	    showGoalsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowGoals = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showGoalsButton.TooltipText = "Show Goals";
-	    toolbar.Insert(showGoalsButton, -1);
-
-	    ToggleToolButton showSoundsButton = new ToggleToolButton();
-	    showSoundsButton.IconWidget = new Gtk.Image(null, "sound.png");
-	    showSoundsButton.Active = true;
-	    showSoundsButton.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.ShowSounds = ((ToggleToolButton) obj).Active; Redraw(); });
-	    showSoundsButton.TooltipText = "Show Sounds";
-	    toolbar.Insert(showSoundsButton, -1);
-
-	    toolbar.Insert(new SeparatorToolItem(), -1);
-
-	    RadioToolButton grid2048Button = new RadioToolButton((new GLib.SList(IntPtr.Zero)));
-	    grid2048Button.Label = "2";
-	    grid2048Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 2048; Redraw(); });
-	    grid2048Button.TooltipText = "2 World";
-
-	    toolbar.Insert(grid2048Button, -1);
-
-	    RadioToolButton grid1024Button = new RadioToolButton(grid2048Button);
-	    grid1024Button.Label = "1";
-	    grid1024Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 1024; Redraw(); });
-	    grid1024Button.TooltipText = "World";
-	    
-	    toolbar.Insert(grid1024Button, -1);
-
-	    RadioToolButton grid512Button = new RadioToolButton(grid2048Button);
-	    grid512Button.Label = "1/2";
-	    grid512Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 512; Redraw(); });
-	    grid512Button.TooltipText = "1/2 World";
-	    
-	    toolbar.Insert(grid512Button, -1);
-
-	    RadioToolButton grid256Button = new RadioToolButton(grid2048Button);
-	    grid256Button.Label = "1/4";
-	    grid256Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 256; Redraw(); });
-	    grid256Button.TooltipText = "1/4 World";
-	    
-	    toolbar.Insert(grid256Button, -1);
-
-	    RadioToolButton grid128Button = new RadioToolButton(grid2048Button);
-	    grid128Button.Label = "1/8";
-	    grid128Button.Toggled += new EventHandler(delegate(object obj, EventArgs args) { drawingArea.GridResolution = 128; Redraw(); });
-	    grid128Button.TooltipText = "1/8 World";
-	    
-	    toolbar.Insert(grid128Button, -1);
-
-	    grid1024Button.Active = true;
+	    drawingArea.Show();
 	}
 
-	void BuildMenubar() {
-	    AccelGroup agr = new AccelGroup();
-	    AddAccelGroup(agr);
-
-	    menuBar = new MenuBar();
-	    Menu fileMenu = new Menu();
-
-	    ImageMenuItem newItem = new ImageMenuItem(Stock.New, agr);
-	    newItem.Activated += new EventHandler(NewLevel);
-	    fileMenu.Append(newItem);
-
-	    ImageMenuItem openItem = new ImageMenuItem(Stock.Open, agr);
-	    openItem.Activated += new EventHandler(OpenFile);
-	    fileMenu.Append(openItem);
-
-	    ImageMenuItem saveItem = new ImageMenuItem(Stock.Save, agr);
-	    saveItem.Activated += new EventHandler(Save);
-	    fileMenu.Append(saveItem);
-
-	    ImageMenuItem saveAsItem = new ImageMenuItem(Stock.SaveAs, agr);
-	    saveAsItem.Activated += new EventHandler(SaveAs);
-	    fileMenu.Append(saveAsItem);
-
-	    fileMenu.Append(new SeparatorMenuItem());
-	    
-	    ImageMenuItem exitItem = new ImageMenuItem(Stock.Quit, agr);
-	    exitItem.Activated += new EventHandler(
-						   delegate(object obj, EventArgs a) {
-						       Application.Quit();
-						   });
-	    fileMenu.Append(exitItem);
-	    fileItem = new MenuItem("File");
-	    fileItem.Submenu = fileMenu;
-	    menuBar.Append(fileItem);
-
-	    Menu editMenu = new Menu();
-	    ImageMenuItem undoItem = new ImageMenuItem(Stock.Undo, agr);
-	    undoItem.AddAccelerator("activate", agr, new AccelKey(Gdk.Key.z, Gdk.ModifierType.ControlMask, AccelFlags.Visible));
-	    undoItem.Activated += new EventHandler(delegate(object obj, EventArgs a) { editor.Undo(); Redraw(); });
-	    editMenu.Append(undoItem);
-
-	    MenuItem editItem = new MenuItem("Edit");
-	    editItem.Submenu = editMenu;
-	    
-	    menuBar.Append(editItem);
-
-	    levelMenu = new MenuItem("Level");
-	    menuBar.Append(levelMenu);
+	void SetIconResource(ToolButton button, string resource) {
+	    button.IconWidget = new Gtk.Image(null, resource);
+	    button.IconWidget.Show();
 	}
 
-	public MapWindow(string title) : base(title) {
-	    AllowShrink = true;
-	    ScrollEvent += new ScrollEventHandler(Scroll);
-	    KeyPressEvent += new KeyPressEventHandler(KeyPress);
-			
-	    Table table = new Table(2, 2, false);
+	public MapWindow(string title) {
+	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
+	    gxml.Autoconnect(this);
+	    SetupDrawingArea();
+	    window1.AllowShrink = true;
+	    window1.Resize(640, 480);
 
-	    drawingArea.ConfigureEvent += new ConfigureEventHandler(ConfigureDrawingArea);
-	    drawingArea.ButtonPressEvent += new ButtonPressEventHandler(ButtonPress);
-	    drawingArea.ButtonReleaseEvent += new ButtonReleaseEventHandler(ButtonRelease);
-	    drawingArea.MotionNotifyEvent += new MotionNotifyEventHandler(Motion);
-	    drawingArea.Events = EventMask.ExposureMask | EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.ButtonMotionMask;
-	    drawingArea.SetSizeRequest(600, 400);
+	    SetIconResource(zoomButton, "zoom.png");
+	    SetIconResource(moveButton, "move.png");
+	    SetIconResource(lineButton, "line.png");
+	    SetIconResource(fillButton, "fill.png");
 
-	    hadjust = new Adjustment(0, 0, 0, 0, 0, 0);
-	    vadjust = new Adjustment(0, 0, 0, 0, 0, 0);
-			
-	    hscroll = new HScrollbar(hadjust);
-	    vscroll = new VScrollbar(vadjust);
-
-	    hscroll.ValueChanged += new EventHandler(HValueChangedEvent);
-	    vscroll.ValueChanged += new EventHandler(VValueChangedEvent);
-	    table.Attach(drawingArea, 0, 1, 0, 1, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
-	    table.Attach(hscroll, 0, 1, 1, 2, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0, 0);
-	    table.Attach(vscroll, 1, 2, 0, 1, 0, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
+	    SetIconResource(showGridButton, "grid.png");
+	    SetIconResource(showMonstersButton, "monster.png");
+	    SetIconResource(showObjectsButton, "pistol-ammo.png");
+	    SetIconResource(showSceneryButton, "flower.png");
+	    SetIconResource(showPlayersButton, "player.png");
+	    SetIconResource(showGoalsButton, "flag.png");
+	    SetIconResource(showSoundsButton, "sound.png");
 	    
-	    VBox box = new VBox();
-
-	    BuildMenubar();
-	    box.PackStart(menuBar, false, false, 0);
-
-	    BuildToolbar();
-	    box.PackStart(toolbar, false, false, 0);
-
-	    box.Add(table);
-		
-	    Add(box);
-
-	    editor.Tool = Tool.Zoom;
+	    window1.Focus = null;
 	}
 
 	MapDrawingArea drawingArea = new MapDrawingArea();
-	HScrollbar hscroll;
-	VScrollbar vscroll;
-
-	Adjustment hadjust;
-	Adjustment vadjust;
 
 	public void Center(short X, short Y) {
 	    drawingArea.Center(X, Y);
-	    vscroll.Value = drawingArea.Transform.YOffset;
-	    hscroll.Value = drawingArea.Transform.XOffset;
+	    vscrollbar1.Value = drawingArea.Transform.YOffset;
+	    hscrollbar1.Value = drawingArea.Transform.XOffset;
 	}
 	
 	void AdjustScrollRange() {
@@ -272,43 +100,43 @@ namespace Weland {
 	    if (VUpper < short.MinValue) 
 		VUpper = short.MinValue;
 			
-	    vadjust.Lower = short.MinValue;
-	    vadjust.Upper = VUpper;
+	    vscrollbar1.Adjustment.Lower = short.MinValue;
+	    vscrollbar1.Adjustment.Upper = VUpper;
 	    if (drawingArea.Transform.YOffset > VUpper) {
-		vscroll.Value = VUpper;
+		vscrollbar1.Value = VUpper;
 		drawingArea.Transform.YOffset = (short) VUpper;
 	    }
 
-	    vadjust.StepIncrement = 32.0 / scale;
-	    vadjust.PageIncrement = 256.0 / scale;
+	    vscrollbar1.Adjustment.StepIncrement = 32.0 / scale;
+	    vscrollbar1.Adjustment.PageIncrement = 256.0 / scale;
 
-	    hadjust.Lower = short.MinValue;
+	    hscrollbar1.Adjustment.Lower = short.MinValue;
 	    double HUpper = short.MaxValue - width / scale;
 	    if (HUpper < short.MinValue) 
 		HUpper = short.MinValue;
-	    hadjust.Upper = HUpper;
+	    hscrollbar1.Adjustment.Upper = HUpper;
 	    if (drawingArea.Transform.XOffset > HUpper) {
-		hscroll.Value = HUpper;
+		hscrollbar1.Value = HUpper;
 		drawingArea.Transform.XOffset = (short) HUpper;
 	    }
 
-	    hadjust.StepIncrement = 32.0 / scale;
-	    hadjust.PageIncrement = 256.0 / scale;
+	    hscrollbar1.Adjustment.StepIncrement = 32.0 / scale;
+	    hscrollbar1.Adjustment.PageIncrement = 256.0 / scale;
 
 	    Redraw();
 	}
 
-	void HValueChangedEvent(object obj, EventArgs e) {
-	    drawingArea.Transform.XOffset = (short) hscroll.Value;
+	internal void OnHValueChanged(object obj, EventArgs e) {
+	    drawingArea.Transform.XOffset = (short) hscrollbar1.Value;
 	    Redraw();
 	}
 
-	void VValueChangedEvent(object obj, EventArgs e) {
-	    drawingArea.Transform.YOffset = (short) vscroll.Value;
+	internal void OnVValueChanged(object obj, EventArgs e) {
+	    drawingArea.Transform.YOffset = (short) vscrollbar1.Value;
 	    Redraw();
 	}
 
-	void ConfigureDrawingArea(object obj, ConfigureEventArgs args) {
+	internal void OnConfigure(object obj, ConfigureEventArgs args) {
 	    AdjustScrollRange();
 	    args.RetVal = true;
 	}
@@ -329,15 +157,15 @@ namespace Weland {
 	    }
 	}
 
-	void Scroll(object obj, ScrollEventArgs args) {
+	internal void OnScroll(object obj, ScrollEventArgs args) {
 		if (args.Event.Direction == ScrollDirection.Down) {
-			vscroll.Value += 32.0 / drawingArea.Transform.Scale;
+			vscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
 		} else if (args.Event.Direction == ScrollDirection.Up) {
-			vscroll.Value -= 32.0 / drawingArea.Transform.Scale;
+			vscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
 		} else if (args.Event.Direction == ScrollDirection.Right) {
-			hscroll.Value += 32.0 / drawingArea.Transform.Scale;
+			hscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
 		} else if (args.Event.Direction == ScrollDirection.Left) {
-			hscroll.Value -= 32.0 / drawingArea.Transform.Scale;
+			hscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
 		}
 		args.RetVal = true;
 	}
@@ -347,7 +175,7 @@ namespace Weland {
 	short xOffsetDown;
 	short yOffsetDown;
 	
-	void ButtonPress(object obj, ButtonPressEventArgs args) {
+	internal void OnButtonPressed(object obj, ButtonPressEventArgs args) {
 	    EventButton ev = args.Event;
 	    short X = drawingArea.Transform.ToMapX(ev.X);
 	    short Y = drawingArea.Transform.ToMapY(ev.Y);
@@ -373,16 +201,16 @@ namespace Weland {
 	    args.RetVal = true;
 	}
 
-	void ButtonRelease(object obj, ButtonReleaseEventArgs args) {
+	internal void OnButtonReleased(object obj, ButtonReleaseEventArgs args) {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 	    args.RetVal = true;
 	}
 
-	void Motion(object obj, MotionNotifyEventArgs args) {
+	internal void OnMotion(object obj, MotionNotifyEventArgs args) {
 	    if (editor.Tool == Tool.Move) {
-		hscroll.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
-		vscroll.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
+		hscrollbar1.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
+		vscrollbar1.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
 		args.RetVal = true;
 	    } else {
 		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
@@ -390,7 +218,7 @@ namespace Weland {
 	    }
 	}
 
-	void KeyPress(object obj, KeyPressEventArgs args) {
+	internal void OnKeyPressed(object obj, KeyPressEventArgs args) {
 	    if (args.Event.Key == Gdk.Key.F3) {
 		drawingArea.Antialias = !drawingArea.Antialias;
 		Redraw();
@@ -401,7 +229,7 @@ namespace Weland {
 
 	public bool CheckSave() {
 	    if (editor.Changed) {
-		MessageDialog dialog = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "Do you wish to save changes?");
+		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "Do you wish to save changes?");
 		if (dialog.Run() == (int) ResponseType.Yes) {
 		    dialog.Destroy();
 		    return Save();
@@ -422,7 +250,7 @@ namespace Weland {
 		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 		Center(0, 0);
 		AdjustScrollRange();
-		Title = wadfile.Directory[n].LevelName;
+		window1.Title = wadfile.Directory[n].LevelName;
 	    }
 	}
 
@@ -441,25 +269,25 @@ namespace Weland {
 		    if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
 			MenuItem item = new MenuItem(kvp.Value.LevelName);
 			int levelNumber = kvp.Key;
-			item.Activated += new EventHandler(delegate(object obj, EventArgs args) { SelectLevel(levelNumber); });
+			item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
 			menu.Append(item);
 		    }
 		}
 		menu.ShowAll();
-		levelMenu.Submenu = menu;
+		levelItem.Submenu = menu;
 		editor.Changed = false;
 		SelectLevel(0);
 	    }
 	    catch (Wadfile.BadMapException e) {
-		MessageDialog dialog = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
 		dialog.Run();
 		dialog.Destroy();
 	    }
 	}
 
-	void OpenFile(object obj, EventArgs args) {
+	internal void OnOpen(object obj, EventArgs args) {
 	    if (CheckSave()) {
-		FileChooserDialog d = new FileChooserDialog("Choose the file to open", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+		FileChooserDialog d = new FileChooserDialog("Choose the file to open", window1, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
 		if (d.Run() == (int) ResponseType.Accept) {
 		    OpenFile(d.Filename);
 		}
@@ -470,16 +298,16 @@ namespace Weland {
 	public void NewLevel() {
 	    wadfile = new Wadfile();
 	    Level = new Level();
-	    levelMenu.Submenu = null;
+	    levelItem.Submenu = null;
 	    drawingArea.Transform = new Transform();
 	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    Center(0, 0);
 	    AdjustScrollRange();
-	    Title = "Untitled Level";
+	    window1.Title = "Untitled Level";
 	    Filename = "";
 	}
 
-	void NewLevel(object obj, EventArgs args) {
+	internal void OnNew(object obj, EventArgs args) {
 	    if (CheckSave()) {
 		NewLevel();
 	    }
@@ -493,7 +321,7 @@ namespace Weland {
 	    } else {
 		message = "Save level as";
 	    }
-	    FileChooserDialog d = new FileChooserDialog(message, this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    FileChooserDialog d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    if (d.Run() == (int) ResponseType.Accept) {
 		wadfile = new Wadfile();
 		wadfile.Directory[0] = Level.Save();
@@ -508,7 +336,7 @@ namespace Weland {
 	    return saved;
 	}
 
-	void SaveAs(object obj, EventArgs args) {
+	internal void OnSaveAs(object obj, EventArgs args) {
 	    SaveAs();
 	}
 
@@ -523,8 +351,21 @@ namespace Weland {
 	    }
 	}
 
-	void Save(object obj, EventArgs args) {
+	internal void OnSave(object obj, EventArgs args) {
 	    Save();
+	}
+
+	internal void OnChooseTool(object obj, EventArgs args) {
+	    ToolButton button = (ToolButton) obj;
+	    if (button == zoomButton) {
+		ChooseTool(Tool.Zoom);
+	    } else if (button == moveButton) {
+		ChooseTool(Tool.Move);
+	    } else if (button == lineButton) {
+		ChooseTool(Tool.Line);
+	    } else if (button == fillButton) {
+		ChooseTool(Tool.Fill);
+	    }
 	}
 
 	void ChooseTool(Tool tool) {
@@ -540,6 +381,61 @@ namespace Weland {
 	    } else {
 		drawingArea.GdkWindow.Cursor = null;
 	    }
+	}
+
+	internal void OnUndo(object o, EventArgs e) {
+	    editor.Undo();
+	    Redraw();
+	}
+
+	internal void OnQuit(object o, EventArgs e) {
+	    Application.Quit();
+	}
+
+	internal void OnDelete(object o, DeleteEventArgs e) {
+	    Application.Quit();
+	}
+
+	[Widget] ToggleToolButton twoWUButton;
+	[Widget] ToggleToolButton oneWUButton;
+	[Widget] ToggleToolButton halfWUButton;
+	[Widget] ToggleToolButton quarterWUButton;
+	[Widget] ToggleToolButton eighthWUButton;
+	
+	internal void OnGridSize(object o, EventArgs e) {
+	    RadioToolButton button = (RadioToolButton) o;
+	    if (button == twoWUButton) {
+		drawingArea.GridResolution = 2048;
+	    } else if (button == oneWUButton) {
+		drawingArea.GridResolution = 1024;
+	    } else if (button == halfWUButton) {
+		drawingArea.GridResolution = 512;
+	    } else if (button == quarterWUButton) {
+		drawingArea.GridResolution = 256;
+	    } else if (button == eighthWUButton) {
+		drawingArea.GridResolution = 128;
+	    }
+	    Redraw();
+	}
+
+	internal void OnToggleVisible(object o, EventArgs e) {
+	    ToggleToolButton button = (ToggleToolButton) o;
+	    if (button == showGridButton) {
+		drawingArea.ShowGrid = button.Active;
+	    } else if (button == showMonstersButton) {
+		drawingArea.ShowMonsters = button.Active;
+	    } else if (button == showObjectsButton) {
+		drawingArea.ShowObjects = button.Active;
+	    } else if (button == showSceneryButton) {
+		drawingArea.ShowScenery = button.Active;
+	    } else if (button == showPlayersButton) {
+		drawingArea.ShowPlayers = button.Active;
+	    } else if (button == showGoalsButton) {
+		drawingArea.ShowGoals = button.Active;
+	    } else if (button == showSoundsButton) {
+		drawingArea.ShowSounds = button.Active;
+	    }
+	    Redraw();
 	}
     }
 }
