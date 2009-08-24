@@ -241,19 +241,19 @@ namespace Weland {
 	    case Gdk.Key.H:
 		moveButton.Active = true;
 		break;
-	    case Gdk.Key.Key_1:
+	    case Gdk.Key.Key_5:
 		twoWUButton.Active = true;
 		break;
-	    case Gdk.Key.Key_2:
+	    case Gdk.Key.Key_4:
 		oneWUButton.Active = true;
 		break;
 	    case Gdk.Key.Key_3:
 		halfWUButton.Active = true;
 		break;
-	    case Gdk.Key.Key_4:
+	    case Gdk.Key.Key_2:
 		quarterWUButton.Active = true;
 		break;
-	    case Gdk.Key.Key_5:
+	    case Gdk.Key.Key_1:
 		eighthWUButton.Active = true;
 		break;
 	    case Gdk.Key.numbersign:
