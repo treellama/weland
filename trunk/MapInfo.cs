@@ -48,7 +48,7 @@ namespace Weland{
 
 	public string Name = "Untitled Level";
 	public const int LevelNameLength = 66;
-	public EntryPointFlags EntryPointFlags;
+	public EntryPointFlags EntryPointFlags = EntryPointFlags.SinglePlayer;
 
 	public void Load(BinaryReaderBE reader) {
 	    Environment = reader.ReadInt16();
