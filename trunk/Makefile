@@ -7,7 +7,8 @@ all: .FORCE
 
 windows: .FORCE
 	gmcs @windows.rsp
-Weland.app: Weland.exe
+Weland.app: .FORCE
+	gmcs @weland.rsp
 	rm -rf Weland.app
 	macpack -n Weland -m cocoa -i icons/Weland.icns Weland.exe
 
