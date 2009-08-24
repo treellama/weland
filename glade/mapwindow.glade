@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 23 20:25:22 2009 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 23 21:04:05 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="window1">
     <property name="visible">True</property>
@@ -151,6 +151,26 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Level</property>
                 <property name="use_underline">True</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem5">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Special</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem6">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Level Parameters...</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnLevelParameters"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
               </widget>
             </child>
             <child>
@@ -461,19 +481,6 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkVScrollbar" id="vscrollbar1">
-                    <property name="visible">True</property>
-                    <property name="adjustment">0 0 100 1 10 10</property>
-                    <signal name="value_changed" handler="OnVValueChanged"/>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="x_options"></property>
-                    <property name="y_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="GtkHScrollbar" id="hscrollbar1">
                     <property name="visible">True</property>
                     <property name="adjustment">0 0 100 1 10 10</property>
@@ -484,6 +491,19 @@
                     <property name="bottom_attach">2</property>
                     <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                     <property name="y_options"></property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkVScrollbar" id="vscrollbar1">
+                    <property name="visible">True</property>
+                    <property name="adjustment">0 0 100 1 10 10</property>
+                    <signal name="value_changed" handler="OnVValueChanged"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="x_options"></property>
+                    <property name="y_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                   </packing>
                 </child>
               </widget>

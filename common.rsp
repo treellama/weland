@@ -11,6 +11,7 @@ Editor.cs
 GdkDrawer.cs
 Geometry.cs
 Level.cs
+LevelParametersDialog.cs
 Line.cs
 MapDrawingArea.cs
 MapInfo.cs
@@ -55,4 +56,5 @@ Weland.cs
 /resource:images/tozt.png
 /resource:images/uplink-chip.png
 /resource:images/zoom.png
+/resource:glade/levelparameters.glade
 /resource:glade/mapwindow.glade
