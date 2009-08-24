@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 23 18:37:11 2009 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 23 20:25:22 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="window1">
     <property name="visible">True</property>
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="delete_event" handler="OnDelete"/>
     <signal name="scroll_event" handler="OnScroll"/>
@@ -182,6 +181,7 @@
         <child>
           <widget class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
+            <property name="toolbar_style">GTK_TOOLBAR_ICONS</property>
             <child>
               <widget class="GtkToolButton" id="newButton">
                 <property name="visible">True</property>
@@ -294,9 +294,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkToggleToolButton" id="showGoalsButton">
+              <widget class="GtkToggleToolButton" id="showSoundsButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Goals</property>
+                <property name="tooltip" translatable="yes">Show Sounds</property>
                 <property name="active">True</property>
                 <signal name="toggled" handler="OnToggleVisible"/>
               </widget>
@@ -305,9 +305,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkToggleToolButton" id="showSoundsButton">
+              <widget class="GtkToggleToolButton" id="showGoalsButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Sounds</property>
+                <property name="tooltip" translatable="yes">Show Goals</property>
                 <property name="active">True</property>
                 <signal name="toggled" handler="OnToggleVisible"/>
               </widget>
@@ -324,10 +324,34 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkRadioToolButton" id="twoWUButton">
+              <widget class="GtkRadioToolButton" id="eighthWUButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">2 World</property>
-                <property name="label" translatable="yes">2</property>
+                <property name="tooltip" translatable="yes">1/8 World</property>
+                <property name="label" translatable="yes">1/8</property>
+                <signal name="toggled" handler="OnGridSize"/>
+              </widget>
+              <packing>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioToolButton" id="quarterWUButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">1/4 World</property>
+                <property name="label" translatable="yes">1/4</property>
+                <property name="group">eighthWUButton</property>
+                <signal name="toggled" handler="OnGridSize"/>
+              </widget>
+              <packing>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioToolButton" id="halfWUButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">1/2 World</property>
+                <property name="label" translatable="yes">1/2</property>
+                <property name="group">eighthWUButton</property>
                 <signal name="toggled" handler="OnGridSize"/>
               </widget>
               <packing>
@@ -340,7 +364,7 @@
                 <property name="tooltip" translatable="yes">World</property>
                 <property name="label" translatable="yes">1</property>
                 <property name="active">True</property>
-                <property name="group">twoWUButton</property>
+                <property name="group">eighthWUButton</property>
                 <signal name="toggled" handler="OnGridSize"/>
               </widget>
               <packing>
@@ -348,35 +372,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkRadioToolButton" id="halfWUButton">
+              <widget class="GtkRadioToolButton" id="twoWUButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">1/2 World</property>
-                <property name="label" translatable="yes">1/2</property>
-                <property name="group">twoWUButton</property>
-                <signal name="toggled" handler="OnGridSize"/>
-              </widget>
-              <packing>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioToolButton" id="quarterWUButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">1/4 World</property>
-                <property name="label" translatable="yes">1/4</property>
-                <property name="group">twoWUButton</property>
-                <signal name="toggled" handler="OnGridSize"/>
-              </widget>
-              <packing>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioToolButton" id="eighthWUButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">1/8 World</property>
-                <property name="label" translatable="yes">1/8</property>
-                <property name="group">twoWUButton</property>
+                <property name="tooltip" translatable="yes">2 World</property>
+                <property name="label" translatable="yes">2</property>
+                <property name="group">eighthWUButton</property>
                 <signal name="toggled" handler="OnGridSize"/>
               </widget>
               <packing>
@@ -396,6 +396,7 @@
               <widget class="GtkToolbar" id="toolbar2">
                 <property name="visible">True</property>
                 <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
+                <property name="toolbar_style">GTK_TOOLBAR_ICONS</property>
                 <child>
                   <widget class="GtkRadioToolButton" id="zoomButton">
                     <property name="visible">True</property>

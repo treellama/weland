@@ -79,6 +79,8 @@ namespace Weland {
 	    SetIconResource(showPlayersButton, "player.png");
 	    SetIconResource(showGoalsButton, "flag.png");
 	    SetIconResource(showSoundsButton, "sound.png");
+
+	    //	    oneWUButton.Active = true;
 	    
 	    window1.Focus = null;
 	}
