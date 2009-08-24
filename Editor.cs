@@ -102,18 +102,22 @@ namespace Weland {
 	    Changed = true;
 	}
 
+	void Fill(short X, short Y) {
+	    Wadfile.DirectoryEntry prevUndo = null;
+	    if (undoState != null) {
+		prevUndo = undoState.Clone();
+	    }
+	    SetUndo();
+	    if (!Level.FillPolygon(X, Y)) {
+		undoState = prevUndo;
+	    }
+	}
+
 	public void ButtonPress(short X, short Y) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
 	    } else if (Tool == Tool.Fill) {
-		Wadfile.DirectoryEntry prevUndo = null;
-		if (undoState != null) {
-		    prevUndo = undoState.Clone();
-		}
-		SetUndo();
-		if (!Level.FillPolygon(X, Y)) {
-		    undoState = prevUndo;
-		}
+		Fill(X, Y);
 	    }
 	}
 
