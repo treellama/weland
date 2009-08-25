@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Weland {
     public enum Tool {
+	Select,
 	Zoom,
 	Move,
 	Line,
-	Fill
+	Fill,
     }
 
     public class Editor {
@@ -19,10 +20,25 @@ namespace Weland {
 
 	public short Snap;
 	public Level Level;
-	public Tool Tool = Tool.Zoom;
+	public Tool Tool {
+	    get {
+		return tool;
+	    }
+	    set {
+		tool = value;
+		if (value != Tool.Select) {
+		    Level.SelectedPoint = -1;
+		}
+	    }
+	}
+	Tool tool;
+		
 
 	public Point LineStart;
 	public Point LineEnd;
+
+	short lastX;
+	short lastY;
 
 	public void StartLine(short X, short Y) {
 	    SetUndo();
@@ -113,18 +129,55 @@ namespace Weland {
 	    }
 	}
 
+	void Select(short X, short Y) {
+	    Point p = new Point(X, Y);
+	    short index = Level.GetClosestPoint(p);
+	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+		Level.SelectedPoint = index;
+	    } else {
+		Level.SelectedPoint = -1;
+	    }
+	}
+
+	void MoveSelected(short X, short Y) {
+	    if (Level.SelectedPoint != -1) {
+		Point p = Level.Endpoints[Level.SelectedPoint];
+		AddDirty(p);
+		p.X = (short) (p.X + X - lastX);
+		p.Y = (short) (p.Y + Y - lastY);
+		Level.Endpoints[Level.SelectedPoint] = p;
+		AddDirty(p);
+		
+		// dirty every endpoint line(!)
+		List<short> lines = Level.EndpointLines(Level.SelectedPoint);
+		foreach (short i in lines) {
+		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
+		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
+		}
+		    
+	    }
+	}
+
 	public void ButtonPress(short X, short Y) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
 	    } else if (Tool == Tool.Fill) {
 		Fill(X, Y);
+	    } else if (Tool == Tool.Select) {
+		Select(X, Y);
 	    }
+	    lastX = X;
+	    lastY = Y;
 	}
 
 	public void Motion(short X, short Y) {
 	    if (Tool == Tool.Line) {
 		UpdateLine(X, Y);
+	    } else if (Tool == Tool.Select) {
+		MoveSelected(X, Y);
 	    }
+	    lastX = X;
+	    lastY = Y;
 	}
 
 	public void ButtonRelease(short X, short Y) {

@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 namespace Weland {
     public partial class Level {
-	public short TemporaryLineStartIndex = -1;
-	public Point TemporaryLineEnd;
-
 	public int Distance(Point p0, Point p1) {
 	    return (int) Math.Round(Math.Sqrt(Math.Pow(p0.X - p1.X, 2) + Math.Pow(p0.Y - p1.Y, 2)));
 	}

@@ -183,6 +183,11 @@ namespace Weland {
 		    // draw the temporarily drawn line
 		    drawer.DrawLine(selectedLineColor, Transform.ToScreenPoint(Level.Endpoints[Level.TemporaryLineStartIndex]), Transform.ToScreenPoint(Level.TemporaryLineEnd));
 		}
+
+		if (Level.SelectedPoint != -1) {
+		    // draw the selected point
+		    DrawFatPoint(selectedLineColor, Level.Endpoints[Level.SelectedPoint]);
+		}
 	    }
 
 	    drawer.Dispose();
@@ -196,6 +201,18 @@ namespace Weland {
 
 	void DrawPoint(Point point) {
 	    drawer.DrawPoint(pointColor, Transform.ToScreenPoint(point));
+	}
+
+	void DrawFatPoint(Drawer.Color color, Point point) {
+	    const int r = 2;
+	    List<Drawer.Point> points = new List<Drawer.Point>();
+	    double X = Transform.ToScreenX(point.X);
+	    double Y = Transform.ToScreenY(point.Y);
+	    points.Add(new Drawer.Point(X - r, Y - r));
+	    points.Add(new Drawer.Point(X + r, Y - r));
+	    points.Add(new Drawer.Point(X + r, Y + r));
+	    points.Add(new Drawer.Point(X - r, Y + r));
+	    drawer.FillStrokePolygon(color, new Drawer.Color(0, 0, 0), points);
 	}
 
 	void DrawGrid() {

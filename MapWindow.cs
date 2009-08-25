@@ -24,6 +24,7 @@ namespace Weland {
 	[Widget] MenuItem levelItem;
 	[Widget] Table table1;
 
+	[Widget] RadioToolButton selectButton;
 	[Widget] RadioToolButton zoomButton;
 	[Widget] RadioToolButton moveButton;
 	[Widget] RadioToolButton lineButton;
@@ -66,7 +67,9 @@ namespace Weland {
 	    SetupDrawingArea();
 	    window1.AllowShrink = true;
 	    window1.Resize(640, 480);
+	    window1.Show();
 
+	    SetIconResource(selectButton, "arrow.png");
 	    SetIconResource(zoomButton, "zoom.png");
 	    SetIconResource(moveButton, "move.png");
 	    SetIconResource(lineButton, "line.png");
@@ -149,11 +152,12 @@ namespace Weland {
 	}
 
 	void RedrawDirty() {
+	    const int dirtySlop = 4;
 	    if (editor.Dirty) {
-		int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - 1;
-		int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - 1;
-		int X2 = (int) drawingArea.Transform.ToScreenX(editor.RedrawRight) + 1;
-		int Y2 = (int) drawingArea.Transform.ToScreenY(editor.RedrawBottom) + 1;
+		int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - dirtySlop;
+		int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - dirtySlop;
+		int X2 = (int) drawingArea.Transform.ToScreenX(editor.RedrawRight) + dirtySlop;
+		int Y2 = (int) drawingArea.Transform.ToScreenY(editor.RedrawBottom) + dirtySlop;
 		drawingArea.QueueDrawArea(X1, Y1, X2 -X1, Y2 - Y1);
 		editor.ClearDirty();
 	    }
@@ -226,6 +230,10 @@ namespace Weland {
 	    case Gdk.Key.F3:
 		drawingArea.Antialias = !drawingArea.Antialias;
 		Redraw();
+		break;
+	    case Gdk.Key.a:
+	    case Gdk.Key.A:
+		selectButton.Active = true;
 		break;
 	    case Gdk.Key.z:
 	    case Gdk.Key.Z:
@@ -398,7 +406,9 @@ namespace Weland {
 
 	internal void OnChooseTool(object obj, EventArgs args) {
 	    ToolButton button = (ToolButton) obj;
-	    if (button == zoomButton) {
+	    if (button == selectButton) {
+		ChooseTool(Tool.Select);
+	    } else if (button == zoomButton) {
 		ChooseTool(Tool.Zoom);
 	    } else if (button == moveButton) {
 		ChooseTool(Tool.Move);
@@ -422,6 +432,7 @@ namespace Weland {
 	    } else {
 		drawingArea.GdkWindow.Cursor = null;
 	    }
+	    Redraw();
 	}
 
 	internal void OnUndo(object o, EventArgs e) {
