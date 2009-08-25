@@ -17,6 +17,12 @@ namespace Weland {
 
 	public MapInfo MapInfo = new MapInfo();
 
+	// stuff for the editor, not saved to file
+	public short TemporaryLineStartIndex = -1;
+	public Point TemporaryLineEnd;
+
+	public short SelectedPoint = -1;
+
 	List<uint> ChunkFilter = new List<uint> {
 	    Wadfile.Chunk("iidx"),
 	    Wadfile.Chunk("EPNT"),
