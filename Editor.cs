@@ -37,6 +37,7 @@ namespace Weland {
 	public Point LineStart;
 	public Point LineEnd;
 
+	bool undoSet = false;
 	short lastX;
 	short lastY;
 
@@ -137,10 +138,15 @@ namespace Weland {
 	    } else {
 		Level.SelectedPoint = -1;
 	    }
+	    undoSet = false;
 	}
 
 	void MoveSelected(short X, short Y) {
 	    if (Level.SelectedPoint != -1) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
 		Point p = Level.Endpoints[Level.SelectedPoint];
 		AddDirty(p);
 		p.X = (short) (p.X + X - lastX);
