@@ -154,7 +154,19 @@ namespace Weland {
 		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
 		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
 		}
-		    
+
+		// update attached polygon concavity
+		List<short> polygons = Level.EndpointPolygons(Level.SelectedPoint);
+		
+		// dirty every attached polygon(!!?)
+		foreach (short i in polygons) {
+		    Polygon polygon = Level.Polygons[i];
+		    Level.UpdatePolygonConcavity(polygon);
+		    for (int j = 0; j < polygon.VertexCount; ++j) {
+			AddDirty(Level.Endpoints[Level.Lines[polygon.LineIndexes[j]].EndpointIndexes[0]]);
+			AddDirty(Level.Endpoints[Level.Lines[polygon.LineIndexes[j]].EndpointIndexes[1]]);
+		    }
+		}
 	    }
 	}
 

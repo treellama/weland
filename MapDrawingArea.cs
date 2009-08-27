@@ -89,6 +89,9 @@ namespace Weland {
 	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
 	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
+	Drawer.Color invalidPolygonColor = new Drawer.Color((double) 0xfb/0xff,
+							    (double) 0x48/0xff,
+							    (double) 0x09/0xff);
 	Drawer.Color gridLineColor = new Drawer.Color(0.6, 0.6, 0.6);
 	Drawer.Color gridPointColor = new Drawer.Color(0, 0.8, 0.8);
 	Drawer.Color objectColor = new Drawer.Color(1, 1, 0);
@@ -277,7 +280,11 @@ namespace Weland {
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
 		points.Add(Transform.ToScreenPoint(Level.Endpoints[polygon.EndpointIndexes[i]]));
 	    }
-	    drawer.FillPolygon(polygonColor, points);
+	    if (polygon.Concave) {
+		drawer.FillPolygon(invalidPolygonColor, points);
+	    } else {
+		drawer.FillPolygon(polygonColor, points);
+	    }
 	}
 	
 	void DrawTriangle(Drawer.Color c, double X, double Y, double angle) {
