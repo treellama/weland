@@ -146,6 +146,22 @@ namespace Weland {
 	    return lines;
 	}
 
+	// get all polygons that have this endpoint
+	public List<short> EndpointPolygons(short index) {
+	    List<short> polygons = new List<short>();
+	    for (int i = 0; i < Polygons.Count; ++i) {
+		for (int j = 0; j < Polygons[i].VertexCount; ++j) {
+		    Line line = Lines[Polygons[i].LineIndexes[j]];
+		    if (line.EndpointIndexes[0] == index ||
+			line.EndpointIndexes[1] == index) {
+			polygons.Add((short) i);
+			break;
+		    }
+		}
+	    }
+	    return polygons;
+	}
+
 	Point Diff(Point p0, Point p1) {
 	    return new Point((short) (p0.X - p1.X), (short) (p0.Y - p1.Y));
 	}
@@ -339,6 +355,30 @@ namespace Weland {
 		}
 	    }
 	    return true;
+	}
+    
+	public void UpdatePolygonConcavity(Polygon polygon) {
+	    List<short> lines = new List<short>();
+	    for (int i = 0; i < polygon.VertexCount; ++i) {
+		lines.Add(polygon.LineIndexes[i]);
+	    }
+	    double positive = 0;
+	    List<short> points = GetPointRingFromLineRing(lines);
+	    for (int i = 0; i < points.Count; ++i) {
+		Point p0 = Endpoints[points[i]];
+		Point p1 = Endpoints[points[(i + 1) % points.Count]];
+		Point p2 = Endpoints[points[(i + 2) % points.Count]];
+		double cross = Cross(Diff(p1, p0), Diff(p2, p1));
+		if (positive == 0) {
+		    positive = cross;
+		} else if (cross != 0) {
+		    if ((positive > 0) != (cross > 0)) {
+			polygon.Concave = true;
+			return;
+		    }
+		}
+	    }
+	    polygon.Concave = false;
 	}
     }
 }

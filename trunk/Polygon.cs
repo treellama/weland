@@ -41,6 +41,9 @@ namespace Weland {
 	public short AmbientSound;
 	public short RandomSound;
 
+	// not stored
+	public bool Concave;
+
 	public Polygon() {
 	    for (int i = 0; i < MaxVertexCount; ++i) {
 		EndpointIndexes[i] = -1;

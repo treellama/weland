@@ -94,6 +94,10 @@ namespace Weland {
 		throw new Wadfile.BadMapException("Incomplete level: missing polygons chunk");
 	    }
 
+	    foreach (Polygon polygon in Polygons) {
+		UpdatePolygonConcavity(polygon);
+	    }
+
 	    if (wad.Chunks.ContainsKey(MapObject.Tag)) {
 		LoadChunkList<MapObject>(Objects, wad.Chunks[MapObject.Tag]);
 	    } else {
