@@ -13,6 +13,7 @@ namespace Weland {
 	public List<Line> Lines = new List<Line>();
 	public List<Polygon> Polygons = new List<Polygon>();
 	public List<MapObject> Objects = new List<MapObject>();
+	public List<Side> Sides = new List<Side>();
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 
 	public MapInfo MapInfo = new MapInfo();
@@ -26,7 +27,6 @@ namespace Weland {
 	List<uint> ChunkFilter = new List<uint> {
 	    Wadfile.Chunk("iidx"),
 	    Wadfile.Chunk("EPNT"),
-	    Wadfile.Chunk("PLAT"), // for simplicity
 	};
 
 	void LoadChunk(ISerializableBE chunk, byte[] data) {
@@ -94,6 +94,10 @@ namespace Weland {
 		throw new Wadfile.BadMapException("Incomplete level: missing polygons chunk");
 	    }
 
+	    if (wad.Chunks.ContainsKey(Side.Tag)) {
+		LoadChunkList<Side>(Sides, wad.Chunks[Side.Tag]);
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
 	    }
@@ -112,6 +116,7 @@ namespace Weland {
 	    wad.Chunks[Point.Tag] = SaveChunk(Endpoints);
 	    wad.Chunks[Line.Tag] = SaveChunk(Lines);
 	    wad.Chunks[Polygon.Tag] = SaveChunk(Polygons);
+	    wad.Chunks[Side.Tag] = SaveChunk(Sides);
 	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
 	    
 	    // remove merge-type chunks
