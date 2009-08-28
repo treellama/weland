@@ -19,6 +19,7 @@ MapObject.cs
 MapWindow.cs
 Point.cs
 Polygon.cs
+Side.cs
 Wadfile.cs
 Weland.cs
 
