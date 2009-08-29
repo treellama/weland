@@ -109,11 +109,55 @@ namespace Weland {
 		    Platform platform = new Platform();
 		    platform.LoadDynamic(reader);
 		    Platforms.Add(platform);
+
+		    // open up the polygon
+		    if (platform.PolygonIndex >= 0 && platform.PolygonIndex < Polygons.Count) {
+			Polygon polygon = Polygons[platform.PolygonIndex];
+			if (platform.ComesFromFloor) {
+			    polygon.FloorHeight = platform.MinimumHeight;
+			}
+			if (platform.ComesFromCeiling) {
+			    polygon.CeilingHeight = platform.MaximumHeight;
+			}
+		    }
 		}
 	    }
 
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
+	    }
+
+	    foreach (Line line in Lines) {
+		Polygon p1 = null;
+		Polygon p2 = null;
+		if (line.ClockwisePolygonOwner != -1) {
+		    p1 = Polygons[line.ClockwisePolygonOwner];
+		}
+		if (line.CounterclockwisePolygonOwner != -1) {
+		    p2 = Polygons[line.CounterclockwisePolygonOwner];
+		}
+
+		if (p1 != null && p2 != null) {
+		    line.HighestAdjacentFloor = Math.Max(p1.FloorHeight, p2.FloorHeight);
+		    line.LowestAdjacentCeiling = Math.Min(p1.CeilingHeight, p2.CeilingHeight);
+		} else if (p1 != null) {
+		    line.HighestAdjacentFloor = p1.FloorHeight;
+		    line.LowestAdjacentCeiling = p1.CeilingHeight;
+		} else if (p2 != null) {
+		    line.HighestAdjacentFloor = p2.FloorHeight;
+		    line.LowestAdjacentCeiling = p2.CeilingHeight;
+		} else {
+		    line.HighestAdjacentFloor = 0;
+		    line.LowestAdjacentCeiling = 0;
+		}
+
+		if ((line.Flags & LineFlags.VariableElevation) == LineFlags.VariableElevation) {
+		    if (line.HighestAdjacentFloor >= line.LowestAdjacentCeiling) {
+			line.Flags |= LineFlags.Solid;
+		    } else {
+			line.Flags &= ~LineFlags.Solid;
+		    }
+		}
 	    }
 
 	    if (wad.Chunks.ContainsKey(MapObject.Tag)) {
