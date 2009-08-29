@@ -20,7 +20,7 @@ namespace Weland {
 
 	public short Length;
 	public short HighestAdjacentFloor;
-	public short LowestAdjacentFloor;
+	public short LowestAdjacentCeiling;
 	    
 	public short ClockwisePolygonSideIndex = -1;
 	public short CounterclockwisePolygonSideIndex = -1;
@@ -33,7 +33,7 @@ namespace Weland {
 	    Flags = (LineFlags) reader.ReadUInt16();
 	    Length = reader.ReadInt16();
 	    HighestAdjacentFloor = reader.ReadInt16();
-	    LowestAdjacentFloor = reader.ReadInt16();
+	    LowestAdjacentCeiling = reader.ReadInt16();
 	    ClockwisePolygonSideIndex = reader.ReadInt16();
 	    CounterclockwisePolygonSideIndex = reader.ReadInt16();
 	    ClockwisePolygonOwner = reader.ReadInt16();
@@ -47,7 +47,7 @@ namespace Weland {
 	    writer.Write((ushort) Flags);
 	    writer.Write(Length);
 	    writer.Write(HighestAdjacentFloor);
-	    writer.Write(LowestAdjacentFloor);
+	    writer.Write(LowestAdjacentCeiling);
 	    writer.Write(ClockwisePolygonSideIndex);
 	    writer.Write(CounterclockwisePolygonSideIndex);
 	    writer.Write(ClockwisePolygonOwner);
