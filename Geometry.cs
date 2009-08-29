@@ -343,8 +343,7 @@ namespace Weland {
 		}
 		if (Lines[loop[i]].ClockwisePolygonOwner != -1 &&
 		    Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
-		    Lines[loop[i]].Flags |= LineFlags.Transparent;
-		    Lines[loop[i]].Flags &= ~LineFlags.Solid;
+		    Lines[loop[i]].Flags = LineFlags.Transparent;
 		}
 	    }
 	    return true;
@@ -381,16 +380,14 @@ namespace Weland {
 		    --line.ClockwisePolygonOwner;
 		} else if (line.ClockwisePolygonOwner == index) {
 		    line.ClockwisePolygonOwner = -1;
-		    line.Flags |= LineFlags.Solid;
-		    line.Flags &= ~LineFlags.Transparent;
+		    line.Flags = LineFlags.Solid;
 		}
 		
 		if (line.CounterclockwisePolygonOwner > index) {
 		    --line.CounterclockwisePolygonOwner;
 		} else if (line.CounterclockwisePolygonOwner == index) {
 		    line.CounterclockwisePolygonOwner = -1;
-		    line.Flags |= LineFlags.Solid;
-		    line.Flags &= ~LineFlags.Transparent;
+		    line.Flags = LineFlags.Solid;
 		}
 	    }
 

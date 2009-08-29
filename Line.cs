@@ -16,7 +16,7 @@ namespace Weland {
 	public const int Size = 32;
 	    
 	public short[] EndpointIndexes = new short[2];
-	public LineFlags Flags;
+	public LineFlags Flags = LineFlags.Solid;
 
 	public short Length;
 	public short HighestAdjacentFloor;
@@ -26,6 +26,21 @@ namespace Weland {
 	public short CounterclockwisePolygonSideIndex = -1;
 	public short ClockwisePolygonOwner = -1;
 	public short CounterclockwisePolygonOwner = -1;
+
+	public bool Transparent {
+	    get { return (Flags & LineFlags.Transparent) != 0; }
+	    set { if (value) Flags |= LineFlags.Transparent; else Flags &= ~LineFlags.Transparent; }
+	}
+
+	public bool Solid {
+	    get { return (Flags & LineFlags.Solid) != 0; }
+	    set { if (value) Flags |= LineFlags.Solid; else Flags &= ~LineFlags.Solid; }
+	}
+
+	public bool VariableElevation {
+	    get { return (Flags & LineFlags.VariableElevation) != 0; }
+	    set { if (value) Flags |= LineFlags.VariableElevation; else Flags &= ~LineFlags.VariableElevation; }
+	}
 
 	public void Load(BinaryReaderBE reader) {
 	    EndpointIndexes[0] = reader.ReadInt16();
