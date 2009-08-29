@@ -86,22 +86,14 @@ namespace Weland {
 	    return (short) (Lines.Count - 1);
 	}
 
-	// delete a line (for SplitLine; points aren't cleaned up)
-	void DeleteLine(short index) {
-	    Lines.RemoveAt(index);
-	    foreach (Polygon p in Polygons) {
-		p.DeleteLine(index);
-	    }
-	    
-	}
-
 	// split line, return a new point index at X, Y
 	public short SplitLine(short index, short X, short Y) {
 	    Line line = Lines[index];
 	    short e0 = line.EndpointIndexes[0];
 	    short e1 = line.EndpointIndexes[1];
 	    short p = NewPoint(X, Y);
-	    DeleteLine(index);
+	    
+	    DeleteLineIndex(index);
 
 	    NewLine(e0, p);
 	    NewLine(p, e1);
@@ -352,6 +344,7 @@ namespace Weland {
 		if (Lines[loop[i]].ClockwisePolygonOwner != -1 &&
 		    Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
 		    Lines[loop[i]].Flags |= LineFlags.Transparent;
+		    Lines[loop[i]].Flags &= ~LineFlags.Solid;
 		}
 	    }
 	    return true;
@@ -379,6 +372,143 @@ namespace Weland {
 		}
 	    }
 	    polygon.Concave = false;
+	}
+
+	public void DeletePolygon(short index) {
+	    Polygons.RemoveAt(index);
+	    foreach (Line line in Lines) {
+		if (line.ClockwisePolygonOwner > index) {
+		    --line.ClockwisePolygonOwner;
+		} else if (line.ClockwisePolygonOwner == index) {
+		    line.ClockwisePolygonOwner = -1;
+		    line.Flags |= LineFlags.Solid;
+		    line.Flags &= ~LineFlags.Transparent;
+		}
+		
+		if (line.CounterclockwisePolygonOwner > index) {
+		    --line.CounterclockwisePolygonOwner;
+		} else if (line.CounterclockwisePolygonOwner == index) {
+		    line.CounterclockwisePolygonOwner = -1;
+		    line.Flags |= LineFlags.Solid;
+		    line.Flags &= ~LineFlags.Transparent;
+		}
+	    }
+
+	    for (int i = Sides.Count - 1; i >= 0; --i) {
+		if (Sides[i].PolygonIndex > index) {
+		    --Sides[i].PolygonIndex;
+		} else if (Sides[i].PolygonIndex == index) {
+		    Sides.RemoveAt(i);
+		    --i;
+		}
+	    }
+
+	    for (int i = Objects.Count - 1; i >= 0; --i) {
+		if (Objects[i].PolygonIndex > index) {
+		    --Objects[i].PolygonIndex;
+		} else if (Objects[i].PolygonIndex == index) {
+		    Objects.RemoveAt(i);
+		    --i;
+		}
+	    }
+
+	    for (int i = Platforms.Count - 1; i >= 0; --i) {
+		if (Platforms[i].PolygonIndex > index) {
+		    --Platforms[i].PolygonIndex;
+		} else if (Platforms[i].PolygonIndex == index) {
+		    Platforms.RemoveAt(i);
+		    --i;
+		}
+	    }
+	}
+
+
+	public void DeleteLineIndex(short index) {
+	    Lines.RemoveAt(index);
+	    foreach (Polygon poly in Polygons) {
+		poly.DeleteLine(index);
+	    }
+	    foreach (Side side in Sides) {
+		side.DeleteLine(index);
+	    }
+	}
+
+	public void DeletePointIndex(short index) {
+	    Endpoints.RemoveAt(index);
+	    foreach (Line line in Lines) {
+		if (line.EndpointIndexes[0] > index) {
+		    --line.EndpointIndexes[0];
+		}
+
+		if (line.EndpointIndexes[1] > index) {
+		    --line.EndpointIndexes[1];
+		}
+	    }
+
+	    foreach (Polygon poly in Polygons) {
+		for (int i = 0; i < poly.VertexCount; ++i) {
+		    if (poly.EndpointIndexes[i] > index) {
+			--poly.EndpointIndexes[i];
+		    }
+		}
+	    }
+	}
+
+	public void DeleteLine(short index) {
+	    Line line = Lines[index];
+	    if (line.ClockwisePolygonOwner != -1) {
+		DeletePolygon(line.ClockwisePolygonOwner);
+	    }
+	    if (line.CounterclockwisePolygonOwner != -1) {
+		DeletePolygon(line.CounterclockwisePolygonOwner);
+	    }
+
+	    DeleteLineIndex(index);
+	    
+	    bool e0_has_other_lines = false;
+	    bool e1_has_other_lines = false;
+	    foreach (Line other_line in Lines) {
+		if (other_line.EndpointIndexes[0] == line.EndpointIndexes[0] ||
+		    other_line.EndpointIndexes[1] == line.EndpointIndexes[0]) {
+		    e0_has_other_lines = true;
+		    if (e1_has_other_lines) break;
+		}
+		if (other_line.EndpointIndexes[0] == line.EndpointIndexes[1] ||
+		    other_line.EndpointIndexes[1] == line.EndpointIndexes[1]) {
+		    e1_has_other_lines = true;
+		    if (e0_has_other_lines) break;
+		}
+	    }
+
+	    if (!e0_has_other_lines) {
+		DeletePointIndex(line.EndpointIndexes[0]);
+		if (line.EndpointIndexes[1] > line.EndpointIndexes[0]) {
+		    --line.EndpointIndexes[1];
+		}
+	    }
+
+	    if (!e1_has_other_lines) {
+		DeletePointIndex(line.EndpointIndexes[1]);
+	    }
+	}
+
+	public void DeletePoint(short index) {
+	    List<Line> lines = new List<Line>();
+	    foreach (Line line in Lines) {
+		if (line.EndpointIndexes[0] == index ||
+		    line.EndpointIndexes[1] == index) {
+		    lines.Add(line);
+		}
+	    }
+
+	    // this is pretty sleazy, I hate relying on ref comparison
+	    if (lines.Count > 0) {
+		foreach (Line line in lines) {
+		    DeleteLine((short) Lines.IndexOf(line));
+		}
+	    } else {
+		DeletePointIndex(index);
+	    }
 	}
     }
 }
