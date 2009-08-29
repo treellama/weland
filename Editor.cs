@@ -17,6 +17,7 @@ namespace Weland {
 	public bool Changed = false;
 
 	Wadfile.DirectoryEntry undoState;
+	short undoSelectedIndex;
 
 	public short Snap;
 	public Level Level;
@@ -206,20 +207,66 @@ namespace Weland {
 
 	public void DeleteSelected() {
 	    if (Level.SelectedPoint != -1) {
+		// find the closest point to delete next
+
+		// this is pretty ridiculous: endpoint indices can
+		// change after the delete, and so can line indices;
+		// so remember a line reference and index into that
+		// line's EndpointIndexes list
+		List<short> nextPointCandidates = new List<short>();
+		foreach (short i in Level.EndpointLines(Level.SelectedPoint)) {
+		    if (Level.Lines[i].EndpointIndexes[0] == Level.SelectedPoint) {
+			nextPointCandidates.Add(Level.Lines[i].EndpointIndexes[1]);
+		    } else {
+			nextPointCandidates.Add(Level.Lines[i].EndpointIndexes[0]);
+		    }
+		}
+
+		nextPointCandidates.Sort(delegate(short p0, short p1) {
+			return Level.Distance(Level.Endpoints[p0], Level.Endpoints[Level.SelectedPoint]) - Level.Distance(Level.Endpoints[p1], Level.Endpoints[Level.SelectedPoint]);
+		    });
+		
+		Line nextLine = null;
+		int nextLineEndpointIndex = 0;
+		foreach (short point_index in nextPointCandidates) {
+		    foreach (short i in Level.EndpointLines(point_index)) {
+			if (Level.Lines[i].EndpointIndexes[0] == point_index &&
+			    Level.Lines[i].EndpointIndexes[1] != Level.SelectedPoint) {
+			    nextLine = Level.Lines[i];
+			    nextLineEndpointIndex = 0;
+			    break;
+			} else if (Level.Lines[i].EndpointIndexes[1] == point_index &&
+				   Level.Lines[i].EndpointIndexes[0] != Level.SelectedPoint) {
+			    nextLine = Level.Lines[i];
+			    nextLineEndpointIndex = 1;
+			}
+		    }
+		    if (nextLine != null) {
+			break;
+		    }
+		}
 		SetUndo();
 		Level.DeletePoint(Level.SelectedPoint);
-		Level.SelectedPoint = -1;
+		if (nextLine != null) {
+		    Level.SelectedPoint = nextLine.EndpointIndexes[nextLineEndpointIndex];
+		} else {
+		    Level.SelectedPoint = -1;
+		}
 	    }
 	}
 
 	public void SetUndo() {
 	    undoState = Level.Save().Clone();
+	    undoSelectedIndex = Level.SelectedPoint;
 	}
 
 	public void Undo() {
 	    if (undoState != null) {
 		Wadfile.DirectoryEntry redo = Level.Save().Clone();
 		Level.Load(undoState);
+		short temp = Level.SelectedPoint;
+		Level.SelectedPoint = undoSelectedIndex;
+		undoSelectedIndex = temp;
 		undoState = redo;
 	    }
 	}
