@@ -226,7 +226,17 @@ namespace Weland {
 
 	Tool oldTool = Tool.Move;
 
-	[GLib.ConnectBefore() ] internal void OnKeyPressed(object obj, KeyPressEventArgs args) {
+	[GLib.ConnectBefore()] internal void OnSpecialKeyPressed(object obj, KeyPressEventArgs args) {
+	    if (args.Event.Key == Gdk.Key.space) {
+		if (editor.Tool != Tool.Move) {
+		    oldTool = editor.Tool;
+		    ChooseTool(Tool.Move);
+		    args.RetVal = true;
+		}
+	    }
+	}
+
+	internal void OnKeyPressed(object obj, KeyPressEventArgs args) {
 	    bool caught = true;
 	    switch (args.Event.Key) {
 	    case Gdk.Key.F3:
@@ -276,12 +286,6 @@ namespace Weland {
 		editor.DeleteSelected();
 		Redraw();
 		break;
-	    case Gdk.Key.space:
-		if (editor.Tool != Tool.Move) {
-		    oldTool = editor.Tool;
-		    ChooseTool(Tool.Move);
-		}
-		break;
 	    default:
 		caught = false;
 		break;
@@ -289,7 +293,7 @@ namespace Weland {
 	    args.RetVal = caught;
 	}
 
-	[GLib.ConnectBefore()] internal void OnKeyReleased(object obj, KeyReleaseEventArgs args) {
+	[GLib.ConnectBefore()] internal void OnSpecialKeyReleased(object obj, KeyReleaseEventArgs args) {
 	    if (args.Event.Key == Gdk.Key.space) {
 		ChooseTool(oldTool);
 		oldTool = Tool.Move;
