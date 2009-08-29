@@ -116,5 +116,11 @@ namespace Weland {
 	    writer.Write(AmbientDelta);
 	    writer.Write(new byte[2]);
 	}
+
+	public void DeleteLine(short index) {
+	    if (LineIndex > index) {
+		--LineIndex;
+	    }
+	}
     }
 }

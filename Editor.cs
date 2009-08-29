@@ -204,6 +204,14 @@ namespace Weland {
 	    }
 	}
 
+	public void DeleteSelected() {
+	    if (Level.SelectedPoint != -1) {
+		SetUndo();
+		Level.DeletePoint(Level.SelectedPoint);
+		Level.SelectedPoint = -1;
+	    }
+	}
+
 	public void SetUndo() {
 	    undoState = Level.Save().Clone();
 	}
