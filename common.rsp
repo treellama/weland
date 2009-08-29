@@ -17,6 +17,7 @@ MapDrawingArea.cs
 MapInfo.cs
 MapObject.cs
 MapWindow.cs
+Platform.cs
 Point.cs
 Polygon.cs
 Side.cs

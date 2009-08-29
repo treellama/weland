@@ -14,6 +14,7 @@ namespace Weland {
 	public List<Polygon> Polygons = new List<Polygon>();
 	public List<MapObject> Objects = new List<MapObject>();
 	public List<Side> Sides = new List<Side>();
+	public List<Platform> Platforms = new List<Platform>();
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 
 	public MapInfo MapInfo = new MapInfo();
@@ -26,7 +27,8 @@ namespace Weland {
 
 	List<uint> ChunkFilter = new List<uint> {
 	    Wadfile.Chunk("iidx"),
-	    Wadfile.Chunk("EPNT"),
+	    Endpoint.Tag,
+	    Platform.DynamicTag
 	};
 
 	void LoadChunk(ISerializableBE chunk, byte[] data) {
@@ -62,7 +64,7 @@ namespace Weland {
 	
 	public void Load(Wadfile.DirectoryEntry wad) {
 	    Chunks = wad.Chunks;
-
+	    
 	    if (wad.Chunks.ContainsKey(MapInfo.Tag)) {
 		LoadChunk(MapInfo, wad.Chunks[MapInfo.Tag]);
 	    } else {
@@ -98,6 +100,18 @@ namespace Weland {
 		LoadChunkList<Side>(Sides, wad.Chunks[Side.Tag]);
 	    }
 
+	    if (wad.Chunks.ContainsKey(Platform.StaticTag)) {
+		LoadChunkList<Platform>(Platforms, wad.Chunks[Platform.StaticTag]);
+	    } else if (wad.Chunks.ContainsKey(Platform.DynamicTag)) {
+		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Platform.DynamicTag]));
+		Platforms.Clear();
+		while (reader.BaseStream.Position < reader.BaseStream.Length) {
+		    Platform platform = new Platform();
+		    platform.LoadDynamic(reader);
+		    Platforms.Add(platform);
+		}
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
 	    }
@@ -118,6 +132,7 @@ namespace Weland {
 	    wad.Chunks[Polygon.Tag] = SaveChunk(Polygons);
 	    wad.Chunks[Side.Tag] = SaveChunk(Sides);
 	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
+	    wad.Chunks[Platform.StaticTag] = SaveChunk(Platforms);
 	    
 	    // remove merge-type chunks
 	    foreach (uint tag in ChunkFilter) {
