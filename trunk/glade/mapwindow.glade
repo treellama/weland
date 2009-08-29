@@ -5,10 +5,11 @@
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
     <property name="window_position">center-on-parent</property>
+    <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="scroll_event" handler="OnScroll"/>
     <signal name="delete_event" handler="OnDelete"/>
-    <signal name="key_release_event" handler="OnKeyReleased"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
