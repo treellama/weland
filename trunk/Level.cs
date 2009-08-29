@@ -151,12 +151,8 @@ namespace Weland {
 		    line.LowestAdjacentCeiling = 0;
 		}
 
-		if ((line.Flags & LineFlags.VariableElevation) == LineFlags.VariableElevation) {
-		    if (line.HighestAdjacentFloor >= line.LowestAdjacentCeiling) {
-			line.Flags |= LineFlags.Solid;
-		    } else {
-			line.Flags &= ~LineFlags.Solid;
-		    }
+		if (line.VariableElevation) {
+		    line.Solid = (line.HighestAdjacentFloor >= line.LowestAdjacentCeiling);
 		}
 	    }
 

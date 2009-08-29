@@ -84,8 +84,8 @@ namespace Weland {
 
 	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
 	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
-	Drawer.Color solidLineColor = new Drawer.Color(0.2, 0.98, 0.48);
-	Drawer.Color lineColor = new Drawer.Color(0, 0, 0);
+	Drawer.Color impassableLineColor = new Drawer.Color(0.2, 0.98, 0.48);
+	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
 	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
 	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
 	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
@@ -263,13 +263,15 @@ namespace Weland {
 	    Point p1 = Level.Endpoints[line.EndpointIndexes[0]];
 	    Point p2 = Level.Endpoints[line.EndpointIndexes[1]];
 
-	    Drawer.Color color;
-	    if ((line.Flags & LineFlags.Transparent) == LineFlags.Transparent) {
+	    Drawer.Color color = solidLineColor;
+	    if (line.Transparent) {
 		color = transparentLineColor;
-	    } else if (line.CounterclockwisePolygonOwner != -1 && line.ClockwisePolygonOwner != -1) {
-		color = solidLineColor;
-	    } else {
-		color = lineColor;;
+	    } else if (line.Solid && line.ClockwisePolygonOwner != -1 && line.CounterclockwisePolygonOwner != -1) {
+		Polygon poly1 = Level.Polygons[line.ClockwisePolygonOwner];
+		Polygon poly2 = Level.Polygons[line.CounterclockwisePolygonOwner];
+		if (poly1.FloorHeight != poly2.FloorHeight) {
+		    color = impassableLineColor;
+		}
 	    }
 
 	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
