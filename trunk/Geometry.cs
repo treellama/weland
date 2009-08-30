@@ -236,7 +236,7 @@ namespace Weland {
 		tightest = Lines[firstNeighbor].EndpointIndexes[0];
 	    }
 
-	    list.Insert(0, firstNeighbor);
+	    list.Add(firstNeighbor);
 	    return (BuildLoop(target, current, tightest, depth + 1, starter, list));
 
 	}
@@ -329,16 +329,13 @@ namespace Weland {
 	    loop.CopyTo(polygon.LineIndexes);
 
 	    List<short> points = GetPointRingFromLineRing(loop);
-	    for (int i = 0; i < polygon.VertexCount; ++i) {
-		//		polygon.EndpointIndexes[i] = points[(i + points.Count - 1) % points.Count];
-		polygon.EndpointIndexes[i] = points[i];
-	    }
+	    points.CopyTo(polygon.EndpointIndexes);
 
 	    short index = (short) Polygons.Count;
 	    Polygons.Add(polygon);
 	    Polygon adjacent = null;
 	    for (int i = 0; i < loop.Count; ++i) {
-		if (Lines[loop[i]].EndpointIndexes[0] == polygon.EndpointIndexes[i]) {
+		if (Lines[loop[i]].EndpointIndexes[1] == polygon.EndpointIndexes[i]) {
 		    Lines[loop[i]].ClockwisePolygonOwner = index;
 		    if (adjacent == null && Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
 			adjacent = Polygons[Lines[loop[i]].CounterclockwisePolygonOwner];
@@ -352,7 +349,6 @@ namespace Weland {
 		if (Lines[loop[i]].ClockwisePolygonOwner != -1 &&
 		    Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
 		    Lines[loop[i]].Flags = LineFlags.Transparent;
-		    Console.WriteLine("Marking {0} transparent", loop[i]);
 		}
 	    }
 	    if (adjacent != null) {
