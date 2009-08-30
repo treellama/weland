@@ -54,7 +54,7 @@ namespace Weland {
 	public ObjectType Type;
 	public short Index;
 	public short Facing;
-	public short PolygonIndex;
+	public short PolygonIndex = 0;
 	public short X;
 	public short Y;
 	public short Z;

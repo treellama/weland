@@ -402,6 +402,17 @@ namespace Weland {
 	    polygon.Concave = false;
 	}
 
+	public Point PolygonCenter(Polygon polygon) {
+	    double X = 0;
+	    double Y = 0;
+	    for (int i = 0; i < polygon.VertexCount; ++i) {
+		X += Endpoints[polygon.EndpointIndexes[i]].X;
+		Y += Endpoints[polygon.EndpointIndexes[i]].Y;
+	    }
+
+	    return new Point((short) (X / polygon.VertexCount), (short) (Y / polygon.VertexCount));
+	}
+
 	public void DeletePolygon(short index) {
 	    Polygons.RemoveAt(index);
 	    foreach (Line line in Lines) {

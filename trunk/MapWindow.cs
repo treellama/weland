@@ -398,6 +398,8 @@ namespace Weland {
 	    FileChooserDialog d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    if (d.Run() == (int) ResponseType.Accept) {
 		wadfile = new Wadfile();
+		Level.AssurePlayerStart();
+		Redraw();
 		wadfile.Directory[0] = Level.Save();
 		wadfile.Save(d.Filename);
 		Filename = d.Filename;
@@ -418,6 +420,8 @@ namespace Weland {
 	    if (Filename == "") {
 		return SaveAs();
 	    } else {
+		Level.AssurePlayerStart();
+		Redraw();
 		wadfile.Directory[0] = Level.Save();
 		wadfile.Save(Filename);
 		editor.Changed = false;

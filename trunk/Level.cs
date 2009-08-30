@@ -176,6 +176,25 @@ namespace Weland {
 	    }
 	}
 
+	public void AssurePlayerStart() {
+	    bool found_start = false;
+	    foreach (MapObject obj in Objects) {
+		if (obj.Type == ObjectType.Player) {
+		    found_start = true;
+		    break;
+		}
+	    }
+
+	    if (Polygons.Count > 0 && !found_start) {
+		MapObject obj = new MapObject();
+		obj.Type = ObjectType.Player;
+		Point center = PolygonCenter(Polygons[0]);
+		obj.X = center.X;
+		obj.Y = center.Y;
+		Objects.Add(obj);
+	    }	    
+	}
+
 	public Wadfile.DirectoryEntry Save() {
 	    Wadfile.DirectoryEntry wad = new Wadfile.DirectoryEntry();
 	    wad.Chunks = Chunks;
