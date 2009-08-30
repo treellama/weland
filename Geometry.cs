@@ -335,20 +335,32 @@ namespace Weland {
 	    Polygons.Add(polygon);
 	    Polygon adjacent = null;
 	    for (int i = 0; i < loop.Count; ++i) {
-		if (Lines[loop[i]].EndpointIndexes[1] == polygon.EndpointIndexes[i]) {
-		    Lines[loop[i]].ClockwisePolygonOwner = index;
-		    if (adjacent == null && Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
-			adjacent = Polygons[Lines[loop[i]].CounterclockwisePolygonOwner];
+		Line line = Lines[loop[i]];
+		if (line.EndpointIndexes[1] == polygon.EndpointIndexes[i]) {
+		    line.ClockwisePolygonOwner = index;
+		    if (adjacent == null && line.CounterclockwisePolygonOwner != -1) {
+			adjacent = Polygons[line.CounterclockwisePolygonOwner];
 		    }
 		} else {
-		    Lines[loop[i]].CounterclockwisePolygonOwner = index;
-		    if (adjacent == null && Lines[loop[i]].ClockwisePolygonOwner != -1) {
-			adjacent = Polygons[Lines[loop[i]].ClockwisePolygonOwner];
+		    line.CounterclockwisePolygonOwner = index;
+		    if (adjacent == null && line.ClockwisePolygonOwner != -1) {
+			adjacent = Polygons[line.ClockwisePolygonOwner];
 		    }
 		}
-		if (Lines[loop[i]].ClockwisePolygonOwner != -1 &&
-		    Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
-		    Lines[loop[i]].Flags = LineFlags.Transparent;
+		if (line.ClockwisePolygonOwner != -1 &&
+		    line.CounterclockwisePolygonOwner != -1) {
+		    line.Flags = LineFlags.Transparent;
+		    
+		    // empty the side opposite
+		    if (line.ClockwisePolygonOwner == index) {
+			if (line.CounterclockwisePolygonSideIndex != -1) {
+			    Sides[line.CounterclockwisePolygonSideIndex].Empty = true;
+			}
+		    } else {
+			if (line.ClockwisePolygonSideIndex != -1) {
+			    Sides[line.ClockwisePolygonSideIndex].Empty = true;
+			}
+		    }
 		}
 	    }
 	    if (adjacent != null) {

@@ -73,7 +73,19 @@ namespace Weland {
 	public short SecondaryLightsourceIndex;
 	public short TransparentLightsourceIndex;
 	public int AmbientDelta;
-	
+
+	public bool Empty {
+	    get {
+		return (Primary.Texture == ushort.MaxValue &&
+			Secondary.Texture == ushort.MaxValue &&
+			Transparent.Texture == ushort.MaxValue);
+	    }
+	    set {
+		Primary.Texture = ushort.MaxValue;
+		Secondary.Texture = ushort.MaxValue;
+		Transparent.Texture = ushort.MaxValue;
+	    }
+	}
 
 	public void Load(BinaryReaderBE reader) {
 	    Type = (SideType) reader.ReadInt16();
