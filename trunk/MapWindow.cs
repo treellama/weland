@@ -520,5 +520,9 @@ namespace Weland {
 	    d.Run();
 	    window1.Title = Level.MapInfo.Name;
 	}
+
+	protected void OnPave(object o, EventArgs e) {
+	    Level.Pave();
+	}
     }
 }

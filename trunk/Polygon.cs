@@ -14,8 +14,8 @@ namespace Weland {
 	public short[] EndpointIndexes = new short[MaxVertexCount];
 	public short[] LineIndexes = new short[MaxVertexCount];
 	
-	public short FloorTexture = -1;
-	public short CeilingTexture = -1;
+	public ShapeDescriptor FloorTexture = ShapeDescriptor.Empty;
+	public ShapeDescriptor CeilingTexture = ShapeDescriptor.Empty;
 	public short FloorHeight = 0;
 	public short CeilingHeight = 1024;
 	public short FloorLight;
@@ -63,8 +63,8 @@ namespace Weland {
 		LineIndexes[i] = reader.ReadInt16();
 	    }
 
-	    FloorTexture = reader.ReadInt16();
-	    CeilingTexture = reader.ReadInt16();
+	    FloorTexture = (ShapeDescriptor) reader.ReadUInt16();
+	    CeilingTexture = (ShapeDescriptor) reader.ReadUInt16();
 	    FloorHeight = reader.ReadInt16();
 	    CeilingHeight = reader.ReadInt16();
 	    FloorLight = reader.ReadInt16();
@@ -120,8 +120,8 @@ namespace Weland {
 		writer.Write(LineIndexes[i]);
 	    }
 
-	    writer.Write(FloorTexture);
-	    writer.Write(CeilingTexture);
+	    writer.Write((ushort) FloorTexture);
+	    writer.Write((ushort) CeilingTexture);
 	    writer.Write(FloorHeight);
 	    writer.Write(CeilingHeight);
 	    writer.Write(FloorLight);

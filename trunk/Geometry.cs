@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Weland {
     public partial class Level {
@@ -354,11 +355,11 @@ namespace Weland {
 		    // empty the side opposite
 		    if (line.ClockwisePolygonOwner == index) {
 			if (line.CounterclockwisePolygonSideIndex != -1) {
-			    Sides[line.CounterclockwisePolygonSideIndex].Empty = true;
+			    Sides[line.CounterclockwisePolygonSideIndex].Clear();
 			}
 		    } else {
 			if (line.ClockwisePolygonSideIndex != -1) {
-			    Sides[line.ClockwisePolygonSideIndex].Empty = true;
+			    Sides[line.ClockwisePolygonSideIndex].Clear();
 			}
 		    }
 		}
@@ -533,6 +534,162 @@ namespace Weland {
 		}
 	    } else {
 		DeletePointIndex(index);
+	    }
+	}
+
+	void FixSideType(Side side) {
+	    Polygon adjacent = Polygons[side.PolygonIndex];
+	    Line line = Lines[side.LineIndex];
+	    Polygon opposite = null;
+	    if (line.CounterclockwisePolygonOwner == side.PolygonIndex &&
+		line.ClockwisePolygonOwner != -1) {
+		opposite = Polygons[line.ClockwisePolygonOwner];
+	    } else if (line.ClockwisePolygonOwner == side.PolygonIndex &&
+		       line.CounterclockwisePolygonOwner != -1) {
+		opposite = Polygons[line.CounterclockwisePolygonOwner];
+	    }
+	    if (opposite == null) {
+		side.Type = SideType.Full;
+	    } else {
+		short ceiling_height = adjacent.CeilingHeight;
+		short floor_height = adjacent.FloorHeight;
+		short opposite_ceiling_height = opposite.CeilingHeight;
+		short opposite_floor_height = opposite.FloorHeight;
+
+		// we should handle platforms more intelligently than this
+		if ((opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) || adjacent.Type == 5 || opposite.Type == 5) {
+		    side.Type = SideType.Split;
+		} else if (opposite_floor_height > floor_height) {
+		    side.Type = SideType.Low;
+		} else if (opposite_ceiling_height < ceiling_height) {
+		    side.Type = SideType.High;
+		} else {
+		    side.Type = SideType.Full;
+		}
+	    }
+	}
+
+	public void DeleteSide(short side_index) {
+	    Sides.RemoveAt(side_index);
+	    foreach (Line line in Lines) {
+		if (line.CounterclockwisePolygonSideIndex > side_index) {
+		    --line.CounterclockwisePolygonSideIndex;
+		} else if (line.CounterclockwisePolygonSideIndex == side_index) {
+		    line.CounterclockwisePolygonSideIndex = -1;
+		}
+		if (line.ClockwisePolygonSideIndex > side_index) {
+		    --line.ClockwisePolygonSideIndex;
+		} else if (line.ClockwisePolygonSideIndex == side_index) {
+		    line.ClockwisePolygonSideIndex = -1;
+		}
+	    }
+	}
+
+	public short NewSide(short polygon_index, short line_index) {
+	    short side_index = (short) Sides.Count;
+	    
+	    Side side = new Side();
+	    Line line = Lines[line_index];
+
+	    side.LineIndex = line_index;
+	    side.PolygonIndex = polygon_index;
+	    Sides.Add(side);
+	    FixSideType(side);
+
+	    if (line.ClockwisePolygonOwner == polygon_index) {
+		line.ClockwisePolygonSideIndex = side_index;
+	    } else if (line.CounterclockwisePolygonOwner == polygon_index) {
+		line.CounterclockwisePolygonSideIndex = side_index;
+	    } else {
+		Debug.Assert(false);
+	    }
+
+	    return side_index;
+	}
+
+	void PaveSide(Side side, byte collection) {
+	    const int wall = 5;
+	    FixSideType(side);
+	    if (side.Primary.Texture.IsEmpty()) {
+		side.Primary.Texture.Collection = collection;
+		side.Primary.Texture.Bitmap = wall;
+		side.PrimaryTransferMode = 0;
+	    }
+	    if (side.Type == SideType.Split && side.Secondary.Texture.IsEmpty()) {
+		side.Secondary.Texture.Collection = collection;
+		side.Secondary.Texture.Bitmap = wall;
+		side.SecondaryTransferMode = 0;
+	    }
+
+	}
+
+	public void NukeTextures() {
+	    while (Sides.Count > 0) {
+		DeleteSide(0);
+	    }
+	    foreach (Polygon polygon in Polygons) {
+		polygon.FloorTexture = ShapeDescriptor.Empty;
+		polygon.CeilingTexture = ShapeDescriptor.Empty;
+	    }
+	}
+	
+	public void Pave() {
+	    byte collection = (byte) (MapInfo.Environment + 17);
+	    const int floor = 6;
+	    const int ceiling = 7;
+
+	    for (int i = 0; i < Lines.Count; ++i) {
+		Line line = Lines[i];
+		Polygon cw_polygon = null;
+		Polygon ccw_polygon = null;
+		if (line.ClockwisePolygonOwner != -1) {
+		    cw_polygon = Polygons[line.ClockwisePolygonOwner];
+		}
+		if (line.CounterclockwisePolygonOwner != -1) {
+		    ccw_polygon = Polygons[line.CounterclockwisePolygonOwner];
+		}
+
+		Side cw_side = null;
+		if (line.ClockwisePolygonSideIndex != -1) {
+		    cw_side = Sides[line.ClockwisePolygonSideIndex];
+		}
+		
+		Side ccw_side = null;
+		if (line.CounterclockwisePolygonSideIndex != -1) {
+		    ccw_side = Sides[line.CounterclockwisePolygonSideIndex];
+		}
+
+		// we should be a little more smarter about generating
+		// sides against platforms
+		if (cw_side == null && cw_polygon != null && (ccw_polygon == null || ccw_polygon.Type == 5 || cw_polygon.FloorHeight < ccw_polygon.FloorHeight || cw_polygon.CeilingHeight > ccw_polygon.CeilingHeight)) {
+		    cw_side = Sides[NewSide(line.ClockwisePolygonOwner, (short) i)];
+		}
+
+		if (ccw_side == null && ccw_polygon != null && (cw_polygon == null || cw_polygon.Type == 5 || ccw_polygon.FloorHeight < cw_polygon.FloorHeight || ccw_polygon.CeilingHeight > cw_polygon.CeilingHeight)) {
+		    ccw_side = Sides[NewSide(line.CounterclockwisePolygonOwner, (short) i)];
+		}
+
+		if (cw_side != null) {
+		    PaveSide(cw_side, collection);
+		}
+
+		if (ccw_side != null) {
+		    PaveSide(ccw_side, collection);
+		}
+	    }
+	    
+	    foreach (Polygon polygon in Polygons) {
+		if (polygon.FloorTexture.IsEmpty()) {
+		    polygon.FloorTexture.Collection = collection;
+		    polygon.FloorTexture.Bitmap = floor;
+		    polygon.FloorTransferMode = 0;
+		}
+
+		if (polygon.CeilingTexture.IsEmpty()) {
+		    polygon.CeilingTexture.Collection = collection;
+		    polygon.CeilingTexture.Bitmap = ceiling;
+		    polygon.CeilingTransferMode = 0;
+		}
 	    }
 	}
     }
