@@ -32,7 +32,7 @@ namespace Weland {
 	public Point FloorOrigin;
 	public Point CeilingOrigin;
 	
-	public short MediaIndex;
+	public short MediaIndex = -1;
 	public short MediaLight;
 	
 	public short AmbientSound = -1;
