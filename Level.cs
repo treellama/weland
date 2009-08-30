@@ -15,6 +15,7 @@ namespace Weland {
 	public List<MapObject> Objects = new List<MapObject>();
 	public List<Side> Sides = new List<Side>();
 	public List<Platform> Platforms = new List<Platform>();
+	public List<Light> Lights = new List<Light>();
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 
 	public MapInfo MapInfo = new MapInfo();
@@ -40,6 +41,14 @@ namespace Weland {
 	    BinaryWriterBE writer = new BinaryWriterBE(stream);
 	    chunk.Save(writer);
 	    return stream.ToArray();
+	}
+
+	public Level() {
+	    // build a Forge-style light list
+	    for (int i = 0; i <= 20; ++i) {
+		Light light = new Light((double) (20 - i) / 20);
+		Lights.Add(light);
+	    }
 	}
 
 	void LoadChunkList<T>(List<T> list, byte[] data) where T : ISerializableBE, new() {
@@ -122,6 +131,10 @@ namespace Weland {
 		    }
 		}
 	    }
+	    
+	    if (wad.Chunks.ContainsKey(Light.Tag)) {
+		LoadChunkList<Light>(Lights, wad.Chunks[Light.Tag]);
+	    }
 
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
@@ -173,6 +186,7 @@ namespace Weland {
 	    wad.Chunks[Side.Tag] = SaveChunk(Sides);
 	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
 	    wad.Chunks[Platform.StaticTag] = SaveChunk(Platforms);
+	    wad.Chunks[Light.Tag] = SaveChunk(Lights);
 	    
 	    // remove merge-type chunks
 	    foreach (uint tag in ChunkFilter) {
