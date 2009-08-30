@@ -171,6 +171,14 @@
                         <signal name="activate" handler="OnLevelParameters"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem7">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Pave</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnPave"/>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>

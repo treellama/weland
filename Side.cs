@@ -41,18 +41,18 @@ namespace Weland {
 	public struct TextureDefinition {
 	    public short X;
 	    public short Y;
-	    public ushort Texture;
+	    public ShapeDescriptor Texture;
 
 	    public void Load(BinaryReaderBE reader) {
 		X = reader.ReadInt16();
 		Y = reader.ReadInt16();
-		Texture = reader.ReadUInt16();
+		Texture = (ShapeDescriptor) reader.ReadUInt16();
 	    }
 
 	    public void Save(BinaryWriterBE writer) { 
 		writer.Write(X);
 		writer.Write(Y);
-		writer.Write(Texture);
+		writer.Write((ushort) Texture);
 	    }
 	}
 
@@ -73,18 +73,21 @@ namespace Weland {
 	public short SecondaryLightsourceIndex;
 	public short TransparentLightsourceIndex;
 	public int AmbientDelta;
+	
+	public Side() {
+	    Clear();
+	}
 
-	public bool Empty {
-	    get {
-		return (Primary.Texture == ushort.MaxValue &&
-			Secondary.Texture == ushort.MaxValue &&
-			Transparent.Texture == ushort.MaxValue);
-	    }
-	    set {
-		Primary.Texture = ushort.MaxValue;
-		Secondary.Texture = ushort.MaxValue;
-		Transparent.Texture = ushort.MaxValue;
-	    }
+	public void Clear() {
+	    Primary.Texture = ShapeDescriptor.Empty;
+	    Secondary.Texture = ShapeDescriptor.Empty;
+	    Transparent.Texture = ShapeDescriptor.Empty;
+	}
+
+	public bool Empty() {
+	    return (Primary.Texture.IsEmpty() &&
+		    Secondary.Texture.IsEmpty() &&
+		    Transparent.Texture.IsEmpty());
 	}
 
 	public void Load(BinaryReaderBE reader) {

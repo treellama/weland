@@ -20,6 +20,7 @@ MapWindow.cs
 Platform.cs
 Point.cs
 Polygon.cs
+Shapes.cs
 Side.cs
 Wadfile.cs
 Weland.cs
