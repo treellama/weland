@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 
@@ -28,6 +29,11 @@ public class BinaryWriterBE : BinaryWriter
 	Write((byte) (value >> 16));
 	Write((byte) (value >> 8));
 	Write((byte) (value));
+    }
+    
+    public void WriteFixed(double value) {
+	int i = (int) Math.Floor(value * ushort.MaxValue);
+	Write(i);
     }
 
     public void WriteMacString(string s, int length) {

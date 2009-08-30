@@ -12,6 +12,7 @@ GdkDrawer.cs
 Geometry.cs
 Level.cs
 LevelParametersDialog.cs
+Light.cs
 Line.cs
 MapDrawingArea.cs
 MapInfo.cs
