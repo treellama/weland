@@ -8,29 +8,26 @@ namespace Weland {
 
 	public short Type;
 	public ushort Flags;
-	public short Permutation;
+	public short Permutation = -1;
 	public ushort VertexCount;
 
 	public short[] EndpointIndexes = new short[MaxVertexCount];
 	public short[] LineIndexes = new short[MaxVertexCount];
 	
-	public short FloorTexture;
-	public short CeilingTexture;
-	public short FloorHeight;
-	public short CeilingHeight;
+	public short FloorTexture = -1;
+	public short CeilingTexture = -1;
+	public short FloorHeight = 0;
+	public short CeilingHeight = 1024;
 	public short FloorLight;
 	public short CeilingLight;
 
-	public short FirstObjectIndex;
+	public short FirstObjectIndex = -1;
 
 	public short FloorTransferMode;
 	public short CeilingTransferMode;
 
 	public short[] AdjacentPolygonIndexes = new short[MaxVertexCount];
 	
-	public short FirstNeighborIndex;
-	public short NeighborCount;
-
 	public short[] SideIndexes = new short[MaxVertexCount];
 	public Point FloorOrigin;
 	public Point CeilingOrigin;
@@ -38,8 +35,8 @@ namespace Weland {
 	public short MediaIndex;
 	public short MediaLight;
 	
-	public short AmbientSound;
-	public short RandomSound;
+	public short AmbientSound = -1;
+	public short RandomSound = -1;
 
 	// not stored
 	public bool Concave;

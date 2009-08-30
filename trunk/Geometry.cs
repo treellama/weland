@@ -330,21 +330,41 @@ namespace Weland {
 
 	    List<short> points = GetPointRingFromLineRing(loop);
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
-		polygon.EndpointIndexes[i] = points[(i + points.Count - 1) % points.Count];
+		//		polygon.EndpointIndexes[i] = points[(i + points.Count - 1) % points.Count];
+		polygon.EndpointIndexes[i] = points[i];
 	    }
 
 	    short index = (short) Polygons.Count;
 	    Polygons.Add(polygon);
+	    Polygon adjacent = null;
 	    for (int i = 0; i < loop.Count; ++i) {
 		if (Lines[loop[i]].EndpointIndexes[0] == polygon.EndpointIndexes[i]) {
 		    Lines[loop[i]].ClockwisePolygonOwner = index;
+		    if (adjacent == null && Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
+			adjacent = Polygons[Lines[loop[i]].CounterclockwisePolygonOwner];
+		    }
 		} else {
 		    Lines[loop[i]].CounterclockwisePolygonOwner = index;
+		    if (adjacent == null && Lines[loop[i]].ClockwisePolygonOwner != -1) {
+			adjacent = Polygons[Lines[loop[i]].ClockwisePolygonOwner];
+		    }
 		}
 		if (Lines[loop[i]].ClockwisePolygonOwner != -1 &&
 		    Lines[loop[i]].CounterclockwisePolygonOwner != -1) {
 		    Lines[loop[i]].Flags = LineFlags.Transparent;
+		    Console.WriteLine("Marking {0} transparent", loop[i]);
 		}
+	    }
+	    if (adjacent != null) {
+		// copy some settings from it
+		polygon.FloorHeight = adjacent.FloorHeight;
+		polygon.CeilingHeight = adjacent.CeilingHeight;
+		polygon.FloorTexture = adjacent.FloorTexture;
+		polygon.CeilingTexture = adjacent.CeilingTexture;
+		polygon.FloorTransferMode = adjacent.FloorTransferMode;
+		polygon.CeilingTransferMode = adjacent.CeilingTransferMode;
+		polygon.FloorLight = adjacent.FloorLight;
+		polygon.CeilingLight = adjacent.CeilingLight;
 	    }
 	    return true;
 	}
