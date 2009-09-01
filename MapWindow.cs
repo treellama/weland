@@ -17,6 +17,7 @@ namespace Weland {
 
 	Wadfile wadfile = new Wadfile();
 	Editor editor = new Editor();
+	Grid grid = new Grid();
 
 	[Widget] Gtk.Window window1;
 	[Widget] VScrollbar vscrollbar1;
@@ -31,6 +32,7 @@ namespace Weland {
 	[Widget] RadioToolButton fillButton;
 
 	[Widget] ToggleToolButton showGridButton;
+	[Widget] ToggleToolButton snapToGridButton;
 	[Widget] ToggleToolButton showMonstersButton;
 	[Widget] ToggleToolButton showObjectsButton;
 	[Widget] ToggleToolButton showSceneryButton;
@@ -76,6 +78,7 @@ namespace Weland {
 	    SetIconResource(fillButton, "fill.png");
 
 	    SetIconResource(showGridButton, "grid.png");
+	    SetIconResource(snapToGridButton, "snap.png");
 	    SetIconResource(showMonstersButton, "monster.png");
 	    SetIconResource(showObjectsButton, "pistol-ammo.png");
 	    SetIconResource(showSceneryButton, "flower.png");
@@ -83,7 +86,8 @@ namespace Weland {
 	    SetIconResource(showGoalsButton, "flag.png");
 	    SetIconResource(showSoundsButton, "sound.png");
 
-	    //	    oneWUButton.Active = true;
+	    editor.Grid = grid;
+	    drawingArea.Grid = grid;
 	    
 	    window1.Focus = null;
 	}
@@ -486,15 +490,15 @@ namespace Weland {
 	internal void OnGridSize(object o, EventArgs e) {
 	    RadioToolButton button = (RadioToolButton) o;
 	    if (button == twoWUButton) {
-		drawingArea.GridResolution = 2048;
+		grid.Resolution = 2048;
 	    } else if (button == oneWUButton) {
-		drawingArea.GridResolution = 1024;
+		grid.Resolution = 1024;
 	    } else if (button == halfWUButton) {
-		drawingArea.GridResolution = 512;
+		grid.Resolution = 512;
 	    } else if (button == quarterWUButton) {
-		drawingArea.GridResolution = 256;
+		grid.Resolution = 256;
 	    } else if (button == eighthWUButton) {
-		drawingArea.GridResolution = 128;
+		grid.Resolution = 128;
 	    }
 	    Redraw();
 	}
@@ -502,7 +506,7 @@ namespace Weland {
 	internal void OnToggleVisible(object o, EventArgs e) {
 	    ToggleToolButton button = (ToggleToolButton) o;
 	    if (button == showGridButton) {
-		drawingArea.ShowGrid = button.Active;
+		grid.Visible = button.Active;
 	    } else if (button == showMonstersButton) {
 		drawingArea.ShowMonsters = button.Active;
 	    } else if (button == showObjectsButton) {
@@ -517,6 +521,10 @@ namespace Weland {
 		drawingArea.ShowSounds = button.Active;
 	    }
 	    Redraw();
+	}
+
+	internal void OnToggleSnapToGrid(object o, EventArgs e) {
+	    grid.Snap = ((ToggleToolButton) o).Active;
 	}
 
 	protected void OnLevelParameters(object o, EventArgs e) {

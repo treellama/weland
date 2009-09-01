@@ -7,9 +7,9 @@
     <property name="window_position">center-on-parent</property>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
-    <signal name="scroll_event" handler="OnScroll"/>
-    <signal name="delete_event" handler="OnDelete"/>
     <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
+    <signal name="delete_event" handler="OnDelete"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -279,6 +279,7 @@
               <widget class="GtkToggleToolButton" id="showGridButton">
                 <property name="visible">True</property>
                 <property name="tooltip" translatable="yes">Show Grid (#)</property>
+                <property name="label" translatable="yes">Show Grid</property>
                 <property name="active">True</property>
                 <signal name="toggled" handler="OnToggleVisible"/>
               </widget>
@@ -288,80 +289,13 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkToggleToolButton" id="showMonstersButton">
+              <widget class="GtkToggleToolButton" id="snapToGridButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Monsters</property>
+                <property name="tooltip" translatable="yes">Snap to Grid</property>
+                <property name="label" translatable="yes">Snap to Grid</property>
+                <property name="use_underline">True</property>
                 <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleToolButton" id="showObjectsButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Items</property>
-                <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleToolButton" id="showSceneryButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Scenery</property>
-                <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleToolButton" id="showPlayersButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Players</property>
-                <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleToolButton" id="showSoundsButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Sounds</property>
-                <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleToolButton" id="showGoalsButton">
-                <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Show Goals</property>
-                <property name="active">True</property>
-                <signal name="toggled" handler="OnToggleVisible"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkSeparatorToolItem" id="toolbutton3">
-                <property name="visible">True</property>
+                <signal name="toggled" handler="OnToggleSnapToGrid"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -427,6 +361,93 @@
                 <property name="label" translatable="yes">2</property>
                 <property name="group">eighthWUButton</property>
                 <signal name="toggled" handler="OnGridSize"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton3">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showMonstersButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Monsters</property>
+                <property name="label" translatable="yes">Show Monsters</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showObjectsButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Items</property>
+                <property name="label" translatable="yes">Show Objects</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showSceneryButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Scenery</property>
+                <property name="label" translatable="yes">Show Scenery</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showPlayersButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Players</property>
+                <property name="label" translatable="yes">Show Players</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showSoundsButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Sounds</property>
+                <property name="label" translatable="yes">Show Sounds</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToggleToolButton" id="showGoalsButton">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Show Goals</property>
+                <property name="label" translatable="yes">Show Goals</property>
+                <property name="active">True</property>
+                <signal name="toggled" handler="OnToggleVisible"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
