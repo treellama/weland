@@ -41,8 +41,7 @@ namespace Weland {
 
 	public Transform Transform = new Transform();
 	public Level Level;
-	public short GridResolution = 1024;
-	public bool ShowGrid = true;
+	public Grid Grid = new Grid();
 	public bool ShowMonsters = true;
 	public bool ShowObjects = true;
 	public bool ShowScenery = true;
@@ -123,7 +122,7 @@ namespace Weland {
 #endif
 	    drawer.Clear(backgroundColor);
 	    
-	    if (ShowGrid) {
+	    if (Grid.Visible) {
 		DrawGrid();
 	    }
 	    
@@ -228,7 +227,7 @@ namespace Weland {
 	    short Bottom = Transform.ToMapY(Allocation.Height);
 	    
 	    // draw horizontal map lines
-	    for (int j = (Top / GridResolution) * GridResolution; j < Bottom; j += GridResolution) {
+	    for (int j = (Top / Grid.Resolution) * Grid.Resolution; j < Bottom; j += Grid.Resolution) {
 		p1.X = Left;
 		p1.Y = (short) j;
 		p2.X = Right;
@@ -238,7 +237,7 @@ namespace Weland {
 	    }
 
 	    // draw vertical map lines
-	    for (int i = (Left  / GridResolution) * GridResolution; i < Right; i += GridResolution) {
+	    for (int i = (Left  / Grid.Resolution) * Grid.Resolution; i < Right; i += Grid.Resolution) {
 		p1.X = (short) i;
 		p1.Y = Top;
 		p2.X = (short) i;
@@ -248,7 +247,7 @@ namespace Weland {
 	    }
 
 	    // draw grid intersects
-	    int wu = Math.Max(1024, (int) GridResolution);
+	    int wu = Math.Max(1024, (int) Grid.Resolution);
 	    for (int i = (Left / wu) * wu; i < Right; i += wu) {
 		for (int j = (Top / wu) * wu; j < Bottom; j += wu) {
 		    p1.X = (short) i;

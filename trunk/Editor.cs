@@ -10,12 +10,18 @@ namespace Weland {
 	Fill,
     }
 
+    public class Grid {
+	public bool Visible = true;
+	public bool Snap = true;
+	public short Resolution = 1024;
+    }
+
     public class Editor {
 	public bool Dirty = false;
 	public short RedrawTop, RedrawBottom, RedrawLeft, RedrawRight;
 
 	public bool Changed = false;
-
+	public Grid Grid;
 	Wadfile.DirectoryEntry undoState;
 	short undoSelectedIndex;
 
@@ -42,22 +48,44 @@ namespace Weland {
 	short lastX;
 	short lastY;
 
+	short GridAdjust(short value) {
+	    if (Grid.Visible && Grid.Snap) {
+		return (short) (Math.Round((double) value / Grid.Resolution) * Grid.Resolution);
+	    } else {
+		return value;
+	    }
+	}
+
+	short ClosestPoint(Point p) {
+	    short index = Level.GetClosestPoint(p);
+	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+		return index;
+	    } else {
+		return -1;
+	    }
+	}
+
 	public void StartLine(short X, short Y) {
 	    SetUndo();
 	    Point p = new Point(X, Y);
-	    short index = Level.GetClosestPoint(p);
-	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+	    short index = ClosestPoint(p);
+	    if (index == -1) {
+		p = new Point(GridAdjust(X), GridAdjust(Y));
+		index = ClosestPoint(p);
+	    }
+	    
+	    if (index != -1) {
 		Level.TemporaryLineStartIndex = index;
-		Level.TemporaryLineEnd = new Point(Level.Endpoints[index].X, Level.Endpoints[index].Y);
+		Level.TemporaryLineEnd = p;
 	    } else {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < Snap && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
 		    //split
-		    Level.TemporaryLineStartIndex = Level.SplitLine(index, X, Y);
-		    Level.TemporaryLineEnd = new Point(X, Y);
+		    Level.TemporaryLineStartIndex = Level.SplitLine(index, p.X, p.Y);
+		    Level.TemporaryLineEnd = p;
 		} else {
-		    Level.TemporaryLineStartIndex = Level.NewPoint(X, Y);
-		    Level.TemporaryLineEnd = new Point(X, Y);
+		    Level.TemporaryLineStartIndex = Level.NewPoint(p.X, p.Y);
+		    Level.TemporaryLineEnd = p;
 		}
 	    }
 
@@ -65,16 +93,21 @@ namespace Weland {
 	}
 
 	public void UpdateLine(short X, short Y) {
-	    Point p = new Point(X, Y);
 	    AddDirty(Level.Endpoints[Level.TemporaryLineStartIndex]);
 	    AddDirty(Level.TemporaryLineEnd);
-	    short index = Level.GetClosestPoint(p);
-	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+	    Point p = new Point(X, Y);
+	    short index = ClosestPoint(p);
+	    if (index == -1) {
+		p = new Point(GridAdjust(X), GridAdjust(Y));
+		index = ClosestPoint(p);
+	    }
+
+	    if (index != -1) {
 		Level.TemporaryLineEnd.X = Level.Endpoints[index].X;
 		Level.TemporaryLineEnd.Y = Level.Endpoints[index].Y;
 	    } else {
-		Level.TemporaryLineEnd.X = X;
-		Level.TemporaryLineEnd.Y = Y;
+		Level.TemporaryLineEnd.X = p.X;
+		Level.TemporaryLineEnd.Y = p.Y;
 	    }
 	    AddDirty(Level.TemporaryLineEnd);
 
@@ -83,9 +116,10 @@ namespace Weland {
 
 	public void ConnectLine(short X, short Y) {
 	    Point p = new Point(X, Y);
+	    Point ap = new Point(GridAdjust(X), GridAdjust(Y));
 
 	    // don't draw really short lines
-	    if (Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], p) < Snap) {
+	    if (Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], ap) < Snap) {
 		// if the start point is the latest created, and unconnected, remove it
 		bool connected = false;
 		if (Level.TemporaryLineStartIndex == Level.Endpoints.Count - 1) {
@@ -104,15 +138,20 @@ namespace Weland {
 		return;
 	    }
 
-	    short index = Level.GetClosestPoint(p);
-	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+	    short index = ClosestPoint(p);
+	    if (index == -1) {
+		p = ap;
+		index = ClosestPoint(p);
+	    }
+
+	    if (index != -1) {
 		Level.NewLine(Level.TemporaryLineStartIndex, index);
 	    } else {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < Snap && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
-		    Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, X, Y));
+		    Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, p.X, p.Y));
 		} else {
-		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(X, Y));
+		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(p.X, p.Y));
 		}
 	    }
 	    Level.TemporaryLineStartIndex = -1;	   
@@ -133,8 +172,8 @@ namespace Weland {
 
 	void Select(short X, short Y) {
 	    Point p = new Point(X, Y);
-	    short index = Level.GetClosestPoint(p);
-	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+	    short index = ClosestPoint(p);
+	    if (index != -1) {
 		Level.SelectedPoint = index;
 	    } else {
 		Level.SelectedPoint = -1;
