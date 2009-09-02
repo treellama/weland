@@ -645,7 +645,7 @@ namespace Weland {
 	}
 	
 	public void Pave() {
-	    byte collection = (byte) (MapInfo.Environment + 17);
+	    byte collection = (byte) (Environment + 17);
 	    const int floor = 6;
 	    const int ceiling = 7;
 
