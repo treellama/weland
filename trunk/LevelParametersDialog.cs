@@ -12,85 +12,54 @@ namespace Weland {
 	}
 
 	public void Run() {
-	    levelName.Text = level.MapInfo.Name;
-	    environment.Active = level.MapInfo.Environment;
-	    landscape.Active = level.MapInfo.Landscape;
-	    vacuum.Active = (level.MapInfo.EnvironmentFlags & EnvironmentFlags.Vacuum) == EnvironmentFlags.Vacuum;
-	    magnetic.Active = (level.MapInfo.EnvironmentFlags & EnvironmentFlags.Magnetic) == EnvironmentFlags.Magnetic;
-	    rebellion.Active = (level.MapInfo.EnvironmentFlags & EnvironmentFlags.Rebellion) == EnvironmentFlags.Rebellion;
-	    lowGravity.Active = (level.MapInfo.EnvironmentFlags & EnvironmentFlags.LowGravity) == EnvironmentFlags.LowGravity;
-	    
-	    extermination.Active = (level.MapInfo.MissionFlags & MissionFlags.Extermination) == MissionFlags.Extermination;
-	    exploration.Active = (level.MapInfo.MissionFlags & MissionFlags.Exploration) == MissionFlags.Exploration;
-	    retrieval.Active = (level.MapInfo.MissionFlags & MissionFlags.Retrieval) == MissionFlags.Retrieval;
-	    repair.Active = (level.MapInfo.MissionFlags & MissionFlags.Repair) == MissionFlags.Repair;
-	    rescue.Active = (level.MapInfo.MissionFlags & MissionFlags.Rescue) == MissionFlags.Rescue;
+	    levelName.Text = level.Name;
+	    environment.Active = level.Environment;
+	    landscape.Active = level.Landscape;
 
-	    solo.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.SinglePlayer) == EntryPointFlags.SinglePlayer;
-	    coop.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.MultiplayerCooperative) == EntryPointFlags.MultiplayerCooperative;
-	    emfh.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.MultiplayerCarnage) == EntryPointFlags.MultiplayerCarnage;
-	    ktmwtb.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.KillTheManWithTheBall) == EntryPointFlags.KillTheManWithTheBall;
-	    koth.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.KingOfTheHill) == EntryPointFlags.KingOfTheHill;
-	    rugby.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.Rugby) == EntryPointFlags.Rugby;
-	    ctf.Active = (level.MapInfo.EntryPointFlags & EntryPointFlags.CaptureTheFlag) == EntryPointFlags.CaptureTheFlag;
+	    vacuum.Active = level.Vacuum;
+	    magnetic.Active = level.Magnetic;
+	    rebellion.Active = level.Rebellion;
+	    lowGravity.Active = level.LowGravity;
+	    
+	    extermination.Active = level.Extermination;
+	    exploration.Active = level.Exploration;
+	    retrieval.Active = level.Retrieval;
+	    repair.Active = level.Repair;
+	    rescue.Active = level.Rescue;
+
+	    solo.Active = level.SinglePlayer;
+	    coop.Active = level.MultiplayerCooperative;
+	    emfh.Active = level.MultiplayerCarnage;
+	    ktmwtb.Active = level.KillTheManWithTheBall;
+	    koth.Active = level.KingOfTheHill;
+	    rugby.Active = level.Rugby;
+	    ctf.Active = level.CaptureTheFlag;
 
 	    int response = dialog1.Run();
 
 	    if (response == (int) ResponseType.Ok) {
-		level.MapInfo.Name = levelName.Text;
-		level.MapInfo.Environment = (short) environment.Active;
-		level.MapInfo.Landscape = (short) landscape.Active;
+		level.Name = levelName.Text;
+		level.Environment = (short) environment.Active;
+		level.Landscape = (short) landscape.Active;
 
-		{
-		    EnvironmentFlags flags = 0;
-		    if (vacuum.Active)
-			flags |= EnvironmentFlags.Vacuum;
-		    if (magnetic.Active) 
-			flags |= EnvironmentFlags.Magnetic;
-		    if (rebellion.Active) 
-			flags |= EnvironmentFlags.Rebellion;
-		    if (lowGravity.Active) 
-			flags |= EnvironmentFlags.LowGravity;
+		level.Vacuum = vacuum.Active;
+		level.Magnetic = magnetic.Active;
+		level.Rebellion = rebellion.Active;
+		level.LowGravity = lowGravity.Active;
 
-		    level.MapInfo.EnvironmentFlags = flags;
-		}
+		level.Extermination = extermination.Active;
+		level.Exploration = exploration.Active;
+		level.Retrieval = retrieval.Active;
+		level.Repair = repair.Active;
+		level.Rescue = rescue.Active;
 
-		{ 
-		    MissionFlags flags = 0;
-		    if (extermination.Active) 
-			flags |= MissionFlags.Extermination;
-		    if (exploration.Active) 
-			flags |= MissionFlags.Exploration;
-		    if (retrieval.Active) 
-			flags |= MissionFlags.Retrieval;
-		    if (repair.Active) 
-			flags |= MissionFlags.Repair;
-		    if (rescue.Active) 
-			flags |= MissionFlags.Rescue;
-
-		    level.MapInfo.MissionFlags = flags;
-		}
-
-		{ 
-		    EntryPointFlags flags = 0;
-		    if (solo.Active) 
-			flags |= EntryPointFlags.SinglePlayer;
-		    if (coop.Active) 
-			flags |= EntryPointFlags.MultiplayerCooperative;
-		    if (emfh.Active) 
-			flags |= EntryPointFlags.MultiplayerCarnage;
-		    if (ktmwtb.Active) 
-			flags |= EntryPointFlags.KillTheManWithTheBall;
-		    if (koth.Active) 
-			flags |= EntryPointFlags.KingOfTheHill;
-		    if (rugby.Active) 
-			flags |= EntryPointFlags.Rugby;
-		    if (ctf.Active) 
-			flags |= EntryPointFlags.CaptureTheFlag;
-
-		    level.MapInfo.EntryPointFlags = flags;
-		}
-		
+		level.SinglePlayer = solo.Active;
+		level.MultiplayerCooperative = coop.Active;
+		level.MultiplayerCarnage = emfh.Active;
+		level.KillTheManWithTheBall = ktmwtb.Active;
+		level.KingOfTheHill = koth.Active;
+		level.Rugby = rugby.Active;
+		level.CaptureTheFlag = ctf.Active;
 	    }
 
 	    dialog1.Destroy();

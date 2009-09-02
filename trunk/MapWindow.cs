@@ -530,7 +530,7 @@ namespace Weland {
 	protected void OnLevelParameters(object o, EventArgs e) {
 	    LevelParametersDialog d = new LevelParametersDialog(window1, Level);
 	    d.Run();
-	    window1.Title = Level.MapInfo.Name;
+	    window1.Title = Level.Name;
 	}
 
 	protected void OnPave(object o, EventArgs e) {

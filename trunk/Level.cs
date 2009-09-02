@@ -18,7 +18,7 @@ namespace Weland {
 	public List<Light> Lights = new List<Light>();
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 
-	public MapInfo MapInfo = new MapInfo();
+	MapInfo mapInfo = new MapInfo();
 
 	// stuff for the editor, not saved to file
 	public short TemporaryLineStartIndex = -1;
@@ -75,7 +75,7 @@ namespace Weland {
 	    Chunks = wad.Chunks;
 	    
 	    if (wad.Chunks.ContainsKey(MapInfo.Tag)) {
-		LoadChunk(MapInfo, wad.Chunks[MapInfo.Tag]);
+		LoadChunk(mapInfo, wad.Chunks[MapInfo.Tag]);
 	    } else {
 		throw new Wadfile.BadMapException("Incomplete level: missing map info chunk");
 	    }
@@ -198,7 +198,7 @@ namespace Weland {
 	public Wadfile.DirectoryEntry Save() {
 	    Wadfile.DirectoryEntry wad = new Wadfile.DirectoryEntry();
 	    wad.Chunks = Chunks;
-	    wad.Chunks[MapInfo.Tag] = SaveChunk(MapInfo);
+	    wad.Chunks[MapInfo.Tag] = SaveChunk(mapInfo);
 	    wad.Chunks[Point.Tag] = SaveChunk(Endpoints);
 	    wad.Chunks[Line.Tag] = SaveChunk(Lines);
 	    wad.Chunks[Polygon.Tag] = SaveChunk(Polygons);
@@ -215,6 +215,222 @@ namespace Weland {
 	    return wad;
 	}
 
+	public string Name {
+	    get {
+		return mapInfo.Name;
+	    }
+	    set {
+		mapInfo.Name = value;
+	    }
+	}
+
+	public short Environment {
+	    get {
+		return mapInfo.Environment;
+	    }
+	    set {
+		mapInfo.Environment = value;
+	    }
+	}
+
+	public short Landscape {
+	    get {
+		return mapInfo.Landscape;
+	    } 
+	    set {
+		mapInfo.Landscape = value;
+	    }
+	}
+	
+	public bool Vacuum {
+	    get {
+		return GetEnvironmentFlag(EnvironmentFlags.Vacuum);
+	    } 
+	    set {
+		SetEnvironmentFlag(EnvironmentFlags.Vacuum, value);
+	    }
+	}
+
+	public bool Magnetic {
+	    get {
+		return GetEnvironmentFlag(EnvironmentFlags.Magnetic);
+	    }
+	    set {
+		SetEnvironmentFlag(EnvironmentFlags.Magnetic, value);
+	    }
+	}
+
+	public bool Rebellion {
+	    get {
+		return GetEnvironmentFlag(EnvironmentFlags.Rebellion);
+	    }
+	    set {
+		SetEnvironmentFlag(EnvironmentFlags.Rebellion, value);
+	    }
+	}
+
+	public bool LowGravity {
+	    get {
+		return GetEnvironmentFlag(EnvironmentFlags.LowGravity);
+	    }
+	    set {
+		SetEnvironmentFlag(EnvironmentFlags.LowGravity, value);
+	    }
+	}
+
+	public bool Extermination {
+	    get {
+		return GetMissionFlag(MissionFlags.Extermination);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.Extermination, value);
+	    }
+	}
+
+	public bool Exploration {
+	    get {
+		return GetMissionFlag(MissionFlags.Exploration);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.Exploration, value);
+	    }
+	}
+
+	public bool Retrieval {
+	    get {
+		return GetMissionFlag(MissionFlags.Retrieval);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.Retrieval, value);
+	    }
+	}
+
+	public bool Repair {
+	    get {
+		return GetMissionFlag(MissionFlags.Repair);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.Repair, value);
+	    }
+	}
+
+	public bool Rescue {
+	    get {
+		return GetMissionFlag(MissionFlags.Rescue);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.Rescue, value);
+	    }
+	}
+
+	public bool SinglePlayer {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.SinglePlayer);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.SinglePlayer, value);
+	    }
+	}
+
+	public bool MultiplayerCooperative {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.MultiplayerCooperative);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.MultiplayerCooperative, value);
+	    }
+	}
+
+	public bool MultiplayerCarnage {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.MultiplayerCarnage);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.MultiplayerCarnage, value);
+	    }
+	}
+
+	public bool KillTheManWithTheBall {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.KillTheManWithTheBall);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.KillTheManWithTheBall, value);
+	    }
+	}
+
+	public bool KingOfTheHill {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.KingOfTheHill);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.KingOfTheHill, value);
+	    }
+	}
+
+	public bool Defense {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.Defense);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.Defense, value);
+	    }
+	}
+
+	public bool Rugby {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.Rugby);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.Rugby, value);
+	    }
+	}
+
+	public bool CaptureTheFlag {
+	    get {
+		return GetEntryPointFlag(EntryPointFlags.CaptureTheFlag);
+	    }
+	    set {
+		SetEntryPointFlag(EntryPointFlags.CaptureTheFlag, value);
+	    }
+	}
+	
+	void SetEnvironmentFlag(EnvironmentFlags flag, bool value) {
+	    if (value) {
+		mapInfo.EnvironmentFlags |= flag;
+	    } else {
+		mapInfo.EnvironmentFlags &= ~flag;
+	    }
+	}
+
+	bool GetEnvironmentFlag(EnvironmentFlags flag) {
+	    return (mapInfo.EnvironmentFlags & flag) != 0;
+	}
+
+	void SetMissionFlag(MissionFlags flag, bool value) {
+	    if (value) {
+		mapInfo.MissionFlags |= flag;
+	    } else {
+		mapInfo.MissionFlags &= ~flag;
+	    }
+	}
+
+	bool GetMissionFlag(MissionFlags flag) {
+	    return (mapInfo.MissionFlags & flag) != 0;
+	}
+
+	void SetEntryPointFlag(EntryPointFlags flag, bool value) {
+	    if (value) {
+		mapInfo.EntryPointFlags |= flag;
+	    } else {
+		mapInfo.EntryPointFlags &= ~flag;
+	    }
+	}
+
+	bool GetEntryPointFlag(EntryPointFlags flag) {
+	    return (mapInfo.EntryPointFlags & flag) != 0;
+	}
+
 	static public void Main(string[] args) {
 	    if (args.Length == 1) {
 		Wadfile wadfile = new Wadfile();
@@ -222,14 +438,14 @@ namespace Weland {
 
 		Level level = new Level();
 		level.Load(wadfile.Directory[0]);
-		Console.WriteLine("\"{0}\"", level.MapInfo.Name);
+		Console.WriteLine("\"{0}\"", level.mapInfo.Name);
 		Console.WriteLine("{0} Points", level.Endpoints.Count);
 		Console.WriteLine("{0} Lines", level.Lines.Count);
 		Console.WriteLine("{0} Polygons", level.Polygons.Count);
 	    } else {
 		Console.WriteLine("Test usage: wadfile.exe <wadfile>");
 	    }
-	}	
+	}
     }
 }
 
