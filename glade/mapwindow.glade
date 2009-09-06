@@ -7,9 +7,9 @@
     <property name="window_position">center-on-parent</property>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="delete_event" handler="OnDelete"/>
-    <signal name="scroll_event" handler="OnScroll"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -529,6 +529,20 @@
                     <property name="homogeneous">True</property>
                   </packing>
                 </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="floorHeightButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Floor Heights</property>
+                    <property name="label" translatable="yes">toolbutton4</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -539,7 +553,7 @@
               <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
                 <property name="n_rows">2</property>
-                <property name="n_columns">2</property>
+                <property name="n_columns">3</property>
                 <child>
                   <widget class="GtkHScrollbar" id="hscrollbar1">
                     <property name="visible">True</property>
@@ -565,6 +579,89 @@
                     <property name="x_options"></property>
                     <property name="y_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkVBox" id="palette">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox2">
+                        <property name="visible">True</property>
+                        <child>
+                          <widget class="GtkButton" id="paletteAddButton">
+                            <property name="label" translatable="yes">gtk-add</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
+                            <signal name="clicked" handler="OnPaletteAdd"/>
+                          </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkButton" id="paletteEditButton">
+                            <property name="label" translatable="yes">gtk-edit</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
+                            <signal name="clicked" handler="OnPaletteEdit"/>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">never</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <child>
+                          <widget class="GtkViewport" id="viewport1">
+                            <property name="visible">True</property>
+                            <property name="resize_mode">queue</property>
+                            <property name="shadow_type">none</property>
+                            <child>
+                              <widget class="GtkVButtonBox" id="paletteButtonbox">
+                                <property name="visible">True</property>
+                                <property name="layout_style">start</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="x_options"></property>
+                    <property name="y_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>

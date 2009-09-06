@@ -25,6 +25,7 @@ Shapes.cs
 Side.cs
 Wadfile.cs
 Weland.cs
+Widgets.cs
 
 /resource:images/1x.png
 /resource:images/2x.png
@@ -36,6 +37,7 @@ Weland.cs
 /resource:images/arrow.png
 /resource:images/fill.png
 /resource:images/flag.png
+/resource:images/floor-height.png
 /resource:images/flower.png,flower.png
 /resource:images/fusion-ammo.png
 /resource:images/fusion.png

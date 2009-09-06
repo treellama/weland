@@ -15,9 +15,18 @@ namespace Weland {
 	    }
 	}
 
+	static public bool IsMac() {
+	    return ((int) System.Environment.OSVersion.Platform == 6 || 
+		    // ugh, Mono
+		    (System.Environment.OSVersion.Platform == PlatformID.Unix && System.Environment.OSVersion.Version.Major == 9));	    
+	}
+
 	Wadfile wadfile = new Wadfile();
 	Editor editor = new Editor();
 	Grid grid = new Grid();
+
+	SortedList<short, bool> paintIndexes = new SortedList<short, bool>();
+	List<Gdk.Color> paintColors = new List<Gdk.Color>();
 
 	[Widget] Gtk.Window window1;
 	[Widget] VScrollbar vscrollbar1;
@@ -30,6 +39,7 @@ namespace Weland {
 	[Widget] RadioToolButton moveButton;
 	[Widget] RadioToolButton lineButton;
 	[Widget] RadioToolButton fillButton;
+	[Widget] RadioToolButton floorHeightButton;
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -39,6 +49,11 @@ namespace Weland {
 	[Widget] ToggleToolButton showPlayersButton;
 	[Widget] ToggleToolButton showGoalsButton;
 	[Widget] ToggleToolButton showSoundsButton;
+
+	[Widget] VBox palette;
+	[Widget] VButtonBox paletteButtonbox;
+	[Widget] Button paletteAddButton;
+	[Widget] Button paletteEditButton;
 
 	string Filename;
 
@@ -67,15 +82,13 @@ namespace Weland {
 	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
 	    gxml.Autoconnect(this);
 	    SetupDrawingArea();
-	    window1.AllowShrink = true;
-	    window1.Resize(640, 480);
-	    window1.Show();
 
 	    SetIconResource(selectButton, "arrow.png");
 	    SetIconResource(zoomButton, "zoom.png");
 	    SetIconResource(moveButton, "move.png");
 	    SetIconResource(lineButton, "line.png");
 	    SetIconResource(fillButton, "fill.png");
+	    SetIconResource(floorHeightButton, "floor-height.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -86,9 +99,22 @@ namespace Weland {
 	    SetIconResource(showGoalsButton, "flag.png");
 	    SetIconResource(showSoundsButton, "sound.png");
 
+	    double[] angles = { 0, 240, 120, 22, 300, 180, 60 };
+	    for (int s = 0; s < 3; ++s) {
+		for (int i = 0; i < angles.Length; ++i) {
+		    for (int j = 0; j < 6; ++j) {
+			paintColors.Add(HSV.ToRGB(angles[i], (double) (3 - s) / 3, ((double) (6 - j) * 0.9 / 6 + 0.1)));
+		    }
+		}
+	    }
+
 	    editor.Grid = grid;
 	    drawingArea.Grid = grid;
-	    
+
+	    window1.AllowShrink = true;
+	    window1.Resize(640, 480);
+	    window1.Show();
+
 	    window1.Focus = null;
 	}
 
@@ -184,6 +210,23 @@ namespace Weland {
 	double yDown;
 	short xOffsetDown;
 	short yOffsetDown;
+
+	static EditorModifiers Modifiers(Gdk.ModifierType type) {
+	    EditorModifiers modifiers = EditorModifiers.None;
+	    if ((type & ModifierType.ShiftMask) != 0) {
+		modifiers |= EditorModifiers.Shift;
+	    }
+
+	    if ((type & ModifierType.ControlMask) != 0) {
+		modifiers |= EditorModifiers.Control;
+	    }
+	    
+	    if ((type & ModifierType.Mod1Mask) != 0) {
+		modifiers |= EditorModifiers.Alt;
+	    }
+
+	    return modifiers;
+	}
 	
 	internal void OnButtonPressed(object obj, ButtonPressEventArgs args) {
 	    EventButton ev = args.Event;
@@ -191,11 +234,12 @@ namespace Weland {
 	    short Y = drawingArea.Transform.ToMapY(ev.Y);
 
 	    if (editor.Tool == Tool.Zoom) {
-		if (ev.Button == 1) {
-		    drawingArea.Transform.Scale *= Math.Sqrt(2.0);
-		} else if (ev.Button == 3) {
+		if (ev.Button == 3 || (ev.State & ModifierType.Mod1Mask) != 0) {
 		    drawingArea.Transform.Scale /= Math.Sqrt(2.0);
+		} else {
+		    drawingArea.Transform.Scale *= Math.Sqrt(2.0);
 		}
+
 		Center(X, Y);
 		AdjustScrollRange();
 		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
@@ -205,15 +249,32 @@ namespace Weland {
 		xOffsetDown = drawingArea.Transform.XOffset;
 		yOffsetDown = drawingArea.Transform.YOffset;
 	    } else {
-		editor.ButtonPress(X, Y);
+		EditorModifiers modifiers = Modifiers(ev.State);
+		if (ev.Button == 3) {
+		    modifiers |= EditorModifiers.RightClick;
+		}
+		editor.ButtonPress(X, Y, modifiers);
 		Redraw();
 	    }
+
 	    args.RetVal = true;
 	}
 
 	internal void OnButtonReleased(object obj, ButtonReleaseEventArgs args) {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
+
+	    if (editor.Tool == Tool.FloorHeight) {
+		// update the paint mode button
+		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
+		if (i != -1) {
+		    ColorRadioButton crb = (ColorRadioButton) paletteButtonbox.Children[i];
+		    if (!crb.Active) {
+			crb.Active = true;
+		    }
+		}
+	    }
+
 	    args.RetVal = true;
 	}
 
@@ -223,7 +284,7 @@ namespace Weland {
 		vscrollbar1.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
 		args.RetVal = true;
 	    } else {
-		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
+		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), Modifiers(args.Event.State));
 		RedrawDirty();
 	    }
 	}
@@ -234,7 +295,8 @@ namespace Weland {
 	    if (args.Event.Key == Gdk.Key.space) {
 		if (editor.Tool != Tool.Move) {
 		    oldTool = editor.Tool;
-		    ChooseTool(Tool.Move);
+		    editor.Tool = Tool.Move;
+		    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);		    
 		    args.RetVal = true;
 		}
 	    }
@@ -263,8 +325,8 @@ namespace Weland {
 	    case Gdk.Key.F:
 		fillButton.Active = true;
 		break;
-	    case Gdk.Key.h:
-	    case Gdk.Key.H:
+	    case Gdk.Key.d:
+	    case Gdk.Key.D:
 		moveButton.Active = true;
 		break;
 	    case Gdk.Key.Key_5:
@@ -289,6 +351,9 @@ namespace Weland {
 	    case Gdk.Key.BackSpace:
 		editor.DeleteSelected();
 		Redraw();
+		break;
+	    case Gdk.Key.o:
+		palette.Visible = !palette.Visible;
 		break;
 	    default:
 		caught = false;
@@ -329,6 +394,7 @@ namespace Weland {
 		Center(0, 0);
 		AdjustScrollRange();
 		window1.Title = wadfile.Directory[n].LevelName;
+		ChooseTool(editor.Tool);
 	    }
 	}
 
@@ -383,6 +449,7 @@ namespace Weland {
 	    AdjustScrollRange();
 	    window1.Title = "Untitled Level";
 	    Filename = "";
+	    ChooseTool(editor.Tool);
 	}
 
 	internal void OnNew(object obj, EventArgs args) {
@@ -449,7 +516,44 @@ namespace Weland {
 		ChooseTool(Tool.Line);
 	    } else if (button == fillButton) {
 		ChooseTool(Tool.Fill);
+	    } else if (button == floorHeightButton) {
+		ChooseTool(Tool.FloorHeight);
 	    }
+	}
+
+	void OnChangePaintIndex(object obj, EventArgs args) {
+	    ColorRadioButton crb = (ColorRadioButton) obj;
+	    if (crb.Active) {
+		editor.PaintIndex = paintIndexes.Keys[crb.Index];
+	    }
+	}
+
+	void BuildHeightPalette(SortedList<short, bool> heights) {
+	    while (paletteButtonbox.Children.Length > 0) {
+		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
+	    }
+	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
+	    
+	    paintIndexes = heights;
+	    if (paintIndexes.Keys.Count > 0) {
+		editor.PaintIndex = paintIndexes.Keys[0];
+	    }
+	    ColorRadioButton b = null;
+	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
+		Gdk.Color c = paintColors[i % paintColors.Count];
+		b = new ColorRadioButton(b, String.Format("{0:0.000}", World.ToDouble(paintIndexes.Keys[i])), c);
+		b.Index = i;
+		b.Toggled += OnChangePaintIndex;
+		b.DoubleClicked += OnPaletteEdit;
+		paletteButtonbox.Add(b);
+		
+		drawingArea.PaintColors[paintIndexes.Keys[i]] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+	    }
+
+	    paletteButtonbox.ShowAll();
+	    
+	    paletteAddButton.Sensitive = true;
+	    paletteEditButton.Sensitive = (paintIndexes.Keys.Count > 0);
 	}
 
 	void ChooseTool(Tool tool) {
@@ -465,11 +569,21 @@ namespace Weland {
 	    } else {
 		drawingArea.GdkWindow.Cursor = null;
 	    }
+
+	    if (tool == Tool.FloorHeight) {
+		BuildHeightPalette(editor.GetFloorHeights());
+		palette.Show();
+		drawingArea.Mode = DrawMode.FloorHeight;
+	    } else {
+		drawingArea.Mode = DrawMode.Draw;
+		palette.Hide();
+	    }
 	    Redraw();
 	}
 
 	internal void OnUndo(object o, EventArgs e) {
 	    editor.Undo();
+	    ChooseTool(editor.Tool);
 	    Redraw();
 	}
 
@@ -490,15 +604,15 @@ namespace Weland {
 	internal void OnGridSize(object o, EventArgs e) {
 	    RadioToolButton button = (RadioToolButton) o;
 	    if (button == twoWUButton) {
-		grid.Resolution = 2048;
+		grid.Resolution = World.One * 2;
 	    } else if (button == oneWUButton) {
-		grid.Resolution = 1024;
+		grid.Resolution = World.One;
 	    } else if (button == halfWUButton) {
-		grid.Resolution = 512;
+		grid.Resolution = World.One / 2;
 	    } else if (button == quarterWUButton) {
-		grid.Resolution = 256;
+		grid.Resolution = World.One / 4;
 	    } else if (button == eighthWUButton) {
-		grid.Resolution = 128;
+		grid.Resolution = World.One / 8;
 	    }
 	    Redraw();
 	}
@@ -535,6 +649,42 @@ namespace Weland {
 
 	protected void OnPave(object o, EventArgs e) {
 	    Level.Pave();
+	}
+
+	protected void OnPaletteAdd(object o, EventArgs e) {
+	    if (editor.Tool == Tool.FloorHeight) {
+		DoubleDialog dialog = new DoubleDialog("Add Floor Height", window1);
+		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
+		    short height = World.FromDouble(dialog.Value);
+		    SortedList<short, bool> heights = editor.GetFloorHeights();
+		    heights[height] = true;
+		    BuildHeightPalette(heights);
+		    ColorRadioButton b = (ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)];
+		    b.Active = true;
+		}
+		dialog.Destroy();
+	    }
+	}
+
+	void PaletteEdit() {
+	    if (editor.Tool == Tool.FloorHeight) {
+		short original_height = editor.PaintIndex;
+		DoubleDialog dialog = new DoubleDialog("Edit Floor Height", window1);
+		dialog.Value = World.ToDouble(original_height);
+		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
+		    short height = World.FromDouble(dialog.Value);
+		    editor.ChangeFloorHeights(original_height, height);
+		    BuildHeightPalette(editor.GetFloorHeights());
+
+		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
+		}
+		dialog.Destroy();
+		Redraw();
+	    }
+	}
+
+	protected void OnPaletteEdit(object o, EventArgs e) { 
+	    PaletteEdit();
 	}
     }
 }

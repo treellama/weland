@@ -8,6 +8,15 @@ namespace Weland {
 	Move,
 	Line,
 	Fill,
+	FloorHeight
+    }
+
+    [Flags] public enum EditorModifiers {
+	None,
+	Shift = 0x01,
+	Control = 0x02,
+	Alt = 0x04,
+	RightClick = 0x08
     }
 
     public class Grid {
@@ -39,10 +48,8 @@ namespace Weland {
 	    }
 	}
 	Tool tool;
+	public short PaintIndex;
 		
-
-	public Point LineStart;
-	public Point LineEnd;
 
 	bool undoSet = false;
 	short lastX;
@@ -208,31 +215,84 @@ namespace Weland {
 		foreach (short i in polygons) {
 		    Polygon polygon = Level.Polygons[i];
 		    Level.UpdatePolygonConcavity(polygon);
-		    for (int j = 0; j < polygon.VertexCount; ++j) {
-			AddDirty(Level.Endpoints[Level.Lines[polygon.LineIndexes[j]].EndpointIndexes[0]]);
-			AddDirty(Level.Endpoints[Level.Lines[polygon.LineIndexes[j]].EndpointIndexes[1]]);
-		    }
+		    DirtyPolygon(polygon);
 		}
 	    }
 	}
 
-	public void ButtonPress(short X, short Y) {
+	void DirtyPolygon(Polygon p) {
+	    for (int i = 0; i < p.VertexCount; ++i) {
+		AddDirty(Level.Endpoints[Level.Lines[p.LineIndexes[i]].EndpointIndexes[0]]);
+		AddDirty(Level.Endpoints[Level.Lines[p.LineIndexes[i]].EndpointIndexes[1]]);
+	    }
+	}
+
+	bool Alt(EditorModifiers mods) {
+	    return ((mods & EditorModifiers.Alt) != 0);
+	}
+
+	bool RightClick(EditorModifiers mods) {
+	    return ((mods & EditorModifiers.RightClick) != 0);
+	}
+
+	Polygon FindPolygon(short X,  short Y) {
+	    short index = Level.GetEnclosingPolygon(new Point(X, Y));
+	    if (index != -1) {
+		return Level.Polygons[index];
+	    } else {
+		return null;
+	    }
+	}
+
+	void GetFloorHeight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.FloorHeight;
+	    }
+	}
+	
+	void SetFloorHeight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.FloorHeight = PaintIndex;
+		DirtyPolygon(p);
+	    }
+	}
+
+	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
 	    } else if (Tool == Tool.Fill) {
 		Fill(X, Y);
 	    } else if (Tool == Tool.Select) {
 		Select(X, Y);
+	    } else if (Tool == Tool.FloorHeight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorHeight(X, Y);
+		} else {
+		    undoSet = false;
+		    SetFloorHeight(X, Y);
+		}
 	    }
 	    lastX = X;
 	    lastY = Y;
 	}
 
-	public void Motion(short X, short Y) {
+	public void Motion(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		UpdateLine(X, Y);
 	    } else if (Tool == Tool.Select) {
 		MoveSelected(X, Y);
+	    } else if (Tool == Tool.FloorHeight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorHeight(X, Y);
+		} else {
+		    SetFloorHeight(X, Y);
+		}
 	    }
 	    lastX = X;
 	    lastY = Y;
@@ -334,6 +394,26 @@ namespace Weland {
 
 	public void ClearDirty() {
 	    Dirty = false;
+	}
+
+	public SortedList<short, bool> GetFloorHeights() {
+	    SortedList<short, bool> list = new SortedList<short, bool>();
+	    foreach (Polygon p in Level.Polygons) {
+		list[p.FloorHeight] = true;
+	    }
+	    
+	    return list;
+	}
+
+	public void ChangeFloorHeights(short old_height, short new_height) {
+	    if (old_height != new_height) {
+		SetUndo();
+		foreach (Polygon p in Level.Polygons) {
+		    if (p.FloorHeight == old_height) {
+			p.FloorHeight = new_height;
+		    }
+		}
+	    }
 	}
     }
 }
