@@ -260,11 +260,11 @@ namespace Weland {
 	    return points;
 	}
 
-	double Angle(Point p0, Point p1) {
+	double Angle(int X0, int Y0, int X1, int Y1) {
 	    // computes the angle from the line from the origin to p0,
 	    // and the line from the origin to p1, and returns a value
 	    // in the range [-pi,pi]
-	    double dtheta = (Math.Atan2(p0.Y, p0.X) - Math.Atan2(p1.Y, p1.X)) % (Math.PI * 2);
+	    double dtheta = (Math.Atan2(Y0, X0) - Math.Atan2(Y1, X1)) % (Math.PI * 2);
 	    if (dtheta > Math.PI) 
 		return dtheta - Math.PI * 2;
 	    else if (dtheta < -Math.PI) 
@@ -278,7 +278,7 @@ namespace Weland {
 	    for (int i = 0; i < points.Count; ++i) {
 		Point p0 = Endpoints[points[i]];
 		Point p1 = Endpoints[points[(i + 1) % points.Count]];
-		double angle = Angle(new Point((short) (p0.X - p.X), (short) (p0.Y - p.Y)), new Point((short) (p1.X - p.X), (short) (p1.Y - p.Y)));
+		double angle = Angle(p0.X - p.X, p0.Y - p.Y, p1.X - p.X, p1.Y - p.Y);
 		angle_sum += angle;
 	    }
 	    return !(Math.Abs(angle_sum) < Math.PI);
