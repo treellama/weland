@@ -9,7 +9,7 @@ namespace Weland {
 	Left = 0x4,
 	Right = 0x8
     }
-    
+
     public class Transform {
 	public Transform() { }
 	public double Scale = 1.0 / 16.0;
@@ -37,6 +37,11 @@ namespace Weland {
 	}
     }
 
+    public enum DrawMode {
+	Draw,
+	FloorHeight
+    }
+
     public class MapDrawingArea : Gtk.DrawingArea {
 
 	public Transform Transform = new Transform();
@@ -49,6 +54,9 @@ namespace Weland {
 	public bool ShowGoals = true;
 	public bool ShowSounds = true;
 	public bool Antialias = true;
+	public DrawMode Mode = DrawMode.Draw;
+
+	public Dictionary<short, Drawer.Color> PaintColors = new Dictionary<short, Drawer.Color>();
 
 	Drawer drawer;
 
@@ -104,17 +112,11 @@ namespace Weland {
 
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
-	bool IsMac() {
-	    return ((int) System.Environment.OSVersion.Platform == 6 || 
-		    // ugh, Mono
-		    (System.Environment.OSVersion.Platform == PlatformID.Unix && System.Environment.OSVersion.Version.Major == 9));
-	}
-
 	protected override bool OnExposeEvent(Gdk.EventExpose args) {
 #if SYSTEM_DRAWING
 	    drawer = new SystemDrawer(GdkWindow, Antialias);
 #else
-	    if (!Antialias && !IsMac()) {
+	    if (!Antialias && !MapWindow.IsMac()) {
 		drawer = new GdkDrawer(GdkWindow);
 	    } else {
 		drawer = new CairoDrawer(GdkWindow, Antialias);
@@ -174,10 +176,12 @@ namespace Weland {
 		    }
 		}
 		
-		int ObjectSize = (int) (16 / 2 / Transform.Scale);
-		foreach (MapObject obj in Level.Objects) {
-		    if (obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
-			DrawObject(obj);
+		if (Mode == DrawMode.Draw) {
+		    int ObjectSize = (int) (16 / 2 / Transform.Scale);
+		    foreach (MapObject obj in Level.Objects) {
+			if (obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
+			    DrawObject(obj);
+			}
 		    }
 		}
 
@@ -281,10 +285,14 @@ namespace Weland {
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
 		points.Add(Transform.ToScreenPoint(Level.Endpoints[polygon.EndpointIndexes[i]]));
 	    }
-	    if (polygon.Concave) {
-		drawer.FillPolygon(invalidPolygonColor, points);
+	    if (Mode == DrawMode.FloorHeight) {
+		drawer.FillPolygon(PaintColors[polygon.FloorHeight], points);
 	    } else {
-		drawer.FillPolygon(polygonColor, points);
+		if (polygon.Concave) {
+		    drawer.FillPolygon(invalidPolygonColor, points);
+		} else {
+		    drawer.FillPolygon(polygonColor, points);
+		}
 	    }
 	}
 	

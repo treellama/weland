@@ -8,6 +8,17 @@ namespace Weland {
 	void Save(BinaryWriterBE writer);
     }
 
+    public class World {
+	public const short One = 1024;
+	public static short FromDouble(double d) {
+	    return (short) Math.Round(d * World.One);
+	}
+
+	public static double ToDouble(short w) {
+	    return ((double) w / World.One);
+	}
+    }
+
     public partial class Level {
 	public List<Point> Endpoints = new List<Point> ();
 	public List<Line> Lines = new List<Line>();
