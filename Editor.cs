@@ -8,7 +8,8 @@ namespace Weland {
 	Move,
 	Line,
 	Fill,
-	FloorHeight
+	FloorHeight,
+	CeilingHeight
     }
 
     [Flags] public enum EditorModifiers {
@@ -263,6 +264,25 @@ namespace Weland {
 	    }
 	}
 
+	void GetCeilingHeight(short X, short Y) {
+	    Polygon p = FindPolygon(X,  Y);
+	    if (p != null) {
+		PaintIndex = p.CeilingHeight;
+	    }
+	}
+
+	void SetCeilingHeight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+	    }
+	    p.CeilingHeight = PaintIndex;
+	    DirtyPolygon(p);
+	}
+
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
@@ -276,6 +296,13 @@ namespace Weland {
 		} else {
 		    undoSet = false;
 		    SetFloorHeight(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingHeight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingHeight(X, Y);
+		} else {
+		    undoSet = false;
+		    SetCeilingHeight(X, Y);
 		}
 	    }
 	    lastX = X;
@@ -292,6 +319,12 @@ namespace Weland {
 		    GetFloorHeight(X, Y);
 		} else {
 		    SetFloorHeight(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingHeight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingHeight(X, Y);
+		} else {
+		    SetCeilingHeight(X, Y);
 		}
 	    }
 	    lastX = X;
@@ -404,6 +437,14 @@ namespace Weland {
 	    
 	    return list;
 	}
+	
+	public SortedList<short, bool> GetCeilingHeights() {
+	    SortedList<short, bool> list = new SortedList<short, bool>();
+	    foreach (Polygon p in Level.Polygons) {
+		list[p.CeilingHeight] = true;
+	    }
+	    return list;
+	}
 
 	public void ChangeFloorHeights(short old_height, short new_height) {
 	    if (old_height != new_height) {
@@ -411,6 +452,17 @@ namespace Weland {
 		foreach (Polygon p in Level.Polygons) {
 		    if (p.FloorHeight == old_height) {
 			p.FloorHeight = new_height;
+		    }
+		}
+	    }
+	}
+
+	public void ChangeCeilingHeights(short old_height, short new_height) {
+	    if (old_height != new_height) {
+		SetUndo();
+		foreach (Polygon p in Level.Polygons) {
+		    if (p.CeilingHeight == old_height) {
+			p.CeilingHeight = new_height;
 		    }
 		}
 	    }

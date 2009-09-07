@@ -39,7 +39,8 @@ namespace Weland {
 
     public enum DrawMode {
 	Draw,
-	FloorHeight
+	FloorHeight,
+	CeilingHeight
     }
 
     public class MapDrawingArea : Gtk.DrawingArea {
@@ -287,6 +288,8 @@ namespace Weland {
 	    }
 	    if (Mode == DrawMode.FloorHeight) {
 		drawer.FillPolygon(PaintColors[polygon.FloorHeight], points);
+	    } else if (Mode == DrawMode.CeilingHeight) {
+		drawer.FillPolygon(PaintColors[polygon.CeilingHeight], points);
 	    } else {
 		if (polygon.Concave) {
 		    drawer.FillPolygon(invalidPolygonColor, points);
