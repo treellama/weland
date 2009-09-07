@@ -48,6 +48,7 @@ namespace Weland {
 	public Transform Transform = new Transform();
 	public Level Level;
 	public Grid Grid = new Grid();
+	public Selection Selection = new Selection();
 	public bool ShowMonsters = true;
 	public bool ShowObjects = true;
 	public bool ShowScenery = true;
@@ -179,10 +180,17 @@ namespace Weland {
 		
 		if (Mode == DrawMode.Draw) {
 		    int ObjectSize = (int) (16 / 2 / Transform.Scale);
+		    MapObject selectedObj = null;
+		    if (Selection.Object != -1) {
+			selectedObj = Level.Objects[Selection.Object];
+		    }
 		    foreach (MapObject obj in Level.Objects) {
-			if (obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
-			    DrawObject(obj);
+			if (obj != selectedObj && obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
+			    DrawObject(obj, false);
 			}
+		    }
+		    if (selectedObj != null) {
+			DrawObject(selectedObj, true);
 		    }
 		}
 
@@ -191,9 +199,9 @@ namespace Weland {
 		    drawer.DrawLine(selectedLineColor, Transform.ToScreenPoint(Level.Endpoints[Level.TemporaryLineStartIndex]), Transform.ToScreenPoint(Level.TemporaryLineEnd));
 		}
 
-		if (Level.SelectedPoint != -1) {
+		if (Selection.Point != -1) {
 		    // draw the selected point
-		    DrawFatPoint(selectedLineColor, Level.Endpoints[Level.SelectedPoint]);
+		    DrawFatPoint(selectedLineColor, Level.Endpoints[Selection.Point]);
 		}
 	    }
 
@@ -299,24 +307,33 @@ namespace Weland {
 	    }
 	}
 	
-	void DrawTriangle(Drawer.Color c, double X, double Y, double angle) {
+	void DrawTriangle(Drawer.Color c, double X, double Y, double angle, bool highlight) {
 	    double rads = angle * Math.PI / 180;
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    points.Add(new Drawer.Point(X + 8 * Math.Cos(rads), Y + 8 * Math.Sin(rads)));
 	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads + 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads + 2 * Math.PI * 0.4)));
 	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads - 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads - 2 * Math.PI * 0.4)));
 	    
-	    drawer.FillStrokePolygon(c, new Drawer.Color(0, 0, 0), points);
+	    if (highlight) {
+		drawer.FillStrokePolygon(new Drawer.Color(0, 0, 0), c, points);
+	    } else {
+		drawer.FillStrokePolygon(c, new Drawer.Color(0, 0, 0), points);
+	    }
+
 	}
 
-	void DrawImage(Gdk.Pixbuf image, double X, double Y) {
-	    GdkWindow.DrawPixbuf(new Gdk.GC(GdkWindow), image, 0, 0, (int) X - image.Width / 2, (int) Y - image.Height / 2, -1, -1, Gdk.RgbDither.Normal, 0, 0);
+	void DrawImage(Gdk.Pixbuf image, double X, double Y, bool highlight) {
+	    Gdk.GC gc = new Gdk.GC(GdkWindow);
+	    if (highlight) {
+		gc.Function = Gdk.Function.Invert;
+	    }
+	    GdkWindow.DrawPixbuf(gc, image, 0, 0, (int) X - image.Width / 2, (int) Y - image.Height / 2, -1, -1, Gdk.RgbDither.Normal, 0, 0);
 	}
 
-	void DrawObject(MapObject obj) {
+	void DrawObject(MapObject obj, bool highlight) {
 	    if (obj.Type == ObjectType.Player) {
 		if (ShowPlayers) {
-		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512, highlight);
 		}
 	    } else if (obj.Type == ObjectType.Monster) {
 		if (ShowMonsters) {
@@ -327,24 +344,24 @@ namespace Weland {
 			color = monsterColor;
 		    }
 		    
-		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512);
+		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512, highlight);
 		}
 	    } else if (obj.Type == ObjectType.Scenery) {
 		if (ShowScenery) {
-		    DrawImage(sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    DrawImage(sceneryImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), highlight);
 		}
 	    } else if (obj.Type == ObjectType.Sound) {
 		if (ShowSounds) {
-		    DrawImage(soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    DrawImage(soundImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), highlight);
 		}
 	    } else if (obj.Type == ObjectType.Goal) {
 		if (ShowGoals) {
-		    DrawImage(goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+		    DrawImage(goalImage, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), highlight);
 		}
 	    } else if (obj.Type == ObjectType.Item) {
 		if (ShowObjects) {
 		    if (itemImages.ContainsKey((ItemType) obj.Index) && itemImages[(ItemType) obj.Index] != null) {
-			DrawImage(itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y));
+			DrawImage(itemImages[(ItemType) obj.Index], Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), highlight);
 		    } else {
 			drawer.DrawPoint(objectColor, new Drawer.Point(Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y)));
 		    }

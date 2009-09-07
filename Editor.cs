@@ -26,14 +26,30 @@ namespace Weland {
 	public short Resolution = 1024;
     }
 
+    public class Selection {
+	public short Point = -1;
+	public short Object = -1;
+
+	public void Clear() {
+	    Point = -1;
+	    Object = -1;
+	}
+
+	public void CopyFrom(Selection other) {
+	    Point = other.Point;
+	    Object = other.Object;
+	}
+    }
+
     public class Editor {
 	public bool Dirty = false;
 	public short RedrawTop, RedrawBottom, RedrawLeft, RedrawRight;
 
 	public bool Changed = false;
 	public Grid Grid;
+	public Selection Selection;
 	Wadfile.DirectoryEntry undoState;
-	short undoSelectedIndex;
+	Selection undoSelection;
 
 	public short Snap;
 	public Level Level;
@@ -44,7 +60,7 @@ namespace Weland {
 	    set {
 		tool = value;
 		if (value != Tool.Select) {
-		    Level.SelectedPoint = -1;
+		    Selection.Point = -1;
 		}
 	    }
 	}
@@ -67,6 +83,15 @@ namespace Weland {
 	short ClosestPoint(Point p) {
 	    short index = Level.GetClosestPoint(p);
 	    if (index != -1 && Level.Distance(p, Level.Endpoints[index]) < Snap) {
+		return index;
+	    } else {
+		return -1;
+	    }
+	}
+
+	short ClosestObject(Point p) {
+	    short index = Level.GetClosestObject(p);
+	    if (index != -1 && Level.Distance(p, new Point(Level.Objects[index].X, Level.Objects[index].Y)) < Snap) {
 		return index;
 	    } else {
 		return -1;
@@ -179,44 +204,64 @@ namespace Weland {
 	}
 
 	void Select(short X, short Y) {
+	    Selection.Clear();
 	    Point p = new Point(X, Y);
 	    short index = ClosestPoint(p);
 	    if (index != -1) {
-		Level.SelectedPoint = index;
+		Selection.Point = index;
 	    } else {
-		Level.SelectedPoint = -1;
+		index = ClosestObject(p);
+		if (index != -1) {
+		    Selection.Object = index;
+		}
 	    }
 	    undoSet = false;
 	}
 
 	void MoveSelected(short X, short Y) {
-	    if (Level.SelectedPoint != -1) {
+	    if (Selection.Point != -1) {
 		if (!undoSet) {
 		    SetUndo();
 		    undoSet = true;
 		}
-		Point p = Level.Endpoints[Level.SelectedPoint];
+		Point p = Level.Endpoints[Selection.Point];
 		AddDirty(p);
 		p.X = (short) (p.X + X - lastX);
 		p.Y = (short) (p.Y + Y - lastY);
-		Level.Endpoints[Level.SelectedPoint] = p;
+		Level.Endpoints[Selection.Point] = p;
 		AddDirty(p);
 		
 		// dirty every endpoint line(!)
-		List<short> lines = Level.EndpointLines(Level.SelectedPoint);
+		List<short> lines = Level.EndpointLines(Selection.Point);
 		foreach (short i in lines) {
 		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
 		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
 		}
 
 		// update attached polygon concavity
-		List<short> polygons = Level.EndpointPolygons(Level.SelectedPoint);
+		List<short> polygons = Level.EndpointPolygons(Selection.Point);
 		
 		// dirty every attached polygon(!!?)
 		foreach (short i in polygons) {
 		    Polygon polygon = Level.Polygons[i];
 		    Level.UpdatePolygonConcavity(polygon);
 		    DirtyPolygon(polygon);
+		}
+	    } else if (Selection.Object != 1) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+
+		MapObject obj = Level.Objects[Selection.Object];
+		AddDirty(new Point(obj.X, obj.Y));
+		Point p = new Point((short) (X), (short) (Y));
+		short polygon_index = Level.GetEnclosingPolygon(p);
+		if (polygon_index != -1) {
+		    obj.X = p.X;
+		    obj.Y = p.Y;
+		    AddDirty(new Point(obj.X, obj.Y));
+		    obj.PolygonIndex = polygon_index;
 		}
 	    }
 	}
@@ -338,7 +383,7 @@ namespace Weland {
 	}
 
 	public void DeleteSelected() {
-	    if (Level.SelectedPoint != -1) {
+	    if (Selection.Point != -1) {
 		// find the closest point to delete next
 
 		// this is pretty ridiculous: endpoint indices can
@@ -346,8 +391,8 @@ namespace Weland {
 		// so remember a line reference and index into that
 		// line's EndpointIndexes list
 		List<short> nextPointCandidates = new List<short>();
-		foreach (short i in Level.EndpointLines(Level.SelectedPoint)) {
-		    if (Level.Lines[i].EndpointIndexes[0] == Level.SelectedPoint) {
+		foreach (short i in Level.EndpointLines(Selection.Point)) {
+		    if (Level.Lines[i].EndpointIndexes[0] == Selection.Point) {
 			nextPointCandidates.Add(Level.Lines[i].EndpointIndexes[1]);
 		    } else {
 			nextPointCandidates.Add(Level.Lines[i].EndpointIndexes[0]);
@@ -355,7 +400,7 @@ namespace Weland {
 		}
 
 		nextPointCandidates.Sort(delegate(short p0, short p1) {
-			return Level.Distance(Level.Endpoints[p0], Level.Endpoints[Level.SelectedPoint]) - Level.Distance(Level.Endpoints[p1], Level.Endpoints[Level.SelectedPoint]);
+			return Level.Distance(Level.Endpoints[p0], Level.Endpoints[Selection.Point]) - Level.Distance(Level.Endpoints[p1], Level.Endpoints[Selection.Point]);
 		    });
 		
 		Line nextLine = null;
@@ -363,12 +408,12 @@ namespace Weland {
 		foreach (short point_index in nextPointCandidates) {
 		    foreach (short i in Level.EndpointLines(point_index)) {
 			if (Level.Lines[i].EndpointIndexes[0] == point_index &&
-			    Level.Lines[i].EndpointIndexes[1] != Level.SelectedPoint) {
+			    Level.Lines[i].EndpointIndexes[1] != Selection.Point) {
 			    nextLine = Level.Lines[i];
 			    nextLineEndpointIndex = 0;
 			    break;
 			} else if (Level.Lines[i].EndpointIndexes[1] == point_index &&
-				   Level.Lines[i].EndpointIndexes[0] != Level.SelectedPoint) {
+				   Level.Lines[i].EndpointIndexes[0] != Selection.Point) {
 			    nextLine = Level.Lines[i];
 			    nextLineEndpointIndex = 1;
 			}
@@ -378,27 +423,29 @@ namespace Weland {
 		    }
 		}
 		SetUndo();
-		Level.DeletePoint(Level.SelectedPoint);
+		Level.DeletePoint(Selection.Point);
 		if (nextLine != null) {
-		    Level.SelectedPoint = nextLine.EndpointIndexes[nextLineEndpointIndex];
+		    Selection.Point = nextLine.EndpointIndexes[nextLineEndpointIndex];
 		} else {
-		    Level.SelectedPoint = -1;
+		    Selection.Point = -1;
 		}
 	    }
 	}
 
 	public void SetUndo() {
 	    undoState = Level.Save().Clone();
-	    undoSelectedIndex = Level.SelectedPoint;
+	    undoSelection = new Selection();
+	    undoSelection.CopyFrom(Selection);
 	}
 
 	public void Undo() {
 	    if (undoState != null) {
 		Wadfile.DirectoryEntry redo = Level.Save().Clone();
 		Level.Load(undoState);
-		short temp = Level.SelectedPoint;
-		Level.SelectedPoint = undoSelectedIndex;
-		undoSelectedIndex = temp;
+		Selection temp = new Selection();
+		temp.CopyFrom(Selection);
+		Selection.CopyFrom(undoSelection);
+		undoSelection.CopyFrom(temp);
 		undoState = redo;
 	    }
 	}

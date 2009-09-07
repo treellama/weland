@@ -35,8 +35,6 @@ namespace Weland {
 	public short TemporaryLineStartIndex = -1;
 	public Point TemporaryLineEnd;
 
-	public short SelectedPoint = -1;
-
 	List<uint> ChunkFilter = new List<uint> {
 	    Wadfile.Chunk("iidx"),
 	    Endpoint.Tag,

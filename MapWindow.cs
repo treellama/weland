@@ -24,6 +24,7 @@ namespace Weland {
 	Wadfile wadfile = new Wadfile();
 	Editor editor = new Editor();
 	Grid grid = new Grid();
+	Selection selection = new Selection();
 
 	SortedList<short, bool> paintIndexes = new SortedList<short, bool>();
 	List<Gdk.Color> paintColors = new List<Gdk.Color>();
@@ -111,7 +112,9 @@ namespace Weland {
 	    }
 
 	    editor.Grid = grid;
+	    editor.Selection = selection;
 	    drawingArea.Grid = grid;
+	    drawingArea.Selection = selection;
 
 	    window1.AllowShrink = true;
 	    window1.Resize(640, 480);
@@ -184,7 +187,7 @@ namespace Weland {
 	}
 
 	void RedrawDirty() {
-	    const int dirtySlop = 4;
+	    const int dirtySlop = 12;
 	    if (editor.Dirty) {
 		int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - dirtySlop;
 		int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - dirtySlop;
@@ -393,6 +396,7 @@ namespace Weland {
 		Level.Load(wadfile.Directory[n]);
 		drawingArea.Transform = new Transform();
 		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+		selection.Clear();
 		Center(0, 0);
 		AdjustScrollRange();
 		window1.Title = wadfile.Directory[n].LevelName;
@@ -449,6 +453,7 @@ namespace Weland {
 	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    Center(0, 0);
 	    AdjustScrollRange();
+	    selection.Clear();
 	    window1.Title = "Untitled Level";
 	    Filename = "";
 	    ChooseTool(editor.Tool);

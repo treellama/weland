@@ -48,6 +48,20 @@ namespace Weland {
 	    return closest_point;
 	}
 
+	public short GetClosestObject(Point p) {
+	    int min = int.MaxValue;
+	    short closest_object = -1;
+	    for (short i = 0; i < Objects.Count; ++i) {
+		int distance = Distance(p, new Point(Objects[i].X, Objects[i].Y));
+		if (distance < min) {
+		    closest_object = i;
+		    min = distance;
+		}
+	    }
+
+	    return closest_object;
+	}
+
 	public short GetClosestLine(Point p) {
 	    int min = int.MaxValue;
 	    short closest_line = -1;
