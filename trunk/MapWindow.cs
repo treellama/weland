@@ -357,9 +357,6 @@ namespace Weland {
 		editor.DeleteSelected();
 		Redraw();
 		break;
-	    case Gdk.Key.o:
-		palette.Visible = !palette.Visible;
-		break;
 	    default:
 		caught = false;
 		break;
