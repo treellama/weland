@@ -297,8 +297,8 @@ namespace Weland {
 		    oldTool = editor.Tool;
 		    editor.Tool = Tool.Move;
 		    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);		    
-		    args.RetVal = true;
 		}
+		args.RetVal = true;    
 	    }
 	}
 
@@ -545,7 +545,6 @@ namespace Weland {
 		b.Index = i;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
-		b.CanFocus = false;
 		paletteButtonbox.Add(b);
 		
 		drawingArea.PaintColors[paintIndexes.Keys[i]] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
