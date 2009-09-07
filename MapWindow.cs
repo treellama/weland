@@ -349,6 +349,9 @@ namespace Weland {
 	    case Gdk.Key.numbersign:
 		showGridButton.Active = !showGridButton.Active;
 		break;
+	    case Gdk.Key.percent:
+		snapToGridButton.Active = !snapToGridButton.Active;
+		break;
 	    case Gdk.Key.Delete:
 	    case Gdk.Key.BackSpace:
 		editor.DeleteSelected();

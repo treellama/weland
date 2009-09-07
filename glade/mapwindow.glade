@@ -291,7 +291,7 @@
             <child>
               <widget class="GtkToggleToolButton" id="snapToGridButton">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Snap to Grid</property>
+                <property name="tooltip" translatable="yes">Constrain to Grid (%)</property>
                 <property name="label" translatable="yes">Snap to Grid</property>
                 <property name="use_underline">True</property>
                 <property name="active">True</property>
