@@ -40,6 +40,7 @@ namespace Weland {
 	[Widget] RadioToolButton lineButton;
 	[Widget] RadioToolButton fillButton;
 	[Widget] RadioToolButton floorHeightButton;
+	[Widget] RadioToolButton ceilingHeightButton;
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -89,6 +90,7 @@ namespace Weland {
 	    SetIconResource(lineButton, "line.png");
 	    SetIconResource(fillButton, "fill.png");
 	    SetIconResource(floorHeightButton, "floor-height.png");
+	    SetIconResource(ceilingHeightButton, "ceiling-height.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -264,7 +266,7 @@ namespace Weland {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
-	    if (editor.Tool == Tool.FloorHeight) {
+	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight) {
 		// update the paint mode button
 		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
 		if (i != -1) {
@@ -518,6 +520,8 @@ namespace Weland {
 		ChooseTool(Tool.Fill);
 	    } else if (button == floorHeightButton) {
 		ChooseTool(Tool.FloorHeight);
+	    } else if (button == ceilingHeightButton) {
+		ChooseTool(Tool.CeilingHeight);
 	    }
 	}
 
@@ -574,6 +578,10 @@ namespace Weland {
 		BuildHeightPalette(editor.GetFloorHeights());
 		palette.Show();
 		drawingArea.Mode = DrawMode.FloorHeight;
+	    } else if (tool == Tool.CeilingHeight) {
+		BuildHeightPalette(editor.GetCeilingHeights());
+		palette.Show();
+		drawingArea.Mode = DrawMode.CeilingHeight;
 	    } else {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
@@ -663,6 +671,16 @@ namespace Weland {
 		    b.Active = true;
 		}
 		dialog.Destroy();
+	    } else if (editor.Tool == Tool.CeilingHeight) {
+		DoubleDialog dialog = new DoubleDialog("Add Ceiling Height", window1);
+		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
+		    short height = World.FromDouble(dialog.Value);
+		    SortedList<short, bool> heights = editor.GetCeilingHeights();
+		    heights[height] = true;
+		    BuildHeightPalette(heights);
+		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
+		}
+		dialog.Destroy();
 	    }
 	}
 
@@ -680,7 +698,21 @@ namespace Weland {
 		}
 		dialog.Destroy();
 		Redraw();
+	    } else if (editor.Tool == Tool.CeilingHeight) {
+		short original_height = editor.PaintIndex;
+		DoubleDialog dialog = new DoubleDialog("Edit Ceiling Height", window1);
+		dialog.Value = World.ToDouble(original_height);
+		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
+		    short height = World.FromDouble(dialog.Value);
+		    editor.ChangeCeilingHeights(original_height, height);
+		    BuildHeightPalette(editor.GetCeilingHeights());
+
+		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
+		}
+		dialog.Destroy();
+		Redraw();
 	    }
+
 	}
 
 	protected void OnPaletteEdit(object o, EventArgs e) { 

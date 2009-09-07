@@ -543,6 +543,20 @@
                     <property name="homogeneous">True</property>
                   </packing>
                 </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="ceilingHeightButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Ceiling Heights</property>
+                    <property name="label" translatable="yes">toolbutton4</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -590,6 +604,7 @@
                           <widget class="GtkButton" id="paletteAddButton">
                             <property name="label" translatable="yes">gtk-add</property>
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
                             <signal name="clicked" handler="OnPaletteAdd"/>
@@ -602,6 +617,7 @@
                           <widget class="GtkButton" id="paletteEditButton">
                             <property name="label" translatable="yes">gtk-edit</property>
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
                             <signal name="clicked" handler="OnPaletteEdit"/>
