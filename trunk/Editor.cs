@@ -59,8 +59,8 @@ namespace Weland {
 	    }
 	    set {
 		tool = value;
-		if (value != Tool.Select) {
-		    Selection.Point = -1;
+		if (value != Tool.Select && value != Tool.Move) {
+		    Selection.Clear();
 		}
 	    }
 	}

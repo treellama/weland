@@ -10,6 +10,7 @@ Drawer.cs
 Editor.cs
 GdkDrawer.cs
 Geometry.cs
+Inspector.cs
 Level.cs
 LevelParametersDialog.cs
 Light.cs
