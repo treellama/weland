@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Weland {
     // resizable, scrollable map view
-    public class MapWindow {
+    public partial class MapWindow {
 	public Level Level {
 	    get { return drawingArea.Level; }
 	    set { 
@@ -279,6 +279,8 @@ namespace Weland {
 		    }
 		}
 	    }
+
+	    UpdateInspector();
 
 	    args.RetVal = true;
 	}
@@ -591,6 +593,7 @@ namespace Weland {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
 	    }
+	    UpdateInspector();
 	    Redraw();
 	}
 

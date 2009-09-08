@@ -66,8 +66,8 @@ namespace Weland {
 
 	public ObjectType Type;
 	public short Index;
-	public short Facing;
-	public short PolygonIndex = 0;
+	public double Facing;
+	public short PolygonIndex = -1;
 	public short X;
 	public short Y;
 	public short Z;
@@ -77,7 +77,7 @@ namespace Weland {
 	    if (value) {
 		flags |= flag;
 	    } else {
-		flags &= flag;
+		flags &= ~flag;
 	    }
 	}
 
@@ -158,7 +158,7 @@ namespace Weland {
 	public void Load(BinaryReaderBE reader) {
 	    Type = (ObjectType) reader.ReadInt16();
 	    Index = reader.ReadInt16();
-	    Facing = reader.ReadInt16();
+	    Facing = (double) reader.ReadInt16() * 360 / 512;
 	    PolygonIndex = reader.ReadInt16();
 	    X = reader.ReadInt16();
 	    Y = reader.ReadInt16();
@@ -169,7 +169,7 @@ namespace Weland {
 	public void Save(BinaryWriterBE writer) {
 	    writer.Write((short) Type);
 	    writer.Write(Index);
-	    writer.Write(Facing);
+	    writer.Write((short) Math.Round(Facing * 512 / 360));
 	    writer.Write(PolygonIndex);
 	    writer.Write(X);
 	    writer.Write(Y);

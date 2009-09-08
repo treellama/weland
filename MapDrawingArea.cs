@@ -333,7 +333,7 @@ namespace Weland {
 	void DrawObject(MapObject obj, bool highlight) {
 	    if (obj.Type == ObjectType.Player) {
 		if (ShowPlayers) {
-		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512, highlight);
+		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight);
 		}
 	    } else if (obj.Type == ObjectType.Monster) {
 		if (ShowMonsters) {
@@ -344,7 +344,7 @@ namespace Weland {
 			color = monsterColor;
 		    }
 		    
-		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing * 360 / 512, highlight);
+		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight);
 		}
 	    } else if (obj.Type == ObjectType.Scenery) {
 		if (ShowScenery) {
