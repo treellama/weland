@@ -247,7 +247,7 @@ namespace Weland {
 		    Level.UpdatePolygonConcavity(polygon);
 		    DirtyPolygon(polygon);
 		}
-	    } else if (Selection.Object != 1) {
+	    } else if (Selection.Object != -1) {
 		if (!undoSet) {
 		    SetUndo();
 		    undoSet = true;
