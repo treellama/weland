@@ -8,6 +8,16 @@ namespace Weland {
 	[Widget] ComboBox objectGroup;
 	[Widget] Notebook objectNotebook;
 
+	[Widget] ComboBox monsterType;
+	[Widget] ComboBox monsterActivatedBy;
+	[Widget] HScale monsterAngle;
+	[Widget] Entry monsterHeight;
+	[Widget] CheckButton monsterFromCeiling;
+	[Widget] CheckButton monsterTeleportsIn;
+	[Widget] CheckButton monsterTeleportsOut;
+	[Widget] CheckButton monsterIsBlind;
+	[Widget] CheckButton monsterIsDeaf;
+
 	[Widget] HScale playerAngle;
 	[Widget] CheckButton playerFromCeiling;
 	[Widget] Entry playerHeight;
@@ -21,12 +31,21 @@ namespace Weland {
 		inspector.Show();
 		objectGroup.Active = (int) mapObject.Type;
 		objectNotebook.CurrentPage = (int) mapObject.Type;
-		if (mapObject.Type == ObjectType.Player) {
+		if (mapObject.Type == ObjectType.Monster) {
+		    monsterType.Active = mapObject.Index - 1;
+		    monsterActivatedBy.Active = (int) mapObject.ActivationBias;
+		    monsterAngle.Value = mapObject.Facing;
+		    monsterHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
+		    monsterFromCeiling.Active = mapObject.FromCeiling;
+		    monsterTeleportsIn.Active = mapObject.Invisible;
+		    monsterTeleportsOut.Active = mapObject.Floats;
+		    monsterIsBlind.Active = mapObject.Blind;
+		    monsterIsDeaf.Active = mapObject.Deaf;
+		} else if (mapObject.Type == ObjectType.Player) {
 		    playerAngle.Value = mapObject.Facing;
 		    playerHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    playerFromCeiling.Active = mapObject.FromCeiling;
-		} else {
-		}
+		} 
 	    } else {
 		inspector.Hide();
 	    }
@@ -42,7 +61,19 @@ namespace Weland {
 	protected void OnObjectChanged(object obj, EventArgs args) {
 	    if (!applyObjectChanges) return;
 	    MapObject mapObject = Level.Objects[selection.Object];
-	    if (mapObject.Type == ObjectType.Player) {
+	    if (mapObject.Type == ObjectType.Monster) {
+		mapObject.Index = (short) (monsterType.Active + 1);
+		mapObject.ActivationBias = (ActivationBias) monsterActivatedBy.Active;
+		mapObject.Facing = monsterAngle.Value;
+		try {
+		    mapObject.Z = World.FromDouble(double.Parse(monsterHeight.Text));
+		} catch (Exception) { }
+		mapObject.FromCeiling = monsterFromCeiling.Active;
+		mapObject.Invisible = monsterTeleportsIn.Active;
+		mapObject.Floats = monsterTeleportsOut.Active;
+		mapObject.Blind = monsterIsBlind.Active;
+		mapObject.Deaf = monsterIsDeaf.Active;
+	    } else if (mapObject.Type == ObjectType.Player) {
 		mapObject.Facing = playerAngle.Value;
 		try {
 		    mapObject.Z = World.FromDouble(double.Parse(playerHeight.Text));

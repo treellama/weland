@@ -49,15 +49,72 @@ namespace Weland {
 	SmgAmmo
     }
 
-    [Flags] public enum MapObjectFlags : short {
+    public enum MonsterType {
+	Marine,
+	TickEnergy,
+	TickOxygen,
+	TickKamakazi,
+	CompilerMinor,
+	CompilerMajor,
+	CompilerMinorInvisible,
+	CompilerMajorInvisible,
+	FighterMinor,
+	FighterMajor,
+	FighterMinorProjectile,
+	FighterMajorProjectile,
+	CivilianCrew,
+	CivilianScience,
+	CivilianSecurity,
+	CivilianAssimilated,
+	HummerMinor,
+	HummerMajor,
+	HummerBigMinor,
+	HummerBigMajor,
+	HummerPossessed,
+	CyborgMinor,
+	CyborgMajor,
+	CyborgFlameMinor,
+	CyborgFlameMajor,
+	EnforcerMinor,
+	EnforcerMajor,
+	HunterMinor,
+	HunterMajor,
+	TrooperMinor,
+	TrooperMajor,
+	MotherOfAllCyborgs,
+	MotherOfAllHunters,
+	SewageYeti,
+	WaterYeti,
+	LavaYeti,
+	DefenderMinor,
+	DefenderMajor,
+	JuggernautMinor,
+	JuggernautMajor,
+	TinyFighter,
+	TinyBob,
+	TinyYeti,
+	CivilianFusionCrew,
+	CivilianFusionScience,
+	CivilianFusionSecurity,
+	CivilianFusionAssimilated
+    }
+
+    [Flags] public enum MapObjectFlags : ushort {
 	None,
 	Invisible = 0x01, // teleports in
 	OnPlatform = 0x01, // for sounds only
 	FromCeiling = 0x02,
 	Blind = 0x04,
 	Deaf = 0x08,
-	Floats = 0x10,
+	Floats = 0x10, // or teleports out
 	NetworkOnly = 0x20
+    }
+
+    public enum ActivationBias {
+	Player,
+	NearestHostile,
+	Goal,
+	Randomly
     }
 
     public class MapObject : ISerializableBE {
@@ -72,6 +129,18 @@ namespace Weland {
 	public short Y;
 	public short Z;
 	MapObjectFlags flags;
+
+	const int ActivationBiasShift = 12;
+
+	public ActivationBias ActivationBias {
+	    get {
+		return (ActivationBias) ((ushort) flags >> ActivationBiasShift);
+	    }
+
+	    set {
+		flags = (MapObjectFlags) (((ushort) flags & (1 << ActivationBiasShift) - 1) | ((ushort) value << ActivationBiasShift));
+	    }
+	}
 
 	void SetFlag(MapObjectFlags flag, bool value) {
 	    if (value) {
@@ -163,7 +232,7 @@ namespace Weland {
 	    X = reader.ReadInt16();
 	    Y = reader.ReadInt16();
 	    Z = reader.ReadInt16();
-	    flags = (MapObjectFlags) reader.ReadInt16();
+	    flags = (MapObjectFlags) reader.ReadUInt16();
 	}
 
 	public void Save(BinaryWriterBE writer) {
@@ -174,7 +243,7 @@ namespace Weland {
 	    writer.Write(X);
 	    writer.Write(Y);
 	    writer.Write(Z);
-	    writer.Write((short) flags);
+	    writer.Write((ushort) flags);
 	}
     }
 }
