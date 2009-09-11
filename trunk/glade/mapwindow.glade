@@ -1011,9 +1011,188 @@ Randomly</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label5">
+                              <widget class="GtkVBox" id="sceneryPage">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Scenery</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">5</property>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox8">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label5">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Type:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkComboBox" id="sceneryType">
+                                        <property name="visible">True</property>
+                                        <property name="items" translatable="yes">Lava: Light Dirt
+Lava: Dark Dirt
+Lava: Bones
+Lava: Bone
+Lava: Ribs
+Lava: Skull
+Lava: Hanging Light #1
+Lava: Hanging Light #2
+Lava: Small Cylinder
+Lava: Large Cylinder
+Lava: Block #1
+Lava: Block #2
+Lava: Block #3
+Water: Pistol Clip
+Water: Short Light
+Water: Long Light
+Water: Siren
+Water: Rocks
+Water: Blood Drops
+Water: Thing
+Water: Gun
+Water: Bob Remains
+Water: Puddles
+Water: Big Puddles
+Water: Security Monitor
+Water: Alien Supply Can
+Water: Machine
+Water: Fighter's Staff
+Sewage: Stubby Green Light
+Sewage: Long Green Light
+Sewage: Junk
+Sewage: Big Antenna #1
+Sewage: Big Antenna #2
+Sewage: Alien Supply Can
+Sewage: Bones
+Sewage: Big Bones
+Sewage: Pfhor Pieces
+Sewage: Bob Pieces
+Sewage: Bob Blood
+Pfhor: Green Light
+Pfhor: Small Alien Light
+Pfhor: Alien Ceiling Rod Light
+Pfhor: Bulbous Yellow Alien Object
+Pfhor: Square Grey Organic Object
+Pfhor: Pfhor Skeleton
+Pfhor: Pfhor Mask
+Pfhor: Green Stuff
+Pfhor: Hunter Shield
+Pfhor: Bones
+Pfhor: Alien Sludge
+Jjaro: Short Ceiling Light
+Jjaro: Long Light
+Jjaro: Weird Rod
+Jjaro: Pfhor Ship
+Jjaro: Sun
+Jjaro: Large Glass Container
+Jjaro: Nub #1
+Jjaro: Nub #2
+Jjaro: Lh'owon
+Jjaro: Floor Whip Antenna
+Jjaro: Ceiling Whip Antenna</property>
+                                        <signal name="changed" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkVBox" id="vbox6">
+                                    <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label13">
+                                        <property name="visible">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">Facing (0 is East):</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkHScale" id="sceneryAngle">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="adjustment">0 0 360 1 10 0</property>
+                                        <property name="digits">0</property>
+                                        <property name="value_pos">bottom</property>
+                                        <signal name="value_changed" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox9">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label12">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Height:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkEntry" id="sceneryHeight">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="invisible_char">&#x25CF;</property>
+                                        <signal name="editing_done" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkCheckButton" id="sceneryFromCeiling">
+                                    <property name="label" translatable="yes">From Ceiling</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="OnObjectChanged"/>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">3</property>
+                                  </packing>
+                                </child>
                               </widget>
                               <packing>
                                 <property name="position">1</property>

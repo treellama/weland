@@ -22,6 +22,11 @@ namespace Weland {
 	[Widget] CheckButton playerFromCeiling;
 	[Widget] Entry playerHeight;
 
+	[Widget] ComboBox sceneryType;
+	[Widget] HScale sceneryAngle;
+	[Widget] Entry sceneryHeight;
+	[Widget] CheckButton sceneryFromCeiling;
+
 	bool applyObjectChanges = true;
 
 	void UpdateInspector() {
@@ -45,7 +50,12 @@ namespace Weland {
 		    playerAngle.Value = mapObject.Facing;
 		    playerHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    playerFromCeiling.Active = mapObject.FromCeiling;
-		} 
+		} else if (mapObject.Type == ObjectType.Scenery) {
+		    sceneryType.Active = mapObject.Index;
+		    sceneryAngle.Value = mapObject.Facing;
+		    sceneryHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
+		    sceneryFromCeiling.Active = mapObject.FromCeiling;
+		}
 	    } else {
 		inspector.Hide();
 	    }
@@ -80,6 +90,13 @@ namespace Weland {
 		} catch (Exception) { }
 
 		mapObject.FromCeiling = playerFromCeiling.Active;
+	    } else if (mapObject.Type == ObjectType.Scenery) {
+		mapObject.Index = (short) sceneryType.Active;
+		mapObject.Facing = sceneryAngle.Value;
+		try {
+		    mapObject.Z = World.FromDouble(double.Parse(sceneryHeight.Text));
+		} catch (Exception) { }
+		mapObject.FromCeiling = sceneryFromCeiling.Active;
 	    }
 
 	    RedrawSelectedObject();
