@@ -731,9 +731,277 @@ Sound</property>
                             <property name="show_tabs">False</property>
                             <property name="show_border">False</property>
                             <child>
-                              <widget class="GtkLabel" id="label4">
+                              <widget class="GtkVBox" id="monsterPage">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Monster</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">5</property>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox5">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label4">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Type:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkComboBox" id="monsterType">
+                                        <property name="visible">True</property>
+                                        <property name="items" translatable="yes">Tick Energy
+Tick Oxygen
+Tick Kamakazi
+Compiler Minor
+Compiler Major
+Compiler Minor Invisible
+Compiler Major Invisible
+Fighter Minor
+Fighter Major
+Fighter Minor Projectile
+Fighter Major Projectile
+Civilian Crew
+Civilian Science
+Civilian Security
+Civilian Assimilated
+Hummer Minor
+Hummer Major
+Hummer Big Minor
+Hummer Big Major
+Hummer Possessed
+Cyborg Minor
+Cyborg Major
+Cyborg Flame Minor
+Cyborg Flame Major
+Enforcer Minor
+Enforcer Major
+Hunter Minor
+Hunter Major
+Trooper Minor
+Trooper Major
+Mother of all Cyborgs
+Mother of all Hunters
+Sewage Yeti
+Water Yeti
+Lava Yeti
+Defender Minor
+Defender Major
+Juggernaut Minor
+Juggernaut Major
+Tiny Figher
+Tiny Bob
+Tiny Yeti
+Civilian Fusion Crew
+Civilian Fusion Science
+Civilian Fusion Security
+Civilian Fusion Assimilated</property>
+                                        <signal name="changed" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox6">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label9">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Activated by:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkComboBox" id="monsterActivatedBy">
+                                        <property name="visible">True</property>
+                                        <property name="items" translatable="yes">Player
+Nearest Hostile
+Goal
+Randomly</property>
+                                        <signal name="changed" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkVBox" id="vbox3">
+                                    <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label10">
+                                        <property name="visible">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">Facing (0 is East):</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkHScale" id="monsterAngle">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="adjustment">0 0 360 1 10 0</property>
+                                        <property name="digits">0</property>
+                                        <property name="value_pos">bottom</property>
+                                        <signal name="value_changed" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox7">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label11">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Height:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkEntry" id="monsterHeight">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="invisible_char">&#x25CF;</property>
+                                        <signal name="editing_done" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="position">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkVBox" id="vbox5">
+                                    <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="monsterFromCeiling">
+                                        <property name="label" translatable="yes">From Ceiling</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <signal name="toggled" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="monsterTeleportsIn">
+                                        <property name="label" translatable="yes">Teleports In</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <signal name="toggled" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="monsterTeleportsOut">
+                                        <property name="label" translatable="yes">Teleports Out</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <signal name="toggled" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="monsterIsBlind">
+                                        <property name="label" translatable="yes">Is Blind</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <signal name="toggled" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">3</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkCheckButton" id="monsterIsDeaf">
+                                        <property name="label" translatable="yes">Is Deaf</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
+                                        <signal name="toggled" handler="OnObjectChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">4</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">4</property>
+                                  </packing>
+                                </child>
                               </widget>
                             </child>
                             <child>
@@ -843,6 +1111,8 @@ Sound</property>
                                     </child>
                                   </widget>
                                   <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
