@@ -28,6 +28,8 @@ namespace Weland {
 	public List<Platform> Platforms = new List<Platform>();
 	public List<Light> Lights = new List<Light>();
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
+	public List<Placement> ItemPlacement = new List<Placement>();
+	public List<Placement> MonsterPlacement = new List<Placement>();
 
 	MapInfo mapInfo = new MapInfo();
 
@@ -57,6 +59,11 @@ namespace Weland {
 	    for (int i = 0; i <= 20; ++i) {
 		Light light = new Light((double) (20 - i) / 20);
 		Lights.Add(light);
+	    }
+
+	    for (int i = 0; i < Placement.Count; ++i) {
+		ItemPlacement.Add(new Placement());
+		MonsterPlacement.Add(new Placement());
 	    }
 	}
 
@@ -145,6 +152,23 @@ namespace Weland {
 		LoadChunkList<Light>(Lights, wad.Chunks[Light.Tag]);
 	    }
 
+	    if (wad.Chunks.ContainsKey(Placement.Tag)) {
+		BinaryReaderBE reader = new BinaryReaderBE(new MemoryStream(wad.Chunks[Placement.Tag]));
+		ItemPlacement.Clear();
+		for (int i = 0; i < Placement.Count; ++i) {
+		    Placement placement = new Placement();
+		    placement.Load(reader);
+		    ItemPlacement.Add(placement);
+		}
+
+		MonsterPlacement.Clear();
+		for (int i = 0; i < Placement.Count; ++i) {
+		    Placement placement = new Placement();
+		    placement.Load(reader);
+		    MonsterPlacement.Add(placement);
+		}
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
 	    }
@@ -215,6 +239,20 @@ namespace Weland {
 	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
 	    wad.Chunks[Platform.StaticTag] = SaveChunk(Platforms);
 	    wad.Chunks[Light.Tag] = SaveChunk(Lights);
+
+	    {
+		MemoryStream stream = new MemoryStream();
+		BinaryWriterBE writer = new BinaryWriterBE(stream);
+		foreach (Placement placement in ItemPlacement) {
+		    placement.Save(writer);
+		}
+		foreach (Placement placement in MonsterPlacement) {
+		    placement.Save(writer);
+		}
+		
+		wad.Chunks[Placement.Tag] = stream.ToArray();
+	    }
+	    
 	    
 	    // remove merge-type chunks
 	    foreach (uint tag in ChunkFilter) {

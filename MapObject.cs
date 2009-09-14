@@ -246,5 +246,63 @@ namespace Weland {
 	    writer.Write((ushort) flags);
 	}
     }
+
+    [Flags] public enum PlacementFlags : ushort {
+	None,
+	RandomLocation
+    }
+
+    public class Placement : ISerializableBE {
+	public const int Size = 12;
+	public static readonly uint Tag = Wadfile.Chunk("plac");
+	public const int Count = 64;
+
+	PlacementFlags flags;
+	public short InitialCount;
+	public short MinimumCount;
+	public short MaximumCount;
+	public short RandomCount;
+	ushort randomChance; // (0, 65535]
+
+	public bool RandomLocation {
+	    get {
+		return (flags & PlacementFlags.RandomLocation) != 0;
+	    }
+	    set {
+		if (value) {
+		    flags |= PlacementFlags.RandomLocation;
+		} else {
+		    flags &= ~PlacementFlags.RandomLocation;
+		}
+	    }
+	}
+
+	public int RandomPercent {
+	    get {
+		return (randomChance * 100 / 65535);
+	    }
+	    set {
+		randomChance = (ushort) (value * 65535 / 100);
+	    }
+	}
+
+	public void Load(BinaryReaderBE reader) {
+	    flags = (PlacementFlags) reader.ReadUInt16();
+	    InitialCount = reader.ReadInt16();
+	    MinimumCount = reader.ReadInt16();
+	    MaximumCount = reader.ReadInt16();
+	    RandomCount = reader.ReadInt16();
+	    randomChance = reader.ReadUInt16();
+	}
+
+	public void Save(BinaryWriterBE writer) {
+	    writer.Write((ushort) flags);
+	    writer.Write(InitialCount);
+	    writer.Write(MinimumCount);
+	    writer.Write(MaximumCount);
+	    writer.Write(RandomCount);
+	    writer.Write(randomChance);
+	}
+    }
 }
  
