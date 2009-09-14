@@ -83,6 +83,14 @@ namespace Weland {
 	protected void OnObjectChanged(object obj, EventArgs args) {
 	    if (!applyObjectChanges) return;
 	    MapObject mapObject = Level.Objects[selection.Object];
+
+	    // decrement item and monster initial counts
+	    if (mapObject.Type == ObjectType.Monster && mapObject.Index >= 0 && mapObject.Index < Level.MonsterPlacement.Count && Level.MonsterPlacement[mapObject.Index].InitialCount > 0) {
+		Level.MonsterPlacement[mapObject.Index].InitialCount--;
+	    } else if (mapObject.Type == ObjectType.Item && mapObject.Index >= 0 && mapObject.Index < Level.ItemPlacement.Count && Level.ItemPlacement[mapObject.Index].InitialCount > 0) {
+		Level.ItemPlacement[mapObject.Index].InitialCount--;
+	    }
+
 	    if (mapObject.Type == ObjectType.Monster) {
 		mapObject.Index = (short) (monsterType.Active + 1);
 		mapObject.ActivationBias = (ActivationBias) monsterActivatedBy.Active;
@@ -117,6 +125,13 @@ namespace Weland {
 		mapObject.FromCeiling = itemFromCeiling.Active;
 		mapObject.Invisible = itemTeleportsIn.Active;
 		mapObject.NetworkOnly = itemNetworkOnly.Active;
+	    }
+
+	    // increment item and monster placement counts
+	    if (mapObject.Type == ObjectType.Monster) {
+		Level.MonsterPlacement[mapObject.Index].InitialCount++;
+	    } else if (mapObject.Type == ObjectType.Item) {
+		Level.ItemPlacement[mapObject.Index].InitialCount++;
 	    }
 
 	    RedrawSelectedObject();
