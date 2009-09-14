@@ -905,7 +905,7 @@ Randomly</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">&#x25CF;</property>
-                                        <signal name="editing_done" handler="OnObjectChanged"/>
+                                        <signal name="changed" handler="OnObjectChanged"/>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
@@ -1165,7 +1165,7 @@ Jjaro: Ceiling Whip Antenna</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">&#x25CF;</property>
-                                        <signal name="editing_done" handler="OnObjectChanged"/>
+                                        <signal name="changed" handler="OnObjectChanged"/>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
@@ -1282,7 +1282,7 @@ Jjaro: Ceiling Whip Antenna</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">&#x25CF;</property>
-                                        <signal name="editing_done" handler="OnObjectChanged"/>
+                                        <signal name="changed" handler="OnObjectChanged"/>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
