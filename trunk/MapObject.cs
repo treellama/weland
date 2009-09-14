@@ -37,7 +37,7 @@ namespace Weland {
 	ShotgunMagazine,
 	SphtDoorKey,
 	UplinkChip,
-	Ball,
+	LightBlueBall,
 	RedBall,
 	VioletBall,
 	YellowBall,
