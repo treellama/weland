@@ -27,6 +27,12 @@ namespace Weland {
 	[Widget] Entry sceneryHeight;
 	[Widget] CheckButton sceneryFromCeiling;
 
+	[Widget] ComboBox itemType;
+	[Widget] Entry itemHeight;
+	[Widget] CheckButton itemFromCeiling;
+	[Widget] CheckButton itemTeleportsIn;
+	[Widget] CheckButton itemNetworkOnly;
+
 	bool applyObjectChanges = true;
 
 	void UpdateInspector() {
@@ -55,6 +61,12 @@ namespace Weland {
 		    sceneryAngle.Value = mapObject.Facing;
 		    sceneryHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    sceneryFromCeiling.Active = mapObject.FromCeiling;
+		} else if (mapObject.Type == ObjectType.Item) {
+		    itemType.Active = mapObject.Index;
+		    itemHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
+		    itemFromCeiling.Active = mapObject.FromCeiling;
+		    itemTeleportsIn.Active = mapObject.Invisible;
+		    itemNetworkOnly.Active = mapObject.NetworkOnly;
 		}
 	    } else {
 		inspector.Hide();
@@ -97,6 +109,14 @@ namespace Weland {
 		    mapObject.Z = World.FromDouble(double.Parse(sceneryHeight.Text));
 		} catch (Exception) { }
 		mapObject.FromCeiling = sceneryFromCeiling.Active;
+	    } else if (mapObject.Type == ObjectType.Item) {
+		mapObject.Index = (short) itemType.Active;
+		try {
+		    mapObject.Z = World.FromDouble(double.Parse(itemHeight.Text));
+		} catch (Exception) { }
+		mapObject.FromCeiling = itemFromCeiling.Active;
+		mapObject.Invisible = itemTeleportsIn.Active;
+		mapObject.NetworkOnly = itemNetworkOnly.Active;
 	    }
 
 	    RedrawSelectedObject();
