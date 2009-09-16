@@ -6,7 +6,7 @@ namespace Weland {
     public class ParametersDialog {
 	public ParametersDialog(Window parent, string title, List<Placement> p, string[] n) {
 	    dialog = new Dialog(title, parent, DialogFlags.Modal | DialogFlags.DestroyWithParent);
-	    dialog.SetSizeRequest(600, 400);
+	    dialog.SetSizeRequest(640, 480);
 	    placements = p;
 	    names = n;
 	}
@@ -187,7 +187,46 @@ namespace Weland {
 	}
 	
 	public void Run() {
-	    ParametersDialog d = new ParametersDialog(parent, "Item Parameters", level.ItemPlacement, Enum.GetNames(typeof(ItemType)));
+	    // is there a way to snarf these from the Glade file?
+	    string[] names = {
+		"Knife",
+		"Magnum Pistol",
+		"Magnum Magazine",
+		"Plasma Pistol",
+		"Plasma Energy Cell",
+		"Assault Rifle",
+		"AR Magazine",
+		"AR Grenade Magazine",
+		"Missile Launcher",
+		"Missile 2-Pack",
+		"Invisibility Powerup",
+		"Infravision Powerup",
+		"Invincibility Powerup",
+		"Alien Weapon",
+		"Alien Weapon Ammo",
+		"Flamethrower",
+		"Flamethrower Canister",
+		"Extravision Powerup",
+		"Oxygen Powerup",
+		"Energy Powerup x1",
+		"Energy Powerup x2",
+		"Energy Powerup x3",
+		"Shotgun",
+		"Shotgun Cartridges",
+		"S'pht Door Key",
+		"Uplink Chip",
+		"Light Blue Ball",
+		"The Ball",
+		"Violet Ball",
+		"Yellow Ball",
+		"Brown Ball",
+		"Orange Ball",
+		"Blue Ball",
+		"Green Ball",
+		"Submachine Gun",
+		"Submachine Gun Clip"
+	    };
+	    ParametersDialog d = new ParametersDialog(parent, "Item Parameters", level.ItemPlacement, names);
 	    d.Run();
 	}
 
@@ -202,7 +241,55 @@ namespace Weland {
 	}
 
 	public void Run() {
-	    ParametersDialog d = new ParametersDialog(parent, "Monster Parameters", level.MonsterPlacement, Enum.GetNames(typeof(MonsterType)));
+	    string[] names = {
+		"Tick Energy",
+		"Tick Oxygen",
+		"Tick Kamakazi",
+		"Compiler Minor",
+		"Compiler Major",
+		"Compiler Minor Invisible",
+		"Compiler Major Invisible",
+		"Fighter Minor",
+		"Fighter Major",
+		"Fighter Minor Projectile",
+		"Fighter Major Projectile",
+		"Civilian Crew",
+		"Civilian Science",
+		"Civilian Security",
+		"Civilian Assimilated",
+		"Hummer Minor",
+		"Hummer Major",
+		"Hummer Big Minor",
+		"Hummer Big Major",
+		"Hummer Possessed",
+		"Cyborg Minor",
+		"Cyborg Major",
+		"Cyborg Flame Minor",
+		"Cyborg Flame Major",
+		"Enforcer Minor",
+		"Enforcer Major",
+		"Hunter Minor",
+		"Hunter Major",
+		"Trooper Minor",
+		"Trooper Major",
+		"Mother of all Cyborgs",
+		"Mother of all Hunters",
+		"Sewage Yeti",
+		"Water Yeti",
+		"Lava Yeti",
+		"Defender Minor",
+		"Defender Major",
+		"Juggernaut Minor",
+		"Juggernaut Major",
+		"Tiny Figher",
+		"Tiny Bob",
+		"Tiny Yeti",
+		"Civilian Fusion Crew",
+		"Civilian Fusion Science",
+		"Civilian Fusion Security",
+		"Civilian Fusion Assimilated"
+	    };
+	    ParametersDialog d = new ParametersDialog(parent, "Monster Parameters", level.MonsterPlacement, names);
 	    d.Run();
 
 	}
