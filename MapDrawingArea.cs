@@ -189,7 +189,7 @@ namespace Weland {
 			    DrawObject(obj, false);
 			}
 		    }
-		    if (selectedObj != null) {
+		    if (selectedObj != null && selectedObj.X > Left - ObjectSize && selectedObj.X < Right + ObjectSize && selectedObj.Y > Top - ObjectSize && selectedObj.Y < Bottom + ObjectSize) {
 			DrawObject(selectedObj, true);
 		    }
 		}
@@ -325,11 +325,27 @@ namespace Weland {
 	}
 
 	void DrawImage(Gdk.Pixbuf image, double X, double Y, bool highlight) {
-	    Gdk.GC gc = new Gdk.GC(GdkWindow);
+	    int x = (int) X - image.Width / 2;
+	    int y = (int) Y - image.Height / 2;
 	    if (highlight) {
-		gc.Function = Gdk.Function.Invert;
+		Gdk.GC gc = new Gdk.GC(GdkWindow);
+		if (!MapWindow.IsMac()) { // UGH
+		    Gdk.Pixmap mask = new Gdk.Pixmap(null, image.Width, image.Height, 1);
+		    image.RenderThresholdAlpha(mask, 0, 0, 0, 0, -1, -1, 1);
+		    
+		    gc.ClipMask = mask;
+		}
+		
+		for (int i = -2; i <= 2; ++i) {
+		    for (int j = -2; j <= 2; ++j) {
+			gc.SetClipOrigin(x + i, y + j);
+			gc.RgbFgColor = new Gdk.Color(255, 255, 0);
+			GdkWindow.DrawRectangle(gc, true, x + i, y + j, image.Width, image.Height);
+		    }
+		}
 	    }
-	    GdkWindow.DrawPixbuf(gc, image, 0, 0, (int) X - image.Width / 2, (int) Y - image.Height / 2, -1, -1, Gdk.RgbDither.Normal, 0, 0);
+
+	    GdkWindow.DrawPixbuf(new Gdk.GC(GdkWindow), image, 0, 0, x, y, -1, -1, Gdk.RgbDither.Normal, 0, 0);
 	}
 
 	void DrawObject(MapObject obj, bool highlight) {
