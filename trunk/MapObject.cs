@@ -262,7 +262,7 @@ namespace Weland {
 	public short MinimumCount;
 	public short MaximumCount;
 	public short RandomCount;
-	ushort randomChance; // (0, 65535]
+	ushort randomChance;
 
 	public bool RandomLocation {
 	    get {
@@ -279,10 +279,10 @@ namespace Weland {
 
 	public int RandomPercent {
 	    get {
-		return (randomChance * 100 / 65535);
+		return (int) Math.Round((double) randomChance * 100 / 65535);
 	    }
 	    set {
-		randomChance = (ushort) (value * 65535 / 100);
+		randomChance = (ushort) Math.Round((double) value * 65535 / 100);
 	    }
 	}
 

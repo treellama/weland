@@ -663,6 +663,16 @@ namespace Weland {
 	    window1.Title = Level.Name;
 	}
 
+	protected void OnItemParameters(object o, EventArgs e) {
+	    ItemParametersDialog d = new ItemParametersDialog(window1, Level);
+	    d.Run();
+	}
+
+	protected void OnMonsterParameters(object o, EventArgs e) {
+	    MonsterParametersDialog d = new MonsterParametersDialog(window1, Level);
+	    d.Run();
+	}
+
 	protected void OnPave(object o, EventArgs e) {
 	    Level.Pave();
 	}
