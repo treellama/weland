@@ -427,6 +427,16 @@ namespace Weland {
 	    return new Point((short) (X / polygon.VertexCount), (short) (Y / polygon.VertexCount));
 	}
 
+	public void DeleteObject(short index) {
+	    MapObject obj = Objects[index];
+	    if (obj.Type == ObjectType.Monster && MonsterPlacement[obj.Index].InitialCount > 0) {
+		MonsterPlacement[obj.Index].InitialCount--;
+	    } else if (obj.Type == ObjectType.Item && ItemPlacement[obj.Index].InitialCount > 0) {
+		ItemPlacement[obj.Index].InitialCount--;
+	    }
+	    Objects.RemoveAt(index);
+	}
+
 	public void DeletePolygon(short index) {
 	    Polygons.RemoveAt(index);
 	    foreach (Line line in Lines) {
@@ -450,7 +460,6 @@ namespace Weland {
 		    --Sides[i].PolygonIndex;
 		} else if (Sides[i].PolygonIndex == index) {
 		    Sides.RemoveAt(i);
-		    --i;
 		}
 	    }
 
@@ -458,8 +467,7 @@ namespace Weland {
 		if (Objects[i].PolygonIndex > index) {
 		    --Objects[i].PolygonIndex;
 		} else if (Objects[i].PolygonIndex == index) {
-		    Objects.RemoveAt(i);
-		    --i;
+		    DeleteObject((short) i);
 		}
 	    }
 
@@ -468,7 +476,6 @@ namespace Weland {
 		    --Platforms[i].PolygonIndex;
 		} else if (Platforms[i].PolygonIndex == index) {
 		    Platforms.RemoveAt(i);
-		    --i;
 		}
 	    }
 	}

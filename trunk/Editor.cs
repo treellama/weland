@@ -29,15 +29,18 @@ namespace Weland {
     public class Selection {
 	public short Point = -1;
 	public short Object = -1;
+	public short Line = -1;
 
 	public void Clear() {
 	    Point = -1;
 	    Object = -1;
+	    Line = -1;
 	}
 
 	public void CopyFrom(Selection other) {
 	    Point = other.Point;
 	    Object = other.Object;
+	    Line = other.Line;
 	}
     }
 
@@ -92,6 +95,15 @@ namespace Weland {
 	short ClosestObject(Point p) {
 	    short index = Level.GetClosestObject(p);
 	    if (index != -1 && Level.Distance(p, new Point(Level.Objects[index].X, Level.Objects[index].Y)) < Snap) {
+		return index;
+	    } else {
+		return -1;
+	    }
+	}
+
+	short ClosestLine(Point p) {
+	    short index = Level.GetClosestLine(p);
+	    if (index != -1 && Level.Distance(p, Level.Lines[index]) < Snap) {
 		return index;
 	    } else {
 		return -1;
@@ -213,9 +225,41 @@ namespace Weland {
 		index = ClosestObject(p);
 		if (index != -1) {
 		    Selection.Object = index;
+		} else {
+		    index = ClosestLine(p);
+		    if (index != -1) {
+			Selection.Line = index;
+		    }
 		}
 	    }
 	    undoSet = false;
+	}
+
+	void TranslatePoint(short index, int X, int Y) {
+		Point p = Level.Endpoints[index];
+		AddDirty(p);
+		p.X = (short) (p.X + X);
+		p.Y = (short) (p.Y + Y);
+		Level.Endpoints[index] = p;
+		AddDirty(p);
+		
+		// dirty every endpoint line(!)
+		List<short> lines = Level.EndpointLines(index);
+		foreach (short i in lines) {
+		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
+		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
+		}
+
+		// update attached polygon concavity
+		List<short> polygons = Level.EndpointPolygons(index);
+		
+		// dirty every attached polygon(!!?)
+		foreach (short i in polygons) {
+		    Polygon polygon = Level.Polygons[i];
+		    Level.UpdatePolygonConcavity(polygon);
+		    DirtyPolygon(polygon);
+		}
+
 	}
 
 	void MoveSelected(short X, short Y) {
@@ -224,29 +268,8 @@ namespace Weland {
 		    SetUndo();
 		    undoSet = true;
 		}
-		Point p = Level.Endpoints[Selection.Point];
-		AddDirty(p);
-		p.X = (short) (p.X + X - lastX);
-		p.Y = (short) (p.Y + Y - lastY);
-		Level.Endpoints[Selection.Point] = p;
-		AddDirty(p);
-		
-		// dirty every endpoint line(!)
-		List<short> lines = Level.EndpointLines(Selection.Point);
-		foreach (short i in lines) {
-		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
-		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
-		}
 
-		// update attached polygon concavity
-		List<short> polygons = Level.EndpointPolygons(Selection.Point);
-		
-		// dirty every attached polygon(!!?)
-		foreach (short i in polygons) {
-		    Polygon polygon = Level.Polygons[i];
-		    Level.UpdatePolygonConcavity(polygon);
-		    DirtyPolygon(polygon);
-		}
+		TranslatePoint(Selection.Point, X - lastX, Y - lastY);
 	    } else if (Selection.Object != -1) {
 		if (!undoSet) {
 		    SetUndo();
@@ -263,6 +286,15 @@ namespace Weland {
 		    AddDirty(new Point(obj.X, obj.Y));
 		    obj.PolygonIndex = polygon_index;
 		}
+	    } else if (Selection.Line != -1) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+
+		Line line = Level.Lines[Selection.Line];
+		TranslatePoint(line.EndpointIndexes[0], X - lastX, Y - lastY);
+		TranslatePoint(line.EndpointIndexes[1], X - lastX, Y - lastY);
 	    }
 	}
 
@@ -429,6 +461,14 @@ namespace Weland {
 		} else {
 		    Selection.Point = -1;
 		}
+	    } else if (Selection.Object != -1) {
+		SetUndo();
+		Level.DeleteObject(Selection.Object);
+		Selection.Object = -1;
+	    } else if (Selection.Line != -1) {
+		SetUndo();
+		Level.DeleteLine(Selection.Line);
+		Selection.Line = -1;
 	    }
 	}
 
