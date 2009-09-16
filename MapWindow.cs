@@ -360,6 +360,7 @@ namespace Weland {
 	    case Gdk.Key.Delete:
 	    case Gdk.Key.BackSpace:
 		editor.DeleteSelected();
+		UpdateInspector();
 		Redraw();
 		break;
 	    default:

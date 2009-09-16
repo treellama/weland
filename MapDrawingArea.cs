@@ -276,7 +276,9 @@ namespace Weland {
 	    Point p2 = Level.Endpoints[line.EndpointIndexes[1]];
 
 	    Drawer.Color color = solidLineColor;
-	    if (line.Transparent) {
+	    if (Selection.Line != -1 && line == Level.Lines[Selection.Line]) {
+		color = selectedLineColor;
+	    } else if (line.Transparent) {
 		color = transparentLineColor;
 	    } else if (line.Solid && line.ClockwisePolygonOwner != -1 && line.CounterclockwisePolygonOwner != -1) {
 		Polygon poly1 = Level.Polygons[line.ClockwisePolygonOwner];
