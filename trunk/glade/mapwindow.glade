@@ -1250,8 +1250,7 @@ Jjaro: Ceiling Whip Antenna</property>
                                     <child>
                                       <widget class="GtkComboBox" id="itemType">
                                         <property name="visible">True</property>
-                                        <property name="items" translatable="yes">Knife
-Magnum Pistol
+                                        <property name="items" translatable="yes">Magnum Pistol
 Magnum Magazine
 Plasma Pistol
 Plasma Energy Cell

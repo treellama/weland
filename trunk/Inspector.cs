@@ -62,7 +62,7 @@ namespace Weland {
 		    sceneryHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    sceneryFromCeiling.Active = mapObject.FromCeiling;
 		} else if (mapObject.Type == ObjectType.Item) {
-		    itemType.Active = mapObject.Index;
+		    itemType.Active = mapObject.Index - 1;
 		    itemHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    itemFromCeiling.Active = mapObject.FromCeiling;
 		    itemTeleportsIn.Active = mapObject.Invisible;
@@ -118,7 +118,7 @@ namespace Weland {
 		} catch (Exception) { }
 		mapObject.FromCeiling = sceneryFromCeiling.Active;
 	    } else if (mapObject.Type == ObjectType.Item) {
-		mapObject.Index = (short) itemType.Active;
+		mapObject.Index = (short) (itemType.Active + 1);
 		try {
 		    mapObject.Z = World.FromDouble(double.Parse(itemHeight.Text));
 		} catch (Exception) { }
