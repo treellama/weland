@@ -143,6 +143,14 @@ namespace Weland {
 	    }
 	}
 
+	public void CopyFrom(MapObject other) {
+	    Type = other.Type;
+	    Index = other.Index;
+	    facing = other.facing;
+	    Z = other.Z;
+	    flags = other.flags;
+	}
+
 	public double Facing {
 	    get { return (double) facing * 360 / 512; }
 	    set { facing = (short) Math.Round(value * 512 / 360); }

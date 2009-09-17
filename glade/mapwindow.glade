@@ -553,6 +553,19 @@
                   </packing>
                 </child>
                 <child>
+                  <widget class="GtkRadioToolButton" id="objectButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">O</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
                   <widget class="GtkRadioToolButton" id="floorHeightButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Floor Heights</property>
@@ -1633,7 +1646,7 @@ Jjaro Ship</property>
                                       <widget class="GtkHScale" id="soundVolume">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="adjustment">0 1 100 1 10 0</property>
+                                        <property name="adjustment">1 1 100 1 10 0</property>
                                         <property name="digits">0</property>
                                         <signal name="value_changed" handler="OnObjectChanged"/>
                                       </widget>

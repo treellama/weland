@@ -101,6 +101,14 @@ namespace Weland {
 	    return (short) (Lines.Count - 1);
 	}
 
+	public short NewObject(Point p, short polygon_index) {
+	    MapObject o = new MapObject();
+	    o.X = p.X;
+	    o.Y = p.Y;
+	    Objects.Add(o);
+	    return (short) (Objects.Count - 1);
+	}
+
 	// split line, return a new point index at X, Y
 	public short SplitLine(short index, short X, short Y) {
 	    Line line = Lines[index];
