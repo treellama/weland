@@ -33,7 +33,26 @@ namespace Weland {
 	[Widget] CheckButton itemTeleportsIn;
 	[Widget] CheckButton itemNetworkOnly;
 
+	[Widget] ComboBox goalType;
+
+	[Widget] ComboBox soundType;
+	[Widget] HScale soundVolume;
+	[Widget] ComboBox soundLight;
+	ListStore soundLightStore = new ListStore(typeof(int));
+	[Widget] Entry soundHeight;
+	[Widget] CheckButton soundFromCeiling;
+	[Widget] CheckButton soundIsOnPlatform;
+	[Widget] CheckButton soundFloats;
+	[Widget] CheckButton soundUseLight;
+
 	bool applyObjectChanges = true;
+
+	void SetupInspector() {
+	    soundLight.Model = soundLightStore;
+	    CellRendererText text = new CellRendererText();
+	    soundLight.PackStart(text, false);
+	    soundLight.AddAttribute(text, "text", 0);
+	}
 
 	void UpdateInspector() {
 	    applyObjectChanges = false;
@@ -67,6 +86,30 @@ namespace Weland {
 		    itemFromCeiling.Active = mapObject.FromCeiling;
 		    itemTeleportsIn.Active = mapObject.Invisible;
 		    itemNetworkOnly.Active = mapObject.NetworkOnly;
+		} else if (mapObject.Type == ObjectType.Goal) {
+		    goalType.Active = mapObject.Index;
+		} else if (mapObject.Type == ObjectType.Sound) {
+		    soundType.Active = mapObject.Index;
+		    soundHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
+		    soundFromCeiling.Active = mapObject.FromCeiling;
+		    soundIsOnPlatform.Active = mapObject.OnPlatform;
+		    soundFloats.Active = mapObject.Floats;
+		    soundUseLight.Active = mapObject.UseLightForVolume;
+		    if (!mapObject.UseLightForVolume) {
+			soundVolume.Sensitive = true;
+			soundLight.Sensitive = false;
+			soundLight.Active = 0;
+			soundVolume.Value = mapObject.Volume;
+		    } else {
+			soundLight.Sensitive = true;
+			soundLightStore.Clear();
+			for (int i = 0; i < Level.Lights.Count; ++i) {
+			    soundLightStore.AppendValues(i);
+			}
+			soundLight.Active = mapObject.Light;
+			soundVolume.Sensitive = false;
+			soundVolume.Value = 1;
+		    }
 		}
 	    } else {
 		inspector.Hide();
@@ -125,6 +168,21 @@ namespace Weland {
 		mapObject.FromCeiling = itemFromCeiling.Active;
 		mapObject.Invisible = itemTeleportsIn.Active;
 		mapObject.NetworkOnly = itemNetworkOnly.Active;
+	    } else if (mapObject.Type == ObjectType.Goal) {
+		mapObject.Index = (short) goalType.Active;
+	    } else if (mapObject.Type == ObjectType.Sound) {
+		mapObject.Index = (short) soundType.Active;
+		try {
+		    mapObject.Z = World.FromDouble(double.Parse(soundHeight.Text));
+		} catch (Exception) {}
+		mapObject.FromCeiling = soundFromCeiling.Active;
+		mapObject.OnPlatform = soundIsOnPlatform.Active;
+		mapObject.Floats = soundFloats.Active;
+		if (soundUseLight.Active) {
+		    mapObject.Light = soundLight.Active;
+		} else {
+		    mapObject.Volume = (int) soundVolume.Value;
+		}
 	    }
 
 	    // increment item and monster placement counts
@@ -144,6 +202,23 @@ namespace Weland {
 	    mapObject.Type = (ObjectType) objectGroup.Active;
 	    RedrawSelectedObject();
 	    UpdateInspector();
+	}
+
+	protected void OnUseLightToggled(object obj, EventArgs args) {
+	    if (!soundUseLight.Active) {
+		soundVolume.Sensitive = true;
+		soundLight.Sensitive = false;
+	    } else {
+		soundLight.Sensitive = true;
+		soundLightStore.Clear();
+		for (int i = 0; i < Level.Lights.Count; ++i) {
+		    soundLightStore.AppendValues(i);
+		}
+		soundVolume.Sensitive = false;
+	    }
+	    soundLight.Active = 0;
+	    soundVolume.Value = 1;
+	    OnObjectChanged(obj, args);
 	}
     }
 }

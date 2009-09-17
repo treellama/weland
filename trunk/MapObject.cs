@@ -123,7 +123,8 @@ namespace Weland {
 
 	public ObjectType Type;
 	public short Index;
-	public double Facing;
+	short facing;
+	
 	public short PolygonIndex = -1;
 	public short X;
 	public short Y;
@@ -140,6 +141,25 @@ namespace Weland {
 	    set {
 		flags = (MapObjectFlags) (((ushort) flags & (1 << ActivationBiasShift) - 1) | ((ushort) value << ActivationBiasShift));
 	    }
+	}
+
+	public double Facing {
+	    get { return (double) facing * 360 / 512; }
+	    set { facing = (short) Math.Round(value * 512 / 360); }
+	}
+
+	public int Volume {
+	    get { return facing * 100 / 255; }
+	    set { facing = (short) (value * 255 / 100); }
+	}
+
+	public bool UseLightForVolume {
+	    get { return facing <= 0; } // strictly, it should be < 0, I think?
+	}
+
+	public int Light {
+	    get { return -facing; }
+	    set { facing = (short) -value; }
 	}
 
 	void SetFlag(MapObjectFlags flag, bool value) {
@@ -227,7 +247,7 @@ namespace Weland {
 	public void Load(BinaryReaderBE reader) {
 	    Type = (ObjectType) reader.ReadInt16();
 	    Index = reader.ReadInt16();
-	    Facing = (double) reader.ReadInt16() * 360 / 512;
+	    facing = reader.ReadInt16();
 	    PolygonIndex = reader.ReadInt16();
 	    X = reader.ReadInt16();
 	    Y = reader.ReadInt16();
@@ -238,7 +258,7 @@ namespace Weland {
 	public void Save(BinaryWriterBE writer) {
 	    writer.Write((short) Type);
 	    writer.Write(Index);
-	    writer.Write((short) Math.Round(Facing * 512 / 360));
+	    writer.Write(facing);
 	    writer.Write(PolygonIndex);
 	    writer.Write(X);
 	    writer.Write(Y);
