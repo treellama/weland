@@ -8,6 +8,7 @@ namespace Weland {
 	Move,
 	Line,
 	Fill,
+	Object,
 	FloorHeight,
 	CeilingHeight
     }
@@ -235,6 +236,35 @@ namespace Weland {
 	    undoSet = false;
 	}
 
+	void PlaceObject(short X, short Y) {
+	    Point p = new Point(X, Y);
+	    short index = ClosestObject(p);
+	    if (index != -1) {
+		Selection.Clear();
+		Selection.Object = index;
+	    } else {
+		short polygon_index = Level.GetEnclosingPolygon(p);
+		if (polygon_index != -1) {
+		    SetUndo();
+		    short object_index = Level.NewObject(p, polygon_index);
+		    MapObject o = Level.Objects[object_index];
+		    if (Selection.Object != -1) {
+			o.CopyFrom(Level.Objects[Selection.Object]);
+		    } else {
+			o.Type = ObjectType.Player;
+		    }
+
+		    Selection.Object = object_index;
+
+		    if (o.Type == ObjectType.Monster) {
+			Level.MonsterPlacement[o.Index].InitialCount++;
+		    } else if (o.Type == ObjectType.Item) {
+			Level.ItemPlacement[o.Index].InitialCount++;
+		    }
+		}
+	    }
+	}
+
 	void TranslatePoint(short index, int X, int Y) {
 		Point p = Level.Endpoints[index];
 		AddDirty(p);
@@ -367,6 +397,8 @@ namespace Weland {
 		Fill(X, Y);
 	    } else if (Tool == Tool.Select) {
 		Select(X, Y);
+	    } else if (Tool == Tool.Object) {
+		PlaceObject(X, Y);
 	    } else if (Tool == Tool.FloorHeight) {
 		if (Alt(mods) || RightClick(mods)) {
 		    GetFloorHeight(X, Y);

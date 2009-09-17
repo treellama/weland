@@ -40,6 +40,7 @@ namespace Weland {
 	[Widget] RadioToolButton moveButton;
 	[Widget] RadioToolButton lineButton;
 	[Widget] RadioToolButton fillButton;
+	[Widget] RadioToolButton objectButton;
 	[Widget] RadioToolButton floorHeightButton;
 	[Widget] RadioToolButton ceilingHeightButton;
 
@@ -528,6 +529,8 @@ namespace Weland {
 		ChooseTool(Tool.Line);
 	    } else if (button == fillButton) {
 		ChooseTool(Tool.Fill);
+	    } else if (button == objectButton) {
+		ChooseTool(Tool.Object);
 	    } else if (button == floorHeightButton) {
 		ChooseTool(Tool.FloorHeight);
 	    } else if (button == ceilingHeightButton) {
@@ -576,7 +579,7 @@ namespace Weland {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Target);
 	    } else if (tool == Tool.Move) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
-	    } else if (tool == Tool.Line) {
+	    } else if (tool == Tool.Line || tool == Tool.Object) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
 	    } else if (tool == Tool.Fill) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Spraycan);
