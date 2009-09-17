@@ -91,6 +91,7 @@ namespace Weland {
 	    SetIconResource(moveButton, "move.png");
 	    SetIconResource(lineButton, "line.png");
 	    SetIconResource(fillButton, "fill.png");
+	    SetIconResource(objectButton, "object.png");
 	    SetIconResource(floorHeightButton, "floor-height.png");
 	    SetIconResource(ceilingHeightButton, "ceiling-height.png");
 
@@ -334,6 +335,10 @@ namespace Weland {
 	    case Gdk.Key.f:
 	    case Gdk.Key.F:
 		fillButton.Active = true;
+		break;
+	    case Gdk.Key.o:
+	    case Gdk.Key.O:
+		objectButton.Active = true;
 		break;
 	    case Gdk.Key.d:
 	    case Gdk.Key.D:

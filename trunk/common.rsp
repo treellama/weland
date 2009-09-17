@@ -49,6 +49,7 @@ Widgets.cs
 /resource:images/line.png
 /resource:images/monster.png
 /resource:images/move.png
+/resource:images/object.png
 /resource:images/oxygen.png
 /resource:images/pistol-ammo.png
 /resource:images/pistol.png

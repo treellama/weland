@@ -555,6 +555,7 @@
                 <child>
                   <widget class="GtkRadioToolButton" id="objectButton">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Place Map Objects (O)</property>
                     <property name="label" translatable="yes">O</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
