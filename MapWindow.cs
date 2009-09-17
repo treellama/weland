@@ -116,6 +116,8 @@ namespace Weland {
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
 
+	    SetupInspector();
+
 	    window1.AllowShrink = true;
 	    window1.Resize(640, 480);
 	    window1.Show();
