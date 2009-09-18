@@ -597,7 +597,7 @@ namespace Weland {
 		short opposite_floor_height = opposite.FloorHeight;
 
 		// we should handle platforms more intelligently than this
-		if ((opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) || adjacent.Type == 5 || opposite.Type == 5) {
+		if ((opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) || adjacent.Type == PolygonType.Platform || opposite.Type == PolygonType.Platform) {
 		    side.Type = SideType.Split;
 		} else if (opposite_floor_height > floor_height) {
 		    side.Type = SideType.Low;
@@ -701,11 +701,11 @@ namespace Weland {
 
 		// we should be a little more smarter about generating
 		// sides against platforms
-		if (cw_side == null && cw_polygon != null && (ccw_polygon == null || ccw_polygon.Type == 5 || cw_polygon.FloorHeight < ccw_polygon.FloorHeight || cw_polygon.CeilingHeight > ccw_polygon.CeilingHeight)) {
+		if (cw_side == null && cw_polygon != null && (ccw_polygon == null || ccw_polygon.Type == PolygonType.Platform || cw_polygon.FloorHeight < ccw_polygon.FloorHeight || cw_polygon.CeilingHeight > ccw_polygon.CeilingHeight)) {
 		    cw_side = Sides[NewSide(line.ClockwisePolygonOwner, (short) i)];
 		}
 
-		if (ccw_side == null && ccw_polygon != null && (cw_polygon == null || cw_polygon.Type == 5 || ccw_polygon.FloorHeight < cw_polygon.FloorHeight || ccw_polygon.CeilingHeight > cw_polygon.CeilingHeight)) {
+		if (ccw_side == null && ccw_polygon != null && (cw_polygon == null || cw_polygon.Type == PolygonType.Platform || ccw_polygon.FloorHeight < cw_polygon.FloorHeight || ccw_polygon.CeilingHeight > cw_polygon.CeilingHeight)) {
 		    ccw_side = Sides[NewSide(line.CounterclockwisePolygonOwner, (short) i)];
 		}
 

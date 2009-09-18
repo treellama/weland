@@ -43,6 +43,7 @@ namespace Weland {
 	[Widget] RadioToolButton objectButton;
 	[Widget] RadioToolButton floorHeightButton;
 	[Widget] RadioToolButton ceilingHeightButton;
+	[Widget] RadioToolButton polygonTypeButton;
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -94,6 +95,7 @@ namespace Weland {
 	    SetIconResource(objectButton, "object.png");
 	    SetIconResource(floorHeightButton, "floor-height.png");
 	    SetIconResource(ceilingHeightButton, "ceiling-height.png");
+	    SetIconResource(polygonTypeButton, "polygon-type.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -273,7 +275,7 @@ namespace Weland {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
-	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight) {
+	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType) {
 		// update the paint mode button
 		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
 		if (i != -1) {
@@ -540,6 +542,8 @@ namespace Weland {
 		ChooseTool(Tool.FloorHeight);
 	    } else if (button == ceilingHeightButton) {
 		ChooseTool(Tool.CeilingHeight);
+	    } else if (button == polygonTypeButton) {
+		ChooseTool(Tool.PolygonType);
 	    }
 	}
 
@@ -600,12 +604,70 @@ namespace Weland {
 		BuildHeightPalette(editor.GetCeilingHeights());
 		palette.Show();
 		drawingArea.Mode = DrawMode.CeilingHeight;
+	    } else if (tool == Tool.PolygonType) {
+		BuildPolygonTypePalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.PolygonType;
 	    } else {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
 	    }
 	    UpdateInspector();
 	    Redraw();
+	}
+
+	void BuildPolygonTypePalette() {
+	    while (paletteButtonbox.Children.Length > 0) {
+		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
+	    }
+	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
+	    string[] names = {
+		"Normal",
+		"Item Impassable",
+		"Monster & Item Impassable",
+		"Hill",
+		"Base",
+		"Platform",
+		"Light On Trigger",
+		"Platform On Trigger",
+		"Light Off Trigger",
+		"Platform Off Trigger",
+		"Teleporter",
+		"Zone Border",
+		"Goal",
+		"Visible Monster Trigger",
+		"Invisible Monster Trigger",
+		"Dual Monster Trigger",
+		"Item Trigger",
+		"Must Be Explored",
+		"Automatic Exit",
+		"Minor Ouch",
+		"Major Ouch",
+		"Glue",
+		"Glue Trigger",
+		"Superglue"
+	    };
+
+	    paintIndexes.Clear();
+	    for (int i = 0; i < names.Length; ++i) {
+		paintIndexes[(short) i] = true;
+	    }
+	    editor.PaintIndex = 0;
+
+	    ColorRadioButton b = null;
+	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
+		Gdk.Color c = paintColors[i % paintColors.Count];
+		b = new ColorRadioButton(b, names[i], c);
+		b.Index = i;
+		b.Toggled += OnChangePaintIndex;
+		paletteButtonbox.Add(b);
+
+		drawingArea.PaintColors[(short) i] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+	    }
+
+	    paletteButtonbox.ShowAll();
+	    paletteAddButton.Sensitive = false;
+	    paletteEditButton.Sensitive = false;
 	}
 
 	internal void OnUndo(object o, EventArgs e) {

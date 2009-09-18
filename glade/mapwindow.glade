@@ -556,7 +556,6 @@
                   <widget class="GtkRadioToolButton" id="objectButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Place Map Objects (O)</property>
-                    <property name="label" translatable="yes">O</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
@@ -570,7 +569,6 @@
                   <widget class="GtkRadioToolButton" id="floorHeightButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Floor Heights</property>
-                    <property name="label" translatable="yes">toolbutton4</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
@@ -584,7 +582,19 @@
                   <widget class="GtkRadioToolButton" id="ceilingHeightButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Ceiling Heights</property>
-                    <property name="label" translatable="yes">toolbutton4</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="polygonTypeButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Polygon Types</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>

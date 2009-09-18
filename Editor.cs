@@ -10,7 +10,8 @@ namespace Weland {
 	Fill,
 	Object,
 	FloorHeight,
-	CeilingHeight
+	CeilingHeight,
+	PolygonType
     }
 
     [Flags] public enum EditorModifiers {
@@ -390,6 +391,26 @@ namespace Weland {
 	    DirtyPolygon(p);
 	}
 
+	void GetPolygonType(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = (short) p.Type;
+	    }
+	}
+
+	void SetPolygonType(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+	    }
+
+	    p.Type = (PolygonType) PaintIndex;
+	    DirtyPolygon(p);
+	}
+
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
@@ -413,6 +434,13 @@ namespace Weland {
 		    undoSet = false;
 		    SetCeilingHeight(X, Y);
 		}
+	    } else if (Tool == Tool.PolygonType) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetPolygonType(X, Y);
+		} else {
+		    undoSet = false;
+		    SetPolygonType(X, Y);
+		}
 	    }
 	    lastX = X;
 	    lastY = Y;
@@ -435,7 +463,14 @@ namespace Weland {
 		} else {
 		    SetCeilingHeight(X, Y);
 		}
+	    } else if (Tool == Tool.PolygonType) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetPolygonType(X, Y);
+		} else {
+		    SetPolygonType(X, Y);
+		}
 	    }
+
 	    lastX = X;
 	    lastY = Y;
 	}

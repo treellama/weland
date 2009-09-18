@@ -1,12 +1,39 @@
 using System.IO;
 
 namespace Weland {
+    public enum PolygonType : short {
+	Normal,
+	ItemImpassable,
+	MonsterImpassable,
+	Hill,
+	Base,
+	Platform,
+	LightOnTrigger,
+	PlatformOnTrigger,
+	LightOffTrigger,
+	PlatformOffTrigger,
+	Teleporter,
+	ZoneBorder,
+	Goal,
+	VisibleMonsterTrigger,
+	InvisibleMonsterTrigger,
+	DualMonsterTrigger,
+	ItemTrigger,
+	MustBeExplored,
+	AutomaticExit,
+	MinorOuch,
+	MajorOuch,
+	Glue,
+	GlueTrigger,
+	Superglue
+    }
+
     public class Polygon : ISerializableBE {
 	public static readonly uint Tag = Wadfile.Chunk("POLY");
 	public const int Size = 128;
 	public const int MaxVertexCount = 8;
 
-	public short Type;
+	public PolygonType Type;
 	public ushort Flags;
 	public short Permutation = -1;
 	public ushort VertexCount;
@@ -51,7 +78,7 @@ namespace Weland {
 	}
 	
 	public void Load(BinaryReaderBE reader) {
-	    Type = reader.ReadInt16();
+	    Type = (PolygonType) reader.ReadInt16();
 	    Flags = reader.ReadUInt16();
 	    Permutation = reader.ReadInt16();
 	    VertexCount = reader.ReadUInt16();
@@ -108,7 +135,7 @@ namespace Weland {
 	}
 
 	public void Save(BinaryWriterBE writer) {
-	    writer.Write(Type);
+	    writer.Write((short) Type);
 	    writer.Write(Flags);
 	    writer.Write(Permutation);
 	    writer.Write(VertexCount);
