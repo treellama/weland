@@ -32,17 +32,20 @@ namespace Weland {
 	public short Point = -1;
 	public short Object = -1;
 	public short Line = -1;
+	public short Polygon = -1;
 
 	public void Clear() {
 	    Point = -1;
 	    Object = -1;
 	    Line = -1;
+	    Polygon = -1;
 	}
 
 	public void CopyFrom(Selection other) {
 	    Point = other.Point;
 	    Object = other.Object;
 	    Line = other.Line;
+	    Polygon = other.Polygon;
 	}
     }
 
@@ -231,8 +234,13 @@ namespace Weland {
 		    index = ClosestLine(p);
 		    if (index != -1) {
 			Selection.Line = index;
+		    } else {
+			index = Level.GetEnclosingPolygon(p);
+			if (index != -1) {
+			    Selection.Polygon = index;
+			}
 		    }
-		}
+		} 
 	    }
 	    undoSet = false;
 	}
@@ -326,6 +334,23 @@ namespace Weland {
 		Line line = Level.Lines[Selection.Line];
 		TranslatePoint(line.EndpointIndexes[0], X - lastX, Y - lastY);
 		TranslatePoint(line.EndpointIndexes[1], X - lastX, Y - lastY);
+	    } else if (Selection.Polygon != -1) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+
+		Polygon polygon = Level.Polygons[Selection.Polygon];
+		Dictionary<short, bool> endpoints = new Dictionary<short, bool>();
+		for (int i = 0; i < polygon.VertexCount; ++i) {
+		    Line line = Level.Lines[polygon.LineIndexes[i]];
+		    endpoints[line.EndpointIndexes[0]] = true;
+		    endpoints[line.EndpointIndexes[1]] = true;
+		}
+
+		foreach (short i in endpoints.Keys) {
+		    TranslatePoint(i, X - lastX, Y - lastY);
+		}
 	    }
 	}
 
@@ -536,6 +561,10 @@ namespace Weland {
 		SetUndo();
 		Level.DeleteLine(Selection.Line);
 		Selection.Line = -1;
+	    } else if (Selection.Polygon != -1) {
+		SetUndo();
+		Level.DeletePolygon(Selection.Polygon);
+		Selection.Polygon = -1;
 	    }
 	}
 

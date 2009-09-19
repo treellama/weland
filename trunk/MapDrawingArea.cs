@@ -98,6 +98,9 @@ namespace Weland {
 	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
 	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
 	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
+	Drawer.Color selectedPolygonColor = new Drawer.Color((double) 0xff/0xff, 
+							  (double) 0xcc/0xff,
+							  (double) 0x66/0xff);
 	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
 	Drawer.Color invalidPolygonColor = new Drawer.Color((double) 0xfb/0xff,
 							    (double) 0x48/0xff,
@@ -157,14 +160,24 @@ namespace Weland {
 			Points[i] |= CohenSutherland.Bottom;
 		    }
 		}
-		
+
 		foreach (Polygon polygon in Level.Polygons) {
 		    CohenSutherland code = ~CohenSutherland.Inside;
 		    for (short i = 0; i < polygon.VertexCount; ++i) {
 			code &= Points[polygon.EndpointIndexes[i]];
 		    }
 		    if (code == CohenSutherland.Inside) 
-			DrawPolygon(polygon);
+			DrawPolygon(polygon, false);
+		}
+
+		if (Selection.Polygon != -1) {
+		    Polygon polygon = Level.Polygons[Selection.Polygon];
+		    CohenSutherland code = ~CohenSutherland.Inside;
+		    for (short i = 0; i < polygon.VertexCount; ++i) {
+			code &= Points[polygon.EndpointIndexes[i]];
+		    }
+		    if (code == CohenSutherland.Inside)
+			DrawPolygon(polygon, true);
 		}
 		
 		foreach (Line line in Level.Lines) {
@@ -292,7 +305,7 @@ namespace Weland {
 	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	}
 
-	void DrawPolygon(Polygon polygon) {
+	void DrawPolygon(Polygon polygon, bool highlight) {
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
 		points.Add(Transform.ToScreenPoint(Level.Endpoints[polygon.EndpointIndexes[i]]));
@@ -304,7 +317,9 @@ namespace Weland {
 	    } else if (Mode == DrawMode.PolygonType) {
 		drawer.FillPolygon(PaintColors[(short) polygon.Type], points);
 	    } else {
-		if (polygon.Concave) {
+		if (highlight) {
+		    drawer.FillPolygon(selectedPolygonColor, points);
+		} else if (polygon.Concave) {
 		    drawer.FillPolygon(invalidPolygonColor, points);
 		} else {
 		    drawer.FillPolygon(polygonColor, points);
