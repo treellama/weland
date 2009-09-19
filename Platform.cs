@@ -165,6 +165,84 @@ namespace Weland {
 	    set { SetFlag(PlatformFlags.IsDoor, value); }
 	}
 
+	// does not copy polygon index
+	public void CopyFrom(Platform other) {
+	    Type = other.Type;
+	    MaximumHeight = other.MaximumHeight;
+	    MinimumHeight = other.MinimumHeight;
+	    Speed = other.Speed;
+	    Delay = other.Delay;
+	    flags = other.flags;
+	    Tag = other.Tag;
+	}
+
+	public void SetTypeWithDefaults(PlatformType type) {
+	    const short baseSpeed = World.One / 60;
+	    const short baseDelay = 30;
+	    Type = type;
+	    MaximumHeight = -1;
+	    MinimumHeight = -1;
+
+	    const PlatformFlags doorFlags = 
+		PlatformFlags.DeactivatesAtInitialLevel |
+		PlatformFlags.ExtendsFloorToCeiling |
+		PlatformFlags.IsPlayerControllable | 
+		PlatformFlags.IsMonsterControllable |
+		PlatformFlags.ReversesDirectionWhenObstructed |
+		PlatformFlags.InitiallyExtended | 
+		PlatformFlags.ComesFromCeiling |
+		PlatformFlags.IsDoor;
+
+	    const PlatformFlags platformFlags =
+		PlatformFlags.InitiallyActive |
+		PlatformFlags.InitiallyExtended |
+		PlatformFlags.ComesFromFloor |
+		PlatformFlags.ReversesDirectionWhenObstructed;
+
+	    switch (type) {
+	    case PlatformType.SphtDoor:
+		Speed = 2 * baseSpeed;
+		Delay = 4 * baseDelay;
+		flags = doorFlags;
+		break;
+	    case PlatformType.SphtSplitDoor:
+	    case PlatformType.LockedSphtDoor:
+		Speed = baseSpeed;
+		Delay = 4 * baseDelay;
+		flags = doorFlags | PlatformFlags.ComesFromFloor;
+		break;
+	    case PlatformType.SphtPlatform:
+	    case PlatformType.NoisySphtPlatform:
+		Speed = baseSpeed;
+		Delay = 2 * baseDelay;
+		flags = PlatformFlags.InitiallyActive |
+		    PlatformFlags.InitiallyExtended | 
+		    PlatformFlags.ComesFromFloor |
+		    PlatformFlags.ReversesDirectionWhenObstructed;
+		break;
+	    case PlatformType.HeavySphtDoor:
+		Speed = baseSpeed;
+		Delay = 4 * baseDelay;
+		flags = doorFlags;
+		break;
+	    case PlatformType.PfhorDoor:
+		Speed = 2 * baseSpeed;
+		Delay = 4 * baseDelay;
+		flags = doorFlags;
+		break;
+	    case PlatformType.HeavySphtPlatform:
+		Speed = baseSpeed;
+		Delay = 4 * baseDelay;
+		flags = platformFlags;
+		break;
+	    case PlatformType.PfhorPlatform:
+		Speed = baseSpeed;
+		Delay = 2 * baseDelay;
+		flags = platformFlags;
+		break;
+	    }
+	}
+
 	public void Load(BinaryReaderBE reader) {
 	    Type = (PlatformType) reader.ReadInt16();
 	    Speed = reader.ReadInt16();
