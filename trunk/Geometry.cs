@@ -105,6 +105,7 @@ namespace Weland {
 	    MapObject o = new MapObject();
 	    o.X = p.X;
 	    o.Y = p.Y;
+	    o.PolygonIndex = polygon_index;
 	    Objects.Add(o);
 	    return (short) (Objects.Count - 1);
 	}
