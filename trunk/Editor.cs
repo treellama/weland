@@ -431,8 +431,11 @@ namespace Weland {
 		    undoSet = true;
 		}
 	    }
-
+	    
+	    bool scan = (p.Type == PolygonType.Platform || (PolygonType) PaintIndex == PolygonType.Platform);
 	    p.Type = (PolygonType) PaintIndex;
+	    if (scan) 
+		ScanPlatforms();
 	    DirtyPolygon(p);
 	}
 
@@ -647,6 +650,35 @@ namespace Weland {
 		    if (p.CeilingHeight == old_height) {
 			p.CeilingHeight = new_height;
 		    }
+		}
+	    }
+	}
+
+	// ensures 1:1 platform:polygon mapping
+	public void ScanPlatforms() {
+	    Dictionary<short, Platform> map = new Dictionary<short, Platform>();
+	    for (int i = Level.Platforms.Count - 1; i >= 0; --i) {
+		Platform platform = Level.Platforms[i];
+		if (platform.PolygonIndex == -1) {
+		    Level.Platforms.RemoveAt(i);
+		} else {
+		    Polygon polygon = Level.Polygons[platform.PolygonIndex];
+		    if (polygon.Type != PolygonType.Platform) {
+			Level.Platforms.RemoveAt(i);
+		    } else {
+			map[platform.PolygonIndex] = platform;
+		    }
+		}
+	    }
+
+	    for (int i = 0; i < Level.Polygons.Count; ++i) {
+		Polygon polygon = Level.Polygons[i];
+		if (polygon.Type == PolygonType.Platform && !map.ContainsKey((short) i)) {
+		    Platform platform = new Platform();
+		    platform.SetTypeWithDefaults(PlatformType.SphtDoor);
+		    platform.PolygonIndex = (short) i;
+		    Level.Platforms.Add(platform);
+		    polygon.Permutation = (short) (Level.Platforms.Count - 1);
 		}
 	    }
 	}
