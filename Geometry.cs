@@ -733,5 +733,89 @@ namespace Weland {
 		}
 	    }
 	}
+
+	public List<Polygon> AdjacentPolygons(Polygon polygon) {
+	    List<Polygon> result = new List<Polygon>();
+	    for (int i = 0; i < polygon.VertexCount; ++i) {
+		Line line = Lines[polygon.LineIndexes[i]];
+		if (line.ClockwisePolygonOwner == -1 || line.CounterclockwisePolygonOwner == -1) 
+		    continue;
+
+		if (Polygons[line.CounterclockwisePolygonOwner] == polygon) {
+		    if (line.ClockwisePolygonOwner != -1) {
+			result.Add(Polygons[line.ClockwisePolygonOwner]);
+		    }
+		} else {
+		    if (line.CounterclockwisePolygonOwner != -1) {
+			result.Add(Polygons[line.CounterclockwisePolygonOwner]);
+		    }
+		}
+	    }
+	    return result;
+	}
+
+	public short LowestAdjacentFloor(Polygon polygon) {
+	    short min = short.MaxValue;
+	    foreach (Polygon adjacent in AdjacentPolygons(polygon)) {
+		if (adjacent.FloorHeight < min) {
+		    min = adjacent.FloorHeight;
+		}
+	    }
+	    return min;
+	}
+
+	public short HighestAdjacentFloor(Polygon polygon) {
+	    short max = short.MinValue;
+	    foreach (Polygon adjacent in AdjacentPolygons(polygon)) {
+		if (adjacent.FloorHeight > max) {
+		    max = adjacent.FloorHeight;
+		}
+	    }
+	    return max;
+	}
+
+	public short LowestAdjacentCeiling(Polygon polygon) {
+	    short min = short.MaxValue;
+	    foreach (Polygon adjacent in AdjacentPolygons(polygon)) {
+		if (adjacent.CeilingHeight < min) {
+		    min = adjacent.CeilingHeight;
+		}
+	    }
+	    return min;
+	}
+
+	public short HighestAdjacentCeiling(Polygon polygon) {
+	    short max = short.MinValue;
+	    foreach (Polygon adjacent in AdjacentPolygons(polygon)) {
+		if (adjacent.CeilingHeight > max) {
+		    max = adjacent.CeilingHeight;
+		}
+	    }
+	    return max;
+	}
+
+	public short AutocalPlatformMinimum(short platform_index) {
+	    Platform platform = Platforms[platform_index];
+	    Polygon polygon = Polygons[platform.PolygonIndex];
+	    if (platform.ComesFromCeiling && platform.ComesFromFloor) {
+		return LowestAdjacentFloor(polygon);
+	    } else if (platform.ComesFromCeiling) {
+		return LowestAdjacentCeiling(polygon);
+	    } else {
+		return LowestAdjacentFloor(polygon);
+	    }
+	}
+	
+	public short AutocalPlatformMaximum(short platform_index) {
+	    Platform platform = Platforms[platform_index];
+	    Polygon polygon = Polygons[platform.PolygonIndex];
+	    if (platform.ComesFromCeiling && platform.ComesFromFloor) {
+		return HighestAdjacentCeiling(polygon);
+	    } else if (platform.ComesFromCeiling) {
+		return HighestAdjacentCeiling(polygon);
+	    } else {
+		return HighestAdjacentFloor(polygon);
+	    }
+	}
     }
 }

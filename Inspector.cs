@@ -3,6 +3,17 @@ using Gtk;
 using System;
 
 namespace Weland {
+    public enum InspectorPage {
+	Object,
+	Polygon
+    }
+
+    public enum PolygonPage {
+	Normal,
+	Base,
+	Platform
+    }
+
     public partial class MapWindow {
 	[Widget] Notebook inspector;
 	[Widget] ComboBox objectGroup;
@@ -45,7 +56,11 @@ namespace Weland {
 	[Widget] CheckButton soundFloats;
 	[Widget] CheckButton soundUseLight;
 
-	bool applyObjectChanges = true;
+	[Widget] ComboBox polygonType;
+	[Widget] Notebook polygonNotebook;
+	[Widget] ComboBox baseTeam;
+
+	bool applyChanges = true;
 
 	void SetupInspector() {
 	    soundLight.Model = soundLightStore;
@@ -55,9 +70,10 @@ namespace Weland {
 	}
 
 	void UpdateInspector() {
-	    applyObjectChanges = false;
+	    applyChanges = false;
 	    if (selection.Object != -1) {
 		MapObject mapObject = Level.Objects[selection.Object];
+		inspector.CurrentPage = (int) InspectorPage.Object;
 		inspector.Show();
 		objectGroup.Active = (int) mapObject.Type;
 		objectNotebook.CurrentPage = (int) mapObject.Type;
@@ -111,10 +127,27 @@ namespace Weland {
 			soundVolume.Value = 1;
 		    }
 		}
+	    } else if (selection.Polygon != -1) {
+		inspector.CurrentPage = (int) InspectorPage.Polygon;
+		Polygon polygon = Level.Polygons[selection.Polygon];
+		polygonType.Active = (int) polygon.Type;
+		switch (polygon.Type) {
+		case PolygonType.Base:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.Base;
+		    baseTeam.Active = polygon.Permutation;
+		    break;
+		case PolygonType.Platform:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.Platform;
+		    break;
+		default:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.Normal;
+		    break;
+		}
+		inspector.Show();
 	    } else {
 		inspector.Hide();
 	    }
-	    applyObjectChanges = true;
+	    applyChanges = true;
 	}
 
 	void RedrawSelectedObject() {
@@ -124,7 +157,7 @@ namespace Weland {
 	}
 
 	protected void OnObjectChanged(object obj, EventArgs args) {
-	    if (!applyObjectChanges) return;
+	    if (!applyChanges) return;
 	    MapObject mapObject = Level.Objects[selection.Object];
 
 	    // decrement item and monster initial counts
@@ -195,12 +228,42 @@ namespace Weland {
 	    RedrawSelectedObject();
 	}
 
+	protected void OnPlatformParameters(object obj, EventArgs args) {
+	    for (int i = 0; i < Level.Platforms.Count; ++i) {
+		Platform platform = Level.Platforms[i];
+		if (platform.PolygonIndex == selection.Polygon) {
+		    PlatformParametersDialog d = new PlatformParametersDialog(window1, Level, (short) i);
+		    d.Run();
+		    break;
+		}
+	    }
+	}
+
+	protected void OnPolygonChanged(object obj, EventArgs args) {
+	    Polygon polygon = Level.Polygons[selection.Polygon];
+	    if (polygon.Type == PolygonType.Base) {
+		polygon.Permutation = (short) baseTeam.Active;
+	    }
+	}
+
 	protected void OnObjectTypeChanged(object obj, EventArgs args) {
-	    if (!applyObjectChanges) return;
+	    if (!applyChanges) return;
 
 	    MapObject mapObject = Level.Objects[selection.Object];
 	    mapObject.Type = (ObjectType) objectGroup.Active;
 	    RedrawSelectedObject();
+	    UpdateInspector();
+	}
+	
+	protected void OnPolygonTypeChanged(object obj, EventArgs args) {
+	    if (!applyChanges) return;
+
+	    Polygon polygon = Level.Polygons[selection.Polygon];
+	    bool scan = (polygon.Type == PolygonType.Platform || (PolygonType) polygonType.Active == PolygonType.Platform);
+	    polygon.Type = (PolygonType) polygonType.Active;
+	    if (scan) {
+		editor.ScanPlatforms();
+	    }
 	    UpdateInspector();
 	}
 

@@ -21,6 +21,7 @@ MapObject.cs
 MapWindow.cs
 ParametersDialogs.cs
 Platform.cs
+PlatformParametersDialog.cs
 Point.cs
 Polygon.cs
 Shapes.cs
@@ -71,4 +72,5 @@ Widgets.cs
 /resource:images/zoom.png
 /resource:glade/levelparameters.glade
 /resource:glade/mapwindow.glade
+/resource:glade/platformparameters.glade
 

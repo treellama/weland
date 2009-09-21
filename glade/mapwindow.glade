@@ -729,7 +729,7 @@
                     <property name="show_tabs">False</property>
                     <property name="show_border">False</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox2">
+                      <widget class="GtkVBox" id="objectPage">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
@@ -1837,7 +1837,180 @@ Jjaro Ship</property>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <widget class="GtkVBox" id="polygonPage">
+                        <property name="visible">True</property>
+                        <property name="border_width">5</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <widget class="GtkHBox" id="hbox16">
+                            <property name="visible">True</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <widget class="GtkLabel" id="label18">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Type:</property>
+                              </widget>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkComboBox" id="polygonType">
+                                <property name="visible">True</property>
+                                <property name="items" translatable="yes">Normal
+Item Impassable
+Monster &amp; Item Impassable
+Hill
+Base
+Platform
+Light On Trigger
+Platform On Trigger
+Light Off Trigger
+Platform Off Trigger
+Teleporter
+Zone Border
+Goal
+Visible Monster Trigger
+Invisible Monster Trigger
+Dual Monster Trigger
+Item Trigger
+Must Be Explored
+Automatic Exit
+Minor Ouch
+Major Ouch
+Glue
+Glue Trigger
+Superglue</property>
+                                <signal name="changed" handler="OnPolygonTypeChanged"/>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkNotebook" id="polygonNotebook">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="show_tabs">False</property>
+                            <property name="show_border">False</property>
+                            <child>
+                              <widget class="GtkEventBox" id="normalPage">
+                                <property name="visible">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </widget>
+                            </child>
+                            <child>
+                              <placeholder/>
+                              <packing>
+                                <property name="type">tab</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkVBox" id="basePage">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox17">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <widget class="GtkLabel" id="label19">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Team:</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkComboBox" id="baseTeam">
+                                        <property name="visible">True</property>
+                                        <property name="items" translatable="yes">Slate
+Red
+Violet
+Yellow
+White
+Orange
+Blue
+Green</property>
+                                        <signal name="changed" handler="OnPolygonChanged"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                              <packing>
+                                <property name="type">tab</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkVBox" id="platformPage">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <widget class="GtkButton" id="button1">
+                                    <property name="label" translatable="yes">Platform Parameters...</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <signal name="clicked" handler="OnPlatformParameters"/>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                              <packing>
+                                <property name="type">tab</property>
+                              </packing>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
                     </child>
                     <child>
                       <placeholder/>
