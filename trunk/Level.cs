@@ -173,6 +173,28 @@ namespace Weland {
 		UpdatePolygonConcavity(polygon);
 	    }
 
+	    for (int i = 0; i < Polygons.Count; ++i) {
+		Polygon polygon = Polygons[i];
+		if (polygon.Type == PolygonType.Platform) {
+		    bool found = false;
+		    for (int j = 0; j < Platforms.Count; ++j) {
+			Platform platform = Platforms[j];
+			if (platform.PolygonIndex == i) {
+			    polygon.Permutation = (short) j;
+			    found = true;
+			    break;
+			}
+		    }
+		    if (!found) {
+			Platform platform = new Platform();
+			platform.SetTypeWithDefaults(PlatformType.SphtDoor);
+			platform.PolygonIndex = (short) i;
+			polygon.Permutation = (short) Platforms.Count;
+			Platforms.Add(platform);
+		    }
+		}
+	    }
+
 	    foreach (Line line in Lines) {
 		Polygon p1 = null;
 		Polygon p2 = null;
