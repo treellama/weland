@@ -487,6 +487,16 @@ namespace Weland {
 		    Platforms.RemoveAt(i);
 		}
 	    }
+
+	    foreach (Polygon polygon in Polygons) {
+		if (polygon.Type == PolygonType.Teleporter) {
+		    if (polygon.Permutation > index) {
+			--polygon.Permutation;
+		    } else if (polygon.Permutation == index) {
+			polygon.Permutation = -1;
+		    }
+		}
+	    }
 	}
 
 
