@@ -11,7 +11,10 @@ namespace Weland {
     public enum PolygonPage {
 	Normal,
 	Base,
-	Platform
+	Platform,
+	Light,
+	Teleporter,
+	PlatformTrigger
     }
 
     public partial class MapWindow {
@@ -59,14 +62,30 @@ namespace Weland {
 	[Widget] ComboBox polygonType;
 	[Widget] Notebook polygonNotebook;
 	[Widget] ComboBox baseTeam;
+	[Widget] ComboBox polygonLight;
+	[Widget] Entry teleportDestination;
+	[Widget] ComboBox polygonPlatform;
 
 	bool applyChanges = true;
+
+	ListStore polygonLightStore = new ListStore(typeof(int));
+	ListStore polygonPlatformStore = new ListStore(typeof(int));
 
 	void SetupInspector() {
 	    soundLight.Model = soundLightStore;
 	    CellRendererText text = new CellRendererText();
 	    soundLight.PackStart(text, false);
 	    soundLight.AddAttribute(text, "text", 0);
+
+	    polygonLight.Model = polygonLightStore;
+	    text = new CellRendererText();
+	    polygonLight.PackStart(text, false);
+	    polygonLight.AddAttribute(text, "text", 0);
+
+	    polygonPlatform.Model = polygonPlatformStore;
+	    text = new CellRendererText();
+	    polygonPlatform.PackStart(text, false);
+	    polygonPlatform.AddAttribute(text, "text", 0);
 	}
 
 	void UpdateInspector() {
@@ -138,6 +157,39 @@ namespace Weland {
 		    break;
 		case PolygonType.Platform:
 		    polygonNotebook.CurrentPage = (int) PolygonPage.Platform;
+		    break;
+		case PolygonType.LightOnTrigger:
+		case PolygonType.LightOffTrigger:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.Light;
+		    polygonLightStore.Clear();
+		    for (int i = 0; i < Level.Lights.Count; ++i) {
+			polygonLightStore.AppendValues(i);
+		    }
+		    polygonLight.Active = polygon.Permutation;
+		    break;
+		case PolygonType.PlatformOnTrigger:
+		case PolygonType.PlatformOffTrigger:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.PlatformTrigger;
+		    polygonPlatformStore.Clear();
+		    TreeIter? active = null;
+		    for (int i = 0; i < Level.Polygons.Count; ++i) {
+			Polygon platform_poly = Level.Polygons[i];
+			if (platform_poly.Type == PolygonType.Platform) {
+			    TreeIter it = polygonPlatformStore.AppendValues(i);
+			    if (polygon.Permutation == i) {
+				active = it;
+			    }
+			}
+		    }
+		    if (active.HasValue) {
+			polygonPlatform.SetActiveIter(active.Value);
+		    }
+			    
+		    break;
+		case PolygonType.Teleporter:
+		case PolygonType.AutomaticExit:
+		    polygonNotebook.CurrentPage = (int) PolygonPage.Teleporter;
+		    teleportDestination.Text = String.Format("{0}", polygon.Permutation);
 		    break;
 		default:
 		    polygonNotebook.CurrentPage = (int) PolygonPage.Normal;
@@ -240,9 +292,44 @@ namespace Weland {
 	}
 
 	protected void OnPolygonChanged(object obj, EventArgs args) {
+	    if (!applyChanges) return;
+
 	    Polygon polygon = Level.Polygons[selection.Polygon];
-	    if (polygon.Type == PolygonType.Base) {
+	    switch (polygon.Type) {
+	    case PolygonType.Base:
 		polygon.Permutation = (short) baseTeam.Active;
+		break;
+	    case PolygonType.LightOnTrigger:
+	    case PolygonType.LightOffTrigger:
+		polygon.Permutation = (short) polygonLight.Active;
+		break;
+	    case PolygonType.PlatformOnTrigger:
+	    case PolygonType.PlatformOffTrigger:
+		TreeIter it;
+		if (polygonPlatform.GetActiveIter(out it)) {
+		    polygon.Permutation = (short) (int) polygonPlatform.Model.GetValue(it, 0);
+		}
+		break;
+	    case PolygonType.Teleporter:
+		{
+		    short destination = 0;
+		    if (short.TryParse(teleportDestination.Text, out destination)) {
+			if (destination >= -257 && destination < Level.Polygons.Count) {
+			    polygon.Permutation = destination;
+			}
+		    }
+		}
+		break;
+	    case PolygonType.AutomaticExit: 
+		{
+		    short destination = 0;
+		    if (short.TryParse(teleportDestination.Text, out destination)) {
+			if (destination > -Level.Polygons.Count - 1 && destination <= 256) {
+			    polygon.Permutation = destination;
+			}
+		    }
+		}
+		break;
 	    }
 	}
 
@@ -259,6 +346,9 @@ namespace Weland {
 	    if (!applyChanges) return;
 
 	    Polygon polygon = Level.Polygons[selection.Polygon];
+	    if (polygon.Type != (PolygonType) polygonType.Active) {
+		polygon.Permutation = 0;
+	    }
 	    bool scan = (polygon.Type == PolygonType.Platform || (PolygonType) polygonType.Active == PolygonType.Platform);
 	    polygon.Type = (PolygonType) polygonType.Active;
 	    if (scan) {
