@@ -275,10 +275,17 @@ namespace Weland {
 	}
 
 	void TranslatePoint(short index, int X, int Y) {
+	    Point p = Level.Endpoints[index];
+	    short x = (short) (p.X + X);
+	    short y = (short) (p.Y + Y);
+	    MovePoint(index, x, y);
+	}
+
+	void MovePoint(short index, short X, short Y) {
 		Point p = Level.Endpoints[index];
 		AddDirty(p);
-		p.X = (short) (p.X + X);
-		p.Y = (short) (p.Y + Y);
+		p.X = X;
+		p.Y = Y;
 		Level.Endpoints[index] = p;
 		AddDirty(p);
 		
@@ -307,8 +314,8 @@ namespace Weland {
 		    SetUndo();
 		    undoSet = true;
 		}
-
-		TranslatePoint(Selection.Point, X - lastX, Y - lastY);
+		
+		MovePoint(Selection.Point, GridAdjust(X), GridAdjust(Y));
 	    } else if (Selection.Object != -1) {
 		if (!undoSet) {
 		    SetUndo();
