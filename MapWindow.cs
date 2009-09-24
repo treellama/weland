@@ -59,6 +59,8 @@ namespace Weland {
 	[Widget] Button paletteAddButton;
 	[Widget] Button paletteEditButton;
 
+	[Widget] Statusbar statusbar;
+
 	string Filename;
 
 	void SetupDrawingArea() {
@@ -127,6 +129,25 @@ namespace Weland {
 	    window1.Show();
 
 	    window1.Focus = null;
+	}
+
+	void UpdateStatusBar() {
+	    const int id = 1;
+	    statusbar.Pop(id);
+
+	    if (selection.Point != -1) {
+		statusbar.Push(id, String.Format("Point Index: {0}", selection.Point));
+	    } else if (selection.Line != -1) {
+		Line line = Level.Lines[selection.Line];
+		statusbar.Push(id, String.Format("Line Index: {0}\tLine Length: {1:0.000} WU", selection.Line, World.ToDouble((short) Level.Distance(Level.Endpoints[line.EndpointIndexes[0]], Level.Endpoints[line.EndpointIndexes[1]])))); 
+	    } else if (selection.Polygon != -1) {
+		Polygon polygon = Level.Polygons[selection.Polygon];
+		statusbar.Push(id, String.Format("Polygon index {0}\tFloor Height: {1:0.000}, Ceiling Height: {2:0.000}", selection.Polygon, World.ToDouble(polygon.FloorHeight), World.ToDouble(polygon.CeilingHeight)));
+	    } else if (selection.Object != -1) {
+		statusbar.Push(id, String.Format("Object index: {0}", selection.Object));
+	    } else {
+		statusbar.Push(id, String.Format("Level: {0}\t{1} Polygons, {2} Lights, {3} Objects", Level.Name, Level.Polygons.Count, Level.Lights.Count, Level.Objects.Count));
+	    }
 	}
 
 	MapDrawingArea drawingArea = new MapDrawingArea();
@@ -287,6 +308,7 @@ namespace Weland {
 	    }
 
 	    UpdateInspector();
+	    UpdateStatusBar();
 
 	    args.RetVal = true;
 	}
@@ -371,6 +393,7 @@ namespace Weland {
 	    case Gdk.Key.BackSpace:
 		editor.DeleteSelected();
 		UpdateInspector();
+		UpdateStatusBar();
 		Redraw();
 		break;
 	    default:
@@ -613,6 +636,7 @@ namespace Weland {
 		palette.Hide();
 	    }
 	    UpdateInspector();
+	    UpdateStatusBar();
 	    Redraw();
 	}
 
