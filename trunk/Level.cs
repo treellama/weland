@@ -246,6 +246,7 @@ namespace Weland {
 		Point center = PolygonCenter(Polygons[0]);
 		obj.X = center.X;
 		obj.Y = center.Y;
+		obj.PolygonIndex = 0;
 		Objects.Add(obj);
 	    }	    
 	}
