@@ -472,6 +472,14 @@ namespace Weland {
 		}
 	    }
 
+	    foreach (Side side in Sides) {
+		if ((side.Flags & SideFlags.IsControlPanel) != 0 && side.ControlPanelType == ControlPanelType.PlatformSwitch) {
+		    if (side.ControlPanelPermutation > index) {
+			--side.ControlPanelPermutation;
+		    }
+		}
+	    }
+	    
 	    for (int i = Objects.Count - 1; i >= 0; --i) {
 		if (Objects[i].PolygonIndex > index) {
 		    --Objects[i].PolygonIndex;
