@@ -142,17 +142,72 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="menuitem3">
+              <widget class="GtkMenuItem" id="levelItem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_View</property>
+                <property name="label" translatable="yes">Levels</property>
                 <property name="use_underline">True</property>
               </widget>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="levelItem">
+              <widget class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Level</property>
+                <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu5">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="drawModeItem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Draw Mode</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnViewMenu"/>
+                        <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem4">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem13">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Elevation</property>
+                        <property name="use_underline">True</property>
+                        <child>
+                          <widget class="GtkMenu" id="menu6">
+                            <property name="visible">True</property>
+                            <child>
+                              <widget class="GtkMenuItem" id="floorHeightItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Floor</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                            <child>
+                              <widget class="GtkMenuItem" id="ceilingHeightItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Ceiling</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="polygonTypeItem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Polygon Types</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnViewMenu"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
               </widget>
             </child>
             <child>

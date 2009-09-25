@@ -29,6 +29,11 @@ namespace Weland {
 	[Widget] MenuItem levelItem;
 	[Widget] Table table1;
 
+	[Widget] MenuItem drawModeItem;
+	[Widget] MenuItem floorHeightItem;
+	[Widget] MenuItem ceilingHeightItem;
+	[Widget] MenuItem polygonTypeItem;
+
 	[Widget] RadioToolButton selectButton;
 	[Widget] RadioToolButton zoomButton;
 	[Widget] RadioToolButton moveButton;
@@ -583,6 +588,19 @@ namespace Weland {
 		ChooseTool(Tool.CeilingHeight);
 	    } else if (button == polygonTypeButton) {
 		ChooseTool(Tool.PolygonType);
+	    }
+	}
+
+	protected void OnViewMenu(object obj, EventArgs args) {
+	    MenuItem item = (MenuItem) obj;
+	    if (item == drawModeItem) {
+		selectButton.Active = true;
+	    } else if (item == floorHeightItem) {
+		floorHeightButton.Active = true;
+	    } else if (item == ceilingHeightItem) {
+		ceilingHeightButton.Active = true;
+	    } else if (item == polygonTypeItem) {
+		polygonTypeButton.Active = true;
 	    }
 	}
 
