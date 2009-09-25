@@ -259,6 +259,32 @@ namespace Weland {
 
 	    return modifiers;
 	}
+
+	void ZoomIn(short X, short Y) {
+	    drawingArea.Transform.Scale *= Math.Pow(2.0, 1.0 / 4);
+	    Center(X, Y);
+	    AdjustScrollRange();
+	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+	}
+
+	void ZoomOut(short X, short Y) {
+	    drawingArea.Transform.Scale /= Math.Pow(2.0, 1.0 / 4);
+	    Center(X, Y);
+	    AdjustScrollRange();
+	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+	}
+
+	public void OnZoomIn(object obj, EventArgs args) {
+	    short X = drawingArea.Transform.ToMapX(drawingArea.Allocation.Width / 2);
+	    short Y = drawingArea.Transform.ToMapY(drawingArea.Allocation.Height / 2);
+	    ZoomIn(X, Y);
+	}
+
+	public void OnZoomOut(object obj, EventArgs args) {
+	    short X = drawingArea.Transform.ToMapX(drawingArea.Allocation.Width / 2);
+	    short Y = drawingArea.Transform.ToMapY(drawingArea.Allocation.Height/ 2);
+	    ZoomOut(X, Y);
+	}
 	
 	internal void OnButtonPressed(object obj, ButtonPressEventArgs args) {
 	    EventButton ev = args.Event;
@@ -267,14 +293,10 @@ namespace Weland {
 
 	    if (editor.Tool == Tool.Zoom) {
 		if (ev.Button == 3 || (ev.State & ModifierType.Mod1Mask) != 0) {
-		    drawingArea.Transform.Scale /= Math.Sqrt(2.0);
+		    ZoomOut(X, Y);
 		} else {
-		    drawingArea.Transform.Scale *= Math.Sqrt(2.0);
+		    ZoomIn(X, Y);
 		}
-
-		Center(X, Y);
-		AdjustScrollRange();
-		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    } else if (editor.Tool == Tool.Move) {
 		xDown = ev.X;
 		yDown = ev.Y;

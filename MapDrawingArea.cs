@@ -224,8 +224,23 @@ namespace Weland {
 	}
 
 	public void Center(short X, short Y) {
-	    Transform.XOffset = (short) (X - Allocation.Width / 2 / Transform.Scale);
-	    Transform.YOffset = (short) (Y - Allocation.Height / 2 / Transform.Scale);
+	    int cx = (int) Math.Round(X - Allocation.Width / 2 / Transform.Scale);
+	    int cy = (int) Math.Round(Y - Allocation.Height / 2 / Transform.Scale);
+	    int maxX = (int) Math.Round(short.MaxValue - Allocation.Width / Transform.Scale);
+	    int maxY = (int) Math.Round(short.MaxValue - Allocation.Height / Transform.Scale);
+
+	    if (cx < short.MinValue) {
+		cx = short.MinValue;
+	    } else if (cx > maxX) {
+		cx = maxX;
+	    }
+	    if (cy < short.MinValue) {
+		cy = short.MinValue;
+	    } else if (cy > maxY) {
+		cy = maxY;
+	    }
+	    Transform.XOffset = (short) cx;
+	    Transform.YOffset = (short) cy;
 	}
 
 	void DrawPoint(Point point) {
