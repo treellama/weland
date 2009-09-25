@@ -164,6 +164,29 @@
                   <widget class="GtkMenu" id="menu4">
                     <property name="visible">True</property>
                     <child>
+                      <widget class="GtkMenuItem" id="menuitem11">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Zoom In</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnZoomIn"/>
+                        <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem12">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Zoom Out</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnZoomOut"/>
+                        <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkMenuItem" id="menuitem6">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Set Level Parameters...</property>
