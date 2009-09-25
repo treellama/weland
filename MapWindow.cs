@@ -15,12 +15,6 @@ namespace Weland {
 	    }
 	}
 
-	static public bool IsMac() {
-	    return ((int) System.Environment.OSVersion.Platform == 6 || 
-		    // ugh, Mono
-		    (System.Environment.OSVersion.Platform == PlatformID.Unix && System.Environment.OSVersion.Version.Major == 9));	    
-	}
-
 	Wadfile wadfile = new Wadfile();
 	Editor editor = new Editor();
 	Grid grid = new Grid();

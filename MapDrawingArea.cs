@@ -122,7 +122,7 @@ namespace Weland {
 #if SYSTEM_DRAWING
 	    drawer = new SystemDrawer(GdkWindow, Antialias);
 #else
-	    if (!Antialias && !MapWindow.IsMac()) {
+	    if (!Antialias && !PlatformDetection.IsMac) {
 		drawer = new GdkDrawer(GdkWindow);
 	    } else {
 		drawer = new CairoDrawer(GdkWindow, Antialias);
@@ -362,7 +362,7 @@ namespace Weland {
 	    int y = (int) Y - image.Height / 2;
 	    if (highlight) {
 		Gdk.GC gc = new Gdk.GC(GdkWindow);
-		if (!MapWindow.IsMac()) { // UGH
+		if (!PlatformDetection.IsMac) { // UGH
 		    Gdk.Pixmap mask = new Gdk.Pixmap(null, image.Width, image.Height, 1);
 		    image.RenderThresholdAlpha(mask, 0, 0, 0, 0, -1, -1, 1);
 		    
