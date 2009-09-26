@@ -15,6 +15,7 @@ Inspector.cs
 Level.cs
 LevelParametersDialog.cs
 Light.cs
+LightParametersDialog.cs
 Line.cs
 MapDrawingArea.cs
 MapInfo.cs
@@ -40,9 +41,11 @@ Widgets.cs
 /resource:images/ar.png
 /resource:images/arrow.png
 /resource:images/ceiling-height.png
+/resource:images/ceiling-light.png
 /resource:images/fill.png
 /resource:images/flag.png
 /resource:images/floor-height.png
+/resource:images/floor-light.png
 /resource:images/flower.png,flower.png
 /resource:images/fusion-ammo.png
 /resource:images/fusion.png
@@ -72,6 +75,7 @@ Widgets.cs
 /resource:images/uplink-chip.png
 /resource:images/zoom.png
 /resource:glade/levelparameters.glade
+/resource:glade/lightparameters.glade
 /resource:glade/mapwindow.glade
 /resource:glade/platformparameters.glade
 

@@ -11,7 +11,9 @@ namespace Weland {
 	Object,
 	FloorHeight,
 	CeilingHeight,
-	PolygonType
+	PolygonType,
+	FloorLight,
+	CeilingLight
     }
 
     [Flags] public enum EditorModifiers {
@@ -468,6 +470,44 @@ namespace Weland {
 	    DirtyPolygon(p);
 	}
 
+	void GetFloorLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.FloorLight;
+	    }
+	}
+
+	void SetFloorLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.FloorLight = PaintIndex;
+		DirtyPolygon(p);
+	    }
+	}
+
+	void GetCeilingLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.CeilingLight;
+	    }
+	}
+
+	void SetCeilingLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.CeilingLight = PaintIndex;
+		DirtyPolygon(p);
+	    }
+	}
+
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
@@ -498,7 +538,22 @@ namespace Weland {
 		    undoSet = false;
 		    SetPolygonType(X, Y);
 		}
+	    } else if (Tool == Tool.FloorLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorLight(X, Y);
+		} else {
+		    undoSet = false;
+		    SetFloorLight(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingLight(X, Y);
+		} else {
+		    undoSet = false;
+		    SetCeilingLight(X, Y);
+		}
 	    }
+
 	    lastX = X;
 	    lastY = Y;
 	}
@@ -525,6 +580,18 @@ namespace Weland {
 		    GetPolygonType(X, Y);
 		} else {
 		    SetPolygonType(X, Y);
+		}
+	    } else if (Tool == Tool.FloorLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorLight(X, Y);
+		} else {
+		    SetFloorLight(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingLight(X, Y);
+		} else {
+		    SetCeilingLight(X, Y);
 		}
 	    }
 
