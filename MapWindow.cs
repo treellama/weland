@@ -905,8 +905,9 @@ namespace Weland {
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
 		    editor.ChangeFloorHeights(original_height, height);
-		    BuildHeightPalette(editor.GetFloorHeights());
-
+		    SortedList<short, bool> heights = editor.GetFloorHeights();
+		    heights[height] = true;
+		    BuildHeightPalette(heights);
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		}
 		dialog.Destroy();
@@ -918,8 +919,9 @@ namespace Weland {
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
 		    editor.ChangeCeilingHeights(original_height, height);
-		    BuildHeightPalette(editor.GetCeilingHeights());
-
+		    SortedList<short, bool> heights = editor.GetCeilingHeights();
+		    heights[height] = true;
+		    BuildHeightPalette(heights);
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		}
 		dialog.Destroy();
