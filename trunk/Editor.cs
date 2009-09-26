@@ -308,6 +308,11 @@ namespace Weland {
 
 	}
 
+	void TranslateObject(MapObject obj, int X, int Y) {
+	    obj.X = (short) (obj.X + X);
+	    obj.Y = (short) (obj.Y + Y);
+	}
+
 	void MoveSelected(short X, short Y) {
 	    if (Selection.Point != -1) {
 		if (!undoSet) {
@@ -357,6 +362,12 @@ namespace Weland {
 
 		foreach (short i in endpoints.Keys) {
 		    TranslatePoint(i, X - lastX, Y - lastY);
+		}
+
+		foreach (MapObject mapObject in Level.Objects) {
+		    if (mapObject.PolygonIndex == Selection.Polygon) {
+			TranslateObject(mapObject, X - lastX, Y - lastY);
+		    }
 		}
 	    }
 	}
