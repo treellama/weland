@@ -313,6 +313,11 @@ namespace Weland {
 	    obj.Y = (short) (obj.Y + Y);
 	}
 
+	void TranslateAnnotation(Annotation a, int X, int Y) {
+	    a.X = (short) (a.X + X);
+	    a.Y = (short) (a.Y + Y);
+	}
+
 	void MoveSelected(short X, short Y) {
 	    if (Selection.Point != -1) {
 		if (!undoSet) {
@@ -367,6 +372,12 @@ namespace Weland {
 		foreach (MapObject mapObject in Level.Objects) {
 		    if (mapObject.PolygonIndex == Selection.Polygon) {
 			TranslateObject(mapObject, X - lastX, Y - lastY);
+		    }
+		}
+
+		foreach (Annotation annotation in Level.Annotations) {
+		    if (annotation.PolygonIndex == Selection.Polygon) {
+			TranslateAnnotation(annotation, X - lastX, Y - lastY);
 		    }
 		}
 	    }

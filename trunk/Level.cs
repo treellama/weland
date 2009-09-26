@@ -30,6 +30,7 @@ namespace Weland {
 	public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]>();
 	public List<Placement> ItemPlacement = new List<Placement>();
 	public List<Placement> MonsterPlacement = new List<Placement>();
+	public List<Annotation> Annotations = new List<Annotation>();
 
 	MapInfo mapInfo = new MapInfo();
 
@@ -169,6 +170,10 @@ namespace Weland {
 		}
 	    }
 
+	    if (wad.Chunks.ContainsKey(Annotation.Tag)) {
+		LoadChunkList<Annotation>(Annotations, wad.Chunks[Annotation.Tag]);
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
 	    }
@@ -262,6 +267,7 @@ namespace Weland {
 	    wad.Chunks[MapObject.Tag] = SaveChunk(Objects);
 	    wad.Chunks[Platform.StaticTag] = SaveChunk(Platforms);
 	    wad.Chunks[Light.Tag] = SaveChunk(Lights);
+	    wad.Chunks[Annotation.Tag] = SaveChunk(Annotations);
 
 	    {
 		MemoryStream stream = new MemoryStream();

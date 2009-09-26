@@ -496,6 +496,14 @@ namespace Weland {
 		}
 	    }
 
+	    for (int i = Annotations.Count - 1; i >= 0; --i) {
+		if (Annotations[i].PolygonIndex > index) {
+		    --Annotations[i].PolygonIndex;
+		} else if (Annotations[i].PolygonIndex == index) {
+		    Annotations.RemoveAt(i);
+		}
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		if (polygon.Type == PolygonType.Teleporter) {
 		    if (polygon.Permutation > index) {
