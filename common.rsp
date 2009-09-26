@@ -3,6 +3,7 @@
 /pkg:gtk-sharp-2.0
 /pkg:glade-sharp-2.0
 
+Annotation.cs
 BinaryReaderBE.cs
 BinaryWriterBE.cs
 CrcStream.cs
