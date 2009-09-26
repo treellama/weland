@@ -174,6 +174,12 @@ namespace Weland {
 	    }
 	}
 
+	protected void OnDefaults(object obj, EventArgs args) {
+	    Platform p = new Platform();
+	    p.SetTypeWithDefaults((PlatformType) platformType.Active);
+	    Load(p);
+	}
+
 	Level level;
 	short platform_index;
 
