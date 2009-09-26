@@ -41,7 +41,9 @@ namespace Weland {
 	Draw,
 	FloorHeight,
 	CeilingHeight,
-	PolygonType
+	PolygonType,
+	FloorLight,
+	CeilingLight
     }
 
     public class MapDrawingArea : Gtk.DrawingArea {
@@ -331,6 +333,10 @@ namespace Weland {
 		drawer.FillPolygon(PaintColors[polygon.CeilingHeight], points);
 	    } else if (Mode == DrawMode.PolygonType) {
 		drawer.FillPolygon(PaintColors[(short) polygon.Type], points);
+	    } else if (Mode == DrawMode.FloorLight) {
+		drawer.FillPolygon(PaintColors[(short) polygon.FloorLight], points);
+	    } else if (Mode == DrawMode.CeilingLight) {
+		drawer.FillPolygon(PaintColors[(short) polygon.CeilingLight], points);
 	    } else {
 		if (highlight) {
 		    drawer.FillPolygon(selectedPolygonColor, points);

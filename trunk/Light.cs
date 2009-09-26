@@ -31,6 +31,14 @@ namespace Weland {
 	    public double Intensity;
 	    public double DeltaIntensity;
 
+	    public Function(LightingFunction f, short period, short deltaPeriod, double intensity, double deltaIntensity) {
+		LightingFunction = f;
+		Period = period;
+		DeltaPeriod = deltaPeriod;
+		Intensity = intensity;
+		DeltaIntensity = deltaIntensity;
+	    }
+
 	    public void Load(BinaryReaderBE reader) {
 		LightingFunction = (LightingFunction) reader.ReadInt16();
 		Period = reader.ReadInt16();
@@ -49,23 +57,65 @@ namespace Weland {
 	}
 	
 	public Light() { 
-	    PrimaryActive.Period = 30;
-	    SecondaryActive.Period = 30;
-	    BecomingActive.Period = 30;
-	    SecondaryActive.Period = 30;
-	    SecondaryInactive.Period = 30;
-	    BecomingInactive.Period = 30;
+	    SetTypeWithDefaults(LightType.Normal);
 	}
 
 	public Light(double intensity) : this() {
 	    PrimaryActive.Intensity = intensity;
 	    SecondaryActive.Intensity = intensity;
 	    BecomingActive.Intensity = intensity;
-	    Flags = LightFlags.InitiallyActive;
+	}
+
+	public bool InitiallyActive {
+	    get {
+		return (Flags & LightFlags.InitiallyActive) != 0;
+	    }
+	    
+	    set {
+		if (value) {
+		    Flags |= LightFlags.InitiallyActive;
+		} else {
+		    Flags &= ~LightFlags.InitiallyActive;
+		}
+	    }
+	}
+
+	public bool Stateless {
+	    get {
+		return (Flags & LightFlags.Stateless) != 0;
+	    }
+	    
+	    set {
+		if (value) {
+		    Flags |= LightFlags.Stateless;
+		} else {
+		    Flags &= ~LightFlags.Stateless;
+		}
+	    }
+	}
+
+	public void SetTypeWithDefaults(LightType type) {
+	    Type = type;
+	    Flags = LightFlags.SlavedIntensities | LightFlags.InitiallyActive;
+	    Phase = 0;
+	    if (type == LightType.Normal) {
+		PrimaryActive = SecondaryActive = BecomingActive = PrimaryInactive = SecondaryInactive = BecomingInactive = new Function(LightingFunction.Constant, 30, 0, 1, 0);
+	    } else if (type == LightType.Strobe) {
+		PrimaryActive = new Function(LightingFunction.Constant, 15, 0, 1, 0);
+		SecondaryActive = new Function(LightingFunction.Constant, 15, 0, 0.5, 0);
+		BecomingActive = new Function(LightingFunction.Smooth, 30, 0, 0.5, 0);
+		PrimaryInactive = SecondaryInactive = BecomingInactive = new Function(LightingFunction.Constant, 30, 0, 0, 0);
+	    } else if (type == LightType.Media) {
+		PrimaryActive = new Function(LightingFunction.Smooth, 300, 0, 1, 0);
+		SecondaryActive = new Function(LightingFunction.Smooth, 300, 0, 0, 0);
+		BecomingActive = new Function(LightingFunction.Smooth, 30, 0, 1, 0);
+		PrimaryInactive = SecondaryInactive = new Function(LightingFunction.Constant, 30, 0, 0, 0);
+		BecomingInactive = new Function(LightingFunction.Smooth, 30, 0, 0, 0);
+	    }
 	}
 
 	public LightType Type;
-	public LightFlags Flags;
+	public LightFlags Flags = LightFlags.SlavedIntensities;
 	public short Phase;
 	public Function PrimaryActive;
 	public Function SecondaryActive;
@@ -73,7 +123,7 @@ namespace Weland {
 	public Function PrimaryInactive;
 	public Function SecondaryInactive;
 	public Function BecomingInactive;
-	public short TagIndex = -1;
+	public short TagIndex;
 
 	public void Load(BinaryReaderBE reader) {
 	    Type = (LightType) reader.ReadInt16();

@@ -33,6 +33,8 @@ namespace Weland {
 	[Widget] MenuItem floorHeightItem;
 	[Widget] MenuItem ceilingHeightItem;
 	[Widget] MenuItem polygonTypeItem;
+	[Widget] MenuItem floorLightItem;
+	[Widget] MenuItem ceilingLightItem;
 
 	[Widget] RadioToolButton selectButton;
 	[Widget] RadioToolButton zoomButton;
@@ -43,6 +45,8 @@ namespace Weland {
 	[Widget] RadioToolButton floorHeightButton;
 	[Widget] RadioToolButton ceilingHeightButton;
 	[Widget] RadioToolButton polygonTypeButton;
+	[Widget] RadioToolButton floorLightButton;
+	[Widget] RadioToolButton ceilingLightButton;
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -97,6 +101,8 @@ namespace Weland {
 	    SetIconResource(floorHeightButton, "floor-height.png");
 	    SetIconResource(ceilingHeightButton, "ceiling-height.png");
 	    SetIconResource(polygonTypeButton, "polygon-type.png");
+	    SetIconResource(floorLightButton, "floor-light.png");
+	    SetIconResource(ceilingLightButton, "ceiling-light.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -317,7 +323,7 @@ namespace Weland {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
-	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType) {
+	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
 		// update the paint mode button
 		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
 		if (i != -1) {
@@ -588,6 +594,10 @@ namespace Weland {
 		ChooseTool(Tool.CeilingHeight);
 	    } else if (button == polygonTypeButton) {
 		ChooseTool(Tool.PolygonType);
+	    } else if (button == floorLightButton) {
+		ChooseTool(Tool.FloorLight);
+	    } else if (button == ceilingLightButton) {
+		ChooseTool(Tool.CeilingLight);
 	    }
 	}
 
@@ -601,6 +611,10 @@ namespace Weland {
 		ceilingHeightButton.Active = true;
 	    } else if (item == polygonTypeItem) {
 		polygonTypeButton.Active = true;
+	    } else if (item == floorLightItem) {
+		floorLightButton.Active = true;
+	    } else if (item == ceilingLightItem) {
+		ceilingLightButton.Active = true;
 	    }
 	}
 
@@ -665,6 +679,14 @@ namespace Weland {
 		BuildPolygonTypePalette();
 		palette.Show();
 		drawingArea.Mode = DrawMode.PolygonType;
+	    } else if (tool == Tool.FloorLight) {
+		BuildLightsPalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.FloorLight;
+	    } else if (tool == Tool.CeilingLight) {
+		BuildLightsPalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.CeilingLight;
 	    } else {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
@@ -726,6 +748,38 @@ namespace Weland {
 	    paletteButtonbox.ShowAll();
 	    paletteAddButton.Sensitive = false;
 	    paletteEditButton.Sensitive = false;
+	}
+	
+	void BuildLightsPalette() {
+	    while (paletteButtonbox.Children.Length > 0) {
+		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
+	    }
+
+	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
+
+	    paintIndexes.Clear();
+	    for (int i = 0; i < Level.Lights.Count; ++i) {
+		paintIndexes[(short) i] = true;
+	    }
+	    if (Level.Lights.Count > 0) {
+		editor.PaintIndex = 0;
+	    }
+
+	    ColorRadioButton b = null;
+	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
+		Gdk.Color c = paintColors[i % paintColors.Count];
+		b = new ColorRadioButton(b, String.Format("{0}", i), c);
+		b.Index = i;
+		b.Toggled += OnChangePaintIndex;
+		b.DoubleClicked += OnPaletteEdit;
+		paletteButtonbox.Add(b);
+		
+		drawingArea.PaintColors[(short) i] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+	    }
+	    
+	    paletteButtonbox.ShowAll();
+	    paletteAddButton.Sensitive = true;
+	    paletteEditButton.Sensitive = true;
 	}
 
 	internal void OnUndo(object o, EventArgs e) {
@@ -830,6 +884,16 @@ namespace Weland {
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		}
 		dialog.Destroy();
+	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
+		Level.Lights.Add(new Light());
+		LightParametersDialog dialog = new LightParametersDialog(window1, Level, (short) (Level.Lights.Count - 1));
+		if (dialog.Run() == (int) ResponseType.Ok) {
+		    BuildLightsPalette();
+		    ((ColorRadioButton) paletteButtonbox.Children[Level.Lights.Count - 1]).Active = true;
+		    editor.PaintIndex = (short) (Level.Lights.Count - 1);
+		} else {
+		    Level.Lights.RemoveAt(Level.Lights.Count - 1);
+		}
 	    }
 	}
 
@@ -860,6 +924,10 @@ namespace Weland {
 		}
 		dialog.Destroy();
 		Redraw();
+	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
+		short index = editor.PaintIndex;
+		LightParametersDialog dialog = new LightParametersDialog(window1, Level, index);
+		dialog.Run();
 	    }
 
 	}

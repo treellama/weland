@@ -206,6 +206,39 @@
                         <signal name="activate" handler="OnViewMenu"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem5">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem14">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Lights</property>
+                        <property name="use_underline">True</property>
+                        <child>
+                          <widget class="GtkMenu" id="menu7">
+                            <property name="visible">True</property>
+                            <child>
+                              <widget class="GtkMenuItem" id="floorLightItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Floor</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                            <child>
+                              <widget class="GtkMenuItem" id="ceilingLightItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Ceiling</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>
@@ -647,6 +680,7 @@
                   <widget class="GtkRadioToolButton" id="floorHeightButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Floor Heights</property>
+                    <property name="label" translatable="yes">Floor Heights</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
@@ -660,6 +694,7 @@
                   <widget class="GtkRadioToolButton" id="ceilingHeightButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Ceiling Heights</property>
+                    <property name="label" translatable="yes">Ceiling Heights</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
@@ -673,6 +708,35 @@
                   <widget class="GtkRadioToolButton" id="polygonTypeButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Polygon Types</property>
+                    <property name="label" translatable="yes">Polygon Types</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="floorLightButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Floor Lights</property>
+                    <property name="label" translatable="yes">Floor Lights</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="ceilingLightButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Ceiling Lights</property>
+                    <property name="label" translatable="yes">Ceiling Lights</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>
