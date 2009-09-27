@@ -468,7 +468,7 @@ namespace Weland {
 		if (Sides[i].PolygonIndex > index) {
 		    --Sides[i].PolygonIndex;
 		} else if (Sides[i].PolygonIndex == index) {
-		    Sides.RemoveAt(i);
+		    DeleteSide((short) i);
 		}
 	    }
 
