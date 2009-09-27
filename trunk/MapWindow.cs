@@ -455,13 +455,18 @@ namespace Weland {
 
 	public bool CheckSave() {
 	    if (editor.Changed) {
-		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.YesNo, "Do you wish to save changes?");
-		if (dialog.Run() == (int) ResponseType.Yes) {
-		    dialog.Destroy();
+		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.None, "Do you wish to save changes?");
+		dialog.AddButton(Stock.No, ResponseType.No);
+		dialog.AddButton(Stock.Cancel, ResponseType.Cancel);
+		dialog.AddButton(Stock.Save, ResponseType.Yes);
+		int response = dialog.Run();
+		dialog.Destroy();
+		if (response == (int) ResponseType.Yes) {
 		    return Save();
-		} else {
-		    dialog.Destroy();
+		} else if (response == (int) ResponseType.No) {
 		    return true;
+		} else {
+		    return false;
 		}
 	    } else {
 		return true;
@@ -538,6 +543,7 @@ namespace Weland {
 	    window1.Title = "Untitled Level";
 	    Filename = "";
 	    ChooseTool(editor.Tool);
+	    editor.Changed = false;
 	}
 
 	internal void OnNew(object obj, EventArgs args) {
@@ -811,7 +817,9 @@ namespace Weland {
 	}
 
 	internal void OnQuit(object o, EventArgs e) {
-	    Application.Quit();
+	    if (CheckSave()) {
+		Application.Quit();
+	    }
 	}
 
 	internal void OnDelete(object o, DeleteEventArgs e) {
@@ -866,22 +874,29 @@ namespace Weland {
 
 	protected void OnLevelParameters(object o, EventArgs e) {
 	    LevelParametersDialog d = new LevelParametersDialog(window1, Level);
-	    d.Run();
-	    window1.Title = Level.Name;
+	    if (d.Run() == (int) ResponseType.Ok) {
+		editor.Changed = true;
+		window1.Title = Level.Name;
+	    }
 	}
 
 	protected void OnItemParameters(object o, EventArgs e) {
 	    ItemParametersDialog d = new ItemParametersDialog(window1, Level);
-	    d.Run();
+	    if (d.Run() == (int) ResponseType.Ok) {
+		editor.Changed = true;
+	    }
 	}
 
 	protected void OnMonsterParameters(object o, EventArgs e) {
 	    MonsterParametersDialog d = new MonsterParametersDialog(window1, Level);
-	    d.Run();
+	    if (d.Run() == (int) ResponseType.Ok) {
+		editor.Changed = true;
+	    }
 	}
 
 	protected void OnPave(object o, EventArgs e) {
 	    Level.Pave();
+	    editor.Changed = true;
 	}
 
 	protected void OnPaletteAdd(object o, EventArgs e) {
@@ -931,6 +946,7 @@ namespace Weland {
 		    heights[height] = true;
 		    BuildHeightPalette(heights);
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
+		    editor.Changed = true;
 		}
 		dialog.Destroy();
 		Redraw();
@@ -945,13 +961,16 @@ namespace Weland {
 		    heights[height] = true;
 		    BuildHeightPalette(heights);
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
+		    editor.Changed = true;
 		}
 		dialog.Destroy();
 		Redraw();
 	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
 		short index = editor.PaintIndex;
 		LightParametersDialog dialog = new LightParametersDialog(window1, Level, index);
-		dialog.Run();
+		if (dialog.Run() == (int) ResponseType.Ok) {
+		    editor.Changed = true;
+		}
 	    }
 
 	}

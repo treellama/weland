@@ -84,7 +84,7 @@ namespace Weland {
 	    store.SetValue(iter, 6, !((bool) store.GetValue(iter, 6)));
 	}
 
-	public void Run() {
+	public int Run() {
 	    dialog.AddActionWidget(new Button(Stock.Cancel), ResponseType.Cancel);
 	    dialog.AddActionWidget(new Button(Stock.Ok), ResponseType.Ok);
 
@@ -160,7 +160,8 @@ namespace Weland {
 	    }
 
 	    dialog.ShowAll();
-	    if (dialog.Run() == (int) ResponseType.Ok) {
+	    int result = dialog.Run();
+	    if (result == (int) ResponseType.Ok) {
 		int i = 1;
 		foreach (object[] row in store) {
 		    placements[i].InitialCount = (short) (int) row[1];
@@ -173,7 +174,9 @@ namespace Weland {
 		}
 	    }
 	    dialog.Destroy();
+	    return result;
 	}
+
 	Dialog dialog;
 	List<Placement> placements;
 	ListStore store;
@@ -186,7 +189,7 @@ namespace Weland {
 	    level = theLevel;
 	}
 	
-	public void Run() {
+	public int Run() {
 	    // is there a way to snarf these from the Glade file?
 	    string[] names = {
 		"Knife",
@@ -227,7 +230,7 @@ namespace Weland {
 		"Submachine Gun Clip"
 	    };
 	    ParametersDialog d = new ParametersDialog(parent, "Item Parameters", level.ItemPlacement, names);
-	    d.Run();
+	    return d.Run();
 	}
 
 	Window parent;
@@ -240,7 +243,7 @@ namespace Weland {
 	    level = theLevel;
 	}
 
-	public void Run() {
+	public int Run() {
 	    string[] names = {
 		"Tick Energy",
 		"Tick Oxygen",
@@ -290,7 +293,7 @@ namespace Weland {
 		"Civilian Fusion Assimilated"
 	    };
 	    ParametersDialog d = new ParametersDialog(parent, "Monster Parameters", level.MonsterPlacement, names);
-	    d.Run();
+	    return d.Run();
 
 	}
 
