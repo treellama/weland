@@ -140,7 +140,7 @@ namespace Weland {
 	    TreeIter activeIt = new TreeIter();
 	    for (int i = 0; i < level.Polygons.Count; ++i) {
 		Polygon polygon = level.Polygons[i];
-		if (polygon.Type == PolygonType.Platform && polygon.Permutation > 0 && polygon.Permutation < level.Platforms.Count) {
+		if (polygon.Type == PolygonType.Platform && polygon.Permutation >= 0 && polygon.Permutation < level.Platforms.Count) {
 		    TreeIter it = basedOnStore.AppendValues(i);
 		    if (polygon.Permutation == platform_index) {
 			activeIt = it;
