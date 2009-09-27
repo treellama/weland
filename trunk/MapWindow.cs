@@ -136,7 +136,7 @@ namespace Weland {
 
 	    int top = Weland.Settings.GetSetting("MapWindow/Top", 0);
 	    int left = Weland.Settings.GetSetting("MapWindow/Left", 0);
-	    window1.Move(top, left);
+	    window1.Move(left, top);
 
 	    window1.Show();
 
