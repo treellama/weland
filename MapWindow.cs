@@ -899,6 +899,12 @@ namespace Weland {
 	    editor.Changed = true;
 	}
 
+	protected void OnNukeTextures(object o, EventArgs e) {
+	    Level.NukeTextures();
+	    Level.Pave();
+	    editor.Changed = true;
+	}
+
 	protected void OnPaletteAdd(object o, EventArgs e) {
 	    if (editor.Tool == Tool.FloorHeight) {
 		DoubleDialog dialog = new DoubleDialog("Add Floor Height", window1);
