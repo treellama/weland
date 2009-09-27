@@ -2,6 +2,7 @@ using Gtk;
 using Gdk;
 using Glade;
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Weland {
@@ -515,7 +516,10 @@ namespace Weland {
 	internal void OnOpen(object obj, EventArgs args) {
 	    if (CheckSave()) {
 		FileChooserDialog d = new FileChooserDialog("Choose the file to open", window1, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+		d.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+		d.SetCurrentFolder(Weland.Settings.GetSetting("LastOpen/Folder", d.CurrentFolder));
 		if (d.Run() == (int) ResponseType.Accept) {
+		    Weland.Settings.PutSetting("LastOpen/Folder", Path.GetDirectoryName(d.Filename));
 		    OpenFile(d.Filename);
 		}
 		d.Destroy();
@@ -551,6 +555,8 @@ namespace Weland {
 		message = "Save level as";
 	    }
 	    FileChooserDialog d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    d.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", d.CurrentFolder));
 	    if (d.Run() == (int) ResponseType.Accept) {
 		wadfile = new Wadfile();
 		Level.AssurePlayerStart();
@@ -558,6 +564,8 @@ namespace Weland {
 		wadfile.Directory[0] = Level.Save();
 		wadfile.Save(d.Filename);
 		Filename = d.Filename;
+
+		Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
 
 		editor.Changed = false;
 		saved = true;
