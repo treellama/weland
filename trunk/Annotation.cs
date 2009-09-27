@@ -16,8 +16,6 @@ namespace Weland {
 	    Y = reader.ReadInt16();
 	    PolygonIndex = reader.ReadInt16();
 	    Text = reader.ReadMacString(textLength);
-
-	    System.Console.WriteLine("{0},{1} in {2}: {3}", X, Y, PolygonIndex, Text);
 	}
 
 	public void Save(BinaryWriterBE writer) {
