@@ -4,7 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <property name="window_position">center-on-parent</property>
+    <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="scroll_event" handler="OnScroll"/>
