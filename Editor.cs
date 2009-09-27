@@ -219,6 +219,8 @@ namespace Weland {
 	    SetUndo();
 	    if (!Level.FillPolygon(X, Y)) {
 		undoState = prevUndo;
+	    } else {
+		Changed = true;
 	    }
 	}
 
@@ -272,6 +274,7 @@ namespace Weland {
 		    } else if (o.Type == ObjectType.Item) {
 			Level.ItemPlacement[o.Index].InitialCount++;
 		    }
+		    Changed = true;
 		}
 	    }
 	}
@@ -321,6 +324,7 @@ namespace Weland {
 	}
 
 	void MoveSelected(short X, short Y) {
+	    bool changed = true;
 	    if (Selection.Point != -1) {
 		if (!undoSet) {
 		    SetUndo();
@@ -382,6 +386,12 @@ namespace Weland {
 			TranslateAnnotation(annotation, X - lastX, Y - lastY);
 		    }
 		}
+	    } else {
+		changed = false;
+	    }
+
+	    if (changed) {
+		Changed = true;
 	    }
 	}
 
@@ -425,6 +435,7 @@ namespace Weland {
 		}
 		p.FloorHeight = PaintIndex;
 		DirtyPolygon(p);
+		Changed = true;
 	    }
 	}
 
@@ -442,9 +453,10 @@ namespace Weland {
 		    SetUndo();
 		    undoSet = true;
 		}
+		p.CeilingHeight = PaintIndex;
+		DirtyPolygon(p);
+		Changed = true;
 	    }
-	    p.CeilingHeight = PaintIndex;
-	    DirtyPolygon(p);
 	}
 
 	void GetPolygonType(short X, short Y) {
@@ -461,13 +473,14 @@ namespace Weland {
 		    SetUndo();
 		    undoSet = true;
 		}
-	    }
 	    
-	    bool scan = (p.Type == PolygonType.Platform || (PolygonType) PaintIndex == PolygonType.Platform);
-	    p.Type = (PolygonType) PaintIndex;
-	    if (scan) 
-		ScanPlatforms();
-	    DirtyPolygon(p);
+		bool scan = (p.Type == PolygonType.Platform || (PolygonType) PaintIndex == PolygonType.Platform);
+		p.Type = (PolygonType) PaintIndex;
+		if (scan) 
+		    ScanPlatforms();
+		DirtyPolygon(p);
+		Changed = true;
+	    }
 	}
 
 	void GetFloorLight(short X, short Y) {
@@ -486,6 +499,7 @@ namespace Weland {
 		}
 		p.FloorLight = PaintIndex;
 		DirtyPolygon(p);
+		Changed = true;
 	    }
 	}
 
@@ -505,6 +519,7 @@ namespace Weland {
 		}
 		p.CeilingLight = PaintIndex;
 		DirtyPolygon(p);
+		Changed = true;
 	    }
 	}
 

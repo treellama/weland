@@ -11,7 +11,7 @@ namespace Weland {
 	    dialog1.TransientFor = parent;
 	}
 
-	public void Run() {
+	public int Run() {
 	    levelName.Text = level.Name;
 	    environment.Active = level.Environment;
 	    landscape.Active = level.Landscape;
@@ -63,6 +63,7 @@ namespace Weland {
 	    }
 
 	    dialog1.Destroy();
+	    return response;
 	}
 
 	Level level;
