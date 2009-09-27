@@ -40,6 +40,8 @@ namespace Weland {
     }
 
     public class Weland {
+	public static Settings Settings = new Settings();
+
 	public static int Main (string[] args) {
 	    Application.Init();
 	    

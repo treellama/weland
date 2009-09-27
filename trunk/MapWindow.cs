@@ -130,7 +130,14 @@ namespace Weland {
 	    SetupInspector();
 
 	    window1.AllowShrink = true;
-	    window1.Resize(640, 480);
+	    int width = Weland.Settings.GetSetting("MapWindow/Width", 800);
+	    int height = Weland.Settings.GetSetting("MapWindow/Height", 600);
+	    window1.Resize(width, height);
+
+	    int top = Weland.Settings.GetSetting("MapWindow/Top", 0);
+	    int left = Weland.Settings.GetSetting("MapWindow/Left", 0);
+	    window1.Move(top, left);
+
 	    window1.Show();
 
 	    window1.Focus = null;
@@ -211,6 +218,13 @@ namespace Weland {
 	internal void OnConfigure(object obj, ConfigureEventArgs args) {
 	    AdjustScrollRange();
 	    args.RetVal = true;
+	}
+
+	[GLib.ConnectBefore()] protected void OnWindowConfigure(object obj, ConfigureEventArgs args) {
+	    Weland.Settings.PutSetting("MapWindow/Width", args.Event.Width);
+	    Weland.Settings.PutSetting("MapWindow/Height", args.Event.Height);
+	    Weland.Settings.PutSetting("MapWindow/Top", args.Event.Y);
+	    Weland.Settings.PutSetting("MapWindow/Left", args.Event.X);
 	}
 
 	void Redraw() {

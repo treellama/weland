@@ -27,6 +27,7 @@ PlatformParametersDialog.cs
 Point.cs
 Polygon.cs
 Shapes.cs
+Settings.cs
 Side.cs
 Wadfile.cs
 Weland.cs
