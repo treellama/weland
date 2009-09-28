@@ -34,6 +34,7 @@ Side.cs
 Wadfile.cs
 Weland.cs
 Widgets.cs
+Version.cs
 
 /resource:images/1x.png
 /resource:images/2x.png
