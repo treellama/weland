@@ -21,6 +21,8 @@ MapDrawingArea.cs
 MapInfo.cs
 MapObject.cs
 MapWindow.cs
+Media.cs
+MediaParametersDialog.cs
 ParametersDialogs.cs
 Platform.cs
 PlatformParametersDialog.cs
@@ -52,6 +54,7 @@ Widgets.cs
 /resource:images/fusion.png
 /resource:images/grid.png
 /resource:images/invinc.png
+/resource:images/liquids.png
 /resource:images/line.png
 /resource:images/monster.png
 /resource:images/move.png
@@ -78,5 +81,6 @@ Widgets.cs
 /resource:glade/levelparameters.glade
 /resource:glade/lightparameters.glade
 /resource:glade/mapwindow.glade
+/resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
 

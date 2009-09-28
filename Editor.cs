@@ -13,7 +13,8 @@ namespace Weland {
 	CeilingHeight,
 	PolygonType,
 	FloorLight,
-	CeilingLight
+	CeilingLight,
+	Media
     }
 
     [Flags] public enum EditorModifiers {
@@ -523,6 +524,26 @@ namespace Weland {
 	    }
 	}
 
+	void GetMedia(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.MediaIndex;
+	    }
+	}
+
+	void SetMedia(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.MediaIndex = PaintIndex;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
+
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
@@ -567,6 +588,13 @@ namespace Weland {
 		    undoSet = false;
 		    SetCeilingLight(X, Y);
 		}
+	    } else if (Tool == Tool.Media) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetMedia(X, Y);
+		} else {
+		    undoSet = false;
+		    SetMedia(X, Y);
+		}
 	    }
 
 	    lastX = X;
@@ -607,6 +635,12 @@ namespace Weland {
 		    GetCeilingLight(X, Y);
 		} else {
 		    SetCeilingLight(X, Y);
+		}
+	    } else if (Tool == Tool.Media) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetMedia(X, Y);
+		} else {
+		    SetMedia(X, Y);
 		}
 	    }
 
