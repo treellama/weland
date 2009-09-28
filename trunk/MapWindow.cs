@@ -1048,5 +1048,19 @@ namespace Weland {
 	protected void OnPaletteEdit(object o, EventArgs e) { 
 	    PaletteEdit();
 	}
+
+	protected void OnAbout(object o, EventArgs e) {
+	    AboutDialog dialog = new AboutDialog();
+	    dialog.ProgramName = "Weland";
+	    dialog.Artists = new string[] { "Robert Kreps (application icon)",
+					    "tango-art-libre and GIMP (tool icons)" };
+	    dialog.Authors = new string[] { "Gregory Smith <wolfy@treellama.org>",
+					    "with thanks to Eric Peterson for Smithy" };
+	    dialog.License = "Weland is available under the GNU General Public License, Version 2. See the file COPYING for details";
+	    dialog.Website = "http://sourceforge.net/projects/weland";
+	    dialog.Version = Version.String;
+	    dialog.Run();
+	    dialog.Destroy();
+	}
     }
 }
