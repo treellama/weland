@@ -31,6 +31,7 @@ namespace Weland {
 	public List<Placement> ItemPlacement = new List<Placement>();
 	public List<Placement> MonsterPlacement = new List<Placement>();
 	public List<Annotation> Annotations = new List<Annotation>();
+	public List<Media> Medias = new List<Media>();
 
 	MapInfo mapInfo = new MapInfo();
 
@@ -234,6 +235,10 @@ namespace Weland {
 	    } else {
 		throw new Wadfile.BadMapException("Incomplete level: missing map objects chunk");
 	    }
+
+	    if (wad.Chunks.ContainsKey(Media.Tag)) {
+		LoadChunkList<Media>(Medias, wad.Chunks[Media.Tag]);
+	    }
 	}
 
 	public void AssurePlayerStart() {
@@ -268,6 +273,7 @@ namespace Weland {
 	    wad.Chunks[Platform.StaticTag] = SaveChunk(Platforms);
 	    wad.Chunks[Light.Tag] = SaveChunk(Lights);
 	    wad.Chunks[Annotation.Tag] = SaveChunk(Annotations);
+	    wad.Chunks[Media.Tag] = SaveChunk(Medias);
 
 	    {
 		MemoryStream stream = new MemoryStream();
