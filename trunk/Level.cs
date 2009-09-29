@@ -8,7 +8,7 @@ namespace Weland {
 	void Save(BinaryWriterBE writer);
     }
 
-    public class World {
+    public static class World {
 	public const short One = 1024;
 	public static short FromDouble(double d) {
 	    return (short) Math.Round(d * World.One);
@@ -16,6 +16,16 @@ namespace Weland {
 
 	public static double ToDouble(short w) {
 	    return ((double) w / World.One);
+	}
+    }
+
+    public static class Angle {
+	const short AngularPrecision = 512;
+	public static short FromDouble(double d) {
+	    return (short) Math.Round(d * AngularPrecision / 360);
+	}
+	public static double ToDouble(short a) {
+	    return ((double) a * 360 / AngularPrecision);
 	}
     }
 
@@ -32,6 +42,8 @@ namespace Weland {
 	public List<Placement> MonsterPlacement = new List<Placement>();
 	public List<Annotation> Annotations = new List<Annotation>();
 	public List<Media> Medias = new List<Media>();
+	public List<AmbientSound> AmbientSounds = new List<AmbientSound>();
+	public List<RandomSound> RandomSounds = new List<RandomSound>();
 
 	MapInfo mapInfo = new MapInfo();
 
@@ -239,6 +251,14 @@ namespace Weland {
 	    if (wad.Chunks.ContainsKey(Media.Tag)) {
 		LoadChunkList<Media>(Medias, wad.Chunks[Media.Tag]);
 	    }
+
+	    if (wad.Chunks.ContainsKey(AmbientSound.Tag)) {
+		LoadChunkList<AmbientSound>(AmbientSounds, wad.Chunks[AmbientSound.Tag]);
+	    }
+
+	    if (wad.Chunks.ContainsKey(RandomSound.Tag)) {
+		LoadChunkList<RandomSound>(RandomSounds, wad.Chunks[RandomSound.Tag]);
+	    }
 	}
 
 	public void AssurePlayerStart() {
@@ -274,6 +294,8 @@ namespace Weland {
 	    wad.Chunks[Light.Tag] = SaveChunk(Lights);
 	    wad.Chunks[Annotation.Tag] = SaveChunk(Annotations);
 	    wad.Chunks[Media.Tag] = SaveChunk(Medias);
+	    wad.Chunks[AmbientSound.Tag] = SaveChunk(AmbientSounds);
+	    wad.Chunks[RandomSound.Tag] = SaveChunk(RandomSounds);
 
 	    {
 		MemoryStream stream = new MemoryStream();

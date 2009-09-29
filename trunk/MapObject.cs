@@ -152,8 +152,8 @@ namespace Weland {
 	}
 
 	public double Facing {
-	    get { return (double) facing * 360 / 512; }
-	    set { facing = (short) Math.Round(value * 512 / 360); }
+	    get { return Angle.ToDouble(facing); }
+	    set { facing = Angle.FromDouble(value); }
 	}
 
 	public int Volume {

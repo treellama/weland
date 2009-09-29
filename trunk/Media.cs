@@ -23,8 +23,8 @@ namespace Weland {
 	public short LightIndex;
 	short direction;
 	public double Direction {
-	    get { return (double) direction * 360 / 512; }
-	    set { direction = (short) Math.Round(value * 512 / 360); }
+	    get { return Angle.ToDouble(direction); }
+	    set { direction = Angle.FromDouble(value); }
 	}
 
 	public short CurrentMagnitude;
