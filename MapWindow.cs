@@ -225,10 +225,12 @@ namespace Weland {
 	}
 
 	[GLib.ConnectBefore()] protected void OnWindowConfigure(object obj, ConfigureEventArgs args) {
+	    int X, Y;
+	    window1.GetPosition(out X, out Y);
 	    Weland.Settings.PutSetting("MapWindow/Width", args.Event.Width);
 	    Weland.Settings.PutSetting("MapWindow/Height", args.Event.Height);
-	    Weland.Settings.PutSetting("MapWindow/Top", args.Event.Y);
-	    Weland.Settings.PutSetting("MapWindow/Left", args.Event.X);
+	    Weland.Settings.PutSetting("MapWindow/Top", Y);
+	    Weland.Settings.PutSetting("MapWindow/Left", X);
 	}
 
 	void Redraw() {
