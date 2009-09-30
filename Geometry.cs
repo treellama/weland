@@ -630,8 +630,6 @@ namespace Weland {
 		    side.Type = SideType.Low;
 		} else if (opposite_ceiling_height < ceiling_height) {
 		    side.Type = SideType.High;
-		} else {
-		    side.Type = SideType.Full;
 		}
 	    }
 	}
@@ -678,9 +676,28 @@ namespace Weland {
 	    const int wall = 5;
 	    FixSideType(side);
 	    if (side.Primary.Texture.IsEmpty()) {
-		side.Primary.Texture.Collection = collection;
-		side.Primary.Texture.Bitmap = wall;
-		side.PrimaryTransferMode = 0;
+		if (side.Type == SideType.Full) {
+		    // only pave if there's no polygon opposite
+		    Polygon adjacent = Polygons[side.PolygonIndex];
+		    Line line = Lines[side.LineIndex];
+		    Polygon opposite = null;
+		    if (line.CounterclockwisePolygonOwner == side.PolygonIndex &&
+			line.ClockwisePolygonOwner != -1) {
+			opposite = Polygons[line.ClockwisePolygonOwner];
+		    } else if (line.ClockwisePolygonOwner == side.PolygonIndex &&
+			       line.CounterclockwisePolygonOwner != -1) {
+			opposite = Polygons[line.CounterclockwisePolygonOwner];
+		    }
+		    if (opposite == null || opposite.FloorHeight > adjacent.CeilingHeight || opposite.CeilingHeight < adjacent.FloorHeight) {
+			side.Primary.Texture.Collection = collection;
+			side.Primary.Texture.Bitmap = wall;
+			side.PrimaryTransferMode = 0;
+		    }
+		} else {
+		    side.Primary.Texture.Collection = collection;
+		    side.Primary.Texture.Bitmap = wall;
+		    side.PrimaryTransferMode = 0;
+		}
 	    }
 	    if (side.Type == SideType.Split && side.Secondary.Texture.IsEmpty()) {
 		side.Secondary.Texture.Collection = collection;
