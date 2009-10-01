@@ -489,6 +489,7 @@ namespace Weland {
 		AdjustScrollRange();
 		window1.Title = wadfile.Directory[n].LevelName;
 		ChooseTool(editor.Tool);
+		editor.Changed = false;
 	    }
 	}
 
