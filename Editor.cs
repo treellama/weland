@@ -14,7 +14,9 @@ namespace Weland {
 	PolygonType,
 	FloorLight,
 	CeilingLight,
-	Media
+	Media,
+	AmbientSound,
+	RandomSound
     }
 
     [Flags] public enum EditorModifiers {
@@ -544,6 +546,47 @@ namespace Weland {
 	    }
 	}
 
+	void GetAmbientSound(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.AmbientSound;
+	    }
+	}
+
+	void SetAmbientSound(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.AmbientSound = PaintIndex;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
+
+	void GetRandomSound(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.RandomSound;
+	    }
+	}
+
+	void SetRandomSound(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.RandomSound = PaintIndex;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
+
+
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
@@ -595,6 +638,20 @@ namespace Weland {
 		    undoSet = false;
 		    SetMedia(X, Y);
 		}
+	    } else if (Tool == Tool.AmbientSound) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetAmbientSound(X, Y);
+		} else {
+		    undoSet = false;
+		    SetAmbientSound(X, Y);
+		}
+	    } else if (Tool == Tool.RandomSound) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetRandomSound(X, Y);
+		} else {
+		    undoSet = false;
+		    SetRandomSound(X, Y);
+		}
 	    }
 
 	    lastX = X;
@@ -641,6 +698,18 @@ namespace Weland {
 		    GetMedia(X, Y);
 		} else {
 		    SetMedia(X, Y);
+		}
+	    } else if (Tool == Tool.AmbientSound) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetAmbientSound(X, Y);
+		} else {
+		    SetAmbientSound(X, Y);
+		}
+	    } else if (Tool == Tool.RandomSound) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetRandomSound(X, Y);
+		} else {
+		    SetRandomSound(X, Y);
 		}
 	    }
 
