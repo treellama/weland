@@ -7,19 +7,23 @@ namespace Weland {
 	public const int Size = 16;
 	public ushort Flags;
 	public short SoundIndex;
-	public short Volume;
+	short volume = 255;
+	public int Volume {
+	    get { return volume * 100 / 255; }
+	    set { volume = (short) (value * 255 / 100); }
+	}
 	
 	public void Load(BinaryReaderBE reader) {
 	    Flags = reader.ReadUInt16();
 	    SoundIndex = reader.ReadInt16();
-	    Volume = reader.ReadInt16();
+	    volume = reader.ReadInt16();
 	    reader.BaseStream.Seek(5 * 2, SeekOrigin.Current);
 	}
 
 	public void Save(BinaryWriterBE writer) {
 	    writer.Write(Flags);
 	    writer.Write(SoundIndex);
-	    writer.Write(Volume);
+	    writer.Write(volume);
 	    writer.Write(new byte[5 * 2]);
 	}
     }
@@ -45,9 +49,18 @@ namespace Weland {
 	}
 
 	public short SoundIndex;
-	public short Volume;
-	public short DeltaVolume;
-	public short Period;
+	short volume = 255;
+	public int Volume {
+	    get { return volume * 100 / 255; }
+	    set { volume = (short) (value * 255 / 100); }
+	}
+
+	short deltaVolume;
+	public int DeltaVolume {
+	    get { return deltaVolume * 100 / 255; }
+	    set { deltaVolume = (short) (value * 255 / 100); }
+	}
+	public short Period = 60;
 	public short DeltaPeriod;
 	short direction;
 	public double Direction {
@@ -59,15 +72,15 @@ namespace Weland {
 	    get { return Angle.ToDouble(deltaDirection); }
 	    set { deltaDirection = Angle.FromDouble(value); }
 	}
-	public double Pitch;
+	public double Pitch = 1.0;
 	public double DeltaPitch;
 	short phase = -1;
 
 	public void Load(BinaryReaderBE reader) {
 	    Flags = (RandomSoundFlags) reader.ReadUInt16();
 	    SoundIndex = reader.ReadInt16();
-	    Volume = reader.ReadInt16();
-	    DeltaVolume = reader.ReadInt16();
+	    volume = reader.ReadInt16();
+	    deltaVolume = reader.ReadInt16();
 	    Period = reader.ReadInt16();
 	    DeltaPeriod = reader.ReadInt16();
 	    direction = reader.ReadInt16();
@@ -81,8 +94,8 @@ namespace Weland {
 	public void Save(BinaryWriterBE writer) {
 	    writer.Write((ushort) Flags);
 	    writer.Write(SoundIndex);
-	    writer.Write(Volume);
-	    writer.Write(DeltaVolume);
+	    writer.Write(volume);
+	    writer.Write(deltaVolume);
 	    writer.Write(Period);
 	    writer.Write(DeltaPeriod);
 	    writer.Write(direction);

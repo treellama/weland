@@ -37,6 +37,8 @@ namespace Weland {
 	[Widget] MenuItem floorLightItem;
 	[Widget] MenuItem ceilingLightItem;
 	[Widget] MenuItem mediaItem;
+	[Widget] MenuItem ambientSoundItem;
+	[Widget] MenuItem randomSoundItem;
 
 	[Widget] RadioToolButton selectButton;
 	[Widget] RadioToolButton zoomButton;
@@ -50,6 +52,8 @@ namespace Weland {
 	[Widget] RadioToolButton floorLightButton;
 	[Widget] RadioToolButton ceilingLightButton;
 	[Widget] RadioToolButton mediaButton;
+	[Widget] RadioToolButton ambientSoundButton;
+	[Widget] RadioToolButton randomSoundButton; 
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -107,6 +111,8 @@ namespace Weland {
 	    SetIconResource(floorLightButton, "floor-light.png");
 	    SetIconResource(ceilingLightButton, "ceiling-light.png");
 	    SetIconResource(mediaButton, "liquids.png");
+	    SetIconResource(ambientSoundButton, "ambient-sound.png");
+	    SetIconResource(randomSoundButton, "random-sound.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -343,7 +349,7 @@ namespace Weland {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
-	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.Media) {
+	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.Media || editor.Tool == Tool.AmbientSound || editor.Tool == Tool.RandomSound) {
 		// update the paint mode button
 		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
 		if (i != -1) {
@@ -634,6 +640,10 @@ namespace Weland {
 		ChooseTool(Tool.CeilingLight);
 	    } else if (button == mediaButton) {
 		ChooseTool(Tool.Media);
+	    } else if (button == ambientSoundButton) {
+		ChooseTool(Tool.AmbientSound);
+	    } else if (button == randomSoundButton) {
+		ChooseTool(Tool.RandomSound);
 	    }
 	}
 
@@ -653,6 +663,10 @@ namespace Weland {
 		ceilingLightButton.Active = true;
 	    } else if (item == mediaItem) {
 		mediaButton.Active = true;
+	    } else if (item == ambientSoundItem) {
+		ambientSoundButton.Active = true;
+	    } else if (item == randomSoundItem) {
+		randomSoundButton.Active = true;
 	    }
 	}
 
@@ -663,10 +677,18 @@ namespace Weland {
 	    }
 	}
 
-	void BuildHeightPalette(SortedList<short, bool> heights) {
+	void ClearPalette() {
 	    while (paletteButtonbox.Children.Length > 0) {
 		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
 	    }
+	}
+
+	Drawer.Color GdkToDrawer(Gdk.Color c) {
+	    return new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+	}
+
+	void BuildHeightPalette(SortedList<short, bool> heights) {
+	    ClearPalette();
 	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
 	    
 	    paintIndexes = heights;
@@ -682,7 +704,7 @@ namespace Weland {
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 		
-		drawingArea.PaintColors[paintIndexes.Keys[i]] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+		drawingArea.PaintColors[paintIndexes.Keys[i]] = GdkToDrawer(c);
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -692,10 +714,7 @@ namespace Weland {
 	}
 
 	void BuildMediaPalette() {
-	    while (paletteButtonbox.Children.Length > 0) {
-		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
-	    }
-	    
+	    ClearPalette();
 	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
 	    paintIndexes.Clear();
 	    for (int i = -1; i < Level.Medias.Count; ++i) {
@@ -718,7 +737,69 @@ namespace Weland {
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+	    }
+
+	    paletteButtonbox.ShowAll();
+	    paletteAddButton.Sensitive = true;
+	    paletteEditButton.Sensitive = true;
+	}
+
+	void BuildAmbientSoundPalette() {
+	    ClearPalette();
+	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
+	    paintIndexes.Clear();
+	    for (int i = -1; i < Level.AmbientSounds.Count; ++i) {
+		paintIndexes[(short) i] = true;
+	    }
+	    editor.PaintIndex = -1;
+
+	    ColorRadioButton b = new ColorRadioButton(null, "None", new Gdk.Color(127, 127, 127));
+	    b.Index = 0;
+	    b.Toggled += OnChangePaintIndex;
+	    drawingArea.PaintColors[-1] = new Drawer.Color(0.5, 0.5, 0.5);
+	    paletteButtonbox.Add(b);
+	    
+	    for (int i = 0; i < paintIndexes.Keys.Count - 1; ++i) {
+		Gdk.Color c = paintColors[i % paintColors.Count];
+		b = new ColorRadioButton(b, String.Format("{0}", i), c);
+		b.Index = i + 1;
+		b.Toggled += OnChangePaintIndex;
+		b.DoubleClicked += OnPaletteEdit;
+		paletteButtonbox.Add(b);
+
+		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+	    }
+
+	    paletteButtonbox.ShowAll();
+	    paletteAddButton.Sensitive = true;
+	    paletteEditButton.Sensitive = true;
+	}
+
+	void BuildRandomSoundPalette() {
+	    ClearPalette();
+	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
+	    paintIndexes.Clear();
+	    for (int i = -1; i < Level.RandomSounds.Count; ++i) {
+		paintIndexes[(short) i] = true;
+	    }
+	    editor.PaintIndex = -1;
+
+	    ColorRadioButton b = new ColorRadioButton(null, "None", new Gdk.Color(127, 127, 127));
+	    b.Index = 0;
+	    b.Toggled += OnChangePaintIndex;
+	    drawingArea.PaintColors[-1] = new Drawer.Color(0.5, 0.5, 0.5);
+	    paletteButtonbox.Add(b);
+	    
+	    for (int i = 0; i < paintIndexes.Keys.Count - 1; ++i) {
+		Gdk.Color c = paintColors[i % paintColors.Count];
+		b = new ColorRadioButton(b, String.Format("{0}", i), c);
+		b.Index = i + 1;
+		b.Toggled += OnChangePaintIndex;
+		b.DoubleClicked += OnPaletteEdit;
+		paletteButtonbox.Add(b);
+
+		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -765,6 +846,14 @@ namespace Weland {
 		BuildMediaPalette();
 		palette.Show();
 		drawingArea.Mode = DrawMode.Media;
+	    } else if (tool == Tool.AmbientSound) {
+		BuildAmbientSoundPalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.AmbientSound;
+	    } else if (tool == Tool.RandomSound) {
+		BuildRandomSoundPalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.RandomSound;
 	    } else {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
@@ -775,9 +864,7 @@ namespace Weland {
 	}
 
 	void BuildPolygonTypePalette() {
-	    while (paletteButtonbox.Children.Length > 0) {
-		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
-	    }
+	    ClearPalette();
 	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
 	    string[] names = {
 		"Normal",
@@ -820,7 +907,7 @@ namespace Weland {
 		b.Toggled += OnChangePaintIndex;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -829,10 +916,7 @@ namespace Weland {
 	}
 	
 	void BuildLightsPalette() {
-	    while (paletteButtonbox.Children.Length > 0) {
-		paletteButtonbox.Remove(paletteButtonbox.Children[0]);
-	    }
-
+	    ClearPalette();
 	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
 
 	    paintIndexes.Clear();
@@ -852,7 +936,7 @@ namespace Weland {
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 		
-		drawingArea.PaintColors[(short) i] = new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
+		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
 	    }
 	    
 	    paletteButtonbox.ShowAll();
@@ -997,6 +1081,24 @@ namespace Weland {
 		} else {
 		    Level.Medias.RemoveAt(Level.Medias.Count - 1);
 		}
+	    } else if (editor.Tool == Tool.AmbientSound) {
+		AmbientSound sound = new AmbientSound();
+		AmbientSoundParametersDialog dialog = new AmbientSoundParametersDialog(window1, sound);
+		if (dialog.Run() == (int) ResponseType.Ok) {
+		    Level.AmbientSounds.Add(sound);
+		    BuildAmbientSoundPalette();
+		    ((ColorRadioButton) paletteButtonbox.Children[Level.AmbientSounds.Count]).Active = true;
+		    editor.PaintIndex = (short) (Level.AmbientSounds.Count - 1);
+		} 
+	    } else if (editor.Tool == Tool.RandomSound) {
+		RandomSound sound = new RandomSound();
+		RandomSoundParametersDialog dialog = new RandomSoundParametersDialog(window1, sound);
+		if (dialog.Run() == (int) ResponseType.Ok) {
+		    Level.RandomSounds.Add(sound);
+		    BuildRandomSoundPalette();
+		    ((ColorRadioButton) paletteButtonbox.Children[Level.RandomSounds.Count]).Active = true;
+		    editor.PaintIndex = (short) (Level.RandomSounds.Count - 1);
+		}
 	    }
 	}
 
@@ -1045,6 +1147,22 @@ namespace Weland {
 			editor.Changed = true;
 		    }
 		}
+	    } else if (editor.Tool == Tool.AmbientSound) {
+		short index = editor.PaintIndex;
+		if (index != -1) {
+		    AmbientSoundParametersDialog dialog = new AmbientSoundParametersDialog(window1, Level.AmbientSounds[index]);
+		    if (dialog.Run() == (int) ResponseType.Ok) {
+			editor.Changed = true;
+		    }
+		}
+	    } else if (editor.Tool == Tool.RandomSound) {
+		short index = editor.PaintIndex;
+		if (index != -1) {
+		    RandomSoundParametersDialog dialog = new RandomSoundParametersDialog(window1, Level.RandomSounds[index]);
+		    if (dialog.Run() == (int) ResponseType.Ok) {
+			editor.Changed = true;
+		    }
+		}
 	    }
 	}
 
@@ -1056,7 +1174,7 @@ namespace Weland {
 	    AboutDialog dialog = new AboutDialog();
 	    dialog.ProgramName = "Weland";
 	    dialog.Artists = new string[] { "Robert Kreps (application icon)",
-					    "tango-art-libre and GIMP (tool icons)" };
+					    "tango-art-libre, GIMP, openclipart.org (tool icons)" };
 	    dialog.Authors = new string[] { "Gregory Smith <wolfy@treellama.org>",
 					    "with thanks to Eric Peterson for Smithy" };
 	    dialog.License = "Weland is available under the GNU General Public License, Version 2. See the file COPYING for details";

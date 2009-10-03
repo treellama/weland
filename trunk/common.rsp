@@ -32,6 +32,7 @@ Shapes.cs
 Settings.cs
 Side.cs
 Sounds.cs
+SoundParametersDialogs.cs
 Wadfile.cs
 Weland.cs
 Widgets.cs
@@ -40,6 +41,7 @@ Version.cs
 /resource:images/1x.png
 /resource:images/2x.png
 /resource:images/3x.png
+/resource:images/ambient-sound.png
 /resource:images/alien-gun.png
 /resource:images/ar-ammo.png
 /resource:images/ar-grenades.png
@@ -67,6 +69,7 @@ Version.cs
 /resource:images/player.png
 /resource:images/polygon-type.png
 /resource:images/powerup.png
+/resource:images/random-sound.png
 /resource:images/rl-ammo.png
 /resource:images/rl.png
 /resource:images/shotgun-ammo.png
@@ -80,9 +83,11 @@ Version.cs
 /resource:images/tozt.png
 /resource:images/uplink-chip.png
 /resource:images/zoom.png
+/resource:glade/ambientsoundparameters.glade
 /resource:glade/levelparameters.glade
 /resource:glade/lightparameters.glade
 /resource:glade/mapwindow.glade
 /resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
+/resource:glade/randomsoundparameters.glade
 
