@@ -63,6 +63,7 @@ namespace Weland {
 	public bool ShowSounds = true;
 	public bool Antialias = true;
 	public DrawMode Mode = DrawMode.Draw;
+	public PolygonFilter Filter = x => true;
 
 	public Dictionary<short, Drawer.Color> PaintColors = new Dictionary<short, Drawer.Color>();
 
@@ -171,8 +172,9 @@ namespace Weland {
 		    for (short i = 0; i < polygon.VertexCount; ++i) {
 			code &= Points[polygon.EndpointIndexes[i]];
 		    }
-		    if (code == CohenSutherland.Inside) 
+		    if (code == CohenSutherland.Inside && Filter(polygon)) {
 			DrawPolygon(polygon, false);
+		    }
 		}
 
 		if (Selection.Polygon != -1) {
@@ -181,13 +183,16 @@ namespace Weland {
 		    for (short i = 0; i < polygon.VertexCount; ++i) {
 			code &= Points[polygon.EndpointIndexes[i]];
 		    }
-		    if (code == CohenSutherland.Inside)
+		    if (code == CohenSutherland.Inside && Filter(polygon)) {
 			DrawPolygon(polygon, true);
+		    }
 		}
 		
 		foreach (Line line in Level.Lines) {
 		    if ((Points[line.EndpointIndexes[0]] & Points[line.EndpointIndexes[1]]) == CohenSutherland.Inside) {
-			DrawLine(line);
+			if ((line.ClockwisePolygonOwner == -1 || Filter(Level.Polygons[line.ClockwisePolygonOwner])) && (line.CounterclockwisePolygonOwner == -1 || Filter(Level.Polygons[line.CounterclockwisePolygonOwner]))) {
+			    DrawLine(line);
+			}
 		    }
 		}
 
@@ -205,11 +210,15 @@ namespace Weland {
 		    }
 		    foreach (MapObject obj in Level.Objects) {
 			if (obj != selectedObj && obj.X > Left - ObjectSize && obj.X < Right + ObjectSize && obj.Y > Top - ObjectSize && obj.Y < Bottom + ObjectSize) {
-			    DrawObject(obj, false);
+			    if (obj.PolygonIndex == -1 || Filter(Level.Polygons[obj.PolygonIndex])) {
+				DrawObject(obj, false);
+			    }
 			}
 		    }
 		    if (selectedObj != null && selectedObj.X > Left - ObjectSize && selectedObj.X < Right + ObjectSize && selectedObj.Y > Top - ObjectSize && selectedObj.Y < Bottom + ObjectSize) {
-			DrawObject(selectedObj, true);
+			if (selectedObj.PolygonIndex == -1 || Filter(Level.Polygons[selectedObj.PolygonIndex])) {
+			    DrawObject(selectedObj, true);
+			}
 		    }
 		}
 
