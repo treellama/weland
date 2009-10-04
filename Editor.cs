@@ -170,6 +170,10 @@ namespace Weland {
 	}
 
 	public void ConnectLine(short X, short Y) {
+	    if (Level.TemporaryLineStartIndex == -1) {
+		return;
+	    }
+
 	    Point p = new Point(X, Y);
 	    Point ap = new Point(GridAdjust(X), GridAdjust(Y));
 
