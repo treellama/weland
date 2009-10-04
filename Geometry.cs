@@ -187,7 +187,9 @@ namespace Weland {
 	}
 
 	bool BuildLoop(short target, short prev, short current, int depth, short starter, List<short> list) {
-	    if (current == target) {
+	    if (depth >= 8) {
+		return false;
+	    } else if (current == target) {
 		int other_index = Lines[list[list.Count - 1]].EndpointIndexes[0];
 		if (other_index == current)
 		    other_index = Lines[list[list.Count - 1]].EndpointIndexes[1];
@@ -197,8 +199,6 @@ namespace Weland {
 		} else {
                     return false;
 		}	
-	    } else if (depth > 8) {
-		return false;
 	    }
 
 	    List<short> neighbors = EndpointLines(current);
