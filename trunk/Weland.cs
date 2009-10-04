@@ -43,25 +43,45 @@ namespace Weland {
     public class Weland {
 	public static Settings Settings = new Settings();
 
-	public static int Main (string[] args) {
-	    try {
-		Application.Init();
-		
-		MapWindow window = new MapWindow("Weland");
-		
-		if (args.Length == 1)
-		    window.OpenFile(args[0]);
-		else
-		    window.NewLevel();
-		
-		Application.Run();
-	    } catch (Exception e) {
-		MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
-		d.Title = "Unhandled Exception";
-		d.SecondaryText = e.StackTrace;
-		d.Run();
-		d.Destroy();
+	static void OnUnhandledException(Exception outer) {
+	    Exception e;
+	    if (outer.InnerException != null) {
+		e = outer.InnerException;
+	    } else {
+		e = outer;
 	    }
+
+	    MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+	    d.Title = "Unhandled Exception";
+	    d.SecondaryText = e.StackTrace;
+	    d.Run();
+	    d.Destroy();		
+	}
+
+	public static void OnUnhandledException(object o, UnhandledExceptionEventArgs args) {
+	    Exception e = (Exception) args.ExceptionObject;
+	    OnUnhandledException(e);
+	}
+
+	public static void OnUnhandledException(GLib.UnhandledExceptionArgs args) {
+	    Exception e = (Exception) args.ExceptionObject;
+	    OnUnhandledException(e);
+	    args.ExitApplication = true;
+	}
+
+	public static int Main (string[] args) {
+	    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnUnhandledException);
+	    GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(OnUnhandledException);
+	    Application.Init();
+	    
+	    MapWindow window = new MapWindow("Weland");
+	    
+	    if (args.Length == 1)
+		window.OpenFile(args[0]);
+	    else
+		window.NewLevel();
+	    
+	    Application.Run();
 	    return 0;
 	}
     }
