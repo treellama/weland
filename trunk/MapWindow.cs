@@ -30,6 +30,9 @@ namespace Weland {
 	[Widget] MenuItem levelItem;
 	[Widget] Table table1;
 
+	[Widget] HScale viewFloorHeight;
+	[Widget] HScale viewCeilingHeight;
+
 	[Widget] MenuItem drawModeItem;
 	[Widget] MenuItem floorHeightItem;
 	[Widget] MenuItem ceilingHeightItem;
@@ -94,6 +97,23 @@ namespace Weland {
 	    button.IconWidget.Show();
 	}
 
+	bool HeightFilter(Polygon p) {
+	    return (World.ToDouble(p.FloorHeight) >= viewFloorHeight.Value && World.ToDouble(p.CeilingHeight) <= viewCeilingHeight.Value);
+	}
+
+	void ResetViewHeight() {
+	    viewFloorHeight.Value = -32;
+	    viewCeilingHeight.Value = 32;
+	}
+
+	protected void OnViewHeightReset(object o, EventArgs args) {
+	    ResetViewHeight();
+	}
+	
+	protected void OnViewHeight(object o, EventArgs args) {
+	    Redraw();
+	}
+
 	public MapWindow(string title) {
 	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
 	    gxml.Autoconnect(this);
@@ -132,10 +152,15 @@ namespace Weland {
 		}
 	    }
 
+	    viewFloorHeight.Value = -32;
+	    viewCeilingHeight.Value = 32;
+
 	    editor.Grid = grid;
 	    editor.Selection = selection;
+	    Level.Filter = HeightFilter;
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
+	    drawingArea.Filter = HeightFilter;
 
 	    SetupInspector();
 
@@ -518,6 +543,7 @@ namespace Weland {
 		selection.Clear();
 		Center(0, 0);
 		AdjustScrollRange();
+		ResetViewHeight();
 		window1.Title = wadfile.Directory[n].LevelName;
 		ChooseTool(editor.Tool);
 		editor.Changed = false;
@@ -576,6 +602,7 @@ namespace Weland {
 	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
 	    Center(0, 0);
 	    AdjustScrollRange();
+	    ResetViewHeight();
 	    selection.Clear();
 	    window1.Title = "Untitled Level";
 	    Filename = "";

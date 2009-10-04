@@ -4,7 +4,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Weland {
+    public delegate bool PolygonFilter(Polygon p);
+
     public partial class Level {
+	public static PolygonFilter Filter = p => true;
+
+	bool FilterLine(Line line) {
+	    return ((line.ClockwisePolygonOwner == -1 || Filter(Polygons[line.ClockwisePolygonOwner])) && (line.CounterclockwisePolygonOwner == -1 || Filter(Polygons[line.CounterclockwisePolygonOwner])));
+	}
+
 	public int Distance(Point p0, Point p1) {
 	    return (int) Math.Round(Math.Sqrt(Math.Pow(p0.X - p1.X, 2) + Math.Pow(p0.Y - p1.Y, 2)));
 	}
@@ -52,10 +60,12 @@ namespace Weland {
 	    int min = int.MaxValue;
 	    short closest_object = -1;
 	    for (short i = 0; i < Objects.Count; ++i) {
-		int distance = Distance(p, new Point(Objects[i].X, Objects[i].Y));
-		if (distance < min) {
-		    closest_object = i;
-		    min = distance;
+		if (Filter(Polygons[Objects[i].PolygonIndex])) {
+		    int distance = Distance(p, new Point(Objects[i].X, Objects[i].Y));
+		    if (distance < min) {
+			closest_object = i;
+			min = distance;
+		    }
 		}
 	    }
 
@@ -66,10 +76,12 @@ namespace Weland {
 	    int min = int.MaxValue;
 	    short closest_line = -1;
 	    for (short i = 0; i < Lines.Count; ++i) {
-		int distance = Distance(p, Lines[i]);
-		if (distance < min) {
-		    closest_line = i;
-		    min = distance;
+		if (FilterLine(Lines[i])) {
+		    int distance = Distance(p, Lines[i]);
+		    if (distance < min) {
+			closest_line = i;
+			min = distance;
+		    }
 		}
 	    }
 	    return closest_line;
@@ -129,33 +141,35 @@ namespace Weland {
 	SortedDictionary<double, short> GetFillCandidateLines(short X, short Y) {
 	    SortedDictionary<double, short> candidates = new SortedDictionary<double, short>();
 	    for (int i = 0; i < Lines.Count; ++i) {
-		Point p0 = Endpoints[Lines[i].EndpointIndexes[0]];
-		Point p1 = Endpoints[Lines[i].EndpointIndexes[1]];
-
-		if (p1.Y == p0.Y) {
-		    continue;
-		}
-
-		double u = (double) (Y - p0.Y) / (p1.Y - p0.Y);
-
-		double x_intersect = p0.X + (u * (p1.X - p0.X));
-		if (u >= 0.0 && u <= 1.0 && x_intersect > X) {
-		    // note that if two lines miraculously share the
-		    // same X intercept, one will be lost--oh well,
-		    // click somewhere else
-		    candidates[x_intersect] = (short) i;
+		if (FilterLine(Lines[i])) {
+		    Point p0 = Endpoints[Lines[i].EndpointIndexes[0]];
+		    Point p1 = Endpoints[Lines[i].EndpointIndexes[1]];
+		    
+		    if (p1.Y == p0.Y) {
+			continue;
+		    }
+		    
+		    double u = (double) (Y - p0.Y) / (p1.Y - p0.Y);
+		    
+		    double x_intersect = p0.X + (u * (p1.X - p0.X));
+		    if (u >= 0.0 && u <= 1.0 && x_intersect > X) {
+			// note that if two lines miraculously share the
+			// same X intercept, one will be lost--oh well,
+			// click somewhere else
+			candidates[x_intersect] = (short) i;
+		    }
 		}
 	    }
 	    return candidates;
 	}
-
+	
 	// get all lines attached to endpoint
 	public List<short> EndpointLines(short index) {
 	    List<short> lines = new List<short>();
 	    for (int i = 0; i < Lines.Count; ++i) {
 		Line line = Lines[i];
-		if (line.EndpointIndexes[0] == index ||
-		    line.EndpointIndexes[1] == index) {
+		if (FilterLine(line) && (line.EndpointIndexes[0] == index ||
+					 line.EndpointIndexes[1] == index)) {
 		    lines.Add((short) i);
 		}
 	    }
