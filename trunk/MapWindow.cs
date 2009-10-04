@@ -347,17 +347,17 @@ namespace Weland {
 	    short X = drawingArea.Transform.ToMapX(ev.X);
 	    short Y = drawingArea.Transform.ToMapY(ev.Y);
 
-	    if (editor.Tool == Tool.Zoom) {
+	    if (ev.Button == 2 || editor.Tool == Tool.Move) {
+		xDown = ev.X;
+		yDown = ev.Y;
+		xOffsetDown = drawingArea.Transform.XOffset;
+		yOffsetDown = drawingArea.Transform.YOffset;
+	    } else if (editor.Tool == Tool.Zoom) {
 		if (ev.Button == 3 || (ev.State & ModifierType.Mod1Mask) != 0) {
 		    ZoomOut(X, Y);
 		} else {
 		    ZoomIn(X, Y);
 		}
-	    } else if (editor.Tool == Tool.Move) {
-		xDown = ev.X;
-		yDown = ev.Y;
-		xOffsetDown = drawingArea.Transform.XOffset;
-		yOffsetDown = drawingArea.Transform.YOffset;
 	    } else {
 		EditorModifiers modifiers = Modifiers(ev.State);
 		if (ev.Button == 3) {
@@ -392,7 +392,7 @@ namespace Weland {
 	}
 
 	internal void OnMotion(object obj, MotionNotifyEventArgs args) {
-	    if (editor.Tool == Tool.Move) {
+	    if (editor.Tool == Tool.Move || ((args.Event.State & ModifierType.Button2Mask) != 0)) {
 		hscrollbar1.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
 		vscrollbar1.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
 		args.RetVal = true;
