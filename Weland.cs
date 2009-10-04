@@ -44,16 +44,24 @@ namespace Weland {
 	public static Settings Settings = new Settings();
 
 	public static int Main (string[] args) {
-	    Application.Init();
-	    
-	    MapWindow window = new MapWindow("Weland");
-	    
-	    if (args.Length == 1)
-		window.OpenFile(args[0]);
-	    else
-		window.NewLevel();
-	    
-	    Application.Run();
+	    try {
+		Application.Init();
+		
+		MapWindow window = new MapWindow("Weland");
+		
+		if (args.Length == 1)
+		    window.OpenFile(args[0]);
+		else
+		    window.NewLevel();
+		
+		Application.Run();
+	    } catch (Exception e) {
+		MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+		d.Title = "Unhandled Exception";
+		d.SecondaryText = e.StackTrace;
+		d.Run();
+		d.Destroy();
+	    }
 	    return 0;
 	}
     }
