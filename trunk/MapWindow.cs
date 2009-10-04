@@ -467,9 +467,9 @@ namespace Weland {
 	public bool CheckSave() {
 	    if (editor.Changed) {
 		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.None, "Do you wish to save changes?");
-		dialog.AddButton(Stock.No, ResponseType.No);
+		dialog.AddButton(Stock.Discard, ResponseType.No);
 		dialog.AddButton(Stock.Cancel, ResponseType.Cancel);
-		dialog.AddButton(Stock.Save, ResponseType.Yes);
+		dialog.Default = dialog.AddButton(Stock.Save, ResponseType.Yes);
 		int response = dialog.Run();
 		dialog.Destroy();
 		if (response == (int) ResponseType.Yes) {
