@@ -255,18 +255,35 @@ namespace Weland {
 		editor.ClearDirty();
 	    }
 	}
+	
+	enum ScrollWheelBehavior {
+	    Zoom,
+	    Pan
+	}
 
 	internal void OnScroll(object obj, ScrollEventArgs args) {
+	    ScrollWheelBehavior behavior = (ScrollWheelBehavior) Weland.Settings.GetSetting("ScrollWheelBehavior", (int) ScrollWheelBehavior.Zoom);
+	    if (behavior == ScrollWheelBehavior.Zoom) {
+		short X = drawingArea.Transform.ToMapX(args.Event.X);
+		short Y = drawingArea.Transform.ToMapY(args.Event.Y);
+
 		if (args.Event.Direction == ScrollDirection.Down) {
-			vscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
+		    ZoomOut(X, Y);
 		} else if (args.Event.Direction == ScrollDirection.Up) {
-			vscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
-		} else if (args.Event.Direction == ScrollDirection.Right) {
-			hscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
-		} else if (args.Event.Direction == ScrollDirection.Left) {
-			hscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
+		    ZoomIn(X, Y);
 		}
-		args.RetVal = true;
+	    } else if (behavior == ScrollWheelBehavior.Pan) {
+		if (args.Event.Direction == ScrollDirection.Down) {
+		    vscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == ScrollDirection.Up) {
+		    vscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == ScrollDirection.Right) {
+		    hscrollbar1.Value += 32.0 / drawingArea.Transform.Scale;
+		} else if (args.Event.Direction == ScrollDirection.Left) {
+		    hscrollbar1.Value -= 32.0 / drawingArea.Transform.Scale;
+		}
+	    }
+	    args.RetVal = true;
 	}
 
 	double xDown;
