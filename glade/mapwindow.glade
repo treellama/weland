@@ -1319,67 +1319,67 @@ Randomly</property>
                                     <child>
                                       <widget class="GtkComboBox" id="sceneryType">
                                         <property name="visible">True</property>
-                                        <property name="items" translatable="yes">Lava: Light Dirt
-Lava: Dark Dirt
-Lava: Bones
-Lava: Bone
-Lava: Ribs
-Lava: Skull
-Lava: Hanging Light #1
-Lava: Hanging Light #2
-Lava: Small Cylinder
-Lava: Large Cylinder
-Lava: Block #1
-Lava: Block #2
-Lava: Block #3
-Water: Pistol Clip
-Water: Short Light
-Water: Long Light
-Water: Siren
-Water: Rocks
-Water: Blood Drops
-Water: Thing
-Water: Gun
-Water: Bob Remains
-Water: Puddles
-Water: Big Puddles
-Water: Security Monitor
-Water: Alien Supply Can
-Water: Machine
-Water: Fighter's Staff
-Sewage: Stubby Green Light
-Sewage: Long Green Light
-Sewage: Junk
-Sewage: Big Antenna #1
-Sewage: Big Antenna #2
-Sewage: Alien Supply Can
-Sewage: Bones
-Sewage: Big Bones
-Sewage: Pfhor Pieces
-Sewage: Bob Pieces
-Sewage: Bob Blood
-Pfhor: Green Light
-Pfhor: Small Alien Light
-Pfhor: Alien Ceiling Rod Light
-Pfhor: Bulbous Yellow Alien Object
-Pfhor: Square Grey Organic Object
-Pfhor: Pfhor Skeleton
-Pfhor: Pfhor Mask
-Pfhor: Green Stuff
-Pfhor: Hunter Shield
-Pfhor: Bones
-Pfhor: Alien Sludge
-Jjaro: Short Ceiling Light
-Jjaro: Long Light
-Jjaro: Weird Rod
-Jjaro: Pfhor Ship
-Jjaro: Sun
-Jjaro: Large Glass Container
-Jjaro: Nub #1
-Jjaro: Nub #2
-Jjaro: Lh'owon
-Jjaro: Floor Whip Antenna
-Jjaro: Ceiling Whip Antenna</property>
+                                        <property name="items" translatable="yes">(L) Light Dirt
+(L) Dark Dirt
+(L) Bones
+(L) Bone
+(L) Ribs
+(L) Skull
+(L) Hanging Light #1
+(L) Hanging Light #2
+(L) Small Cylinder
+(L) Large Cylinder
+(L) Block #1
+(L) Block #2
+(L) Block #3
+(W) Pistol Clip
+(W) Short Light
+(W) Long Light
+(W) Siren
+(W) Rocks
+(W) Blood Drops
+(W) Filtration Device
+(W) Gun
+(W) Bob Remains
+(W) Puddles
+(W) Big Puddles
+(W) Security Monitor
+(W) Alien Supply Can
+(W) Machine
+(W) Fighter's Staff
+(S) Stubby Green Light
+(S) Long Green Light
+(S) Junk
+(S) Big Antenna #1
+(S) Big Antenna #2
+(S) Alien Supply Can
+(S) Bones
+(S) Big Bones
+(S) Pfhor Pieces
+(S) Bob Pieces
+(S) Bob Blood
+(P) Green Light
+(P) Small Alien Light
+(P) Alien Ceiling Rod Light
+(P) Bulbous Yellow Alien Object
+(P) Square Grey Organic Object
+(P) Pfhor Skeleton
+(P) Pfhor Mask
+(P) Green Stuff
+(P) Hunter Shield
+(P) Bones
+(P) Alien Sludge
+(J) Short Ceiling Light
+(J) Long Light
+(J) Weird Rod
+(J) Pfhor Ship
+(J) Sun
+(J) Large Glass Container
+(J) Nub #1
+(J) Nub #2
+(J) Lh'owon
+(J) Floor Whip Antenna
+(J) Ceiling Whip Antenna</property>
                                         <signal name="changed" handler="OnObjectChanged"/>
                                       </widget>
                                       <packing>
