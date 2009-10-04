@@ -308,18 +308,26 @@ namespace Weland {
 	    return modifiers;
 	}
 
-	void ZoomIn(short X, short Y) {
-	    drawingArea.Transform.Scale *= Math.Pow(2.0, 1.0 / 4);
-	    Center(X, Y);
+	void ZoomAt(short Xt, short Yt, double factor) {
+	    double X = drawingArea.Transform.ToScreenX(Xt);
+	    double Y = drawingArea.Transform.ToScreenY(Yt);
+	    double originalScale = drawingArea.Transform.Scale;
+	    double scale = originalScale * factor;
+	    drawingArea.Transform.Scale = scale;
+	    int xNew = (int) Math.Round(X / originalScale - X / scale + drawingArea.Transform.XOffset);
+	    int yNew = (int) Math.Round(Y / originalScale - Y / scale + drawingArea.Transform.YOffset);
+	    vscrollbar1.Value = yNew;
+	    hscrollbar1.Value = xNew;
 	    AdjustScrollRange();
 	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+
+	}
+	void ZoomIn(short X, short Y) {
+	    ZoomAt(X, Y, Math.Pow(2.0, 1.0 / 4));
 	}
 
 	void ZoomOut(short X, short Y) {
-	    drawingArea.Transform.Scale /= Math.Pow(2.0, 1.0 / 4);
-	    Center(X, Y);
-	    AdjustScrollRange();
-	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+	    ZoomAt(X, Y, 1 / Math.Pow(2.0, 1.0 / 4));
 	}
 
 	public void OnZoomIn(object obj, EventArgs args) {
