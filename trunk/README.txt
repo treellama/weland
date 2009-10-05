@@ -9,6 +9,8 @@ higher), as well as GTK#
 
 Windows
     Make sure you have the .NET runtime installed
+    http://msdn.microsoft.com/en-us/netframework/default.aspx
+
     Install the GTK# for .NET package
     http://www.go-mono.com/mono-downloads/download.html
 
