@@ -339,14 +339,14 @@ namespace Weland {
 	    double originalScale = drawingArea.Transform.Scale;
 	    double scale = originalScale * factor;
 	    drawingArea.Transform.Scale = scale;
+	    editor.Scale = scale;
 	    int xNew = (int) Math.Round(X / originalScale - X / scale + drawingArea.Transform.XOffset);
 	    int yNew = (int) Math.Round(Y / originalScale - Y / scale + drawingArea.Transform.YOffset);
 	    vscrollbar1.Value = yNew;
 	    hscrollbar1.Value = xNew;
 	    AdjustScrollRange();
-	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
-
 	}
+
 	void ZoomIn(short X, short Y) {
 	    ZoomAt(X, Y, Math.Pow(2.0, 1.0 / 4));
 	}
@@ -560,7 +560,7 @@ namespace Weland {
 		Level = new Level();
 		Level.Load(wadfile.Directory[n]);
 		drawingArea.Transform = new Transform();
-		editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+		editor.Scale = drawingArea.Transform.Scale;
 		selection.Clear();
 		Center(0, 0);
 		AdjustScrollRange();
@@ -620,7 +620,7 @@ namespace Weland {
 	    Level = new Level();
 	    levelItem.Submenu = null;
 	    drawingArea.Transform = new Transform();
-	    editor.Snap = (short) (8 / drawingArea.Transform.Scale);
+	    editor.Scale = drawingArea.Transform.Scale;
 	    Center(0, 0);
 	    AdjustScrollRange();
 	    ResetViewHeight();
