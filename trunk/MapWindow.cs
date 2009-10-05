@@ -39,6 +39,7 @@ namespace Weland {
 	[Widget] MenuItem polygonTypeItem;
 	[Widget] MenuItem floorLightItem;
 	[Widget] MenuItem ceilingLightItem;
+	[Widget] MenuItem mediaLightItem;
 	[Widget] MenuItem mediaItem;
 	[Widget] MenuItem ambientSoundItem;
 	[Widget] MenuItem randomSoundItem;
@@ -54,6 +55,7 @@ namespace Weland {
 	[Widget] RadioToolButton polygonTypeButton;
 	[Widget] RadioToolButton floorLightButton;
 	[Widget] RadioToolButton ceilingLightButton;
+	[Widget] RadioToolButton mediaLightButton;
 	[Widget] RadioToolButton mediaButton;
 	[Widget] RadioToolButton ambientSoundButton;
 	[Widget] RadioToolButton randomSoundButton; 
@@ -130,6 +132,7 @@ namespace Weland {
 	    SetIconResource(polygonTypeButton, "polygon-type.png");
 	    SetIconResource(floorLightButton, "floor-light.png");
 	    SetIconResource(ceilingLightButton, "ceiling-light.png");
+	    SetIconResource(mediaLightButton, "media-light.png");
 	    SetIconResource(mediaButton, "liquids.png");
 	    SetIconResource(ambientSoundButton, "ambient-sound.png");
 	    SetIconResource(randomSoundButton, "random-sound.png");
@@ -399,7 +402,7 @@ namespace Weland {
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
-	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.Media || editor.Tool == Tool.AmbientSound || editor.Tool == Tool.RandomSound) {
+	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight || editor.Tool == Tool.Media || editor.Tool == Tool.AmbientSound || editor.Tool == Tool.RandomSound) {
 		// update the paint mode button
 		int i = paintIndexes.IndexOfKey(editor.PaintIndex);
 		if (i != -1) {
@@ -711,6 +714,8 @@ namespace Weland {
 		ChooseTool(Tool.FloorLight);
 	    } else if (button == ceilingLightButton) {
 		ChooseTool(Tool.CeilingLight);
+	    } else if (button == mediaLightButton) {
+		ChooseTool(Tool.MediaLight);
 	    } else if (button == mediaButton) {
 		ChooseTool(Tool.Media);
 	    } else if (button == ambientSoundButton) {
@@ -734,6 +739,8 @@ namespace Weland {
 		floorLightButton.Active = true;
 	    } else if (item == ceilingLightItem) {
 		ceilingLightButton.Active = true;
+	    } else if (item == mediaLightItem) {
+		mediaLightButton.Active = true;
 	    } else if (item == mediaItem) {
 		mediaButton.Active = true;
 	    } else if (item == ambientSoundItem) {
@@ -915,6 +922,10 @@ namespace Weland {
 		BuildLightsPalette();
 		palette.Show();
 		drawingArea.Mode = DrawMode.CeilingLight;
+	    } else if (tool == Tool.MediaLight) {
+		BuildLightsPalette();
+		palette.Show();
+		drawingArea.Mode = DrawMode.MediaLight;
 	    } else if (tool == Tool.Media) {
 		BuildMediaPalette();
 		palette.Show();
@@ -1134,7 +1145,7 @@ namespace Weland {
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		}
 		dialog.Destroy();
-	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
+	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight) {
 		Level.Lights.Add(new Light());
 		LightParametersDialog dialog = new LightParametersDialog(window1, Level, (short) (Level.Lights.Count - 1));
 		if (dialog.Run() == (int) ResponseType.Ok) {
@@ -1206,7 +1217,7 @@ namespace Weland {
 		}
 		dialog.Destroy();
 		Redraw();
-	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight) {
+	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight) {
 		short index = editor.PaintIndex;
 		LightParametersDialog dialog = new LightParametersDialog(window1, Level, index);
 		if (dialog.Run() == (int) ResponseType.Ok) {
