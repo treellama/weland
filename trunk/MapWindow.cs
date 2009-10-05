@@ -1118,9 +1118,17 @@ namespace Weland {
 	}
 
 	protected void OnNukeTextures(object o, EventArgs e) {
+	    editor.SetUndo();
 	    Level.NukeTextures();
 	    Level.Pave();
 	    editor.Changed = true;
+	}
+
+	protected void OnNukeObjects(object o, EventArgs e) {
+	    editor.SetUndo();
+	    Level.NukeObjects();
+	    editor.Changed = true;
+	    Redraw();
 	}
 
 	protected void OnPaletteAdd(object o, EventArgs e) {

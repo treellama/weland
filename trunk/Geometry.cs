@@ -721,6 +721,12 @@ namespace Weland {
 
 	}
 
+	public void NukeObjects() {
+	    while (Objects.Count > 0) {
+		DeleteObject(0);
+	    }
+	}
+
 	public void NukeTextures() {
 	    while (Sides.Count > 0) {
 		DeleteSide(0);
