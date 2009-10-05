@@ -72,7 +72,15 @@ namespace Weland {
 	    }
 	    set {
 		tool = value;
-		if (value != Tool.Select && value != Tool.Move) {
+		if (value == Tool.Line) {
+		    short selected_point = Selection.Point;
+		    Selection.Clear();
+		    Selection.Point = selected_point;
+		} else if (value == Tool.Object) {
+		    short selected_object = Selection.Object;
+		    Selection.Clear();
+		    Selection.Object = selected_object;
+		} else if (value != Tool.Select && value != Tool.Move && value != Tool.Object) {
 		    Selection.Clear();
 		}
 	    }
@@ -122,6 +130,7 @@ namespace Weland {
 
 	public void StartLine(short X, short Y) {
 	    SetUndo();
+	    Selection.Clear();
 	    Point p = new Point(X, Y);
 	    short index = ClosestPoint(p);
 	    if (index == -1) {
@@ -205,6 +214,7 @@ namespace Weland {
 
 	    if (index != -1) {
 		Level.NewLine(Level.TemporaryLineStartIndex, index);
+		Selection.Point = index;
 	    } else {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < Snap && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
@@ -212,6 +222,7 @@ namespace Weland {
 		} else {
 		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(p.X, p.Y));
 		}
+		Selection.Point = (short) (Level.Endpoints.Count - 1);
 	    }
 	    Level.TemporaryLineStartIndex = -1;	   
 
