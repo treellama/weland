@@ -44,6 +44,7 @@ namespace Weland {
 	PolygonType,
 	FloorLight,
 	CeilingLight,
+	MediaLight,
 	Media,
 	AmbientSound,
 	RandomSound
@@ -349,6 +350,8 @@ namespace Weland {
 		drawer.FillPolygon(PaintColors[(short) polygon.FloorLight], points);
 	    } else if (Mode == DrawMode.CeilingLight) {
 		drawer.FillPolygon(PaintColors[(short) polygon.CeilingLight], points);
+	    } else if (Mode == DrawMode.MediaLight) {
+		drawer.FillPolygon(PaintColors[(short) polygon.MediaLight], points);
 	    } else if (Mode == DrawMode.Media) {
 		drawer.FillPolygon(PaintColors[(short) polygon.MediaIndex], points);
 	    } else if (Mode == DrawMode.AmbientSound) {

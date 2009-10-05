@@ -14,6 +14,7 @@ namespace Weland {
 	PolygonType,
 	FloorLight,
 	CeilingLight,
+	MediaLight,
 	Media,
 	AmbientSound,
 	RandomSound
@@ -597,6 +598,26 @@ namespace Weland {
 	    }
 	}
 
+	void SetMediaLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.MediaLight = PaintIndex;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
+
+	void GetMediaLight(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintIndex = p.MediaLight;
+	    }
+	}
+
 	void SetFloorLight(short X, short Y) {
 	    Polygon p = FindPolygon(X, Y);
 	    if (p != null) {
@@ -735,6 +756,13 @@ namespace Weland {
 		    undoSet = false;
 		    SetCeilingLight(X, Y);
 		}
+	    } else if (Tool == Tool.MediaLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetMediaLight(X, Y);
+		} else {
+		    undoSet = false;
+		    SetMediaLight(X, Y);
+		}
 	    } else if (Tool == Tool.Media) {
 		if (Alt(mods) || RightClick(mods)) {
 		    GetMedia(X, Y);
@@ -796,6 +824,12 @@ namespace Weland {
 		    GetCeilingLight(X, Y);
 		} else {
 		    SetCeilingLight(X, Y);
+		}
+	    } else if (Tool == Tool.MediaLight) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetMediaLight(X, Y);
+		} else {
+		    SetMediaLight(X, Y);
 		}
 	    } else if (Tool == Tool.Media) {
 		if (Alt(mods) || RightClick(mods)) {
