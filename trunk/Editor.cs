@@ -330,6 +330,72 @@ namespace Weland {
 	    a.Y = (short) (a.Y + Y);
 	}
 
+	public void NudgeSelected(short X, short Y) {
+	    bool changed = true;
+	    SetUndo();
+	    if (Selection.Point != -1) {
+		Point p = Level.Endpoints[Selection.Point];
+		short newX = (short) (p.X + X);
+		short newY = (short) (p.Y + Y);
+		if (Grid.Visible && Grid.Snap) {
+		    if (X > 0) {
+			newX += Grid.Resolution;
+		    } else if (X < 0) {
+			newX -= Grid.Resolution;
+		    }
+		    if (Y > 0) {
+			newY += Grid.Resolution;
+		    } else if (Y < 0) {
+			newY -= Grid.Resolution;
+		    }
+		}
+		MovePoint(Selection.Point, GridAdjust(newX), GridAdjust(newY));
+	    } else if (Selection.Object != -1) {
+		MapObject obj = Level.Objects[Selection.Object];
+		Point p = new Point((short) (obj.X + X), (short) (obj.Y + Y));
+		short polygon_index = Level.GetEnclosingPolygon(p);
+		if (polygon_index != -1) {
+		    obj.X = (short) (obj.X + X);
+		    obj.Y = (short) (obj.Y + Y);
+		    obj.PolygonIndex = polygon_index;
+		}
+	    } else if (Selection.Line != -1) {
+		Line line = Level.Lines[Selection.Line];
+		TranslatePoint(line.EndpointIndexes[0], X, Y);
+		TranslatePoint(line.EndpointIndexes[1], X, Y);
+	    } else if (Selection.Polygon != -1) {
+		Polygon polygon = Level.Polygons[Selection.Polygon];
+		Dictionary<short, bool> endpoints = new Dictionary<short, bool>();
+		for (int i = 0; i < polygon.VertexCount; ++i) {
+		    Line line = Level.Lines[polygon.LineIndexes[i]];
+		    endpoints[line.EndpointIndexes[0]] = true;
+		    endpoints[line.EndpointIndexes[1]] = true;
+		}
+
+		foreach (short i in endpoints.Keys) {
+		    TranslatePoint(i, X, Y);
+		}
+
+		foreach (MapObject mapObject in Level.Objects) {
+		    if (mapObject.PolygonIndex == Selection.Polygon) {
+			TranslateObject(mapObject, X, Y);
+		    }
+		}
+
+		foreach (Annotation annotation in Level.Annotations) {
+		    if (annotation.PolygonIndex == Selection.Polygon) {
+			TranslateAnnotation(annotation, X, Y);
+		    }
+		}		
+	    } else {
+		changed = false;
+	    }
+
+	    if (changed) {
+		Changed = true;
+	    }
+	}
+
 	void MoveSelected(short X, short Y) {
 	    bool changed = true;
 	    if (Selection.Point != -1) {

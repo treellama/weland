@@ -430,13 +430,34 @@ namespace Weland {
 	Tool oldTool = Tool.Move;
 
 	[GLib.ConnectBefore()] internal void OnSpecialKeyPressed(object obj, KeyPressEventArgs args) {
-	    if (args.Event.Key == Gdk.Key.space) {
+	    args.RetVal = true;
+	    switch (args.Event.Key) {
+	    case Gdk.Key.space:
 		if (editor.Tool != Tool.Move) {
 		    oldTool = editor.Tool;
 		    editor.Tool = Tool.Move;
 		    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);		    
 		}
-		args.RetVal = true;    
+		break;
+	    case Gdk.Key.Up:
+		editor.NudgeSelected(0, (short) ((double) -1 / drawingArea.Transform.Scale));
+		Redraw();
+		break;
+	    case Gdk.Key.Down:
+		editor.NudgeSelected(0, (short) ((double) 1 / drawingArea.Transform.Scale));
+		Redraw();
+		break;
+	    case Gdk.Key.Left:
+		editor.NudgeSelected((short) ((double) -1 / drawingArea.Transform.Scale), 0);
+		Redraw();
+		break;
+	    case Gdk.Key.Right:
+		editor.NudgeSelected((short) ((double) 1 / drawingArea.Transform.Scale), 0);
+		Redraw();
+		break;
+	    default:
+		args.RetVal = false;
+		break;
 	    }
 	}
 
