@@ -92,6 +92,8 @@ namespace Weland {
 	bool undoSet = false;
 	short lastX;
 	short lastY;
+	short downX;
+	short downY;
 
 	int DefaultSnap() {
 	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Select/Default", 4) / Scale);
@@ -99,6 +101,10 @@ namespace Weland {
 
 	int ObjectSnap() {
 	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Select/Object", 8) / Scale);
+	}
+
+	int Inertia() {
+	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Inertia/Default", 8) / Scale);
 	}
 
 	short GridAdjust(short value) {
@@ -417,6 +423,15 @@ namespace Weland {
 
 	void MoveSelected(short X, short Y) {
 	    bool changed = true;
+	    if (!undoSet) {
+		if (Math.Abs(X - downX) < Inertia() && Math.Abs(Y - downY) < Inertia()) {
+		    return;
+		} else {
+		    lastX = downX;
+		    lastY = downY;
+		}
+	    }
+
 	    if (Selection.Point != -1) {
 		if (!undoSet) {
 		    SetUndo();
@@ -743,8 +758,8 @@ namespace Weland {
 		}
 	    }
 
-	    lastX = X;
-	    lastY = Y;
+	    downX = lastX = X;
+	    downY = lastY = Y;
 	}
 
 	public void Motion(short X, short Y, EditorModifiers mods) {
