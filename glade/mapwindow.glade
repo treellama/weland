@@ -365,6 +365,14 @@
                         <signal name="activate" handler="OnNukeTextures"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem17">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Nuke Objects</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnNukeObjects"/>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>
