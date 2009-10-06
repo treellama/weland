@@ -89,9 +89,11 @@ namespace Weland {
 
 	public short GetEnclosingPolygon(Point p) {
 	    for (int i = 0; i < Polygons.Count; ++i) {
-		List<short> points = GetPointRingFromLineRing(new List<short>(Polygons[i].LineIndexes).GetRange(0, Polygons[i].VertexCount));
-		if (PointLoopEnclosesPoint(p, points)) {
-		    return (short) i;
+		if (Filter(Polygons[i])) {
+		    List<short> points = GetPointRingFromLineRing(new List<short>(Polygons[i].LineIndexes).GetRange(0, Polygons[i].VertexCount));
+		    if (PointLoopEnclosesPoint(p, points)) {
+			return (short) i;
+		    }
 		}		
 	    }
 	    return -1;
