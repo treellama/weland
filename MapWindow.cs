@@ -566,8 +566,6 @@ namespace Weland {
 	    if (CheckSave()) {
 		Level = new Level();
 		Level.Load(wadfile.Directory[n]);
-		drawingArea.Transform = new Transform();
-		editor.Scale = drawingArea.Transform.Scale;
 		selection.Clear();
 		Center(0, 0);
 		AdjustScrollRange();
@@ -626,8 +624,6 @@ namespace Weland {
 	    wadfile = new Wadfile();
 	    Level = new Level();
 	    levelItem.Submenu = null;
-	    drawingArea.Transform = new Transform();
-	    editor.Scale = drawingArea.Transform.Scale;
 	    Center(0, 0);
 	    AdjustScrollRange();
 	    ResetViewHeight();
