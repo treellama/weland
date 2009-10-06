@@ -191,7 +191,7 @@ namespace Weland {
 		
 		foreach (Line line in Level.Lines) {
 		    if ((Points[line.EndpointIndexes[0]] & Points[line.EndpointIndexes[1]]) == CohenSutherland.Inside) {
-			if ((line.ClockwisePolygonOwner == -1 || Filter(Level.Polygons[line.ClockwisePolygonOwner])) && (line.CounterclockwisePolygonOwner == -1 || Filter(Level.Polygons[line.CounterclockwisePolygonOwner]))) {
+			if (Level.FilterLine(Filter, line)) {
 			    DrawLine(line);
 			}
 		    }
