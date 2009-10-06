@@ -399,6 +399,10 @@ namespace Weland {
 	}
 
 	internal void OnButtonReleased(object obj, ButtonReleaseEventArgs args) {
+	    if (args.Event.Button == 2) {
+		return;
+	    }
+
 	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
 	    Redraw();
 
