@@ -1196,6 +1196,7 @@ namespace Weland {
 		    editor.PaintIndex = (short) (Level.RandomSounds.Count - 1);
 		}
 	    }
+	    Redraw();
 	}
 
 	void PaletteEdit() {
@@ -1260,6 +1261,7 @@ namespace Weland {
 		    }
 		}
 	    }
+	    Redraw();
 	}
 
 	protected void OnPaletteEdit(object o, EventArgs e) { 
