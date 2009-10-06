@@ -245,15 +245,23 @@ namespace Weland {
 	}
 
 	void Fill(short X, short Y) {
-	    Wadfile.DirectoryEntry prevUndo = null;
-	    if (undoState != null) {
-		prevUndo = undoState.Clone();
-	    }
-	    SetUndo();
-	    if (!Level.FillPolygon(X, Y)) {
-		undoState = prevUndo;
+	    if (!undoSet) {
+		Wadfile.DirectoryEntry prevUndo = null;
+		if (undoState != null) {
+		    prevUndo = undoState.Clone();
+		}
+		SetUndo();
+		if (!Level.FillPolygon(X, Y)) {
+		    undoState = prevUndo;
+		} else {
+		    undoSet = true;
+		    Changed = true;
+		}
 	    } else {
-		Changed = true;
+		if (Level.FillPolygon(X, Y)) {
+		    Polygon p = FindPolygon(X, Y);
+		    DirtyPolygon(p);
+		}
 	    }
 	}
 
@@ -716,6 +724,7 @@ namespace Weland {
 	    if (Tool == Tool.Line) {
 		StartLine(X, Y);
 	    } else if (Tool == Tool.Fill) {
+		undoSet = false;
 		Fill(X, Y);
 	    } else if (Tool == Tool.Select) {
 		Select(X, Y);
@@ -793,6 +802,8 @@ namespace Weland {
 	public void Motion(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
 		UpdateLine(X, Y);
+	    } else if (Tool == Tool.Fill) {
+		Fill(X, Y);
 	    } else if (Tool == Tool.Select) {
 		MoveSelected(X, Y);
 	    } else if (Tool == Tool.FloorHeight) {
