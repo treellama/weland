@@ -100,7 +100,7 @@ namespace Weland {
 	}
 
 	bool HeightFilter(Polygon p) {
-	    return (World.ToDouble(p.FloorHeight) >= viewFloorHeight.Value && World.ToDouble(p.CeilingHeight) <= viewCeilingHeight.Value);
+	    return (World.ToDouble(p.FloorHeight) >= viewFloorHeight.Value && World.ToDouble(p.FloorHeight) <= viewCeilingHeight.Value);
 	}
 
 	void ResetViewHeight() {
