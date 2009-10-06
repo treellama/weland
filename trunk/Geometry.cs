@@ -9,8 +9,20 @@ namespace Weland {
     public partial class Level {
 	public static PolygonFilter Filter = p => true;
 
-	bool FilterLine(Line line) {
-	    return ((line.ClockwisePolygonOwner == -1 || Filter(Polygons[line.ClockwisePolygonOwner])) && (line.CounterclockwisePolygonOwner == -1 || Filter(Polygons[line.CounterclockwisePolygonOwner])));
+	public bool FilterLine(PolygonFilter f, Line line) {
+	    if (line.ClockwisePolygonOwner == -1) {
+		if (line.CounterclockwisePolygonOwner == -1) {
+		    return true;
+		} else {
+		    return f(Polygons[line.CounterclockwisePolygonOwner]);
+		}
+	    } else {
+		if (line.CounterclockwisePolygonOwner == -1) {
+		    return f(Polygons[line.ClockwisePolygonOwner]);
+		} else {
+		    return f(Polygons[line.ClockwisePolygonOwner]) || f(Polygons[line.CounterclockwisePolygonOwner]);
+		}
+	    }
 	}
 
 	public int Distance(Point p0, Point p1) {
@@ -76,7 +88,7 @@ namespace Weland {
 	    int min = int.MaxValue;
 	    short closest_line = -1;
 	    for (short i = 0; i < Lines.Count; ++i) {
-		if (FilterLine(Lines[i])) {
+		if (FilterLine(Filter, Lines[i])) {
 		    int distance = Distance(p, Lines[i]);
 		    if (distance < min) {
 			closest_line = i;
@@ -143,7 +155,7 @@ namespace Weland {
 	SortedDictionary<double, short> GetFillCandidateLines(short X, short Y) {
 	    SortedDictionary<double, short> candidates = new SortedDictionary<double, short>();
 	    for (int i = 0; i < Lines.Count; ++i) {
-		if (FilterLine(Lines[i])) {
+		if (FilterLine(Filter, Lines[i])) {
 		    Point p0 = Endpoints[Lines[i].EndpointIndexes[0]];
 		    Point p1 = Endpoints[Lines[i].EndpointIndexes[1]];
 		    
@@ -170,7 +182,7 @@ namespace Weland {
 	    List<short> lines = new List<short>();
 	    for (int i = 0; i < Lines.Count; ++i) {
 		Line line = Lines[i];
-		if (FilterLine(line) && (line.EndpointIndexes[0] == index ||
+		if (FilterLine(Filter, line) && (line.EndpointIndexes[0] == index ||
 					 line.EndpointIndexes[1] == index)) {
 		    lines.Add((short) i);
 		}
