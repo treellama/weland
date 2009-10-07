@@ -160,6 +160,7 @@ namespace Weland {
 
 	    editor.Grid = grid;
 	    editor.Selection = selection;
+	    editor.Scale = drawingArea.Transform.Scale;
 	    Level.Filter = HeightFilter;
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
