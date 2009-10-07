@@ -28,6 +28,7 @@ Platform.cs
 PlatformParametersDialog.cs
 Point.cs
 Polygon.cs
+PopupParametersDialogs.cs
 Shapes.cs
 Settings.cs
 Side.cs
@@ -87,6 +88,7 @@ Version.cs
 /resource:glade/ambientsoundparameters.glade
 /resource:glade/levelparameters.glade
 /resource:glade/lightparameters.glade
+/resource:glade/lineparameters.glade
 /resource:glade/mapwindow.glade
 /resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
