@@ -156,6 +156,7 @@ namespace Weland {
 	    }
 
 	    viewFloorHeight.Value = -32;
+
 	    viewCeilingHeight.Value = 32;
 
 	    editor.Grid = grid;
@@ -376,24 +377,32 @@ namespace Weland {
 	    short X = drawingArea.Transform.ToMapX(ev.X);
 	    short Y = drawingArea.Transform.ToMapY(ev.Y);
 
-	    if (ev.Button == 2 || editor.Tool == Tool.Move) {
-		xDown = ev.X;
-		yDown = ev.Y;
-		xOffsetDown = drawingArea.Transform.XOffset;
-		yOffsetDown = drawingArea.Transform.YOffset;
-	    } else if (editor.Tool == Tool.Zoom) {
-		if (ev.Button == 3 || (ev.State & ModifierType.Mod1Mask) != 0) {
-		    ZoomOut(X, Y);
+	    if (ev.Type == EventType.ButtonPress) {
+		if (ev.Button == 2 || editor.Tool == Tool.Move) {
+		    xDown = ev.X;
+		    yDown = ev.Y;
+		    xOffsetDown = drawingArea.Transform.XOffset;
+		    yOffsetDown = drawingArea.Transform.YOffset;
+		} else if (editor.Tool == Tool.Zoom) {
+		    if (ev.Button == 3 || (ev.State & ModifierType.Mod1Mask) != 0) {
+			ZoomOut(X, Y);
+		    } else {
+			ZoomIn(X, Y);
+		    }
 		} else {
-		    ZoomIn(X, Y);
+		    EditorModifiers modifiers = Modifiers(ev.State);
+		    if (ev.Button == 3) {
+			modifiers |= EditorModifiers.RightClick;
+		    }
+		    editor.ButtonPress(X, Y, modifiers);
+		    Redraw();
 		}
-	    } else {
-		EditorModifiers modifiers = Modifiers(ev.State);
-		if (ev.Button == 3) {
-		    modifiers |= EditorModifiers.RightClick;
+	    } else if (ev.Type == EventType.TwoButtonPress) {
+		if (selection.Line != -1) {
+		    LineParametersDialog d = new LineParametersDialog(window1, Level, Level.Lines[selection.Line]);
+		    d.Run();
+		    editor.Changed = true;
 		}
-		editor.ButtonPress(X, Y, modifiers);
-		Redraw();
 	    }
 
 	    args.RetVal = true;
