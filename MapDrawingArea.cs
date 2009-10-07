@@ -1,3 +1,4 @@
+using Pango;
 using System;
 using System.Collections.Generic;
 
@@ -168,13 +169,14 @@ namespace Weland {
 		    }
 		}
 
-		foreach (Polygon polygon in Level.Polygons) {
+		for (int i = 0; i < Level.Polygons.Count; ++i) {
+		    Polygon polygon = Level.Polygons[i];
 		    CohenSutherland code = ~CohenSutherland.Inside;
-		    for (short i = 0; i < polygon.VertexCount; ++i) {
-			code &= Points[polygon.EndpointIndexes[i]];
+		    for (short v = 0; v < polygon.VertexCount; ++v) {
+			code &= Points[polygon.EndpointIndexes[v]];
 		    }
 		    if (code == CohenSutherland.Inside && Filter(polygon)) {
-			DrawPolygon(polygon, false);
+			DrawPolygon((short) i, false);
 		    }
 		}
 
@@ -185,7 +187,7 @@ namespace Weland {
 			code &= Points[polygon.EndpointIndexes[i]];
 		    }
 		    if (code == CohenSutherland.Inside && Filter(polygon)) {
-			DrawPolygon(polygon, true);
+			DrawPolygon(Selection.Polygon, true);
 		    }
 		}
 		
@@ -204,6 +206,12 @@ namespace Weland {
 		}
 		
 		if (Mode == DrawMode.Draw) {
+		    foreach (Annotation note in Level.Annotations) {
+			if (Filter(Level.Polygons[note.PolygonIndex])) {
+			    DrawAnnotation(note);
+			}
+		    }
+
 		    int ObjectSize = (int) (16 / 2 / Transform.Scale);
 		    MapObject selectedObj = null;
 		    if (Selection.Object != -1) {
@@ -335,7 +343,8 @@ namespace Weland {
 	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	}
 
-	void DrawPolygon(Polygon polygon, bool highlight) {
+	void DrawPolygon(short polygon_index, bool highlight) {
+	    Polygon polygon = Level.Polygons[polygon_index];
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
 		points.Add(Transform.ToScreenPoint(Level.Endpoints[polygon.EndpointIndexes[i]]));
@@ -366,6 +375,15 @@ namespace Weland {
 		} else {
 		    drawer.FillPolygon(polygonColor, points);
 		}
+	    }
+
+	    if (polygon.Type == PolygonType.Platform) {
+		Drawer.Point center = Transform.ToScreenPoint(Level.PolygonCenter(polygon));
+		Layout layout = new Pango.Layout(this.PangoContext);
+		layout.SetMarkup(String.Format("{0}", polygon_index));
+		int width, height;
+		layout.GetPixelSize(out width, out height);
+		this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), (int) center.X - width / 2, (int) center.Y - height / 2, layout);
 	    }
 	}
 	
@@ -445,6 +463,16 @@ namespace Weland {
 		    }
 		}
 	    }
+	}
+
+	void DrawAnnotation(Annotation note) {
+	    int X = (int) Transform.ToScreenX(note.X);
+	    int Y = (int) Transform.ToScreenY(note.Y);
+	    Layout layout = new Pango.Layout(this.PangoContext);
+	    layout.SetMarkup(note.Text);
+	    int width, height;
+	    layout.GetPixelSize(out width, out height);
+	    this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), X, Y - height, layout);
 	}
     }
 }
