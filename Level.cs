@@ -213,7 +213,8 @@ namespace Weland {
 		}
 	    }
 
-	    foreach (Line line in Lines) {
+	    for (short index = 0; index < Lines.Count; ++index) {
+		Line line = Lines[index];
 		Polygon p1 = null;
 		Polygon p2 = null;
 		if (line.ClockwisePolygonOwner != -1) {
@@ -239,6 +240,18 @@ namespace Weland {
 
 		if (line.VariableElevation) {
 		    line.Solid = (line.HighestAdjacentFloor >= line.LowestAdjacentCeiling);
+		}
+
+		if (line.ClockwisePolygonSideIndex != -1) {
+		    Side side = Sides[line.ClockwisePolygonSideIndex];
+		    side.LineIndex = index;
+		    side.PolygonIndex = line.ClockwisePolygonOwner;
+		}
+
+		if (line.CounterclockwisePolygonSideIndex != -1) {
+		    Side side = Sides[line.CounterclockwisePolygonSideIndex];
+		    side.LineIndex = index;
+		    side.PolygonIndex = line.CounterclockwisePolygonOwner;
 		}
 	    }
 
