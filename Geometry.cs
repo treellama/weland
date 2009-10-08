@@ -651,13 +651,81 @@ namespace Weland {
 		short opposite_ceiling_height = opposite.CeilingHeight;
 		short opposite_floor_height = opposite.FloorHeight;
 
+		if (adjacent.Type == PolygonType.Platform) {
+		    // calculate side based on maxima
+		    Platform adjacentPlatform = Platforms[adjacent.Permutation];
+		    if (adjacentPlatform.ComesFromCeiling && adjacentPlatform.ComesFromFloor) {
+			if (adjacentPlatform.MinimumHeight == -1) {
+			    floor_height = AutocalPlatformMinimum(adjacent.Permutation);
+			} else {
+			    floor_height = adjacentPlatform.MinimumHeight;
+			}
+
+			if (adjacentPlatform.MaximumHeight == -1) {
+			    ceiling_height = AutocalPlatformMaximum(adjacent.Permutation);
+			} else {
+			    ceiling_height = adjacentPlatform.MaximumHeight;
+			}
+		    } else if (!adjacentPlatform.UsesNativePolygonHeights) {
+			if (adjacentPlatform.ComesFromFloor) {
+			    if (adjacentPlatform.MinimumHeight == -1) {
+				floor_height = AutocalPlatformMinimum(adjacent.Permutation);
+			    } else {
+				floor_height = adjacentPlatform.MinimumHeight;
+			    }
+			} else if (adjacentPlatform.ComesFromCeiling) {
+			    if (adjacentPlatform.MaximumHeight == -1) {
+				ceiling_height = AutocalPlatformMaximum(adjacent.Permutation);
+			    } else {
+				ceiling_height = adjacentPlatform.MaximumHeight;
+			    }
+			}
+		    }
+		}
+
+		if (opposite.Type == PolygonType.Platform) {
+		    // calculate side based on minima
+		    Platform oppositePlatform = Platforms[opposite.Permutation];
+		    if (oppositePlatform.ComesFromCeiling && oppositePlatform.ComesFromFloor) {
+			int floor = oppositePlatform.MinimumHeight;
+			int ceiling = oppositePlatform.MaximumHeight;
+			if (oppositePlatform.MinimumHeight == -1) {
+			    floor = AutocalPlatformMinimum(opposite.Permutation);
+			}
+			if (oppositePlatform.MaximumHeight == -1) {
+			    ceiling = AutocalPlatformMaximum(opposite.Permutation);
+			}
+			opposite_floor_height = opposite_ceiling_height = (short) (floor + (ceiling - floor) / 2);
+		    } else if (!oppositePlatform.UsesNativePolygonHeights) {
+			if (oppositePlatform.ComesFromFloor) {
+			    if (oppositePlatform.MaximumHeight == -1) {
+				opposite_floor_height = AutocalPlatformMaximum(opposite.Permutation);
+			    } else {
+				opposite_floor_height = oppositePlatform.MaximumHeight;
+			    }
+			} else if (oppositePlatform.ComesFromCeiling) {
+			    if (oppositePlatform.MinimumHeight == -1) {
+				opposite_ceiling_height = AutocalPlatformMinimum(opposite.Permutation);
+			    } else {
+				opposite_ceiling_height = oppositePlatform.MinimumHeight;
+			    }
+			}
+		    }
+		}
+
+		bool platformSafety = (adjacent.Type == PolygonType.Platform || opposite.Type == PolygonType.Platform);
+
 		// we should handle platforms more intelligently than this
-		if ((opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) || adjacent.Type == PolygonType.Platform || opposite.Type == PolygonType.Platform) {
+		if (opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) {
 		    side.Type = SideType.Split;
 		} else if (opposite_floor_height > floor_height) {
-		    side.Type = SideType.Low;
+		    if (!platformSafety) {
+			side.Type = SideType.Low;
+		    }
 		} else if (opposite_ceiling_height < ceiling_height) {
-		    side.Type = SideType.High;
+		    if (!platformSafety) {
+			side.Type = SideType.High;
+		    }
 		}
 	    }
 	}
