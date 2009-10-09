@@ -94,7 +94,7 @@ namespace Weland {
 	}
 	Tool tool;
 	public short PaintIndex;
-		
+	MapObject lastObject = null;
 
 	bool undoSet = false;
 	short lastX;
@@ -312,6 +312,7 @@ namespace Weland {
 		index = ClosestObject(p);
 		if (index != -1) {
 		    Selection.Object = index;
+		    lastObject = Level.Objects[index];
 		} else {
 		    index = ClosestLine(p);
 		    if (index != -1) {
@@ -333,19 +334,21 @@ namespace Weland {
 	    if (index != -1) {
 		Selection.Clear();
 		Selection.Object = index;
+		lastObject = Level.Objects[index];
 	    } else {
 		short polygon_index = Level.GetEnclosingPolygon(p);
 		if (polygon_index != -1) {
 		    SetUndo();
 		    short object_index = Level.NewObject(p, polygon_index);
 		    MapObject o = Level.Objects[object_index];
-		    if (Selection.Object != -1) {
-			o.CopyFrom(Level.Objects[Selection.Object]);
+		    if (lastObject != null) {
+			o.CopyFrom(lastObject);
 		    } else {
 			o.Type = ObjectType.Player;
 		    }
 
 		    Selection.Object = object_index;
+		    lastObject = o;
 
 		    if (o.Type == ObjectType.Monster) {
 			Level.MonsterPlacement[o.Index].InitialCount++;
