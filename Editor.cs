@@ -73,6 +73,12 @@ namespace Weland {
 	    }
 	    set {
 		tool = value;
+		if (Level.TemporaryLineStartIndex != -1) {
+		    if (Level.EndpointLines(Level.TemporaryLineStartIndex).Count == 0) {
+			Level.DeletePoint(Level.TemporaryLineStartIndex);
+		    }
+		    Level.TemporaryLineStartIndex = -1;
+		}
 		if (value == Tool.Line) {
 		    short selected_point = Selection.Point;
 		    Selection.Clear();
