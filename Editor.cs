@@ -143,6 +143,26 @@ namespace Weland {
 	    }
 	}
 
+	Point Constrain(Point p, bool constrainAngle, bool constrainLength) {
+	    int StartX = Level.Endpoints[Level.TemporaryLineStartIndex].X;
+	    int StartY = Level.Endpoints[Level.TemporaryLineStartIndex].Y;
+	    int X = p.X - StartX;
+	    int Y = p.Y - StartY;
+
+	    double r = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+	    double theta = Math.Atan2(Y, X);
+	    if (constrainLength) {
+		r = Math.Round(r / Grid.Resolution) * Grid.Resolution;
+	    }
+
+	    if (constrainAngle) {
+		double smallest_angle = Math.PI / 8;
+		theta = Math.Round(theta / smallest_angle) * smallest_angle;
+	    }
+
+	    return new Point((short) (Math.Round(r * Math.Cos(theta)) + StartX), (short) (Math.Round(r * Math.Sin(theta)) + StartY));
+	}
+
 	public void StartLine(short X, short Y) {
 	    SetUndo();
 	    Selection.Clear();
@@ -171,14 +191,19 @@ namespace Weland {
 	    Changed = true;
 	}
 
-	public void UpdateLine(short X, short Y) {
+	public void UpdateLine(short X, short Y, bool constrainAngle, bool constrainLength) {
 	    AddDirty(Level.Endpoints[Level.TemporaryLineStartIndex]);
 	    AddDirty(Level.TemporaryLineEnd);
 	    Point p = new Point(X, Y);
-	    short index = ClosestPoint(p);
-	    if (index == -1) {
-		p = new Point(GridAdjust(X), GridAdjust(Y));
+	    short index = -1;
+	    if (constrainAngle || constrainLength) {
+		p = Constrain(p, constrainAngle, constrainLength);
+	    } else {
 		index = ClosestPoint(p);
+		if (index == -1) {
+		    p = new Point(GridAdjust(X), GridAdjust(Y));
+		    index = ClosestPoint(p);
+		}
 	    }
 
 	    if (index != -1) {
@@ -193,13 +218,16 @@ namespace Weland {
 	    Changed = true;
 	}
 
-	public void ConnectLine(short X, short Y) {
+	public void ConnectLine(short X, short Y, bool constrainAngle, bool constrainLength) {
 	    if (Level.TemporaryLineStartIndex == -1) {
 		return;
 	    }
 
 	    Point p = new Point(X, Y);
 	    Point ap = new Point(GridAdjust(X), GridAdjust(Y));
+	    if (constrainAngle || constrainLength) {
+		p = Constrain(p, constrainAngle, constrainLength);
+	    }
 
 	    // don't draw really short lines
 	    if (Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], ap) < DefaultSnap()) {
@@ -221,10 +249,13 @@ namespace Weland {
 		return;
 	    }
 
-	    short index = ClosestPoint(p);
-	    if (index == -1) {
-		p = ap;
+	    short index = -1;
+	    if (!constrainLength && !constrainAngle) {
 		index = ClosestPoint(p);
+		if (index == -1) {
+		    p = ap;
+		    index = ClosestPoint(p);
+		}
 	    }
 
 	    if (index != -1) {
@@ -801,7 +832,9 @@ namespace Weland {
 
 	public void Motion(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
-		UpdateLine(X, Y);
+		bool constrainAngle = (mods & EditorModifiers.Shift) != 0;
+		bool constrainLength = (mods & EditorModifiers.Alt) != 0;
+		UpdateLine(X, Y, constrainAngle, constrainLength);
 	    } else if (Tool == Tool.Fill) {
 		Fill(X, Y);
 	    } else if (Tool == Tool.Select) {
@@ -866,9 +899,11 @@ namespace Weland {
 	    lastY = Y;
 	}
 
-	public void ButtonRelease(short X, short Y) {
+	public void ButtonRelease(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.Line) {
-		ConnectLine(X, Y);
+		bool constrainAngle = (mods & EditorModifiers.Shift) != 0;
+		bool constrainLength = (mods & EditorModifiers.Alt) != 0;
+		ConnectLine(X, Y, constrainAngle, constrainLength);
 	    }
 	}
 

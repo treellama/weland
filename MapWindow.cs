@@ -331,7 +331,11 @@ namespace Weland {
 		modifiers |= EditorModifiers.Control;
 	    }
 	    
-	    if ((type & ModifierType.Mod1Mask) != 0) {
+	    if (PlatformDetection.IsMac) {
+		if (optionKey) {
+		    modifiers |= EditorModifiers.Alt;
+		}
+	    } else if ((type & ModifierType.Mod1Mask) != 0) {
 		modifiers |= EditorModifiers.Alt;
 	    }
 
@@ -412,8 +416,8 @@ namespace Weland {
 	    if (args.Event.Button == 2) {
 		return;
 	    }
-
-	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y));
+	    EditorModifiers modifiers = Modifiers(args.Event.State);
+	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), modifiers);
 	    Redraw();
 
 	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight || editor.Tool == Tool.Media || editor.Tool == Tool.AmbientSound || editor.Tool == Tool.RandomSound) {
@@ -446,8 +450,15 @@ namespace Weland {
 
 	Tool oldTool = Tool.Move;
 
+	static bool optionKey = false;
+
 	[GLib.ConnectBefore()] internal void OnSpecialKeyPressed(object obj, KeyPressEventArgs args) {
 	    args.RetVal = true;
+	    if (PlatformDetection.IsMac && (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R)) {
+		optionKey = true;
+		return;
+	    }
+
 	    switch (args.Event.Key) {
 	    case Gdk.Key.space:
 		if (editor.Tool != Tool.Move) {
@@ -549,6 +560,10 @@ namespace Weland {
 		ChooseTool(oldTool);
 		oldTool = Tool.Move;
 		args.RetVal = true;
+	    } else if (PlatformDetection.IsMac && (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R)) {
+		optionKey = false;
+		args.RetVal = true;
+		return;
 	    }
 	}
 
