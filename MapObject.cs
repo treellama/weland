@@ -162,7 +162,7 @@ namespace Weland {
 	}
 
 	public bool UseLightForVolume {
-	    get { return facing <= 0; } // strictly, it should be < 0, I think?
+	    get { return facing < 0; } 
 	}
 
 	public int Light {
