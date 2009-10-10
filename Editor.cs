@@ -1089,5 +1089,51 @@ namespace Weland {
 		}
 	    }
 	}
+
+	public void Recenter() {
+	    SetUndo();
+	    // find the extents
+	    int minX = short.MaxValue;
+	    int maxX = short.MinValue;
+	    int minY = short.MaxValue;
+	    int maxY = short.MinValue;
+
+	    foreach (Point p in Level.Endpoints) {
+		if (p.X < minX) minX = p.X;
+		if (p.X > maxX) maxX = p.X;
+		if (p.Y < minY) minY = p.Y;
+		if (p.Y > maxY) maxY = p.Y;
+	    }
+
+	    foreach (Annotation a in Level.Annotations) {
+		if (a.X < minX) minX = a.X;
+		if (a.X > maxX) maxX = a.X;
+		if (a.Y < minY) minY = a.Y;
+		if (a.Y > maxY) maxY = a.Y;
+	    }
+
+	    // we assume nobody has map objects outside of polygon bounds!
+	    
+	    int marginX = (ushort.MaxValue - (maxX - minX)) / 2;
+	    int marginY = (ushort.MaxValue - (maxY - minY)) / 2;
+
+	    int newMinX = short.MinValue + marginX;
+	    int newMinY = short.MinValue + marginY;
+
+	    int offsetX = ((newMinX - minX) / World.One) * World.One;
+	    int offsetY = ((newMinY - minY) / World.One) * World.One;
+
+	    for (int i = 0; i < Level.Endpoints.Count; ++i) {
+		TranslatePoint((short) i, offsetX, offsetY);
+	    }
+
+	    foreach (MapObject o in Level.Objects) {
+		TranslateObject(o, offsetX, offsetY);
+	    }
+	    
+	    foreach (Annotation a in Level.Annotations) {
+		TranslateAnnotation(a, offsetX, offsetY);
+	    }
+	}
     }
 }
