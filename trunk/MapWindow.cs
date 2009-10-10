@@ -1322,5 +1322,10 @@ namespace Weland {
 	    dialog.Run();
 	    dialog.Destroy();
 	}
+
+	protected void OnRecenterLevel(object o, EventArgs e) {
+	    editor.Recenter();
+	    Redraw();
+	}
     }
 }
