@@ -715,7 +715,7 @@ namespace Weland {
 		    }
 		}
 
-		bool platformSafety = (adjacent.Type == PolygonType.Platform || opposite.Type == PolygonType.Platform);
+		bool platformSafety = (adjacent.Type == PolygonType.Platform || opposite.Type == PolygonType.Platform) && side.Type != SideType.Full;
 
 		// we should handle platforms more intelligently than this
 		if (opposite_ceiling_height < ceiling_height && opposite_floor_height > floor_height) {
