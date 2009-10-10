@@ -25,10 +25,15 @@ namespace Weland {
 	List<Gdk.Color> paintColors = new List<Gdk.Color>();
 
 	[Widget] Gtk.Window window1;
+	[Widget] MenuBar menubar1;
 	[Widget] VScrollbar vscrollbar1;
 	[Widget] HScrollbar hscrollbar1;
 	[Widget] MenuItem levelItem;
 	[Widget] Table table1;
+
+	[Widget] MenuItem quitItem;
+	[Widget] MenuItem quitSeparator;
+	[Widget] MenuItem aboutItem;
 
 	[Widget] HScale viewFloorHeight;
 	[Widget] HScale viewCeilingHeight;
@@ -135,6 +140,19 @@ namespace Weland {
 	    Redraw();
 	}
 
+	void DoMacIntegration() {
+	    try {
+		IgeMacIntegration.IgeMacMenu.MenuBar = menubar1;
+		IgeMacIntegration.IgeMacMenu.QuitMenuItem = quitItem;
+
+		IgeMacIntegration.IgeMacMenuGroup appMenuGroup = IgeMacIntegration.IgeMacMenu.AddAppMenuGroup();
+		appMenuGroup.AddMenuItem(aboutItem, "About Weland");
+		quitSeparator.Hide();
+
+		menubar1.Hide();
+	    } catch (DllNotFoundException) { }	    
+	}
+
 	public MapWindow(string title) {
 	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
 	    gxml.Autoconnect(this);
@@ -186,6 +204,10 @@ namespace Weland {
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
 	    drawingArea.Filter = HeightFilter;
+
+	    if (PlatformDetection.IsMac) {
+		DoMacIntegration();
+	    }
 
 	    SetupInspector();
 
@@ -485,11 +507,55 @@ namespace Weland {
 
 	static bool optionKey = false;
 
+	bool HandleMacAccelerator(Gdk.Key key) {
+	    switch (key) {
+	    case Gdk.Key.z:
+		OnUndo(null, null);
+		break;
+	    case Gdk.Key.q:
+		OnQuit(null, null);
+		break;
+	    case Gdk.Key.o:
+		OnOpen(null, null);
+		break;
+	    case Gdk.Key.n:
+		OnNew(null, null);
+		break;
+	    case Gdk.Key.s:
+		OnSave(null, null);
+		break;
+	    case Gdk.Key.d:
+		drawModeItem.Activate();
+		break;
+	    case Gdk.Key.equal:
+		OnZoomIn(null, null);
+		break;
+	    case Gdk.Key.minus:
+		OnZoomOut(null, null);
+		break;
+	    case Gdk.Key.m:
+		OnLevelParameters(null, null);
+		break;
+	    case Gdk.Key.i:
+		OnItemParameters(null, null);
+		break;
+	    default:
+		return false;
+	    }
+	    return true;
+	}
+
 	[GLib.ConnectBefore()] internal void OnSpecialKeyPressed(object obj, KeyPressEventArgs args) {
 	    args.RetVal = true;
-	    if (PlatformDetection.IsMac && (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R)) {
-		optionKey = true;
-		return;
+	    if (PlatformDetection.IsMac) {
+		if (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R) {
+		    optionKey = true;
+		    return;
+		} else if ((args.Event.State & ModifierType.MetaMask) != 0) {
+		    if (HandleMacAccelerator(args.Event.Key)) {
+			return;
+		    }
+		}
 	    }
 
 	    switch (args.Event.Key) {
@@ -624,6 +690,25 @@ namespace Weland {
 	    }
 	}
 
+	void BuildLevelMenu() {
+	    Menu menu = new Menu();
+	    foreach (var kvp in wadfile.Directory) {
+		if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
+		    MenuItem item = new MenuItem(kvp.Value.LevelName);
+		    int levelNumber = kvp.Key;
+		    item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
+		    menu.Append(item);
+		}
+	    }
+	    if (menu.Children.Length == 0) {
+		MenuItem item = new MenuItem(Level.Name);
+		item.Sensitive = false;
+		menu.Append(item);
+	    }
+	    menu.ShowAll();
+	    levelItem.Submenu = menu;
+	}
+
 	public void SelectLevel(int n) {
 	    if (CheckSave()) {
 		Level = new Level();
@@ -648,17 +733,7 @@ namespace Weland {
 		} else {
 		    Filename = filename;
 		}
-		Menu menu = new Menu();
-		foreach (var kvp in wadfile.Directory) {
-		    if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
-			MenuItem item = new MenuItem(kvp.Value.LevelName);
-			int levelNumber = kvp.Key;
-			item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
-			menu.Append(item);
-		    }
-		}
-		menu.ShowAll();
-		levelItem.Submenu = menu;
+		BuildLevelMenu();
 		editor.Changed = false;
 		SelectLevel(0);
 	    }
@@ -690,6 +765,7 @@ namespace Weland {
 	    AdjustScrollRange();
 	    ResetViewHeight();
 	    selection.Clear();
+	    BuildLevelMenu();
 	    window1.Title = "Untitled Level";
 	    Filename = "";
 	    ChooseTool(editor.Tool);
@@ -1157,6 +1233,7 @@ namespace Weland {
 	    if (d.Run() == (int) ResponseType.Ok) {
 		editor.Changed = true;
 		window1.Title = Level.Name;
+		BuildLevelMenu();
 	    }
 	}
 

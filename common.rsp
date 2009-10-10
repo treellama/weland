@@ -11,6 +11,8 @@ Drawer.cs
 Editor.cs
 GdkDrawer.cs
 Geometry.cs
+mac/IgeMacMenu.cs
+mac/IgeMacMenuGroup.cs
 Inspector.cs
 Level.cs
 LevelParametersDialog.cs
