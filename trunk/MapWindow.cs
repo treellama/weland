@@ -208,7 +208,7 @@ namespace Weland {
 	    statusbar.Pop(id);
 
 	    if (selection.Point != -1) {
-		statusbar.Push(id, String.Format("Point Index: {0}", selection.Point));
+		statusbar.Push(id, String.Format("Point Index: {0}\tLocation: ({1:0.000}, {2:0.000})", selection.Point, World.ToDouble(Level.Endpoints[selection.Point].X), World.ToDouble(Level.Endpoints[selection.Point].Y)));
 	    } else if (selection.Line != -1) {
 		Line line = Level.Lines[selection.Line];
 		statusbar.Push(id, String.Format("Line Index: {0}\tLine Length: {1:0.000} WU", selection.Line, World.ToDouble((short) Level.Distance(Level.Endpoints[line.EndpointIndexes[0]], Level.Endpoints[line.EndpointIndexes[1]])))); 
@@ -216,7 +216,10 @@ namespace Weland {
 		Polygon polygon = Level.Polygons[selection.Polygon];
 		statusbar.Push(id, String.Format("Polygon index {0}\tFloor Height: {1:0.000}, Ceiling Height: {2:0.000}", selection.Polygon, World.ToDouble(polygon.FloorHeight), World.ToDouble(polygon.CeilingHeight)));
 	    } else if (selection.Object != -1) {
-		statusbar.Push(id, String.Format("Object index: {0}", selection.Object));
+		MapObject obj = Level.Objects[selection.Object];
+		statusbar.Push(id, String.Format("Object index: {0}\tLocation: ({1:0.000}, {2:0.000})", selection.Object, World.ToDouble(obj.X), World.ToDouble(obj.Y)));
+	    } else if (Level.TemporaryLineStartIndex != -1) {
+		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU", World.ToDouble((short) Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], Level.TemporaryLineEnd))));
 	    } else {
 		statusbar.Push(id, String.Format("Level: {0}\t{1} Polygons, {2} Lights, {3} Objects", Level.Name, Level.Polygons.Count, Level.Lights.Count, Level.Objects.Count));
 	    }
@@ -472,6 +475,10 @@ namespace Weland {
 		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), Modifiers(args.Event.State));
 		RedrawDirty();
 	    }
+
+	    if (editor.Tool == Tool.Line) {
+		UpdateStatusBar();
+	    }
 	}
 
 	Tool oldTool = Tool.Move;
@@ -495,18 +502,22 @@ namespace Weland {
 		break;
 	    case Gdk.Key.Up:
 		editor.NudgeSelected(0, (short) ((double) -1 / drawingArea.Transform.Scale));
+		UpdateStatusBar();
 		Redraw();
 		break;
 	    case Gdk.Key.Down:
 		editor.NudgeSelected(0, (short) ((double) 1 / drawingArea.Transform.Scale));
+		UpdateStatusBar();
 		Redraw();
 		break;
 	    case Gdk.Key.Left:
 		editor.NudgeSelected((short) ((double) -1 / drawingArea.Transform.Scale), 0);
+		UpdateStatusBar();
 		Redraw();
 		break;
 	    case Gdk.Key.Right:
 		editor.NudgeSelected((short) ((double) 1 / drawingArea.Transform.Scale), 0);
+		UpdateStatusBar();
 		Redraw();
 		break;
 	    default:
