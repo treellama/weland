@@ -5,9 +5,11 @@ using System.Diagnostics;
 
 namespace Weland {
     public delegate bool PolygonFilter(Polygon p);
+    public delegate bool ObjectFilter(MapObject o);
 
     public partial class Level {
 	public static PolygonFilter Filter = p => true;
+	public static ObjectFilter ObjectFilter = o => true;
 
 	public bool FilterLine(PolygonFilter f, Line line) {
 	    if (line.ClockwisePolygonOwner == -1) {
@@ -72,7 +74,7 @@ namespace Weland {
 	    int min = int.MaxValue;
 	    short closest_object = -1;
 	    for (short i = 0; i < Objects.Count; ++i) {
-		if (Filter(Polygons[Objects[i].PolygonIndex])) {
+		if (Filter(Polygons[Objects[i].PolygonIndex]) && ObjectFilter(Objects[i])) {
 		    int distance = Distance(p, new Point(Objects[i].X, Objects[i].Y));
 		    if (distance < min) {
 			closest_object = i;
