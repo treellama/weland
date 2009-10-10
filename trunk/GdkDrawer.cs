@@ -49,7 +49,7 @@ namespace Weland {
 	    window.DrawPolygon(g, true, pointArray);
 	}
 
-	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points) {
+	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points, bool dashed) {
 	    Gdk.Point[] pointArray = new Gdk.Point[points.Count];
 	    for (int i = 0; i < points.Count; ++i) {
 		pointArray[i].X = (int) points[i].X;
@@ -58,6 +58,10 @@ namespace Weland {
 
 	    Gdk.GC g = new Gdk.GC(window);
 	    g.RgbFgColor = GdkColor(fill);
+	    if (dashed) {
+		g.SetLineAttributes(1, LineStyle.OnOffDash, CapStyle.NotLast, JoinStyle.Miter);
+		g.SetDashes(0, new sbyte[] { 2 }, 1);
+	    }
 	    window.DrawPolygon(g, true, pointArray);
 	    g.RgbFgColor = GdkColor(stroke);
 	    window.DrawPolygon(g, false, pointArray);

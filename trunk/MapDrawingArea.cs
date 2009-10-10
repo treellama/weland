@@ -288,7 +288,7 @@ namespace Weland {
 	    points.Add(new Drawer.Point(X + r, Y - r));
 	    points.Add(new Drawer.Point(X + r, Y + r));
 	    points.Add(new Drawer.Point(X - r, Y + r));
-	    drawer.FillStrokePolygon(color, new Drawer.Color(0, 0, 0), points);
+	    drawer.FillStrokePolygon(color, new Drawer.Color(0, 0, 0), points, false);
 	}
 
 	void DrawGrid() {
@@ -396,17 +396,18 @@ namespace Weland {
 	    }
 	}
 	
-	void DrawTriangle(Drawer.Color c, double X, double Y, double angle, bool highlight) {
+	void DrawTriangle(Drawer.Color c, double X, double Y, double angle, bool highlight, bool invisible) {
 	    double rads = angle * Math.PI / 180;
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    points.Add(new Drawer.Point(X + 8 * Math.Cos(rads), Y + 8 * Math.Sin(rads)));
 	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads + 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads + 2 * Math.PI * 0.4)));
 	    points.Add(new Drawer.Point(X + 10 * Math.Cos(rads - 2 * Math.PI * 0.4), Y + 10 * Math.Sin(rads - 2 * Math.PI * 0.4)));
-	    
+
+	    Drawer.Color stroke = new Drawer.Color(0, 0, 0);
 	    if (highlight) {
-		drawer.FillStrokePolygon(new Drawer.Color(0, 0, 0), c, points);
+		drawer.FillStrokePolygon(stroke, c, points, invisible);
 	    } else {
-		drawer.FillStrokePolygon(c, new Drawer.Color(0, 0, 0), points);
+		drawer.FillStrokePolygon(c, stroke, points, invisible);
 	    }
 
 	}
@@ -438,7 +439,7 @@ namespace Weland {
 	void DrawObject(MapObject obj, bool highlight) {
 	    if (obj.Type == ObjectType.Player) {
 		if (ShowPlayers) {
-		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight);
+		    DrawTriangle(playerColor, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight, false);
 		}
 	    } else if (obj.Type == ObjectType.Monster) {
 		if (ShowMonsters) {
@@ -449,7 +450,7 @@ namespace Weland {
 			color = monsterColor;
 		    }
 		    
-		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight);
+		    DrawTriangle(color, Transform.ToScreenX(obj.X), Transform.ToScreenY(obj.Y), obj.Facing, highlight, obj.Invisible);
 		}
 	    } else if (obj.Type == ObjectType.Scenery) {
 		if (ShowScenery) {

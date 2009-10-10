@@ -83,13 +83,16 @@ namespace Weland {
 	    context.Restore();
 	}
 
-	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points) {
+	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points, bool dashed) {
 	    context.Save();
-
+	    
 	    OutlinePolygon(points);
 	    context.Color = new Cairo.Color(fill.R, fill.G, fill.B);
 	    context.FillPreserve();
 	    
+	    if (dashed) {
+		context.SetDash(new double[] { 2.0, 2.0 }, 0);
+	    }
 	    context.Color = new Cairo.Color(stroke.R, stroke.G, stroke.B);
 	    context.LineWidth = 1.0;
 	    context.Stroke();
