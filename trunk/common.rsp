@@ -92,5 +92,6 @@ Version.cs
 /resource:glade/mapwindow.glade
 /resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
+/resource:glade/pointparameters.glade
 /resource:glade/randomsoundparameters.glade
 

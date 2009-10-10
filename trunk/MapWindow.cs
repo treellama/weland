@@ -426,6 +426,12 @@ namespace Weland {
 		    LineParametersDialog d = new LineParametersDialog(window1, Level, Level.Lines[selection.Line]);
 		    d.Run();
 		    editor.Changed = true;
+		    Redraw();
+		} else if (selection.Point != -1) {
+		    PointParametersDialog d = new PointParametersDialog(window1, Level, selection.Point);
+		    d.Run();
+		    editor.Changed = true;
+		    Redraw();
 		}
 	    }
 
