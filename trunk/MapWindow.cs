@@ -103,6 +103,25 @@ namespace Weland {
 	    return (World.ToDouble(p.FloorHeight) >= viewFloorHeight.Value && World.ToDouble(p.FloorHeight) <= viewCeilingHeight.Value);
 	}
 
+	bool ObjectFilter(MapObject o) {
+	    switch (o.Type) {
+	    case ObjectType.Monster:
+		return drawingArea.ShowMonsters;
+	    case ObjectType.Scenery:
+		return drawingArea.ShowScenery;
+	    case ObjectType.Item:
+		return drawingArea.ShowObjects;
+	    case ObjectType.Player:
+		return drawingArea.ShowPlayers;
+	    case ObjectType.Goal:
+		return drawingArea.ShowGoals;
+	    case ObjectType.Sound:
+		return drawingArea.ShowSounds;
+	    }
+
+	    return true;
+	}
+
 	void ResetViewHeight() {
 	    viewFloorHeight.Value = -32;
 	    viewCeilingHeight.Value = 32;
@@ -163,6 +182,7 @@ namespace Weland {
 	    editor.Selection = selection;
 	    editor.Scale = drawingArea.Transform.Scale;
 	    Level.Filter = HeightFilter;
+	    Level.ObjectFilter = ObjectFilter;
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
 	    drawingArea.Filter = HeightFilter;
