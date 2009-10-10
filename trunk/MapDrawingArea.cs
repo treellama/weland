@@ -191,12 +191,21 @@ namespace Weland {
 		    }
 		}
 		
+		Line selectedLine = null;
+		if (Selection.Line != -1) {
+		    selectedLine = Level.Lines[Selection.Line];
+		}
+
 		foreach (Line line in Level.Lines) {
-		    if ((Points[line.EndpointIndexes[0]] & Points[line.EndpointIndexes[1]]) == CohenSutherland.Inside) {
+		    if ((Points[line.EndpointIndexes[0]] & Points[line.EndpointIndexes[1]]) == CohenSutherland.Inside && line != selectedLine) {
 			if (Level.FilterLine(Filter, line)) {
 			    DrawLine(line);
 			}
 		    }
+		}
+
+		if (selectedLine != null) {
+		    DrawLine(selectedLine);
 		}
 
 		for (short i = 0; i < Level.Endpoints.Count; ++i) {
