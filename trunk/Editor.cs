@@ -1134,6 +1134,8 @@ namespace Weland {
 	    foreach (Annotation a in Level.Annotations) {
 		TranslateAnnotation(a, offsetX, offsetY);
 	    }
+	    
+	    Changed = true;
 	}
     }
 }
