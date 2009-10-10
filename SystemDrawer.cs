@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 namespace Weland {
@@ -36,14 +37,18 @@ namespace Weland {
 	    }	    
 	    graphics.FillPolygon(new SolidBrush(SystemColor(c)), pointArray);
 	}
-	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points) { 
+	public override void FillStrokePolygon(Color fill, Color stroke, List<Point> points, bool dashed) { 
 	    System.Drawing.PointF[] pointArray = new System.Drawing.PointF[points.Count];
 	    for (int i = 0; i < points.Count; ++i) {
 		pointArray[i].X = (float) points[i].X;
 		pointArray[i].Y = (float) points[i].Y;
 	    }	    
 	    graphics.FillPolygon(new SolidBrush(SystemColor(fill)), pointArray);
-	    graphics.DrawPolygon(new Pen(SystemColor(stroke)), pointArray);
+	    Pen pen = new Pen(SystemColor(stroke));
+	    if (dashed) {
+		pen.DashPattern = new float[] { 2, 2 };
+	    }
+	    graphics.DrawPolygon(pen, pointArray);
 	}
 
 	public override void DrawGridIntersect(Color c, Point p) { 
