@@ -89,6 +89,7 @@ Version.cs
 /resource:images/uplink-chip.png
 /resource:images/zoom.png
 /resource:glade/ambientsoundparameters.glade
+/resource:glade/goto.glade
 /resource:glade/levelparameters.glade
 /resource:glade/lightparameters.glade
 /resource:glade/lineparameters.glade

@@ -4,11 +4,11 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="delete_event" handler="OnDelete"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
-    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="delete_event" handler="OnDelete"/>
     <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -311,6 +311,20 @@
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="OnZoomOut"/>
                         <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem1">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Goto…</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnGoto"/>
+                        <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
