@@ -4,12 +4,12 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
+    <signal name="delete_event" handler="OnDelete"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
-    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
-    <signal name="delete_event" handler="OnDelete"/>
+    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -746,6 +746,20 @@
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Place Map Objects (O)</property>
                     <property name="label" translatable="yes">Map Objects</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="annotationButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Place Map Annotations (T)</property>
+                    <property name="label" translatable="yes">Annotations</property>
                     <property name="use_underline">True</property>
                     <property name="group">selectButton</property>
                     <signal name="toggled" handler="OnChooseTool"/>

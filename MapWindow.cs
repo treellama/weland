@@ -55,6 +55,7 @@ namespace Weland {
 	[Widget] RadioToolButton lineButton;
 	[Widget] RadioToolButton fillButton;
 	[Widget] RadioToolButton objectButton;
+	[Widget] RadioToolButton annotationButton;
 	[Widget] RadioToolButton floorHeightButton;
 	[Widget] RadioToolButton ceilingHeightButton;
 	[Widget] RadioToolButton polygonTypeButton;
@@ -164,6 +165,7 @@ namespace Weland {
 	    SetIconResource(lineButton, "line.png");
 	    SetIconResource(fillButton, "fill.png");
 	    SetIconResource(objectButton, "object.png");
+	    SetIconResource(annotationButton, "annotation.png");
 	    SetIconResource(floorHeightButton, "floor-height.png");
 	    SetIconResource(ceilingHeightButton, "ceiling-height.png");
 	    SetIconResource(polygonTypeButton, "polygon-type.png");
@@ -240,6 +242,9 @@ namespace Weland {
 	    } else if (selection.Object != -1) {
 		MapObject obj = Level.Objects[selection.Object];
 		statusbar.Push(id, String.Format("Object index: {0}\tLocation: ({1:0.000}, {2:0.000})", selection.Object, World.ToDouble(obj.X), World.ToDouble(obj.Y)));
+	    } else if (selection.Annotation != -1) {
+		Annotation note = Level.Annotations[selection.Annotation];
+		statusbar.Push(id, String.Format("Annotation index: {0}\tPolygon: {1}\tLocation: ({2:0.000}, {3:0.000})", selection.Annotation, note.PolygonIndex, World.ToDouble(note.X), World.ToDouble(note.Y)));
 	    } else if (Level.TemporaryLineStartIndex != -1) {
 		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU", World.ToDouble((short) Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], Level.TemporaryLineEnd))));
 	    } else {
@@ -322,12 +327,16 @@ namespace Weland {
 	void RedrawDirty() {
 	    const int dirtySlop = 12;
 	    if (editor.Dirty) {
-		int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - dirtySlop;
-		int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - dirtySlop;
-		int X2 = (int) drawingArea.Transform.ToScreenX(editor.RedrawRight) + dirtySlop;
-		int Y2 = (int) drawingArea.Transform.ToScreenY(editor.RedrawBottom) + dirtySlop;
-		drawingArea.QueueDrawArea(X1, Y1, X2 -X1, Y2 - Y1);
-		editor.ClearDirty();
+		if (editor.RedrawAll) {
+		    Redraw();
+		} else {
+		    int X1 = (int) drawingArea.Transform.ToScreenX(editor.RedrawLeft) - dirtySlop;
+		    int Y1 = (int) drawingArea.Transform.ToScreenY(editor.RedrawTop) - dirtySlop;
+		    int X2 = (int) drawingArea.Transform.ToScreenX(editor.RedrawRight) + dirtySlop;
+		    int Y2 = (int) drawingArea.Transform.ToScreenY(editor.RedrawBottom) + dirtySlop;
+		    drawingArea.QueueDrawArea(X1, Y1, X2 -X1, Y2 - Y1);
+		    editor.ClearDirty();
+		}
 	    }
 	}
 	
@@ -420,6 +429,18 @@ namespace Weland {
 	    short Y = drawingArea.Transform.ToMapY(drawingArea.Allocation.Height/ 2);
 	    ZoomOut(X, Y);
 	}
+
+	void EditAnnotation() {
+	    Annotation annotation = Level.Annotations[selection.Annotation];
+	    EntryDialog d = new EntryDialog("Annotation Text", window1);
+	    d.Text = annotation.Text;
+	    if (d.Run() == (int) ResponseType.Ok) {
+		annotation.Text = d.Text;
+		editor.Changed = true;
+		Redraw();
+	    }
+	    d.Destroy();	    
+	}
 	
 	internal void OnButtonPressed(object obj, ButtonPressEventArgs args) {
 	    EventButton ev = args.Event;
@@ -457,6 +478,8 @@ namespace Weland {
 		    d.Run();
 		    editor.Changed = true;
 		    Redraw();
+		} else if (selection.Annotation != -1) {
+		    EditAnnotation();
 		}
 	    }
 
@@ -480,6 +503,8 @@ namespace Weland {
 			crb.Active = true;
 		    }
 		}
+	    } else if (editor.Tool == Tool.Annotation && editor.EditAnnotation) {
+		EditAnnotation();
 	    }
 
 	    UpdateInspector();
@@ -622,6 +647,9 @@ namespace Weland {
 	    case Gdk.Key.d:
 	    case Gdk.Key.D:
 		moveButton.Active = true;
+		break;
+	    case Gdk.Key.t:
+		annotationButton.Active = true;
 		break;
 	    case Gdk.Key.Key_5:
 		twoWUButton.Active = true;
@@ -842,6 +870,8 @@ namespace Weland {
 		ChooseTool(Tool.Fill);
 	    } else if (button == objectButton) {
 		ChooseTool(Tool.Object);
+	    } else if (button == annotationButton) {
+		ChooseTool(Tool.Annotation);
 	    } else if (button == floorHeightButton) {
 		ChooseTool(Tool.FloorHeight);
 	    } else if (button == ceilingHeightButton) {
@@ -1032,7 +1062,7 @@ namespace Weland {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Target);
 	    } else if (tool == Tool.Move) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
-	    } else if (tool == Tool.Line || tool == Tool.Object) {
+	    } else if (tool == Tool.Line || tool == Tool.Object || tool == Tool.Annotation) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
 	    } else if (tool == Tool.Fill) {
 		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Spraycan);

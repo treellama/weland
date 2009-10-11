@@ -57,6 +57,20 @@ namespace Weland {
 	    return p0.Y * p1.X - p0.X * p1.Y;
 	}
 
+	public short GetClosestAnnotation(Point p) {
+	    int min = int.MaxValue;
+	    short closest_annotation = -1;
+	    for (short i = 0; i < Annotations.Count; ++i) {
+		Annotation a = Annotations[i];
+		int distance = Distance(p, new Point(a.X, a.Y));
+		if (distance < min) {
+		    closest_annotation = i;
+		    min = distance;
+		}
+	    }
+	    return closest_annotation;
+	}
+
 	public short GetClosestPoint(Point p) {
 	    int min = int.MaxValue;
 	    short closest_point = -1;

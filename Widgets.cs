@@ -118,6 +118,38 @@ namespace Weland {
 	}
     }
 
+    public class EntryDialog : Dialog { 
+	Entry entry = new Entry();
+
+	public EntryDialog(string title, Gtk.Window w) : base(title, w, DialogFlags.Modal | DialogFlags.DestroyWithParent) {
+	    Resizable = false;
+	    entry.Visible = true;
+	    entry.Activated += OnEntryActivated;
+	    VBox.Add(entry);
+	    
+	    AddActionWidget(new Button(Stock.Cancel), ResponseType.Cancel);
+	    
+	    Button ok = new Button(Stock.Ok);
+	    ok.CanDefault = true;
+	    AddActionWidget(ok, ResponseType.Ok);
+	    ok.GrabDefault();
+
+	    ShowAll();
+	}
+
+	public string Text {
+	    get { return entry.Text; }
+	    set { 
+		entry.Text = value;
+		entry.SelectRegion(0, -1);
+	    }
+	}
+
+	void OnEntryActivated(object obj, EventArgs args) {
+	    Respond(ResponseType.Ok);
+	}
+    }
+
     public class DoubleDialog : Dialog {
 	Entry entry = new Entry();
 	
