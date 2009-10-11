@@ -74,4 +74,30 @@ namespace Weland {
 	[Widget] Entry pointX;
 	[Widget] Entry pointY;
     }
+
+    public class GotoDialog {
+	public GotoDialog(Window parent) {
+	    Glade.XML gxml = new Glade.XML(null, "goto.glade", "dialog1", null);
+	    gxml.Autoconnect(this);
+	    dialog1.TransientFor = parent;
+	}
+
+	public int Run() {
+	    Type.Active = 2;
+	    dialog1.Focus = Number;
+	    return dialog1.Run();
+	}
+
+	public void Destroy() {
+	    dialog1.Destroy();
+	}
+
+	protected void OnEntryActivated(object obj, EventArgs args) {
+	    dialog1.Respond(ResponseType.Ok);
+	}
+
+	[Widget] Dialog dialog1;
+	[Widget] public ComboBox Type;
+	[Widget] public Entry Number;
+    }
 }

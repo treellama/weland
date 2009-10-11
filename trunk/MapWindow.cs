@@ -558,6 +558,9 @@ namespace Weland {
 	    case Gdk.Key.minus:
 		OnZoomOut(null, null);
 		break;
+	    case Gdk.Key.g:
+		OnGoto(null, null);
+		break;
 	    case Gdk.Key.m:
 		OnLevelParameters(null, null);
 		break;
@@ -1450,6 +1453,50 @@ namespace Weland {
 	protected void OnRecenterLevel(object o, EventArgs e) {
 	    editor.Recenter();
 	    Redraw();
+	}
+
+	protected void OnGoto(object o, EventArgs e) {
+	    GotoDialog dialog = new GotoDialog(window1);
+	    if (dialog.Run() == (int) ResponseType.Ok) {
+		short index = 0;
+		if (short.TryParse(dialog.Number.Text, out index)) {
+		    if (dialog.Type.Active == 0) {
+			if (index >= 0 && index < Level.Endpoints.Count) {
+			    selection.Clear();
+			    selectButton.Active = true;
+			    selection.Point = index;
+			    Point p = Level.Endpoints[selection.Point];
+			    Center(p.X, p.Y);
+			    UpdateStatusBar();
+			    Redraw();
+			}
+		    } else if (dialog.Type.Active == 1) {
+			if (index >= 0 && index < Level.Lines.Count) {
+			    selection.Clear();
+			    selectButton.Active = true;
+			    selection.Line = index;
+			    Line line = Level.Lines[selection.Line];
+			    Point p1 = Level.Endpoints[line.EndpointIndexes[0]];
+			    Point p2 = Level.Endpoints[line.EndpointIndexes[1]];
+			    Center((short) ((p1.X + p2.X) / 2), (short) ((p1.Y + p2.Y) / 2));
+			    UpdateStatusBar();
+			    Redraw();
+			}
+		    } else if (dialog.Type.Active == 2) {
+			if (index >= 0 && index < Level.Polygons.Count) {
+			    selection.Clear();
+			    selectButton.Active = true;
+			    selection.Polygon = index;
+			    Polygon polygon = Level.Polygons[index];
+			    Point center = Level.PolygonCenter(polygon);
+			    Center(center.X, center.Y);
+			    UpdateStatusBar();
+			    Redraw();
+			}
+		    }
+		}
+	    }
+	    dialog.Destroy();
 	}
     }
 }
