@@ -9,6 +9,7 @@ namespace Weland {
 	Line,
 	Fill,
 	Object,
+	Annotation,
 	FloorHeight,
 	CeilingHeight,
 	PolygonType,
@@ -39,12 +40,14 @@ namespace Weland {
 	public short Object = -1;
 	public short Line = -1;
 	public short Polygon = -1;
+	public short Annotation = -1;
 
 	public void Clear() {
 	    Point = -1;
 	    Object = -1;
 	    Line = -1;
 	    Polygon = -1;
+	    Annotation = -1;
 	}
 
 	public void CopyFrom(Selection other) {
@@ -52,11 +55,13 @@ namespace Weland {
 	    Object = other.Object;
 	    Line = other.Line;
 	    Polygon = other.Polygon;
+	    Annotation = other.Annotation;
 	}
     }
 
     public class Editor {
 	public bool Dirty = false;
+	public bool RedrawAll = false;
 	public short RedrawTop, RedrawBottom, RedrawLeft, RedrawRight;
 
 	public bool Changed = false;
@@ -87,7 +92,11 @@ namespace Weland {
 		    short selected_object = Selection.Object;
 		    Selection.Clear();
 		    Selection.Object = selected_object;
-		} else if (value != Tool.Select && value != Tool.Move && value != Tool.Object) {
+		} else if (value == Tool.Annotation) {
+		    short selected_annotation = Selection.Annotation;
+		    Selection.Clear();
+		    Selection.Annotation = selected_annotation;
+		} else if (value != Tool.Select && value != Tool.Move) {
 		    Selection.Clear();
 		}
 	    }
@@ -119,6 +128,15 @@ namespace Weland {
 		return (short) (Math.Round((double) value / Grid.Resolution) * Grid.Resolution);
 	    } else {
 		return value;
+	    }
+	}
+
+	short ClosestAnnotation(Point p) {
+	    short index = Level.GetClosestAnnotation(p);
+	    if (index != -1 && Level.Distance(p, new Point(Level.Annotations[index].X, Level.Annotations[index].Y)) < DefaultSnap()) {
+		return index;
+	    } else {
+		return -1;
 	    }
 	}
 
@@ -314,18 +332,49 @@ namespace Weland {
 		    Selection.Object = index;
 		    lastObject = Level.Objects[index];
 		} else {
-		    index = ClosestLine(p);
+		    index = ClosestAnnotation(p);
 		    if (index != -1) {
-			Selection.Line = index;
+			Selection.Annotation = index;
 		    } else {
-			index = Level.GetEnclosingPolygon(p);
+			index = ClosestLine(p);
 			if (index != -1) {
-			    Selection.Polygon = index;
+			    Selection.Line = index;
+			} else {
+			    index = Level.GetEnclosingPolygon(p);
+			    if (index != -1) {
+				Selection.Polygon = index;
+			    }
 			}
 		    }
 		} 
 	    }
 	    undoSet = false;
+	}
+
+	public bool EditAnnotation = false; // HACK
+
+	void PlaceAnnotation(short X, short Y) {
+	    Point p = new Point(X, Y);
+	    short index = ClosestAnnotation(p);
+	    if (index != -1) {
+		Selection.Clear();
+		Selection.Annotation = index;
+		EditAnnotation = false;
+	    } else {
+		short polygon_index = Level.GetEnclosingPolygon(p);
+		if (polygon_index != -1) {
+		    SetUndo();
+		    Annotation note = new Annotation();
+		    note.X = p.X;
+		    note.Y = p.Y;
+		    note.PolygonIndex = polygon_index;
+		    note.Text = "Unknown";
+		    Level.Annotations.Add(note);
+		    Selection.Annotation = (short) (Level.Annotations.Count - 1);
+		    Changed = true;
+		    EditAnnotation = true;
+		}
+	    }
 	}
 
 	void PlaceObject(short X, short Y) {
@@ -460,7 +509,10 @@ namespace Weland {
 		    if (annotation.PolygonIndex == Selection.Polygon) {
 			TranslateAnnotation(annotation, X, Y);
 		    }
-		}		
+		}
+	    } else if (Selection.Annotation != -1) {
+		Annotation note = Level.Annotations[Selection.Annotation];
+		TranslateAnnotation(note, X, Y);
 	    } else {
 		changed = false;
 	    }
@@ -542,6 +594,22 @@ namespace Weland {
 			TranslateAnnotation(annotation, X - lastX, Y - lastY);
 		    }
 		}
+	    } else if (Selection.Annotation != -1) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+
+		Annotation annotation = Level.Annotations[Selection.Annotation];
+		Point p = new Point((short) (X), (short) (Y));
+		short polygon_index = Level.GetEnclosingPolygon(p);
+		if (polygon_index != -1) {
+		    annotation.X = p.X;
+		    annotation.Y = p.Y;
+		    annotation.PolygonIndex = polygon_index;
+		}
+		RedrawAll = true;
+		Dirty = true;
 	    } else {
 		changed = false;
 	    }
@@ -770,6 +838,8 @@ namespace Weland {
 		Select(X, Y);
 	    } else if (Tool == Tool.Object) {
 		PlaceObject(X, Y);
+	    } else if (Tool == Tool.Annotation) {
+		PlaceAnnotation(X, Y);
 	    } else if (Tool == Tool.FloorHeight) {
 		if (Alt(mods) || RightClick(mods)) {
 		    GetFloorHeight(X, Y);
@@ -975,6 +1045,10 @@ namespace Weland {
 		SetUndo();
 		Level.DeletePolygon(Selection.Polygon);
 		Selection.Polygon = -1;
+	    } else if (Selection.Annotation != -1) {
+		SetUndo();
+		Level.Annotations.RemoveAt(Selection.Annotation);
+		Selection.Annotation = -1;
 	    }
 	}
 
@@ -1019,6 +1093,7 @@ namespace Weland {
 	}
 
 	public void ClearDirty() {
+	    RedrawAll = false;
 	    Dirty = false;
 	}
 

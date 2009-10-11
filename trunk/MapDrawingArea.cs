@@ -102,6 +102,7 @@ namespace Weland {
 
 	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
 	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
+	Drawer.Color annotationColor = new Drawer.Color(0, 0, 1);
 	Drawer.Color impassableLineColor = new Drawer.Color(0.2, 0.98, 0.48);
 	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
 	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
@@ -214,10 +215,14 @@ namespace Weland {
 		    }
 		}
 		
+		Annotation selectedAnnotation = null;
+		if (Selection.Annotation != -1) {
+		    selectedAnnotation = Level.Annotations[Selection.Annotation];
+		}
 		if (Mode == DrawMode.Draw) {
 		    foreach (Annotation note in Level.Annotations) {
 			if (Filter(Level.Polygons[note.PolygonIndex])) {
-			    DrawAnnotation(note);
+			    DrawAnnotation(note, note == selectedAnnotation);
 			}
 		    }
 
@@ -475,7 +480,7 @@ namespace Weland {
 	    }
 	}
 
-	void DrawAnnotation(Annotation note) {
+	void DrawAnnotation(Annotation note, bool selected) {
 	    int X = (int) Transform.ToScreenX(note.X);
 	    int Y = (int) Transform.ToScreenY(note.Y);
 	    Layout layout = new Pango.Layout(this.PangoContext);
@@ -483,6 +488,11 @@ namespace Weland {
 	    int width, height;
 	    layout.GetPixelSize(out width, out height);
 	    this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), X, Y - height, layout);
+	    if (selected) {
+		DrawFatPoint(selectedLineColor, new Point(note.X, note.Y));
+	    } else {
+		DrawFatPoint(annotationColor, new Point(note.X, note.Y));
+	    }
 	}
     }
 }

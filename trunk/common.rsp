@@ -44,6 +44,7 @@ Version.cs
 /resource:images/1x.png
 /resource:images/2x.png
 /resource:images/3x.png
+/resource:images/annotation.png
 /resource:images/ambient-sound.png
 /resource:images/alien-gun.png
 /resource:images/ar-ammo.png
