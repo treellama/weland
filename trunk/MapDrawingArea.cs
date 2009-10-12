@@ -94,8 +94,9 @@ namespace Weland {
 	    itemImages[ItemType.TripleEnergyPowerup] = new Gdk.Pixbuf(null, "3x.png");
 	    itemImages[ItemType.Shotgun] = new Gdk.Pixbuf(null, "shotgun.png");
 	    itemImages[ItemType.ShotgunMagazine] = new Gdk.Pixbuf(null, "shotgun-ammo.png");
-	    itemImages[ItemType.SphtDoorKey] = new Gdk.Pixbuf(null, "uplink-chip.png");
-	    itemImages[ItemType.RedBall] = new Gdk.Pixbuf(null, "skull.png");
+	    itemImages[ItemType.UplinkChip] = new Gdk.Pixbuf(null, "uplink-chip.png");
+	    itemImages[ItemType.SphtDoorKey] = new Gdk.Pixbuf(null, "keycard.png");
+	    Itemimages[ItemType.RedBall] = new Gdk.Pixbuf(null, "skull.png");
 	    itemImages[ItemType.Smg] = new Gdk.Pixbuf(null, "smg.png");
 	    itemImages[ItemType.SmgAmmo] = new Gdk.Pixbuf(null, "smg-ammo.png");
 	}
