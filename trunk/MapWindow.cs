@@ -246,7 +246,16 @@ namespace Weland {
 		Annotation note = Level.Annotations[selection.Annotation];
 		statusbar.Push(id, String.Format("Annotation index: {0}\tPolygon: {1}\tLocation: ({2:0.000}, {3:0.000})", selection.Annotation, note.PolygonIndex, World.ToDouble(note.X), World.ToDouble(note.Y)));
 	    } else if (Level.TemporaryLineStartIndex != -1) {
-		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU", World.ToDouble((short) Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], Level.TemporaryLineEnd))));
+		Point p0 = Level.Endpoints[Level.TemporaryLineStartIndex];
+		Point p1 = Level.TemporaryLineEnd;
+		int X = p1.X - p0.X;
+		int Y = p1.Y - p0.Y;
+		double r = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+		double theta = Math.Atan2(-Y, X);
+		if (theta < 0) { 
+		    theta += 2 * Math.PI;
+		}
+		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU\tAngle: {1:0.0}°", World.ToDouble((short) Math.Round(r)), theta * 180 / Math.PI));
 	    } else {
 		statusbar.Push(id, String.Format("Level: {0}\t{1} Polygons, {2} Lights, {3} Objects", Level.Name, Level.Polygons.Count, Level.Lights.Count, Level.Objects.Count));
 	    }
