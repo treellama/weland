@@ -619,13 +619,21 @@ namespace Weland {
 		}
 		break;
 	    case Gdk.Key.Up:
-		editor.NudgeSelected(0, (short) ((double) -1 / drawingArea.Transform.Scale));
-		UpdateStatusBar();
+		if (palette.Visible) {
+		    PalettePrev();
+		} else {
+		    editor.NudgeSelected(0, (short) ((double) -1 / drawingArea.Transform.Scale));
+		    UpdateStatusBar();
+		}
 		Redraw();
 		break;
 	    case Gdk.Key.Down:
-		editor.NudgeSelected(0, (short) ((double) 1 / drawingArea.Transform.Scale));
-		UpdateStatusBar();
+		if (palette.Visible) {
+		    PaletteNext();
+		} else {
+		    editor.NudgeSelected(0, (short) ((double) 1 / drawingArea.Transform.Scale));
+		    UpdateStatusBar();
+		}
 		Redraw();
 		break;
 	    case Gdk.Key.Left:
@@ -1328,6 +1336,23 @@ namespace Weland {
 	    Level.NukeObjects();
 	    editor.Changed = true;
 	    Redraw();
+	}
+
+	void PaletteNext() {
+	    for (int i = 0; i < paletteButtonbox.Children.Length - 1; ++i) {
+		if (((ColorRadioButton) paletteButtonbox.Children[i]).Active) {
+		    ((ColorRadioButton) paletteButtonbox.Children[i + 1]).Active = true;
+		    return;
+		}
+	    }
+	}
+
+	void PalettePrev() {
+	    for (int i = 1; i < paletteButtonbox.Children.Length; ++i) {
+		if (((ColorRadioButton) paletteButtonbox.Children[i]).Active) {
+		    ((ColorRadioButton) paletteButtonbox.Children[i - 1]).Active = true;
+		}
+	    }
 	}
 
 	protected void OnPaletteAdd(object o, EventArgs e) {
