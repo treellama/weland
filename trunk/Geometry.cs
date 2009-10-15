@@ -31,11 +31,29 @@ namespace Weland {
 	    return (int) Math.Round(Math.Sqrt(Math.Pow(p0.X - p1.X, 2) + Math.Pow(p0.Y - p1.Y, 2)));
 	}
 
+	double U(Point p, Line line) {
+	    Point e0 = Endpoints[line.EndpointIndexes[0]];
+	    Point e1 = Endpoints[line.EndpointIndexes[1]];
+	    
+	    return  (((p.X - e0.X) * (e1.X - e0.X)) + ((p.Y - e0.Y) * (e1.Y - e0.Y))) / (Math.Pow(e1.X - e0.X, 2) + Math.Pow(e1.Y - e0.Y, 2));
+	}
+
+	public Point ClosestPointOnLine(Point p, Line line) {
+	    Point e0 = Endpoints[line.EndpointIndexes[0]];
+	    Point e1 = Endpoints[line.EndpointIndexes[1]];
+
+	    double u = U(p, line);
+	    Point point;
+	    point.X = (short) Math.Round(e0.X + u * (e1.X - e0.X));
+	    point.Y = (short) Math.Round(e0.Y + u * (e1.Y - e0.Y));
+	    return point;
+	}
+
 	public int Distance(Point p, Line line) {
 	    Point e0 = Endpoints[line.EndpointIndexes[0]];
 	    Point e1 = Endpoints[line.EndpointIndexes[1]];
 
-	    double u = (((p.X - e0.X) * (e1.X - e0.X)) + ((p.Y - e0.Y) * (e1.Y - e0.Y))) / (Math.Pow(e1.X - e0.X, 2) + Math.Pow(e1.Y - e0.Y, 2));
+	    double u = U(p, line);
 
 	    if (u > 1.0) {
 		return Distance(p, e1);
