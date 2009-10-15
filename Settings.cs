@@ -27,6 +27,14 @@ namespace Weland {
 	    PutSetting(xPath, Convert.ToString(value)); 
 	}
 
+	public bool GetSetting(string xPath, bool defaultValue) {
+	    return Convert.ToBoolean(GetSetting(xPath, Convert.ToString(defaultValue)));
+	}
+
+	public void PutSetting(string xPath, bool value) {
+	    PutSetting(xPath, Convert.ToString(value));
+	}
+
 	public string GetSetting(string xPath,  string defaultValue) { 
 	    XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath );
 	    if (xmlNode != null) {

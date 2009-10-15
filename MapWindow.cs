@@ -213,6 +213,21 @@ namespace Weland {
 
 	    SetupInspector();
 
+	    showGridButton.Active = Weland.Settings.GetSetting("Grid/Visible", true);
+	    snapToGridButton.Active = Weland.Settings.GetSetting("Grid/Constrain", true);
+	    grid.Resolution = (short) Weland.Settings.GetSetting("Grid/Resolution", World.One);
+	    if (grid.Resolution == World.One * 2) {
+		twoWUButton.Active = true;
+	    } else if (grid.Resolution == World.One) {
+		oneWUButton.Active = true;
+	    } else if (grid.Resolution == World.One / 2) {
+		halfWUButton.Active = true;
+	    } else if (grid.Resolution == World.One / 4) {
+		quarterWUButton.Active = true;
+	    } else if (grid.Resolution == World.One / 8) {
+		eighthWUButton.Active = true;
+	    }
+
 	    window1.AllowShrink = true;
 	    int width = Weland.Settings.GetSetting("MapWindow/Width", 800);
 	    int height = Weland.Settings.GetSetting("MapWindow/Height", 600);
@@ -1243,6 +1258,7 @@ namespace Weland {
 	    } else if (button == eighthWUButton) {
 		grid.Resolution = World.One / 8;
 	    }
+	    Weland.Settings.PutSetting("Grid/Resolution", grid.Resolution);
 	    Redraw();
 	}
 
@@ -1250,6 +1266,7 @@ namespace Weland {
 	    ToggleToolButton button = (ToggleToolButton) o;
 	    if (button == showGridButton) {
 		grid.Visible = button.Active;
+		Weland.Settings.PutSetting("Grid/Visible", button.Active);
 	    } else if (button == showMonstersButton) {
 		drawingArea.ShowMonsters = button.Active;
 	    } else if (button == showObjectsButton) {
@@ -1268,6 +1285,7 @@ namespace Weland {
 
 	internal void OnToggleSnapToGrid(object o, EventArgs e) {
 	    grid.Snap = ((ToggleToolButton) o).Active;
+	    Weland.Settings.PutSetting("Grid/Constrain", grid.Snap);
 	}
 
 	protected void OnLevelParameters(object o, EventArgs e) {
