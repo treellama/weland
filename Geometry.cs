@@ -804,17 +804,20 @@ namespace Weland {
 			side.Primary.Texture.Collection = collection;
 			side.Primary.Texture.Bitmap = wall;
 			side.PrimaryTransferMode = 0;
+			side.PrimaryLightsourceIndex = 0;
 		    }
 		} else {
 		    side.Primary.Texture.Collection = collection;
 		    side.Primary.Texture.Bitmap = wall;
 		    side.PrimaryTransferMode = 0;
+		    side.PrimaryLightsourceIndex = 0;
 		}
 	    }
 	    if (side.Type == SideType.Split && side.Secondary.Texture.IsEmpty()) {
 		side.Secondary.Texture.Collection = collection;
 		side.Secondary.Texture.Bitmap = wall;
 		side.SecondaryTransferMode = 0;
+		side.SecondaryLightsourceIndex = 0;
 	    }
 
 	}
