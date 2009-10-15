@@ -204,7 +204,8 @@ namespace Weland {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
 		    //split
-		    Level.TemporaryLineStartIndex = Level.SplitLine(index, p.X, p.Y);
+		    Point onLine = Level.ClosestPointOnLine(p, Level.Lines[index]);
+		    Level.TemporaryLineStartIndex = Level.SplitLine(index, onLine.X, onLine.Y);
 		    Level.TemporaryLineEnd = p;
 		} else {
 		    Level.TemporaryLineStartIndex = Level.NewPoint(p.X, p.Y);
@@ -288,7 +289,8 @@ namespace Weland {
 	    } else {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
-		    Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, p.X, p.Y));
+		    Point onLine = Level.ClosestPointOnLine(p, Level.Lines[index]);
+		    Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, onLine.X, onLine.Y));
 		} else {
 		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(p.X, p.Y));
 		}
