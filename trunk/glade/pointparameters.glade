@@ -50,7 +50,7 @@
               <widget class="GtkEntry" id="pointX">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="max_length">5</property>
+                <property name="max_length">6</property>
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="width_chars">5</property>
               </widget>
@@ -64,7 +64,7 @@
               <widget class="GtkEntry" id="pointY">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="max_length">5</property>
+                <property name="max_length">6</property>
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="width_chars">5</property>
               </widget>
