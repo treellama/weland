@@ -4,12 +4,12 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="delete_event" handler="OnDelete"/>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -321,10 +321,18 @@
                     <child>
                       <widget class="GtkMenuItem" id="menuitem1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Goto…</property>
+                        <property name="label" translatable="yes">Goto&#x2026;</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="OnGoto"/>
                         <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem19">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Find Zero Length Lines</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnFindZeroLengthLines"/>
                       </widget>
                     </child>
                     <child>

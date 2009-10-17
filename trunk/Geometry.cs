@@ -999,5 +999,17 @@ namespace Weland {
 		return HighestAdjacentFloor(polygon);
 	    }
 	}
+
+	public short FindZeroLengthLine() {
+	    for (int i = 0; i < Lines.Count; ++i) {
+		Line line = Lines[i];
+		Point p0 = Endpoints[line.EndpointIndexes[0]];
+		Point p1 = Endpoints[line.EndpointIndexes[1]];
+		if (Distance(p0, p1) == 0) {
+		    return (short) i;
+		}
+	    }
+	    return -1;
+	}
     }
 }
