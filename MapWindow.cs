@@ -1550,5 +1550,25 @@ namespace Weland {
 	    }
 	    dialog.Destroy();
 	}
+
+	protected void OnFindZeroLengthLines(object o, EventArgs e) {
+	    short i = Level.FindZeroLengthLine();
+	    if (i == -1) {
+		MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, "No zero length lines found.");
+		d.Run();
+		d.Destroy();
+	    } else {
+		MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Ok, String.Format("Line {0} has zero length.", i));
+		d.Run();
+		d.Destroy();
+		selection.Clear();
+		selectButton.Active = true;
+		selection.Line = i;
+		Point p = Level.Endpoints[Level.Lines[i].EndpointIndexes[0]];
+		Center(p.X, p.Y);
+		UpdateStatusBar();
+		Redraw();
+	    }
+	}
     }
 }
