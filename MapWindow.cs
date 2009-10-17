@@ -4,6 +4,7 @@ using Glade;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Weland {
     // resizable, scrollable map view
@@ -1509,7 +1510,7 @@ namespace Weland {
 					    "with thanks to Eric Peterson for Smithy" };
 	    dialog.License = "Weland is available under the GNU General Public License, Version 2. See the file COPYING for details";
 	    dialog.Website = "http://sourceforge.net/projects/weland";
-	    dialog.Version = Version.String;
+	    dialog.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 	    dialog.Run();
 	    dialog.Destroy();
 	}

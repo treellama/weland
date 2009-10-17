@@ -4,6 +4,7 @@
 /pkg:glade-sharp-2.0
 
 Annotation.cs
+Assembly.cs
 BinaryReaderBE.cs
 BinaryWriterBE.cs
 CrcStream.cs
@@ -39,7 +40,6 @@ SoundParametersDialogs.cs
 Wadfile.cs
 Weland.cs
 Widgets.cs
-Version.cs
 
 /resource:images/1x.png
 /resource:images/2x.png
