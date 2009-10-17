@@ -777,6 +777,7 @@ namespace Weland {
 		Level = new Level();
 		Level.Load(wadfile.Directory[n]);
 		selection.Clear();
+		editor.ClearUndo();
 		Center(0, 0);
 		AdjustScrollRange();
 		ResetViewHeight();
@@ -812,6 +813,15 @@ namespace Weland {
 		FileChooserDialog d = new FileChooserDialog("Choose the file to open", window1, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
 		d.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 		d.SetCurrentFolder(Weland.Settings.GetSetting("LastOpen/Folder", d.CurrentFolder));
+		FileFilter filter = new FileFilter();
+		filter.Name = "Marathon and Aleph One Maps";
+		filter.AddPattern("*.sceA");
+		filter.AddPattern("*.sce2");
+		d.AddFilter(filter);
+		filter = new FileFilter();
+		filter.Name = "All Files";
+		filter.AddPattern("*.*");
+		d.AddFilter(filter);
 		if (d.Run() == (int) ResponseType.Accept) {
 		    Weland.Settings.PutSetting("LastOpen/Folder", Path.GetDirectoryName(d.Filename));
 		    OpenFile(d.Filename);
@@ -828,6 +838,7 @@ namespace Weland {
 	    AdjustScrollRange();
 	    ResetViewHeight();
 	    selection.Clear();
+	    editor.ClearUndo();
 	    BuildLevelMenu();
 	    window1.Title = "Untitled Level";
 	    Filename = "";
