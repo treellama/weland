@@ -245,6 +245,7 @@ namespace Weland {
 
 	public int Run() {
 	    string[] names = {
+		"Marine",
 		"Tick Energy",
 		"Tick Oxygen",
 		"Tick Kamakazi",
