@@ -460,6 +460,7 @@ namespace Weland {
 		polygon.FloorLight = adjacent.FloorLight;
 		polygon.CeilingLight = adjacent.CeilingLight;
 	    }
+	    UpdatePolygonConcavity(polygon);
 	    return true;
 	}
     
