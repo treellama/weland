@@ -52,9 +52,29 @@ namespace Weland {
 	public Point TemporaryLineEnd;
 
 	List<uint> ChunkFilter = new List<uint> {
-	    Wadfile.Chunk("iidx"),
+	    // saved game / optimized map tags
 	    Endpoint.Tag,
-	    Platform.DynamicTag
+	    Wadfile.Chunk("plyr"),
+	    Wadfile.Chunk("dwol"),
+	    Wadfile.Chunk("mobj"),
+	    Wadfile.Chunk("door"),
+	    Wadfile.Chunk("iidx"),
+	    Wadfile.Chunk("alin"),
+	    Wadfile.Chunk("apol"),
+	    Wadfile.Chunk("mOns"),
+	    Wadfile.Chunk("fx  "),
+	    Wadfile.Chunk("bang"),
+	    Platform.DynamicTag,
+	    Wadfile.Chunk("weap"),
+	    Wadfile.Chunk("cint"),
+	    Wadfile.Chunk("slua"),
+
+	    // embedded physics
+	    Wadfile.Chunk("MNpx"),
+	    Wadfile.Chunk("FXpx"),
+	    Wadfile.Chunk("PRpx"),
+	    Wadfile.Chunk("RXpx"),
+	    Wadfile.Chunk("WPpx"),
 	};
 
 	void LoadChunk(ISerializableBE chunk, byte[] data) {
