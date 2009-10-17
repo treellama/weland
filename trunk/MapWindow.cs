@@ -861,8 +861,9 @@ namespace Weland {
 		message = "Save level as";
 	    }
 	    FileChooserDialog d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
-	    d.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", d.CurrentFolder));
+	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
+	    d.CurrentName = Level.Name + ".sceA";
+	    d.DoOverwriteConfirmation = true;
 	    if (d.Run() == (int) ResponseType.Accept) {
 		wadfile = new Wadfile();
 		Level.AssurePlayerStart();
