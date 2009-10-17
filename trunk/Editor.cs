@@ -989,6 +989,7 @@ namespace Weland {
 	}
 
 	public void DeleteSelected() {
+	    bool changed = true;
 	    if (Selection.Point != -1) {
 		// find the closest point to delete next
 
@@ -1051,7 +1052,11 @@ namespace Weland {
 		SetUndo();
 		Level.Annotations.RemoveAt(Selection.Annotation);
 		Selection.Annotation = -1;
+	    } else {
+		changed = false;
 	    }
+
+	    if (changed) Changed = true;
 	}
 
 	public void SetUndo() {
