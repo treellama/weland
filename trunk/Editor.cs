@@ -1065,6 +1065,10 @@ namespace Weland {
 	    undoSelection.CopyFrom(Selection);
 	}
 
+	public void ClearUndo() {
+	    undoState = null;
+	}
+
 	public void Undo() {
 	    if (undoState != null) {
 		Wadfile.DirectoryEntry redo = Level.Save().Clone();
