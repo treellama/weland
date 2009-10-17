@@ -132,7 +132,7 @@ namespace Weland {
 		writer.WriteMacString(LevelName, MapInfo.LevelNameLength);
 	    }
 
-	    readonly uint[] TagOrder = { Point.Tag, Line.Tag, Polygon.Tag };
+	    readonly uint[] TagOrder = { Point.Tag, Line.Tag, Side.Tag, Polygon.Tag, Light.Tag, Annotation.Tag, MapObject.Tag, MapInfo.Tag, Placement.Tag, Platform.StaticTag, Media.Tag, AmbientSound.Tag, RandomSound.Tag };
 	    
 	    internal void SaveChunks(BinaryWriterBE writer) {
 		// build a list of tags to write in order
