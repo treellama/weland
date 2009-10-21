@@ -489,8 +489,10 @@ namespace Weland {
 		    if (ev.Button == 3) {
 			modifiers |= EditorModifiers.RightClick;
 		    }
-		    editor.ButtonPress(X, Y, modifiers);
-		    Redraw();
+		    if (ev.Button == 1 || ev.Button == 3) {
+			editor.ButtonPress(X, Y, modifiers);
+			Redraw();
+		    }
 		}
 	    } else if (ev.Type == EventType.TwoButtonPress) {
 		if (selection.Line != -1) {
@@ -512,12 +514,11 @@ namespace Weland {
 	}
 
 	internal void OnButtonReleased(object obj, ButtonReleaseEventArgs args) {
-	    if (args.Event.Button == 2) {
-		return;
+	    if (args.Event.Button == 1) {
+		EditorModifiers modifiers = Modifiers(args.Event.State);
+		editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), modifiers);
+		Redraw();
 	    }
-	    EditorModifiers modifiers = Modifiers(args.Event.State);
-	    editor.ButtonRelease(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), modifiers);
-	    Redraw();
 
 	    if (editor.Tool == Tool.FloorHeight || editor.Tool == Tool.CeilingHeight || editor.Tool == Tool.PolygonType || editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight || editor.Tool == Tool.Media || editor.Tool == Tool.AmbientSound || editor.Tool == Tool.RandomSound) {
 		// update the paint mode button
@@ -543,7 +544,7 @@ namespace Weland {
 		hscrollbar1.Value = xOffsetDown + (xDown - args.Event.X) / drawingArea.Transform.Scale;
 		vscrollbar1.Value = yOffsetDown + (yDown - args.Event.Y) / drawingArea.Transform.Scale;
 		args.RetVal = true;
-	    } else {
+	    } else if ((args.Event.State & ModifierType.Button1Mask) != 0) {
 		editor.Motion(drawingArea.Transform.ToMapX(args.Event.X), drawingArea.Transform.ToMapY(args.Event.Y), Modifiers(args.Event.State));
 		RedrawDirty();
 	    }
