@@ -831,18 +831,7 @@ namespace Weland {
 
 
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
-	    if (Tool == Tool.Line) {
-		StartLine(X, Y);
-	    } else if (Tool == Tool.Fill) {
-		undoSet = false;
-		Fill(X, Y);
-	    } else if (Tool == Tool.Select) {
-		Select(X, Y);
-	    } else if (Tool == Tool.Object) {
-		PlaceObject(X, Y);
-	    } else if (Tool == Tool.Annotation) {
-		PlaceAnnotation(X, Y);
-	    } else if (Tool == Tool.FloorHeight) {
+	    if (Tool == Tool.FloorHeight) {
 		if (Alt(mods) || RightClick(mods)) {
 		    GetFloorHeight(X, Y);
 		} else {
@@ -904,6 +893,19 @@ namespace Weland {
 		} else {
 		    undoSet = false;
 		    SetRandomSound(X, Y);
+		}
+	    } else if (!RightClick(mods)) {
+		if (Tool == Tool.Line) {
+		    StartLine(X, Y);
+		} else if (Tool == Tool.Fill) {
+		    undoSet = false;
+		    Fill(X, Y);
+		} else if (Tool == Tool.Select) {
+		    Select(X, Y);
+		} else if (Tool == Tool.Object) {
+		    PlaceObject(X, Y);
+		} else if (Tool == Tool.Annotation) {
+		    PlaceAnnotation(X, Y);
 		}
 	    }
 
