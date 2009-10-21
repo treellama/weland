@@ -281,6 +281,12 @@ namespace Weland {
 		    p = ap;
 		    index = ClosestPoint(p);
 		}
+	    } else {
+		// should really connect if it's right on top of the other point!
+		index = Level.GetClosestPoint(p);
+		if (index != -1 && Level.Distance(p, Level.Endpoints[index]) > 1 / Scale) {
+		    index = -1;
+		}
 	    }
 
 	    if (index != -1) {
