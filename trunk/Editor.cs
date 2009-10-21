@@ -290,7 +290,12 @@ namespace Weland {
 		index = Level.GetClosestLine(p);
 		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
 		    Point onLine = Level.ClosestPointOnLine(p, Level.Lines[index]);
-		    Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, onLine.X, onLine.Y));
+		    Line line = Level.Lines[index];
+		    if (line.EndpointIndexes[0] != Level.TemporaryLineStartIndex && line.EndpointIndexes[1] != Level.TemporaryLineStartIndex) {
+			Level.NewLine(Level.TemporaryLineStartIndex, Level.SplitLine(index, onLine.X, onLine.Y));
+		    } else {
+			Level.SplitLine(index, onLine.X, onLine.Y);
+		    }
 		} else {
 		    Level.NewLine(Level.TemporaryLineStartIndex, Level.NewPoint(p.X, p.Y));
 		}
