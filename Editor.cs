@@ -250,12 +250,14 @@ namespace Weland {
 
 	    Point p = new Point(X, Y);
 	    Point ap = new Point(GridAdjust(X), GridAdjust(Y));
+	    Point z = ap;
 	    if (constrainAngle || constrainLength) {
 		p = Constrain(p, constrainAngle, constrainLength);
+		z = p;
 	    }
 
 	    // don't draw really short lines
-	    if (Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], ap) < DefaultSnap()) {
+	    if (Level.Distance(Level.Endpoints[Level.TemporaryLineStartIndex], z) < DefaultSnap()) {
 		// if the start point is the latest created, and unconnected, remove it
 		bool connected = false;
 		if (Level.TemporaryLineStartIndex == Level.Endpoints.Count - 1) {
