@@ -465,6 +465,7 @@ namespace Weland {
 		Redraw();
 	    }
 	    d.Destroy();	    
+	    editor.EditAnnotation = false;
 	}
 	
 	internal void OnButtonPressed(object obj, ButtonPressEventArgs args) {
