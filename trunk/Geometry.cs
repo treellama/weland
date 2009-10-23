@@ -862,6 +862,13 @@ namespace Weland {
 	    const int floor = 6;
 	    const int ceiling = 7;
 
+	    for (int i = Sides.Count - 1; i >= 0; --i) {
+		Side side = Sides[i];
+		if (side.PolygonIndex == -1 || side.LineIndex == -1) {
+		    DeleteSide((short) i);
+		}
+	    }
+
 	    for (int i = 0; i < Lines.Count; ++i) {
 		Line line = Lines[i];
 		Polygon cw_polygon = null;
