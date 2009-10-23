@@ -233,6 +233,11 @@ namespace Weland {
 		}
 	    }
 
+	    foreach (Side side in Sides) {
+		side.PolygonIndex = -1;
+		side.LineIndex = -1;
+	    }
+
 	    for (short index = 0; index < Lines.Count; ++index) {
 		Line line = Lines[index];
 		Polygon p1 = null;
