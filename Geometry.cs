@@ -510,7 +510,12 @@ namespace Weland {
 	}
 
 	public void DeletePolygon(short index) {
+	    short platformIndex = -1;
+	    if (Polygons[index].Type == PolygonType.Platform) {
+		platformIndex = Polygons[index].Permutation;
+	    }
 	    Polygons.RemoveAt(index);
+
 	    foreach (Line line in Lines) {
 		if (line.ClockwisePolygonOwner > index) {
 		    --line.ClockwisePolygonOwner;
@@ -551,11 +556,20 @@ namespace Weland {
 		}
 	    }
 
+	    if (platformIndex != -1) {
+		Platforms.RemoveAt(platformIndex);
+		foreach (Polygon polygon in Polygons) {
+		    if (polygon.Type == PolygonType.Platform) {
+			if (polygon.Permutation > platformIndex) {
+			    --polygon.Permutation;
+			}
+		    }
+		}
+	    }
+
 	    for (int i = Platforms.Count - 1; i >= 0; --i) {
 		if (Platforms[i].PolygonIndex > index) {
 		    --Platforms[i].PolygonIndex;
-		} else if (Platforms[i].PolygonIndex == index) {
-		    Platforms.RemoveAt(i);
 		}
 	    }
 
@@ -572,7 +586,7 @@ namespace Weland {
 		    if (polygon.Permutation > index) {
 			--polygon.Permutation;
 		    } else if (polygon.Permutation == index) {
-			polygon.Permutation = -1;
+			polygon.Permutation = 0;
 		    }
 		}
 	    }
