@@ -217,6 +217,10 @@ namespace Weland {
 	}
 
 	public void UpdateLine(short X, short Y, bool constrainAngle, bool constrainLength) {
+	    if (Level.TemporaryLineStartIndex == -1) {
+		return;
+	    }
+
 	    AddDirty(Level.Endpoints[Level.TemporaryLineStartIndex]);
 	    AddDirty(Level.TemporaryLineEnd);
 	    Point p = new Point(X, Y);
