@@ -867,18 +867,26 @@ namespace Weland {
 	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
 	    d.CurrentName = Level.Name + ".sceA";
 	    d.DoOverwriteConfirmation = true;
-	    if (d.Run() == (int) ResponseType.Accept) {
-		wadfile = new Wadfile();
-		Level.AssurePlayerStart();
-		Redraw();
-		wadfile.Directory[0] = Level.Save();
-		wadfile.Save(d.Filename);
-		Filename = d.Filename;
-
-		Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
-
-		editor.Changed = false;
-		saved = true;
+	    try {
+		if (d.Run() == (int) ResponseType.Accept) {
+		    wadfile = new Wadfile();
+		    Level.AssurePlayerStart();
+		    Redraw();
+		    wadfile.Directory[0] = Level.Save();
+		    wadfile.Save(d.Filename);
+		    Filename = d.Filename;
+		    
+		    Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
+		    
+		    editor.Changed = false;
+		    saved = true;
+		}
+	    } catch (Exception e) {
+		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
+		m.Title = "Save Error";
+		m.SecondaryText = e.Message;
+		m.Run();
+		m.Destroy();
 	    }
 	    d.Destroy();
 
@@ -893,12 +901,22 @@ namespace Weland {
 	    if (Filename == "") {
 		return SaveAs();
 	    } else {
-		Level.AssurePlayerStart();
-		Redraw();
-		wadfile.Directory[0] = Level.Save();
-		wadfile.Save(Filename);
-		editor.Changed = false;
-		return true;
+		bool success = false;
+		try {
+		    Level.AssurePlayerStart();
+		    Redraw();
+		    wadfile.Directory[0] = Level.Save();
+		    wadfile.Save(Filename);
+		    editor.Changed = false;
+		    success = true;
+		} catch (Exception e) {
+		    MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
+		    m.Title = "Save Error";
+		    m.SecondaryText = e.Message;
+		    m.Run();
+		    m.Destroy();		    
+		}
+		return success;
 	    }
 	}
 
