@@ -34,8 +34,8 @@ namespace Weland {
 	double U(Point p, Line line) {
 	    Point e0 = Endpoints[line.EndpointIndexes[0]];
 	    Point e1 = Endpoints[line.EndpointIndexes[1]];
-	    
-	    return  (((p.X - e0.X) * (e1.X - e0.X)) + ((p.Y - e0.Y) * (e1.Y - e0.Y))) / (Math.Pow(e1.X - e0.X, 2) + Math.Pow(e1.Y - e0.Y, 2));
+
+	    return  ((((double) p.X - e0.X) * ((double) e1.X - e0.X)) + (((double) p.Y - e0.Y) * ((double) e1.Y - e0.Y))) / (Math.Pow(e1.X - e0.X, 2) + Math.Pow(e1.Y - e0.Y, 2));
 	}
 
 	public Point ClosestPointOnLine(Point p, Line line) {
