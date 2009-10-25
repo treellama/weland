@@ -17,6 +17,10 @@ namespace Weland {
 	public static double ToDouble(short w) {
 	    return ((double) w / World.One);
 	}
+
+	public static double ToDouble(int i) {
+	    return ((double) i / World.One);
+	}
     }
 
     public static class Angle {

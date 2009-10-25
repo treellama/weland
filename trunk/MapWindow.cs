@@ -251,7 +251,7 @@ namespace Weland {
 		statusbar.Push(id, String.Format("Point Index: {0}\tLocation: ({1:0.000}, {2:0.000})", selection.Point, World.ToDouble(Level.Endpoints[selection.Point].X), World.ToDouble(Level.Endpoints[selection.Point].Y)));
 	    } else if (selection.Line != -1) {
 		Line line = Level.Lines[selection.Line];
-		statusbar.Push(id, String.Format("Line Index: {0}\tLine Length: {1:0.000} WU", selection.Line, World.ToDouble((short) Level.Distance(Level.Endpoints[line.EndpointIndexes[0]], Level.Endpoints[line.EndpointIndexes[1]])))); 
+		statusbar.Push(id, String.Format("Line Index: {0}\tLine Length: {1:0.000} WU", selection.Line, World.ToDouble(Level.Distance(Level.Endpoints[line.EndpointIndexes[0]], Level.Endpoints[line.EndpointIndexes[1]])))); 
 	    } else if (selection.Polygon != -1) {
 		Polygon polygon = Level.Polygons[selection.Polygon];
 		statusbar.Push(id, String.Format("Polygon index {0}\tFloor Height: {1:0.000}, Ceiling Height: {2:0.000}", selection.Polygon, World.ToDouble(polygon.FloorHeight), World.ToDouble(polygon.CeilingHeight)));
@@ -271,7 +271,7 @@ namespace Weland {
 		if (theta < 0) { 
 		    theta += 2 * Math.PI;
 		}
-		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU\tAngle: {1:0.0}°", World.ToDouble((short) Math.Round(r)), theta * 180 / Math.PI));
+		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU\tAngle: {1:0.0}°", World.ToDouble((int) Math.Round(r)), theta * 180 / Math.PI));
 	    } else {
 		statusbar.Push(id, String.Format("Level: {0}\t{1} Polygons, {2} Lights, {3} Objects", Level.Name, Level.Polygons.Count, Level.Lights.Count, Level.Objects.Count));
 	    }
