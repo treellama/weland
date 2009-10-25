@@ -853,6 +853,11 @@ namespace Weland {
 		side.SecondaryLightsourceIndex = 0;
 	    }
 
+	    if ((side.Flags & SideFlags.IsControlPanel) != 0 && side.ControlPanelType == ControlPanelType.PlatformSwitch) {
+		if (side.ControlPanelPermutation < 0 || side.ControlPanelPermutation > Polygons.Count || Polygons[side.ControlPanelPermutation].Type != PolygonType.Platform) {
+		    side.Flags &= ~SideFlags.IsControlPanel;
+		}
+	    }
 	}
 
 	public void NukeObjects() {
