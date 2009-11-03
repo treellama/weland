@@ -4,15 +4,16 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
-    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="delete_event" handler="OnDelete"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -964,7 +965,7 @@
                         <property name="spacing">5</property>
                         <child>
                           <widget class="GtkButton" id="paletteAddButton">
-                            <property name="label" translatable="yes">gtk-add</property>
+                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">True</property>
@@ -977,7 +978,7 @@
                         </child>
                         <child>
                           <widget class="GtkButton" id="paletteEditButton">
-                            <property name="label" translatable="yes">gtk-edit</property>
+                            <property name="label">gtk-edit</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">True</property>
@@ -1739,6 +1740,41 @@ Submachine Gun Clip</property>
                                     <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
                                     <child>
+                                      <widget class="GtkHBox" id="hbox24">
+                                        <property name="visible">True</property>
+                                        <child>
+                                          <widget class="GtkLabel" id="label25">
+                                            <property name="visible">True</property>
+                                            <property name="label" translatable="yes">Team:</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkComboBox" id="playerTeam">
+                                            <property name="visible">True</property>
+                                            <property name="items" translatable="yes">Slate
+Red
+Violet
+Yellow
+White
+Orange
+Blue
+Green</property>
+                                            <signal name="changed" handler="OnObjectChanged"/>
+                                          </widget>
+                                          <packing>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
                                       <widget class="GtkLabel" id="label2">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
@@ -1747,7 +1783,7 @@ Submachine Gun Clip</property>
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
-                                        <property name="position">0</property>
+                                        <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1762,7 +1798,7 @@ Submachine Gun Clip</property>
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
-                                        <property name="position">1</property>
+                                        <property name="position">2</property>
                                       </packing>
                                     </child>
                                   </widget>

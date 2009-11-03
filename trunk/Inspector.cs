@@ -32,6 +32,7 @@ namespace Weland {
 	[Widget] CheckButton monsterIsBlind;
 	[Widget] CheckButton monsterIsDeaf;
 
+	[Widget] ComboBox playerTeam;
 	[Widget] HScale playerAngle;
 	[Widget] CheckButton playerFromCeiling;
 	[Widget] Entry playerHeight;
@@ -107,6 +108,7 @@ namespace Weland {
 		    monsterIsBlind.Active = mapObject.Blind;
 		    monsterIsDeaf.Active = mapObject.Deaf;
 		} else if (mapObject.Type == ObjectType.Player) {
+		    playerTeam.Active = mapObject.Index;
 		    playerAngle.Value = mapObject.Facing;
 		    playerHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		    playerFromCeiling.Active = mapObject.FromCeiling;
@@ -232,6 +234,7 @@ namespace Weland {
 		mapObject.Blind = monsterIsBlind.Active;
 		mapObject.Deaf = monsterIsDeaf.Active;
 	    } else if (mapObject.Type == ObjectType.Player) {
+		mapObject.Index = (short) playerTeam.Active;
 		mapObject.Facing = playerAngle.Value;
 		try {
 		    mapObject.Z = World.FromDouble(double.Parse(playerHeight.Text));
