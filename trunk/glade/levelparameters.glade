@@ -146,6 +146,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The player will loose a small amount of oxygen every few seconds. Functional weapons are restricted to the Pistol(s), the Fusion Pistol, the SMG, the Shotgun(s), and the Alien Weapon.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -158,6 +159,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The player starts the level with no weapons, and a small amount of health. Some aliens will fight as allies of the player, according to the physics model in use.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -170,6 +172,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Low Gravity.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -182,6 +185,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The motion sensor will be unreliable.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -228,6 +232,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The level may be played as a solo mission.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -240,6 +245,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The level may be played cooperatively with other players.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -252,6 +258,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Multiplayer, Teams are optional. Death Match between all players or teams.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -264,6 +271,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Multiplayer, Teams are optional. The player or team who has the most time on the hill and the end of the round wins.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -276,6 +284,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Multiplayer, Teams are optional. The player or team who can hold the ball the longest wins. </property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -288,6 +297,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Multiplayer, Teams. Each team must defend their base to prevent capture of their flag, at the same time each team must also work to capture the opposing team's flag and bring it back to their base while their flag is not captured.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -300,6 +310,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Rugby.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -345,6 +356,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">Everything must be killed before the player can exit the level.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -357,6 +369,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The player must enter polygons of type "Must Be Explored" in order to exit the level.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -369,6 +382,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The player must find all Uplink Chips and S'pht key cards in order to exit the level.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -381,6 +395,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">The player must toggle all switches with the repair flag set.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -393,6 +408,7 @@ Space
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">50% of civilians (Bob's) must survive.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
