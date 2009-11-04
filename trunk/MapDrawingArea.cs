@@ -111,6 +111,9 @@ namespace Weland {
 	Drawer.Color selectedPolygonColor = new Drawer.Color((double) 0xff/0xff, 
 							  (double) 0xcc/0xff,
 							  (double) 0x66/0xff);
+	Drawer.Color destinationPolygonColor = new Drawer.Color((double) 0x99/0xff,
+								(double) 0xbb/0xff,
+								(double) 0x55/0xff);
 	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
 	Drawer.Color invalidPolygonColor = new Drawer.Color((double) 0xfb/0xff,
 							    (double) 0x48/0xff,
@@ -178,18 +181,33 @@ namespace Weland {
 			code &= Points[polygon.EndpointIndexes[v]];
 		    }
 		    if (code == CohenSutherland.Inside && Filter(polygon)) {
-			DrawPolygon((short) i, false);
+			DrawPolygon((short) i, PolygonColor.Normal);
 		    }
 		}
 
 		if (Selection.Polygon != -1) {
 		    Polygon polygon = Level.Polygons[Selection.Polygon];
 		    CohenSutherland code = ~CohenSutherland.Inside;
-		    for (short i = 0; i < polygon.VertexCount; ++i) {
-			code &= Points[polygon.EndpointIndexes[i]];
+		    if (Filter(polygon)) {
+			for (short i = 0; i < polygon.VertexCount; ++i) {
+			    code &= Points[polygon.EndpointIndexes[i]];
+			}
+			if (code == CohenSutherland.Inside) {
+			    DrawPolygon(Selection.Polygon, PolygonColor.Selected);
+			}
 		    }
-		    if (code == CohenSutherland.Inside && Filter(polygon)) {
-			DrawPolygon(Selection.Polygon, true);
+
+		    if (polygon.Type == PolygonType.Teleporter && polygon.Permutation >= 0 && polygon.Permutation < Level.Polygons.Count) {
+			Polygon destination = Level.Polygons[polygon.Permutation];
+			if (Filter(destination)) {
+			    code = ~CohenSutherland.Inside;
+			    for (short i = 0; i < destination.VertexCount; ++i) {
+				code &= Points[destination.EndpointIndexes[i]];
+			    }
+			    if (code == CohenSutherland.Inside) {
+				DrawPolygon(polygon.Permutation, PolygonColor.Destination);
+			    }
+			}
 		    }
 		}
 		
@@ -358,7 +376,13 @@ namespace Weland {
 	    drawer.DrawLine(color, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
 	}
 
-	void DrawPolygon(short polygon_index, bool highlight) {
+	enum PolygonColor {
+	    Normal,
+	    Selected,
+	    Destination
+	}
+
+	void DrawPolygon(short polygon_index, PolygonColor color) {
 	    Polygon polygon = Level.Polygons[polygon_index];
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
@@ -383,8 +407,10 @@ namespace Weland {
 	    } else if (Mode == DrawMode.RandomSound) {
 		drawer.FillPolygon(PaintColors[(short) polygon.RandomSound], points);
 	    } else {
-		if (highlight) {
+		if (color == PolygonColor.Selected) {
 		    drawer.FillPolygon(selectedPolygonColor, points);
+		} else if (color == PolygonColor.Destination) {
+		    drawer.FillPolygon(destinationPolygonColor, points);
 		} else if (polygon.Concave) {
 		    drawer.FillPolygon(invalidPolygonColor, points);
 		} else {

@@ -370,6 +370,19 @@ namespace Weland {
 	    undoSet = false;
 	}
 
+	void AltSelect(short X, short Y) {
+	    if (Selection.Polygon != -1) {
+		Polygon polygon = Level.Polygons[Selection.Polygon];
+		if (polygon.Type == PolygonType.Teleporter) {
+		    short index = Level.GetEnclosingPolygon(new Point(X, Y));
+		    if (index != -1) {
+			SetUndo();
+			polygon.Permutation = index;
+		    }
+		}
+	    }
+	}
+
 	public bool EditAnnotation = false; // HACK
 
 	void PlaceAnnotation(short X, short Y) {
@@ -911,14 +924,18 @@ namespace Weland {
 		    undoSet = false;
 		    SetRandomSound(X, Y);
 		}
+	    } else if (Tool == Tool.Select) {
+		if (Alt(mods) || RightClick(mods)) {
+		    AltSelect(X, Y);
+		} else {
+		    Select(X, Y);
+		}
 	    } else if (!RightClick(mods)) {
 		if (Tool == Tool.Line) {
 		    StartLine(X, Y);
 		} else if (Tool == Tool.Fill) {
 		    undoSet = false;
 		    Fill(X, Y);
-		} else if (Tool == Tool.Select) {
-		    Select(X, Y);
 		} else if (Tool == Tool.Object) {
 		    PlaceObject(X, Y);
 		} else if (Tool == Tool.Annotation) {
