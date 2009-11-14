@@ -240,7 +240,7 @@ namespace Weland {
 		}
 		if (Mode == DrawMode.Draw) {
 		    foreach (Annotation note in Level.Annotations) {
-			if (Filter(Level.Polygons[note.PolygonIndex])) {
+			if (note.PolygonIndex == -1 || Filter(Level.Polygons[note.PolygonIndex])) {
 			    DrawAnnotation(note, note == selectedAnnotation);
 			}
 		    }
