@@ -24,6 +24,7 @@
                 <child>
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Type of random sound.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Type:</property>
                   </widget>
@@ -61,6 +62,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies the loudness of the random sound by percent. 100% is the loudest.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Volume:</property>
                   </widget>
@@ -86,6 +88,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies a random change in volume.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">&#x394; Volume:</property>
                   </widget>
@@ -131,6 +134,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label4">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies in 1/30ths of a second the length of time until a sound will be re-activated. It is possible for the sound to restart before it is finished playing.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Period:</property>
                   </widget>
@@ -160,6 +164,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label5">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">&#x394; Period:</property>
                   </widget>
@@ -189,6 +194,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label6">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">The default value for Pitch is 1. Increase or descrease to change the pitch, respectively.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Pitch:</property>
                   </widget>
@@ -218,6 +224,7 @@ Jjaro Ship Creak</property>
                 <child>
                   <widget class="GtkLabel" id="label7">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies the value used to change the perceivable distance between the player and the sound.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">&#x394; Pitch:</property>
                   </widget>
@@ -273,6 +280,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">The sound will be ambient.</property>
                     <property name="draw_indicator">True</property>
                   </widget>
                   <packing>
@@ -287,6 +295,7 @@ Jjaro Ship Creak</property>
                     <child>
                       <widget class="GtkLabel" id="label8">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Specify the sound's perceivable direction from the player.</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Direction (0 is East):</property>
                       </widget>
@@ -298,6 +307,7 @@ Jjaro Ship Creak</property>
                       <widget class="GtkHScale" id="direction">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip" translatable="yes">Specify the sound's perceivable direction from the player.</property>
                         <property name="adjustment">0 0 360 1 10 0</property>
                         <property name="digits">0</property>
                       </widget>
@@ -318,6 +328,7 @@ Jjaro Ship Creak</property>
                     <child>
                       <widget class="GtkLabel" id="label9">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Specify a value to randomize the sound's perceivable direction from the player.</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">&#x394; Direction:</property>
                       </widget>
@@ -329,6 +340,7 @@ Jjaro Ship Creak</property>
                       <widget class="GtkHScale" id="deltaDirection">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="tooltip" translatable="yes">Specify a value to randomize the sound's perceivable direction from the player.</property>
                         <property name="adjustment">0 0 360 1 10 0</property>
                         <property name="digits">0</property>
                       </widget>

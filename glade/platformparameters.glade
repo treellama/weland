@@ -43,7 +43,7 @@
                             <child>
                               <widget class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Chose a platform type to determine the sound the plaform will make when it moves.</property>
+                                <property name="tooltip" translatable="yes">Choose a platform type to determine the sound the plaform will make when it moves.</property>
                                 <property name="label" translatable="yes">Type:</property>
                               </widget>
                               <packing>
@@ -75,7 +75,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip" translatable="yes">This button wil change the platform to the Platform Type's default parameters.</property>
+                                <property name="tooltip" translatable="yes">This button will change the platform to the Platform Type's default parameters.</property>
                                 <signal name="clicked" handler="OnDefaults"/>
                               </widget>
                               <packing>
@@ -365,7 +365,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The player can activate the platform (or open the door).</property>
+                                        <property name="tooltip" translatable="yes">The player can activate the platform.</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
                                       <packing>
@@ -378,7 +378,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">Monsters can activate the platform (or open the door).</property>
+                                        <property name="tooltip" translatable="yes">Monsters can activate the platform.</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
                                       <packing>
@@ -422,7 +422,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a plaform, or if a door closes on the player he will be crushed. Select "Reverses Direction" below if you only want the player to be injured.</property>
+                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a platform, or if it closes on the player he will be crushed. Select "Reverses Direction" below in conjunction with this option if you only want to injure the player.</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
                                       <packing>
@@ -435,7 +435,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a plaform, or if a door closes on the player the platform or door will retract immediately.</property>
+                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a plaform, or if it closes on the player the platform or door will retract immediately.</property>
                                         <property name="yalign">0.55000001192092896</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
@@ -483,6 +483,7 @@ Pfhor Platform</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="tooltip" translatable="yes">When this option is disabled Players and Monsters must stand on the platform to activate it as a lift. When this option is enabled it allows the platform to be used as a door, and may be activated with the action key when the player is near the door. </property>
                         <property name="draw_indicator">True</property>
                       </widget>
                       <packing>
@@ -514,7 +515,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform or door will from the floor.</property>
+                                        <property name="tooltip" translatable="yes">The platform will move from the floor.</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
@@ -528,7 +529,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform or door will move from the ceiling.</property>
+                                        <property name="tooltip" translatable="yes">The platform will move from the ceiling.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">fromFloor</property>
                                       </widget>
@@ -561,7 +562,7 @@ Pfhor Platform</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">Autocalculate height so that the platform will extend from floor to ceiling.</property>
+                                    <property name="tooltip" translatable="yes">Autocalculate height values so that the platform will extend from floor to ceiling.</property>
                                     <property name="draw_indicator">True</property>
                                   </widget>
                                   <packing>
@@ -713,7 +714,7 @@ Pfhor Platform</property>
                         <child>
                           <widget class="GtkLabel" id="label6">
                             <property name="visible">True</property>
-                            <property name="tooltip" translatable="yes">Giving the platform a Tag will allow it be activated by switches, etc. A tag may be used more than once, but remember all platforms and lights with the same Tag will be operaperable by the same switch, etc.</property>
+                            <property name="tooltip" translatable="yes">Giving the platform a Tag will allow it to be activated by chips,  wires (both require tags to operate platforms) and tag switches. A Tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
                             <property name="label" translatable="yes">Tag:</property>
                           </widget>
                           <packing>
@@ -815,7 +816,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will stop at each floor and ceiling elevation.</property>
+                                        <property name="tooltip" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and stop.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">neverDeactivates</property>
                                       </widget>
@@ -829,7 +830,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">This is common use when the platform is a door. The plaform will extend to it's Max Height and return to it's Min Height when activated.</property>
+                                        <property name="tooltip" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and return to its initial height.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">neverDeactivates</property>
                                       </widget>
@@ -853,7 +854,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">When the platform moves the lights of the polygon it's in will deactivate.</property>
+                                        <property name="tooltip" translatable="yes">When the platform stops the lights of the polygon it's in will deactivate.</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
                                       <packing>
@@ -941,7 +942,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">If the platform is activated by a switch, or if the door is activated by the player it will not respond to the switch or the player until activation is complete.</property>
+                                <property name="tooltip" translatable="yes">If the platform is activated by a switch, or by the player it will not respond to the switch or the player until activation is complete.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -954,7 +955,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">Min and Max height will be set to the platforms floor and ceiling elevations.</property>
+                                <property name="tooltip" translatable="yes">Min and Max height will be set to the platform's polygon floor and ceiling elevations.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -967,7 +968,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">The platform will not activate immediately.</property>
+                                <property name="tooltip" translatable="yes">When toggled, the platform will run through its Delay time before activating, and then it will function normally.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -993,7 +994,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">The platform will retract to it's initial elevation slower than it extends.</property>
+                                <property name="tooltip" translatable="yes">The platform will contract slower than it extends. Extending will function according to the specified Speed.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
@@ -1019,7 +1020,7 @@ Pfhor Platform</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">This platform will no't display as red on the automap.</property>
+                                <property name="tooltip" translatable="yes">This platform will not display as red on the automap.</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>

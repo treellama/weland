@@ -36,6 +36,7 @@
                     <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Presets for Normal, Strobe and Media (Liquid) lights.</property>
                         <property name="label" translatable="yes">Preset:</property>
                       </widget>
                       <packing>
@@ -69,6 +70,7 @@ Media</property>
                     <child>
                       <widget class="GtkLabel" id="label2">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Use the parameters of a previously created light.</property>
                         <property name="label" translatable="yes">Based On:</property>
                       </widget>
                       <packing>
@@ -98,6 +100,7 @@ Media</property>
                     <child>
                       <widget class="GtkLabel" id="label3">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Specifies the delay before the light activates in increments of 1/30th of a second (eg. a value of "1" would delay the light from activating by 1/30th of a second).</property>
                         <property name="label" translatable="yes">Phase:</property>
                       </widget>
                       <packing>
@@ -138,6 +141,7 @@ Media</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">(NOT IMPLEMENTED) Cycle continuously through all states: Becoming Active, Primary Active, Secondary Active, Becoming Inactive, Primary Inactive, Secondary Inactive.</property>
                     <property name="draw_indicator">True</property>
                   </widget>
                   <packing>
@@ -152,6 +156,7 @@ Media</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">When the level loads the light will be displayed according to the Primary Active parameters below.</property>
                     <property name="draw_indicator">True</property>
                   </widget>
                   <packing>
@@ -167,6 +172,7 @@ Media</property>
                     <child>
                       <widget class="GtkLabel" id="label4">
                         <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Giving the light a Tag will allow it to be activated by chips, wires (both require tags to operate lights) and tag switches. A tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
                         <property name="label" translatable="yes">Tag:</property>
                       </widget>
                       <packing>
@@ -247,6 +253,10 @@ Media</property>
                             <child>
                               <widget class="GtkLabel" id="label6">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -282,6 +292,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label7">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -307,6 +318,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label8">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -347,6 +359,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -370,6 +383,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>
@@ -441,6 +455,10 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label11">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -476,6 +494,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -501,6 +520,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label13">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -541,6 +561,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label14">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -564,6 +585,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label15">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>
@@ -637,6 +659,10 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label17">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -672,6 +698,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label18">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -697,6 +724,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label19">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -737,6 +765,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label20">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -760,6 +789,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label21">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>
@@ -833,6 +863,10 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label23">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -868,6 +902,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label24">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -893,6 +928,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label25">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -933,6 +969,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label26">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -956,6 +993,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label27">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>
@@ -1027,6 +1065,10 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label29">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -1062,6 +1104,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label30">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -1087,6 +1130,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label31">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -1127,6 +1171,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label32">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -1150,6 +1195,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label33">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>
@@ -1224,6 +1270,10 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label35">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+Linear = changes state at a consistent increment to Intensity
+Smooth = changes state exponentially to Intensity
+Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
                               </widget>
                               <packing>
@@ -1259,6 +1309,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label36">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
                               </widget>
@@ -1284,6 +1335,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label37">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
                               </widget>
@@ -1324,6 +1376,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label38">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
                               </widget>
@@ -1347,6 +1400,7 @@ Flicker</property>
                             <child>
                               <widget class="GtkLabel" id="label39">
                                 <property name="visible">True</property>
+                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
                               </widget>

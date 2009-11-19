@@ -25,6 +25,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="tooltip" translatable="yes">Making the line solid will allow you to create a side that will prevent the player, monsters and projectiles from crossing it.</property>
                 <property name="draw_indicator">True</property>
               </widget>
               <packing>
@@ -37,6 +38,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="tooltip" translatable="yes">If the line is transparent it will allow you to create a side that you can either apply textures with transparent areas (i.e. fencing) or leave untextured to allow rooms made of multiple polygons. Lines are made transparent by default when filling polygons if they are shared by two polygons.</property>
                 <property name="yalign">0.43000000715255737</property>
                 <property name="draw_indicator">True</property>
               </widget>
@@ -50,6 +52,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">If the line has been textured, this option will remove the texture.</property>
                 <signal name="clicked" handler="OnRemoveTextures"/>
               </widget>
               <packing>

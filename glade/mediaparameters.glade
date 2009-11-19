@@ -4,6 +4,7 @@
   <!-- interface-naming-policy project-wide -->
   <widget class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Liquid Parameters</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -26,6 +27,7 @@
                 <child>
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Type of liquid</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Type:</property>
                   </widget>
@@ -37,6 +39,7 @@
                 <child>
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Use the parameters of a previously created liquid.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Based On:</property>
                   </widget>
@@ -50,6 +53,7 @@
                 <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Determines the behavior the liquid will use to acheive it's low and high tide. The Tide Parameter is defined by choosing a previously created Light Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Tide Parameter:</property>
                   </widget>
@@ -113,6 +117,7 @@ Jjaro</property>
                 <child>
                   <widget class="GtkLabel" id="label4">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
                     <property name="label" translatable="yes">Angle (0 is East):</property>
                   </widget>
                   <packing>
@@ -124,6 +129,7 @@ Jjaro</property>
                   <widget class="GtkHScale" id="angle">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
                     <property name="adjustment">0 0 360 1 10 0</property>
                     <property name="digits">0</property>
                   </widget>
@@ -147,6 +153,7 @@ Jjaro</property>
                 <child>
                   <widget class="GtkLabel" id="label5">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specify a value between 0 and 1 to determine how fast a liquid moves. Values between 0.003 and 0.010 are recommended, however, a liquid must have a value of 0 if it's in a teleporting polygon.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Flow Strength:</property>
                   </widget>
@@ -158,6 +165,7 @@ Jjaro</property>
                 <child>
                   <widget class="GtkLabel" id="label6">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies the lowest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Low Tide:</property>
                   </widget>
@@ -171,6 +179,7 @@ Jjaro</property>
                 <child>
                   <widget class="GtkLabel" id="label7">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Specifies the highest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">High Tide:</property>
                   </widget>
@@ -239,6 +248,7 @@ Jjaro</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="tooltip" translatable="yes">This option will prevent hearing the liquid when the player is in an area of the map that overlaps the liquid, and also, if the player is in a polygon that has the liquid, but the liquid tide is lower than the floor.</property>
                 <property name="draw_indicator">True</property>
               </widget>
               <packing>

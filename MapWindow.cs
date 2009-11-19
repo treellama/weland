@@ -1527,7 +1527,8 @@ namespace Weland {
 	    dialog.Artists = new string[] { "Robert Kreps (application icon)",
 					    "tango-art-libre, GIMP, openclipart.org (tool icons)" };
 	    dialog.Authors = new string[] { "Gregory Smith <wolfy@treellama.org>",
-					    "with thanks to Eric Peterson for Smithy" };
+					    "Tooltips by effigy <this.effigy@gmail.com>",
+					    "with thanks to Eric Peterson for Smithy"};
 	    dialog.License = "Weland is available under the GNU General Public License, Version 2. See the file COPYING for details";
 	    dialog.Website = "http://sourceforge.net/projects/weland";
 	    dialog.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
