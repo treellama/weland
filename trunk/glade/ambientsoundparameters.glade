@@ -61,6 +61,7 @@ Jjaro Ship</property>
             <child>
               <widget class="GtkLabel" id="label1">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Type of ambient sound.</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Type:</property>
               </widget>
@@ -72,6 +73,7 @@ Jjaro Ship</property>
             <child>
               <widget class="GtkLabel" id="label2">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Specifies volume by percent. 100% is the loudest value.</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Volume:</property>
               </widget>
