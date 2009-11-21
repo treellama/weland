@@ -674,8 +674,6 @@ namespace Weland {
 		layer2.Active = true;
 		break;
 	    case Gdk.Key.F3:
-		/*		drawingArea.Antialias = !drawingArea.Antialias;
-				Redraw(); */
 		layer3.Active = true;
 		break;
 	    case Gdk.Key.F4:
@@ -1660,6 +1658,13 @@ namespace Weland {
 		layer = 6;
 	    }
 	    LoadLayer();
+	    Redraw();
+	}
+	
+	protected void OnPreferences(object o, EventArgs e) {
+	    PreferencesDialog d = new PreferencesDialog(window1);
+	    d.Run();
+	    drawingArea.Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	    Redraw();
 	}
     }

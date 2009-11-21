@@ -63,7 +63,7 @@ namespace Weland {
 	public bool ShowPlayers = true;
 	public bool ShowGoals = true;
 	public bool ShowSounds = true;
-	public bool Antialias = true;
+	public bool Antialias;
 	public DrawMode Mode = DrawMode.Draw;
 	public PolygonFilter Filter = x => true;
 
@@ -99,6 +99,8 @@ namespace Weland {
 	    itemImages[ItemType.RedBall] = new Gdk.Pixbuf(null, "skull.png");
 	    itemImages[ItemType.Smg] = new Gdk.Pixbuf(null, "smg.png");
 	    itemImages[ItemType.SmgAmmo] = new Gdk.Pixbuf(null, "smg-ammo.png");
+
+	    Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	}
 
 	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);

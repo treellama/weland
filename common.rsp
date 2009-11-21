@@ -32,6 +32,7 @@ PlatformParametersDialog.cs
 Point.cs
 Polygon.cs
 PopupParametersDialogs.cs
+PreferencesDialog.cs
 Shapes.cs
 Settings.cs
 Side.cs
@@ -98,5 +99,6 @@ Widgets.cs
 /resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
 /resource:glade/pointparameters.glade
+/resource:glade/preferences.glade
 /resource:glade/randomsoundparameters.glade
 

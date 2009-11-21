@@ -4,12 +4,12 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="configure_event" handler="OnWindowConfigure"/>
+    <signal name="delete_event" handler="OnDelete"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
+    <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="scroll_event" handler="OnScroll"/>
     <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
-    <signal name="delete_event" handler="OnDelete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -136,6 +136,20 @@
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem6">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="gtk-preferences">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="OnPreferences"/>
                       </widget>
                     </child>
                   </widget>
