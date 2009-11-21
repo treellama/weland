@@ -4,11 +4,11 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
+    <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="scroll_event" handler="OnScroll"/>
-    <signal name="configure_event" handler="OnWindowConfigure"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="delete_event" handler="OnDelete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -2631,6 +2631,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer1">
                     <property name="label" translatable="yes">1</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2645,6 +2646,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer2">
                     <property name="label" translatable="yes">2</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2659,6 +2661,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer3">
                     <property name="label" translatable="yes">3</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2673,6 +2676,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer4">
                     <property name="label" translatable="yes">4</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2687,6 +2691,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer5">
                     <property name="label" translatable="yes">5</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2701,6 +2706,7 @@ Green</property>
                 <child>
                   <widget class="GtkRadioButton" id="layer6">
                     <property name="label" translatable="yes">6</property>
+                    <property name="width_request">30</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
