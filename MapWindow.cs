@@ -667,9 +667,25 @@ namespace Weland {
 	internal void OnKeyPressed(object obj, KeyPressEventArgs args) {
 	    bool caught = true;
 	    switch (args.Event.Key) {
+	    case Gdk.Key.F1:
+		layer1.Active = true;
+		break;
+	    case Gdk.Key.F2:
+		layer2.Active = true;
+		break;
 	    case Gdk.Key.F3:
-		drawingArea.Antialias = !drawingArea.Antialias;
-		Redraw();
+		/*		drawingArea.Antialias = !drawingArea.Antialias;
+				Redraw(); */
+		layer3.Active = true;
+		break;
+	    case Gdk.Key.F4:
+		layer4.Active = true;
+		break;
+	    case Gdk.Key.F5:
+		layer5.Active = true;
+		break;
+	    case Gdk.Key.F6:
+		layer6.Active = true;
 		break;
 	    case Gdk.Key.a:
 	    case Gdk.Key.A:
