@@ -334,7 +334,7 @@ namespace Weland {
 	    } else {
 		if (Level.FillPolygon(X, Y)) {
 		    Polygon p = FindPolygon(X, Y);
-		    DirtyPolygon(p);
+		    if (p != null) DirtyPolygon(p);
 		}
 	    }
 	}
