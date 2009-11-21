@@ -31,6 +31,14 @@ namespace Weland {
 	    return Convert.ToBoolean(GetSetting(xPath, Convert.ToString(defaultValue)));
 	}
 
+	public double GetSetting(string xPath, double defaultValue) {
+	    return Convert.ToDouble(GetSetting(xPath, Convert.ToString(defaultValue)));
+	}
+
+	public void PutSetting(string xPath, double value) {
+	    PutSetting(xPath, Convert.ToString(value));
+	}
+
 	public void PutSetting(string xPath, bool value) {
 	    PutSetting(xPath, Convert.ToString(value));
 	}

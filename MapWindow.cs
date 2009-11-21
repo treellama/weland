@@ -39,6 +39,13 @@ namespace Weland {
 	[Widget] HScale viewFloorHeight;
 	[Widget] HScale viewCeilingHeight;
 
+	[Widget] RadioButton layer1;
+	[Widget] RadioButton layer2;
+	[Widget] RadioButton layer3;
+	[Widget] RadioButton layer4;
+	[Widget] RadioButton layer5;
+	[Widget] RadioButton layer6;
+
 	[Widget] MenuItem drawModeItem;
 	[Widget] MenuItem floorHeightItem;
 	[Widget] MenuItem ceilingHeightItem;
@@ -84,6 +91,7 @@ namespace Weland {
 	[Widget] Statusbar statusbar;
 
 	string Filename;
+	int layer = 1;
 
 	void SetupDrawingArea() {
 	    drawingArea.ConfigureEvent += OnConfigure;
@@ -132,6 +140,7 @@ namespace Weland {
 	void ResetViewHeight() {
 	    viewFloorHeight.Value = -32;
 	    viewCeilingHeight.Value = 32;
+	    SaveLayer();
 	}
 
 	protected void OnViewHeightReset(object o, EventArgs args) {
@@ -139,6 +148,7 @@ namespace Weland {
 	}
 	
 	protected void OnViewHeight(object o, EventArgs args) {
+	    SaveLayer();
 	    Redraw();
 	}
 
@@ -195,9 +205,8 @@ namespace Weland {
 		}
 	    }
 
-	    viewFloorHeight.Value = -32;
-
-	    viewCeilingHeight.Value = 32;
+	    layer = 1;
+	    LoadLayer();
 
 	    editor.Grid = grid;
 	    editor.Selection = selection;
@@ -783,6 +792,7 @@ namespace Weland {
 		editor.ClearUndo();
 		Center(0, 0);
 		AdjustScrollRange();
+		layer = 1;
 		ResetViewHeight();
 		window1.Title = wadfile.Directory[n].LevelName;
 		ChooseTool(editor.Tool);
@@ -839,6 +849,7 @@ namespace Weland {
 	    levelItem.Submenu = null;
 	    Center(0, 0);
 	    AdjustScrollRange();
+	    layer = 1;
 	    ResetViewHeight();
 	    selection.Clear();
 	    editor.ClearUndo();
@@ -1603,6 +1614,37 @@ namespace Weland {
 		UpdateStatusBar();
 		Redraw();
 	    }
+	}
+
+	void LoadLayer() {
+	    double floorHeight = Weland.Settings.GetSetting(String.Format("Layers/Layer{0}/FloorHeight", layer), -32.0);
+	    double ceilingHeight = Weland.Settings.GetSetting(String.Format("Layers/Layer{0}/CeilingHeight", layer), 32.0);
+	    
+	    viewFloorHeight.Value = floorHeight;
+	    viewCeilingHeight.Value = ceilingHeight;
+	}
+
+	void SaveLayer() {
+	    Weland.Settings.PutSetting(String.Format("Layers/Layer{0}/FloorHeight", layer), viewFloorHeight.Value);
+	    Weland.Settings.PutSetting(String.Format("Layers/Layer{0}/CeilingHeight", layer), viewCeilingHeight.Value);
+	}
+
+	protected void OnLayerChanged(object o, EventArgs e) {
+	    if (o == layer1) {
+		layer = 1;
+	    } else if (o == layer2) {
+		layer = 2;
+	    } else if (o == layer3) {
+		layer = 3;
+	    } else if (o == layer4) {
+		layer = 4;
+	    } else if (o == layer5) {
+		layer = 5;
+	    } else if (o == layer6) {
+		layer = 6;
+	    }
+	    LoadLayer();
+	    Redraw();
 	}
     }
 }
