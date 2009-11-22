@@ -1665,7 +1665,7 @@ namespace Weland {
 	}
 	
 	protected void OnPreferences(object o, EventArgs e) {
-	    PreferencesDialog d = new PreferencesDialog(window1);
+	    PreferencesDialog d = new PreferencesDialog(window1, drawingArea);
 	    d.Run();
 	    drawingArea.Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	    Redraw();
