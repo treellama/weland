@@ -144,7 +144,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="gtk-preferences">
+                      <widget class="GtkImageMenuItem" id="preferencesItem">
                         <property name="label">gtk-preferences</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
