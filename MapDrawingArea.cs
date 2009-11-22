@@ -561,45 +561,47 @@ namespace Weland {
 	    civilianColor = new Drawer.Color(0, 0, 1);  
 	}
 
+	string colorsPrefix = "Drawer/Colors/";
+
 	public void LoadColors() {
 	    DefaultColors();
-	    backgroundColor = LoadColor("Colors/Background", backgroundColor);
-	    pointColor = LoadColor("Colors/Point", pointColor);
-	    annotationColor = LoadColor("Colors/Annotation", annotationColor);
-	    impassableLineColor = LoadColor("Colors/ImpassableLine", impassableLineColor);
-	    solidLineColor = LoadColor("Colors/Line", solidLineColor);
-	    transparentLineColor = LoadColor("Colors/TransparentLine", transparentLineColor);
-	    selectedLineColor = LoadColor("Colors/Selection", selectedLineColor);
-	    selectedPolygonColor = LoadColor("Colors/SelectedPolygon", selectedPolygonColor);
-	    destinationPolygonColor = LoadColor("Colors/TargetPolygon", destinationPolygonColor);
-	    polygonColor = LoadColor("Colors/Polygon", polygonColor);
-	    invalidPolygonColor = LoadColor("Colors/InvalidPolygon", invalidPolygonColor);
-	    gridLineColor = LoadColor("Colors/GridLine", gridLineColor);
-	    gridPointColor = LoadColor("Colors/GridPoint", gridPointColor);
-	    objectColor = LoadColor("Colors/Object", objectColor);
-	    playerColor = LoadColor("Colors/Player", playerColor);
-	    monsterColor = LoadColor("Colors/Monster", monsterColor);
-	    civilianColor = LoadColor("Colors/Civilian", civilianColor);
+	    backgroundColor = LoadColor(colorsPrefix + "Background", backgroundColor);
+	    pointColor = LoadColor(colorsPrefix + "Point", pointColor);
+	    annotationColor = LoadColor(colorsPrefix + "Annotation", annotationColor);
+	    impassableLineColor = LoadColor(colorsPrefix + "ImpassableLine", impassableLineColor);
+	    solidLineColor = LoadColor(colorsPrefix + "Line", solidLineColor);
+	    transparentLineColor = LoadColor(colorsPrefix + "TransparentLine", transparentLineColor);
+	    selectedLineColor = LoadColor(colorsPrefix + "Selection", selectedLineColor);
+	    selectedPolygonColor = LoadColor(colorsPrefix + "SelectedPolygon", selectedPolygonColor);
+	    destinationPolygonColor = LoadColor(colorsPrefix + "TargetPolygon", destinationPolygonColor);
+	    polygonColor = LoadColor(colorsPrefix + "Polygon", polygonColor);
+	    invalidPolygonColor = LoadColor(colorsPrefix + "InvalidPolygon", invalidPolygonColor);
+	    gridLineColor = LoadColor(colorsPrefix + "GridLine", gridLineColor);
+	    gridPointColor = LoadColor(colorsPrefix + "GridPoint", gridPointColor);
+	    objectColor = LoadColor(colorsPrefix + "Object", objectColor);
+	    playerColor = LoadColor(colorsPrefix + "Player", playerColor);
+	    monsterColor = LoadColor(colorsPrefix + "Monster", monsterColor);
+	    civilianColor = LoadColor(colorsPrefix + "Civilian", civilianColor);
 	}
 
 	public void SaveColors() {
-	    SaveColor("Colors/Background", backgroundColor);
-	    SaveColor("Colors/Point", pointColor);
-	    SaveColor("Colors/Annotation", annotationColor);
-	    SaveColor("Colors/ImpassableLine", impassableLineColor);
-	    SaveColor("Colors/Line", solidLineColor);
-	    SaveColor("Colors/TransparentLine", transparentLineColor);
-	    SaveColor("Colors/Selection", selectedLineColor);
-	    SaveColor("Colors/SelectedPolygon", selectedPolygonColor);
-	    SaveColor("Colors/TargetPolygon", destinationPolygonColor);
-	    SaveColor("Colors/Polygon", polygonColor);
-	    SaveColor("Colors/InvalidPolygon", invalidPolygonColor);
-	    SaveColor("Colors/GridLine", gridLineColor);
-	    SaveColor("Colors/GridPoint", gridPointColor);
-	    SaveColor("Colors/Object", objectColor);
-	    SaveColor("Colors/Player", playerColor);
-	    SaveColor("Colors/Monster", monsterColor);
-	    SaveColor("Colors/Civilian", civilianColor);
+	    SaveColor(colorsPrefix + "Background", backgroundColor);
+	    SaveColor(colorsPrefix + "Point", pointColor);
+	    SaveColor(colorsPrefix + "Annotation", annotationColor);
+	    SaveColor(colorsPrefix + "ImpassableLine", impassableLineColor);
+	    SaveColor(colorsPrefix + "Line", solidLineColor);
+	    SaveColor(colorsPrefix + "TransparentLine", transparentLineColor);
+	    SaveColor(colorsPrefix + "Selection", selectedLineColor);
+	    SaveColor(colorsPrefix + "SelectedPolygon", selectedPolygonColor);
+	    SaveColor(colorsPrefix + "TargetPolygon", destinationPolygonColor);
+	    SaveColor(colorsPrefix + "Polygon", polygonColor);
+	    SaveColor(colorsPrefix + "InvalidPolygon", invalidPolygonColor);
+	    SaveColor(colorsPrefix + "GridLine", gridLineColor);
+	    SaveColor(colorsPrefix + "GridPoint", gridPointColor);
+	    SaveColor(colorsPrefix + "Object", objectColor);
+	    SaveColor(colorsPrefix + "Player", playerColor);
+	    SaveColor(colorsPrefix + "Monster", monsterColor);
+	    SaveColor(colorsPrefix + "Civilian", civilianColor);
 	}
     }
 }
