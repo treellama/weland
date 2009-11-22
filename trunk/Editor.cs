@@ -111,16 +111,36 @@ namespace Weland {
 	short downX;
 	short downY;
 
+	public int DefaultSnapDistance;
+	public int ObjectSnapDistance;
+	public int InertiaDistance;
+
+	public void LoadSettings() {
+	    DefaultSnapDistance = Weland.Settings.GetSetting("Distance/Select/Default", 4);
+	    ObjectSnapDistance = Weland.Settings.GetSetting("Distance/Select/Object", 8);
+	    InertiaDistance = Weland.Settings.GetSetting("Distance/Inertia/Default", 8);
+	}
+
+	public void SaveSettings() {
+	    Weland.Settings.PutSetting("Distance/Select/Default", DefaultSnapDistance);
+	    Weland.Settings.PutSetting("Distance/Select/Object", ObjectSnapDistance);
+	    Weland.Settings.PutSetting("Distance/Inertia/Default", InertiaDistance);
+	}
+
+	public Editor() {
+	    LoadSettings();
+	}
+	
 	int DefaultSnap() {
-	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Select/Default", 4) / Scale);
+	    return (int) Math.Round(DefaultSnapDistance / Scale);
 	}
 
 	int ObjectSnap() {
-	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Select/Object", 8) / Scale);
+	    return (int) Math.Round(ObjectSnapDistance / Scale);
 	}
 
 	int Inertia() {
-	    return (int) Math.Round(Weland.Settings.GetSetting("Distance/Inertia/Default", 8) / Scale);
+	    return (int) Math.Round(InertiaDistance / Scale);
 	}
 
 	short GridAdjust(short value) {
