@@ -4,11 +4,11 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="delete_event" handler="OnDelete"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
-    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="delete_event" handler="OnDelete"/>
     <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -2649,6 +2649,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 1</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
@@ -2664,6 +2665,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 2</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">layer1</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
@@ -2679,6 +2681,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 3</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">layer1</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
@@ -2694,6 +2697,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 4</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">layer1</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
@@ -2709,6 +2713,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 5</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">layer1</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
@@ -2724,6 +2729,7 @@ Green</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">View Height Preset 6</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">layer1</property>
                     <signal name="toggled" handler="OnLayerChanged"/>
