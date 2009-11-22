@@ -101,31 +101,27 @@ namespace Weland {
 	    itemImages[ItemType.SmgAmmo] = new Gdk.Pixbuf(null, "smg-ammo.png");
 
 	    Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
+
+	    LoadColors();
 	}
 
-	Drawer.Color backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
-	Drawer.Color pointColor = new Drawer.Color(1, 0, 0);
-	Drawer.Color annotationColor = new Drawer.Color(0, 0, 1);
-	Drawer.Color impassableLineColor = new Drawer.Color(0.2, 0.98, 0.48);
-	Drawer.Color solidLineColor = new Drawer.Color(0, 0, 0);
-	Drawer.Color transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
-	Drawer.Color selectedLineColor = new Drawer.Color(1, 1, 0);
-	Drawer.Color selectedPolygonColor = new Drawer.Color((double) 0xff/0xff, 
-							  (double) 0xcc/0xff,
-							  (double) 0x66/0xff);
-	Drawer.Color destinationPolygonColor = new Drawer.Color((double) 0x99/0xff,
-								(double) 0xbb/0xff,
-								(double) 0x55/0xff);
-	Drawer.Color polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
-	Drawer.Color invalidPolygonColor = new Drawer.Color((double) 0xfb/0xff,
-							    (double) 0x48/0xff,
-							    (double) 0x09/0xff);
-	Drawer.Color gridLineColor = new Drawer.Color(0.6, 0.6, 0.6);
-	Drawer.Color gridPointColor = new Drawer.Color(0, 0.8, 0.8);
-	Drawer.Color objectColor = new Drawer.Color(1, 1, 0);
-	Drawer.Color playerColor = new Drawer.Color(1, 1, 0);
-	Drawer.Color monsterColor = new Drawer.Color(1, 0, 0);
-	Drawer.Color civilianColor = new Drawer.Color(0, 0, 1);
+	public Drawer.Color backgroundColor;
+	public Drawer.Color pointColor;
+	public Drawer.Color annotationColor;
+	public Drawer.Color impassableLineColor;
+	public Drawer.Color solidLineColor;
+	public Drawer.Color transparentLineColor;
+	public Drawer.Color selectedLineColor;
+	public Drawer.Color selectedPolygonColor;
+	public Drawer.Color destinationPolygonColor;
+	public Drawer.Color polygonColor;
+	public Drawer.Color invalidPolygonColor;
+	public Drawer.Color gridLineColor;
+	public Drawer.Color gridPointColor;
+	public Drawer.Color objectColor;
+	public Drawer.Color playerColor;
+	public Drawer.Color monsterColor;
+	public Drawer.Color civilianColor;
 
 	Gdk.Pixbuf sceneryImage = new Gdk.Pixbuf(null, "flower.png");
 	Gdk.Pixbuf soundImage = new Gdk.Pixbuf(null, "sound.png");
@@ -522,6 +518,88 @@ namespace Weland {
 	    } else {
 		DrawFatPoint(annotationColor, new Point(note.X, note.Y));
 	    }
+	}
+
+	Drawer.Color LoadColor(string xPath, Drawer.Color defaultColor) {
+	    Drawer.Color c;
+	    c.R = Weland.Settings.GetSetting(xPath + "/Red", defaultColor.R);
+	    c.G = Weland.Settings.GetSetting(xPath + "/Green", defaultColor.G);
+	    c.B = Weland.Settings.GetSetting(xPath + "/Blue", defaultColor.B);
+
+	    return c;
+	}
+
+	void SaveColor(string xPath, Drawer.Color c) {
+	    Weland.Settings.PutSetting(xPath + "/Red", c.R);
+	    Weland.Settings.PutSetting(xPath + "/Green", c.G);
+	    Weland.Settings.PutSetting(xPath + "/Blue", c.B);
+	}
+
+	public void DefaultColors() {
+	    backgroundColor = new Drawer.Color(0.33, 0.33, 0.33);
+	    pointColor = new Drawer.Color(1, 0, 0);
+	    annotationColor = new Drawer.Color(0, 0, 1);
+	    impassableLineColor = new Drawer.Color(0.2, 0.98, 0.48);
+	    solidLineColor = new Drawer.Color(0, 0, 0);
+	    transparentLineColor = new Drawer.Color(0.2, 0.8, 0.8);
+	    selectedLineColor = new Drawer.Color(1, 1, 0);
+	    selectedPolygonColor = new Drawer.Color((double) 0xff/0xff, 
+						    (double) 0xcc/0xff,
+						    (double) 0x66/0xff);
+	    destinationPolygonColor = new Drawer.Color((double) 0x99/0xff,
+						       (double) 0xbb/0xff,
+						       (double) 0x55/0xff);
+	    polygonColor = new Drawer.Color(0.87, 0.87, 0.87);
+	    invalidPolygonColor = new Drawer.Color((double) 0xfb/0xff,
+						   (double) 0x48/0xff,
+						   (double) 0x09/0xff);
+	    gridLineColor = new Drawer.Color(0.6, 0.6, 0.6);
+	    gridPointColor = new Drawer.Color(0, 0.8, 0.8);
+	    objectColor = new Drawer.Color(1, 1, 0);
+	    playerColor = new Drawer.Color(1, 1, 0);
+	    monsterColor = new Drawer.Color(1, 0, 0);
+	    civilianColor = new Drawer.Color(0, 0, 1);  
+	}
+
+	public void LoadColors() {
+	    DefaultColors();
+	    backgroundColor = LoadColor("Colors/Background", backgroundColor);
+	    pointColor = LoadColor("Colors/Point", pointColor);
+	    annotationColor = LoadColor("Colors/Annotation", annotationColor);
+	    impassableLineColor = LoadColor("Colors/ImpassableLine", impassableLineColor);
+	    solidLineColor = LoadColor("Colors/Line", solidLineColor);
+	    transparentLineColor = LoadColor("Colors/TransparentLine", transparentLineColor);
+	    selectedLineColor = LoadColor("Colors/Selection", selectedLineColor);
+	    selectedPolygonColor = LoadColor("Colors/SelectedPolygon", selectedPolygonColor);
+	    destinationPolygonColor = LoadColor("Colors/TargetPolygon", destinationPolygonColor);
+	    polygonColor = LoadColor("Colors/Polygon", polygonColor);
+	    invalidPolygonColor = LoadColor("Colors/InvalidPolygon", invalidPolygonColor);
+	    gridLineColor = LoadColor("Colors/GridLine", gridLineColor);
+	    gridPointColor = LoadColor("Colors/GridPoint", gridPointColor);
+	    objectColor = LoadColor("Colors/Object", objectColor);
+	    playerColor = LoadColor("Colors/Player", playerColor);
+	    monsterColor = LoadColor("Colors/Monster", monsterColor);
+	    civilianColor = LoadColor("Colors/Civilian", civilianColor);
+	}
+
+	public void SaveColors() {
+	    SaveColor("Colors/Background", backgroundColor);
+	    SaveColor("Colors/Point", pointColor);
+	    SaveColor("Colors/Annotation", annotationColor);
+	    SaveColor("Colors/ImpassableLine", impassableLineColor);
+	    SaveColor("Colors/Line", solidLineColor);
+	    SaveColor("Colors/TransparentLine", transparentLineColor);
+	    SaveColor("Colors/Selection", selectedLineColor);
+	    SaveColor("Colors/SelectedPolygon", selectedPolygonColor);
+	    SaveColor("Colors/TargetPolygon", destinationPolygonColor);
+	    SaveColor("Colors/Polygon", polygonColor);
+	    SaveColor("Colors/InvalidPolygon", invalidPolygonColor);
+	    SaveColor("Colors/GridLine", gridLineColor);
+	    SaveColor("Colors/GridPoint", gridPointColor);
+	    SaveColor("Colors/Object", objectColor);
+	    SaveColor("Colors/Player", playerColor);
+	    SaveColor("Colors/Monster", monsterColor);
+	    SaveColor("Colors/Civilian", civilianColor);
 	}
     }
 }
