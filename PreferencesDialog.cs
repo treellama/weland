@@ -4,11 +4,12 @@ using System;
 
 namespace Weland {
     public class PreferencesDialog {
-	public PreferencesDialog(Window parent, MapDrawingArea drawingArea) {
+	public PreferencesDialog(Window parent, MapDrawingArea drawingArea, Editor theEditor) {
 	    Glade.XML gxml = new Glade.XML(null, "preferences.glade", "dialog1", null);
 	    gxml.Autoconnect(this);
 	    dialog1.TransientFor = parent;
 	    area = drawingArea;
+	    editor = theEditor;
 	}
 
 	Gdk.Color ToGDK(Drawer.Color color) {
@@ -42,6 +43,9 @@ namespace Weland {
 	    antialias.Active = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 
 	    LoadColors(area);
+	    selectionDistance.Value = editor.DefaultSnapDistance;
+	    objectDistance.Value = editor.ObjectSnapDistance;
+	    dragInertia.Value = editor.InertiaDistance;
 
 	    dialog1.ShowAll();
 	    dialog1.Show();
@@ -63,8 +67,12 @@ namespace Weland {
 		area.monsterColor = FromGDK(monsterColor.Color);
 		area.civilianColor = FromGDK(civilianColor.Color);
 		area.annotationColor = FromGDK(annotationColor.Color);
-
 		area.SaveColors();
+
+		editor.DefaultSnapDistance = (int) selectionDistance.Value;
+		editor.ObjectSnapDistance = (int) objectDistance.Value;
+		editor.InertiaDistance = (int) dragInertia.Value;
+		editor.SaveSettings();
 	    }
 	    dialog1.Destroy();
 	}
@@ -76,6 +84,7 @@ namespace Weland {
 	}
 
 	MapDrawingArea area;
+	Editor editor;
 
 	[Widget] Dialog dialog1;
 
@@ -97,5 +106,9 @@ namespace Weland {
 	[Widget] ColorButton monsterColor;
 	[Widget] ColorButton civilianColor;
 	[Widget] ColorButton annotationColor;
+
+	[Widget] HScale selectionDistance;
+	[Widget] HScale objectDistance;
+	[Widget] HScale dragInertia;
     }
 }
