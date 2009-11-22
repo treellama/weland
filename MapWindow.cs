@@ -35,6 +35,7 @@ namespace Weland {
 	[Widget] MenuItem quitItem;
 	[Widget] MenuItem quitSeparator;
 	[Widget] MenuItem aboutItem;
+	[Widget] MenuItem preferencesItem;
 
 	[Widget] HScale viewFloorHeight;
 	[Widget] HScale viewCeilingHeight;
@@ -159,6 +160,8 @@ namespace Weland {
 
 		IgeMacIntegration.IgeMacMenuGroup appMenuGroup = IgeMacIntegration.IgeMacMenu.AddAppMenuGroup();
 		appMenuGroup.AddMenuItem(aboutItem, "About Weland");
+		appMenuGroup.AddMenuItem(new SeparatorMenuItem(), "-");
+		appMenuGroup.AddMenuItem(preferencesItem, "Preferences…");
 		quitSeparator.Hide();
 
 		menubar1.Hide();
@@ -280,7 +283,7 @@ namespace Weland {
 		if (theta < 0) { 
 		    theta += 2 * Math.PI;
 		}
-		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU\tAngle: {1:0.0}°", World.ToDouble((int) Math.Round(r)), theta * 180 / Math.PI));
+		statusbar.Push(id, String.Format("Line Length: {0:0.000} WU\tAngle: {1:0.0}Â°", World.ToDouble((int) Math.Round(r)), theta * 180 / Math.PI));
 	    } else {
 		statusbar.Push(id, String.Format("Level: {0}\t{1} Polygons, {2} Lights, {3} Objects", Level.Name, Level.Polygons.Count, Level.Lights.Count, Level.Objects.Count));
 	    }
