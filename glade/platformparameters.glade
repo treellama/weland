@@ -802,7 +802,7 @@ Pfhor Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will never deactivate.</property>
+                                        <property name="tooltip" translatable="yes">When activated, the platform will extend to its Max Height and retract to its Min Height (or vice versa) continuously. If the platform is switch activated it can be deactivated and re-activated (stopping the platform at its current height) by the switch unless "Miscellaneous: Can't Deactivate Externally" is checked.</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
                                       </widget>
