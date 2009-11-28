@@ -41,6 +41,7 @@ namespace Weland {
     
 	public void Run() {
 	    antialias.Active = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
+	    showHiddenVertices.Active = Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
 
 	    LoadColors(area);
 	    selectionDistance.Value = editor.DefaultSnapDistance;
@@ -51,6 +52,9 @@ namespace Weland {
 	    dialog1.Show();
 	    if (dialog1.Run() == (int) ResponseType.Ok) {
 		Weland.Settings.PutSetting("Drawer/SmoothLines", antialias.Active);
+		Weland.Settings.PutSetting("MapWindow/ShowHiddenVertices", showHiddenVertices.Active);
+		Level.FilterPoints = !showHiddenVertices.Active;
+
 		area.backgroundColor = FromGDK(backgroundColor.Color);
 		area.gridLineColor = FromGDK(gridColor.Color);
 		area.gridPointColor = FromGDK(gridPointColor.Color);
@@ -89,6 +93,7 @@ namespace Weland {
 	[Widget] Dialog dialog1;
 
 	[Widget] ToggleButton antialias;
+	[Widget] ToggleButton showHiddenVertices;
 
 	[Widget] ColorButton backgroundColor;
 	[Widget] ColorButton gridColor;

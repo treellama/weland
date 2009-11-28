@@ -40,8 +40,6 @@ namespace Weland {
 	[Widget] HScale viewFloorHeight;
 	[Widget] HScale viewCeilingHeight;
 
-	[Widget] CheckButton showHiddenPoints;
-
 	[Widget] RadioButton layer1;
 	[Widget] RadioButton layer2;
 	[Widget] RadioButton layer3;
@@ -243,8 +241,7 @@ namespace Weland {
 		eighthWUButton.Active = true;
 	    }
 
-	    showHiddenPoints.Active = Weland.Settings.GetSetting("MapWindow/ShowHiddenPoints", true);
-	    Level.FilterPoints = !showHiddenPoints.Active;
+	    Level.FilterPoints = !Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
 
 	    window1.AllowShrink = true;
 	    int width = Weland.Settings.GetSetting("MapWindow/Width", 800);
@@ -1673,12 +1670,6 @@ namespace Weland {
 	    PreferencesDialog d = new PreferencesDialog(window1, drawingArea, editor);
 	    d.Run();
 	    drawingArea.Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
-	    Redraw();
-	}
-
-	protected void OnToggleHiddenPoints(object o, EventArgs e) {
-	    Level.FilterPoints = !showHiddenPoints.Active;
-	    Weland.Settings.PutSetting("MapWindow/ShowHiddenPoints", showHiddenPoints.Active);
 	    Redraw();
 	}
     }
