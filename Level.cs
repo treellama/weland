@@ -55,6 +55,10 @@ namespace Weland {
 	public short TemporaryLineStartIndex = -1;
 	public Point TemporaryLineEnd;
 
+	// for hiding points
+	public List<HashSet<Polygon>> EndpointPolygons = new List<HashSet<Polygon>>();
+	public List<HashSet<Line>> EndpointLines = new List<HashSet<Line>>();
+
 	List<uint> ChunkFilter = new List<uint> {
 	    // saved game / optimized map tags
 	    Endpoint.Tag,
@@ -211,8 +215,21 @@ namespace Weland {
 		LoadChunkList<Annotation>(Annotations, wad.Chunks[Annotation.Tag]);
 	    }
 
+	    EndpointPolygons.Clear();
+	    for (int i = 0; i < Endpoints.Count; ++i) {
+		EndpointPolygons.Add(new HashSet<Polygon>());
+		EndpointLines.Add(new HashSet<Line>());
+	    }
+
 	    foreach (Polygon polygon in Polygons) {
 		UpdatePolygonConcavity(polygon);
+		for (int i = 0; i < polygon.VertexCount; ++i) {
+		    Line line = Lines[polygon.LineIndexes[i]];
+		    EndpointPolygons[line.EndpointIndexes[0]].Add(polygon);
+		    EndpointPolygons[line.EndpointIndexes[1]].Add(polygon);
+		    EndpointLines[line.EndpointIndexes[0]].Add(line);
+		    EndpointLines[line.EndpointIndexes[1]].Add(line);
+		}
 	    }
 
 	    for (int i = 0; i < Polygons.Count; ++i) {
