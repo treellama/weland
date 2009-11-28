@@ -227,7 +227,7 @@ namespace Weland {
 		}
 
 		for (short i = 0; i < Level.Endpoints.Count; ++i) {
-		    if (Points[i] == CohenSutherland.Inside) {
+		    if (Level.FilterPoint(Filter, i) && Points[i] == CohenSutherland.Inside) {
 			DrawPoint(Level.Endpoints[i]);
 		    }
 		}

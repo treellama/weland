@@ -79,7 +79,7 @@ namespace Weland {
 	    set {
 		tool = value;
 		if (Level.TemporaryLineStartIndex != -1) {
-		    if (Level.EndpointLines(Level.TemporaryLineStartIndex).Count == 0) {
+		    if (Level.FindEndpointLines(Level.TemporaryLineStartIndex).Count == 0) {
 			Level.DeletePoint(Level.TemporaryLineStartIndex);
 		    }
 		    Level.TemporaryLineStartIndex = -1;
@@ -477,14 +477,14 @@ namespace Weland {
 		AddDirty(p);
 		
 		// dirty every endpoint line(!)
-		List<short> lines = Level.EndpointLines(index);
-		foreach (short i in lines) {
-		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[0]]);
-		    AddDirty(Level.Endpoints[Level.Lines[i].EndpointIndexes[1]]);
+		HashSet<Line> lines = Level.EndpointLines[index];
+		foreach (Line line in lines) {
+		    AddDirty(Level.Endpoints[line.EndpointIndexes[0]]);
+		    AddDirty(Level.Endpoints[line.EndpointIndexes[1]]);
 		}
 
 		// update attached polygon concavity
-		List<short> polygons = Level.EndpointPolygons(index);
+		List<short> polygons = Level.FindEndpointPolygons(index);
 		
 		// dirty every attached polygon(!!?)
 		foreach (short i in polygons) {
@@ -1054,7 +1054,7 @@ namespace Weland {
 		// so remember a line reference and index into that
 		// line's EndpointIndexes list
 		List<short> nextPointCandidates = new List<short>();
-		foreach (short i in Level.EndpointLines(Selection.Point)) {
+		foreach (short i in Level.FindEndpointLines(Selection.Point)) {
 		    if (Level.Lines[i].EndpointIndexes[0] == Selection.Point) {
 			nextPointCandidates.Add(Level.Lines[i].EndpointIndexes[1]);
 		    } else {
@@ -1069,7 +1069,7 @@ namespace Weland {
 		Line nextLine = null;
 		int nextLineEndpointIndex = 0;
 		foreach (short point_index in nextPointCandidates) {
-		    foreach (short i in Level.EndpointLines(point_index)) {
+		    foreach (short i in Level.FindEndpointLines(point_index)) {
 			if (Level.Lines[i].EndpointIndexes[0] == point_index &&
 			    Level.Lines[i].EndpointIndexes[1] != Selection.Point) {
 			    nextLine = Level.Lines[i];

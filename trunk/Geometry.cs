@@ -10,6 +10,7 @@ namespace Weland {
     public partial class Level {
 	public static PolygonFilter Filter = p => true;
 	public static ObjectFilter ObjectFilter = o => true;
+	public static bool FilterPoints = false;
 
 	public bool FilterLine(PolygonFilter f, Line line) {
 	    if (line.ClockwisePolygonOwner == -1) {
@@ -25,6 +26,24 @@ namespace Weland {
 		    return f(Polygons[line.ClockwisePolygonOwner]) || f(Polygons[line.CounterclockwisePolygonOwner]);
 		}
 	    }
+	}
+
+	public bool FilterPoint(PolygonFilter f, short index) {
+	    if (!FilterPoints) return true;
+	    HashSet<Polygon> polygonSet = EndpointPolygons[index];
+	    foreach (Polygon polygon in polygonSet) {
+		if (f(polygon)) {
+		    return true;
+		}
+	    }
+
+	    HashSet<Line> lineSet = EndpointLines[index];
+	    foreach (Line line in lineSet) {
+		if (FilterLine(f, line)) {
+		    return true;
+		}
+	    }
+	    return false;
 	}
 
 	public int Distance(Point p0, Point p1) {
@@ -92,11 +111,13 @@ namespace Weland {
 	public short GetClosestPoint(Point p) {
 	    int min = int.MaxValue;
 	    short closest_point = -1;
-	    for (short i = 0; i < Endpoints.Count; ++i) {		
-		int distance = Distance(p, Endpoints[i]);
-		if (distance < min) {
-		    closest_point = i;
-		    min = distance;
+	    for (short i = 0; i < Endpoints.Count; ++i) {	
+		if (FilterPoint(Filter, i)) {
+		    int distance = Distance(p, Endpoints[i]);
+		    if (distance < min) {
+			closest_point = i;
+			min = distance;
+		    }
 		}
 	    }
 	    return closest_point;
@@ -150,6 +171,8 @@ namespace Weland {
 	    p.X = X;
 	    p.Y = Y;
 	    Endpoints.Add(p);
+	    EndpointPolygons.Add(new HashSet<Polygon>());
+	    EndpointLines.Add(new HashSet<Line>());
 	    return (short) (Endpoints.Count - 1);
 	}
 
@@ -157,6 +180,8 @@ namespace Weland {
 	    Line line = new Line();
 	    line.EndpointIndexes[0] = p1;
 	    line.EndpointIndexes[1] = p2;
+	    EndpointLines[p1].Add(line);
+	    EndpointLines[p2].Add(line);
 	    Lines.Add(line);
 	    return (short) (Lines.Count - 1);
 	}
@@ -212,7 +237,7 @@ namespace Weland {
 	}
 	
 	// get all lines attached to endpoint
-	public List<short> EndpointLines(short index) {
+	public List<short> FindEndpointLines(short index) {
 	    List<short> lines = new List<short>();
 	    for (int i = 0; i < Lines.Count; ++i) {
 		Line line = Lines[i];
@@ -225,7 +250,7 @@ namespace Weland {
 	}
 
 	// get all polygons that have this endpoint
-	public List<short> EndpointPolygons(short index) {
+	public List<short> FindEndpointPolygons(short index) {
 	    List<short> polygons = new List<short>();
 	    for (int i = 0; i < Polygons.Count; ++i) {
 		for (int j = 0; j < Polygons[i].VertexCount; ++j) {
@@ -263,7 +288,7 @@ namespace Weland {
 		}	
 	    }
 
-	    List<short> neighbors = EndpointLines(current);
+	    List<short> neighbors = FindEndpointLines(current);
 	    neighbors.Remove(starter);
 	    if (neighbors.Count == 0) {
 		return false;
@@ -416,6 +441,9 @@ namespace Weland {
 
 	    List<short> points = GetPointRingFromLineRing(loop);
 	    points.CopyTo(polygon.EndpointIndexes);
+	    foreach (short i in points) {
+		EndpointPolygons[i].Add(polygon);
+	    }
 
 	    short index = (short) Polygons.Count;
 	    Polygons.Add(polygon);
@@ -510,6 +538,8 @@ namespace Weland {
 	}
 
 	public void DeletePolygon(short index) {
+	    Polygon polygonRef = Polygons[index];
+	    
 	    short platformIndex = -1;
 	    if (Polygons[index].Type == PolygonType.Platform) {
 		platformIndex = Polygons[index].Permutation;
@@ -530,6 +560,9 @@ namespace Weland {
 		    line.CounterclockwisePolygonOwner = -1;
 		    line.Flags = LineFlags.Solid;
 		}
+
+		EndpointPolygons[line.EndpointIndexes[0]].Remove(polygonRef);
+		EndpointPolygons[line.EndpointIndexes[1]].Remove(polygonRef);
 	    }
 
 	    for (int i = Sides.Count - 1; i >= 0; --i) {
@@ -594,6 +627,9 @@ namespace Weland {
 
 
 	public void DeleteLineIndex(short index) {
+	    Line line = Lines[index];
+	    EndpointLines[line.EndpointIndexes[0]].Remove(line);
+	    EndpointLines[line.EndpointIndexes[1]].Remove(line);
 	    Lines.RemoveAt(index);
 	    foreach (Polygon poly in Polygons) {
 		poly.DeleteLine(index);
@@ -605,6 +641,8 @@ namespace Weland {
 
 	public void DeletePointIndex(short index) {
 	    Endpoints.RemoveAt(index);
+	    EndpointPolygons.RemoveAt(index);
+	    EndpointLines.RemoveAt(index);
 	    foreach (Line line in Lines) {
 		if (line.EndpointIndexes[0] > index) {
 		    --line.EndpointIndexes[0];
