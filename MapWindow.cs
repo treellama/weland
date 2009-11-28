@@ -850,7 +850,7 @@ namespace Weland {
 		d.AddFilter(filter);
 		filter = new FileFilter();
 		filter.Name = "All Files";
-		filter.AddPattern("*.*");
+		filter.AddPattern("*");
 		d.AddFilter(filter);
 		if (d.Run() == (int) ResponseType.Accept) {
 		    Weland.Settings.PutSetting("LastOpen/Folder", Path.GetDirectoryName(d.Filename));
