@@ -227,9 +227,12 @@ namespace Weland {
 		    Line line = Lines[polygon.LineIndexes[i]];
 		    EndpointPolygons[line.EndpointIndexes[0]].Add(polygon);
 		    EndpointPolygons[line.EndpointIndexes[1]].Add(polygon);
-		    EndpointLines[line.EndpointIndexes[0]].Add(line);
-		    EndpointLines[line.EndpointIndexes[1]].Add(line);
 		}
+	    }
+
+	    foreach (Line line in Lines) {
+		EndpointLines[line.EndpointIndexes[0]].Add(line);
+		EndpointLines[line.EndpointIndexes[1]].Add(line);
 	    }
 
 	    for (int i = 0; i < Polygons.Count; ++i) {
