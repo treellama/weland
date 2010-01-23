@@ -5,4 +5,4 @@
 /define:SYSTEM_DRAWING
 
 @common.rsp
-SystemDrawer.cs
+gtk-sharp/SystemDrawer.cs
