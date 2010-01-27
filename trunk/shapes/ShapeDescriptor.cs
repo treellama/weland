@@ -3,9 +3,9 @@ namespace Weland {
 	const int ShapeBits = 8;
 	const int CollectionBits = 5;
 	const int CLUTBits = 3;
-	static readonly int MaximumCollections = 1 << CollectionBits;
-	static readonly int MaximumShapes = 1 << ShapeBits;
-	static readonly int MaximumCLUTs = 1 << CLUTBits;
+	public static readonly int MaximumCollections = 1 << CollectionBits;
+	public static readonly int MaximumShapes = 1 << ShapeBits;
+	public static readonly int MaximumCLUTs = 1 << CLUTBits;
 
 	public static readonly ShapeDescriptor Empty = new ShapeDescriptor(ushort.MaxValue);
 

@@ -2,6 +2,7 @@
 /main:Weland.Weland
 /pkg:gtk-sharp-2.0
 /pkg:glade-sharp-2.0
+/r:System.Drawing
 
 level/Annotation.cs
 Assembly.cs
@@ -33,7 +34,10 @@ level/Point.cs
 level/Polygon.cs
 gtk-sharp/PopupParametersDialogs.cs
 gtk-sharp/PreferencesDialog.cs
-Shapes.cs
+shapes/Bitmap.cs
+shapes/Collection.cs
+shapes/ShapeDescriptor.cs
+shapes/ShapesFile.cs
 Settings.cs
 level/Side.cs
 level/Sounds.cs
