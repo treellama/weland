@@ -1307,7 +1307,12 @@ namespace Weland {
 	}
 
 	internal void OnDelete(object o, DeleteEventArgs e) {
-	    Application.Quit();
+	    if (CheckSave()) {
+		e.RetVal = false;
+		Application.Quit();
+	    } else {
+		e.RetVal = true;
+	    }
 	}
 
 	[Widget] ToggleToolButton twoWUButton;
