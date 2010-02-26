@@ -22,7 +22,7 @@ namespace Weland {
 	Dirty = 0x4000
     }
 
-    public enum ControlPanelType : short {
+    public enum ControlPanelClass : short {
 	Oxygen,
 	Shield,
 	DoubleShield,
@@ -56,13 +56,29 @@ namespace Weland {
 	    }
 	}
 
+	public bool IsControlPanel {
+	    get {
+		return (Flags & SideFlags.IsControlPanel) != 0;
+	    }
+	    set {
+		if (value)
+		    Flags |= SideFlags.IsControlPanel;
+		else
+		    Flags &= ~SideFlags.IsControlPanel;
+	    }
+	}
+
+	public bool IsPlatformSwitch() {
+	    return controlPanelClasses[ControlPanelType] == ControlPanelClass.PlatformSwitch;
+	}
+
 	public SideType Type;
 	public SideFlags Flags;
 	public TextureDefinition Primary;
 	public TextureDefinition Secondary;
 	public TextureDefinition Transparent;
 
-	public ControlPanelType ControlPanelType;
+	public short ControlPanelType;
 	public short ControlPanelPermutation;
 	public short PrimaryTransferMode;
 	public short SecondaryTransferMode;
@@ -97,7 +113,7 @@ namespace Weland {
 	    Secondary.Load(reader);
 	    Transparent.Load(reader);
 	    reader.BaseStream.Seek(16, SeekOrigin.Current); // exclusion zone
-	    ControlPanelType = (ControlPanelType) reader.ReadInt16();
+	    ControlPanelType = reader.ReadInt16();
 	    ControlPanelPermutation = reader.ReadInt16();
 	    PrimaryTransferMode = reader.ReadInt16();
 	    SecondaryTransferMode = reader.ReadInt16();
@@ -118,7 +134,7 @@ namespace Weland {
 	    Secondary.Save(writer);
 	    Transparent.Save(writer);
 	    writer.Write(new byte[16]);
-	    writer.Write((short) ControlPanelType);
+	    writer.Write(ControlPanelType);
 	    writer.Write((short) ControlPanelPermutation);
 	    writer.Write(PrimaryTransferMode);
 	    writer.Write(SecondaryTransferMode);
@@ -137,5 +153,71 @@ namespace Weland {
 		--LineIndex;
 	    }
 	}
+
+	static ControlPanelClass[] controlPanelClasses = {
+	    // Water
+	    ControlPanelClass.Oxygen,
+	    ControlPanelClass.Shield,
+	    ControlPanelClass.DoubleShield,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.LightSwitch,
+	    ControlPanelClass.PlatformSwitch,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.PatternBuffer,
+	    ControlPanelClass.Terminal,
+	    ControlPanelClass.TagSwitch,
+
+	    // Lava
+	    ControlPanelClass.Shield,
+	    ControlPanelClass.DoubleShield,
+	    ControlPanelClass.TripleShield,
+	    ControlPanelClass.LightSwitch,
+	    ControlPanelClass.PlatformSwitch,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.PatternBuffer,
+	    ControlPanelClass.Terminal,
+	    ControlPanelClass.Oxygen,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.TagSwitch,
+
+	    // Sewage
+	    ControlPanelClass.Shield,
+	    ControlPanelClass.DoubleShield,
+	    ControlPanelClass.TripleShield,
+	    ControlPanelClass.LightSwitch,
+	    ControlPanelClass.PlatformSwitch,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.PatternBuffer,
+	    ControlPanelClass.Terminal,
+	    ControlPanelClass.Oxygen,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.TagSwitch,
+
+	    // Pfhor
+	    ControlPanelClass.Shield,
+	    ControlPanelClass.DoubleShield,
+	    ControlPanelClass.TripleShield,
+	    ControlPanelClass.LightSwitch,
+	    ControlPanelClass.PlatformSwitch,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.PatternBuffer,
+	    ControlPanelClass.Terminal,
+	    ControlPanelClass.Oxygen,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.TagSwitch,
+
+	    // Jjaro
+	    ControlPanelClass.Shield,
+	    ControlPanelClass.DoubleShield,
+	    ControlPanelClass.TripleShield,
+	    ControlPanelClass.LightSwitch,
+	    ControlPanelClass.PlatformSwitch,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.PatternBuffer,
+	    ControlPanelClass.Terminal,
+	    ControlPanelClass.Oxygen,
+	    ControlPanelClass.TagSwitch,
+	    ControlPanelClass.TagSwitch
+	};
     }
 }

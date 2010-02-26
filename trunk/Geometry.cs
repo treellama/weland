@@ -573,8 +573,12 @@ namespace Weland {
 		}
 	    }
 
-	    foreach (Side side in Sides) {
-		if ((side.Flags & SideFlags.IsControlPanel) != 0 && side.ControlPanelType == ControlPanelType.PlatformSwitch) {
+	    Console.WriteLine("{0} {1}", Sides[3933].Flags, Sides[3933].ControlPanelType);
+
+	    //	    foreach (Side side in Sides) {
+	    for (int i = 0; i < Sides.Count; ++i) {
+		Side side = Sides[i];
+		if (side.IsControlPanel && side.IsPlatformSwitch()) {
 		    if (side.ControlPanelPermutation > index) {
 			--side.ControlPanelPermutation;
 		    }
@@ -891,9 +895,9 @@ namespace Weland {
 		side.SecondaryLightsourceIndex = 0;
 	    }
 
-	    if ((side.Flags & SideFlags.IsControlPanel) != 0 && side.ControlPanelType == ControlPanelType.PlatformSwitch) {
+	    if (side.IsControlPanel && side.IsPlatformSwitch()) {
 		if (side.ControlPanelPermutation < 0 || side.ControlPanelPermutation > Polygons.Count || Polygons[side.ControlPanelPermutation].Type != PolygonType.Platform) {
-		    side.Flags &= ~SideFlags.IsControlPanel;
+		    side.IsControlPanel = false;
 		}
 	    }
 	}
