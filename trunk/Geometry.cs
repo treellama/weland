@@ -573,11 +573,7 @@ namespace Weland {
 		}
 	    }
 
-	    Console.WriteLine("{0} {1}", Sides[3933].Flags, Sides[3933].ControlPanelType);
-
-	    //	    foreach (Side side in Sides) {
-	    for (int i = 0; i < Sides.Count; ++i) {
-		Side side = Sides[i];
+	    foreach (Side side in Sides) {
 		if (side.IsControlPanel && side.IsPlatformSwitch()) {
 		    if (side.ControlPanelPermutation > index) {
 			--side.ControlPanelPermutation;
