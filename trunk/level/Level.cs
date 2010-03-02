@@ -216,6 +216,7 @@ namespace Weland {
 	    }
 
 	    EndpointPolygons.Clear();
+	    EndpointLines.Clear();
 	    for (int i = 0; i < Endpoints.Count; ++i) {
 		EndpointPolygons.Add(new HashSet<Polygon>());
 		EndpointLines.Add(new HashSet<Line>());
