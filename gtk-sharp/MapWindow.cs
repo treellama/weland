@@ -811,7 +811,7 @@ namespace Weland {
 		editor.ClearUndo();
 		Center(0, 0);
 		AdjustScrollRange();
-		layer = 1;
+		layer1.Active = true;
 		ResetViewHeight();
 		window1.Title = wadfile.Directory[n].LevelName;
 		ChooseTool(editor.Tool);
@@ -868,7 +868,7 @@ namespace Weland {
 	    levelItem.Submenu = null;
 	    Center(0, 0);
 	    AdjustScrollRange();
-	    layer = 1;
+	    layer1.Active = true;
 	    ResetViewHeight();
 	    selection.Clear();
 	    editor.ClearUndo();
