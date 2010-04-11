@@ -621,6 +621,11 @@ namespace Weland {
 		    } else if (polygon.Permutation == index) {
 			polygon.Permutation = 0;
 		    }
+		} else if (polygon.Type == PolygonType.PlatformOnTrigger ||
+			   polygon.Type == PolygonType.PlatformOffTrigger) {
+		    if (polygon.Permutation > index) {
+			--polygon.Permutation;
+		    } 
 		}
 	    }
 	}
