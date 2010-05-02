@@ -23,8 +23,14 @@ windows-corflags: windows
 Weland.app: .FORCE
 	gmcs @weland.rsp
 	rm -rf Weland.app
-	macpack -n Weland -m cocoa -i icons/Weland.icns Weland.exe
-	ln -s /Library/Frameworks/Mono.framework/Libraries/libigemacintegration.dylib Weland.app/Contents/Resources/
+	mkdir -p Weland.app/Contents
+	sed -e 's/WELAND_VERSION/$(VERSION)/g' mac/Info.plist > Weland.app/Contents/Info.plist
+	mkdir -p Weland.app/Contents/Resources
+	cp icons/Weland.icns Weland.app/Contents/Resources/
+	mkdir -p Weland.app/Contents/MacOS
+	cp mac/weland.sh Weland.app/Contents/MacOS/weland
+	chmod u+x Weland.app/Contents/MacOS/weland
+	cp Weland.exe Weland.app/Contents/MacOS/Weland.exe
 
 winzip: windows-corflags
 	$(create-zipdir)
