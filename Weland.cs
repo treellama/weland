@@ -75,8 +75,8 @@ namespace Weland {
 	    Application.Init();
 	    
 	    MapWindow window = new MapWindow("Weland");
-	    
-	    if (args.Length == 1)
+
+	    if (args.Length == 1 && !args[0].StartsWith("-psn_"))
 		window.OpenFile(args[0]);
 	    else
 		window.NewLevel();
