@@ -48,7 +48,7 @@ dist:
 	$(create-zipdir)
 	zip -r "$(BUILD_ZIP_DIR)/tmp.zip" . -i Makefile -i \*.cs -i \*.png -i \*.glade -i \*.txt -i \*.rsp -i mac/Info.plist -i mac/weland.sh -i icons/Weland.icns -i icons/Weland.ico
 	unzip -d "$(BUILD_ZIP_DIR)/$(ZIP_DIR)" "$(BUILD_ZIP_DIR)/tmp.zip"
-	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION).zip" "$(ZIP_DIR)"
+	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION)-src.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
 release: winzip maczip dist
 .PHONY: clean
