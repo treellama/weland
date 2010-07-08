@@ -12,8 +12,10 @@ namespace Weland {
 	    dialog1.TransientFor = parent;
 	}
 
-	public void Run() {
+	public void Run()
+	{
 	    solid.Active = line.Solid;
+	    solid.Sensitive = !(line.ClockwisePolygonOwner == -1 || line.CounterclockwisePolygonOwner == -1);
 	    transparent.Active = line.Transparent;
 	    dialog1.Run();
 	    line.Solid = solid.Active;
