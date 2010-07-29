@@ -9,8 +9,8 @@ namespace Weland {
 	public short SoundIndex;
 	short volume = 255;
 	public int Volume {
-	    get { return volume * 100 / 255; }
-	    set { volume = (short) (value * 255 / 100); }
+	    get { return (int) Math.Round((double) volume * 100 / 255); }
+	    set { volume = (short) Math.Round((double) value * 255 / 100); }
 	}
 	
 	public void Load(BinaryReaderBE reader) {
@@ -51,14 +51,14 @@ namespace Weland {
 	public short SoundIndex;
 	short volume = 255;
 	public int Volume {
-	    get { return volume * 100 / 255; }
-	    set { volume = (short) (value * 255 / 100); }
+	    get { return (int) Math.Round((double) volume * 100 / 255); }
+	    set { volume = (short) Math.Round((double) value * 255 / 100); }
 	}
 
 	short deltaVolume;
 	public int DeltaVolume {
-	    get { return deltaVolume * 100 / 255; }
-	    set { deltaVolume = (short) (value * 255 / 100); }
+	    get { return (int) Math.Round((double) deltaVolume * 100 / 255); }
+	    set { deltaVolume = (short) Math.Round((double) value * 255 / 100); }
 	}
 	public short Period = 60;
 	public short DeltaPeriod;
