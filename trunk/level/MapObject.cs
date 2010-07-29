@@ -157,8 +157,8 @@ namespace Weland {
 	}
 
 	public int Volume {
-	    get { return facing * 100 / 255; }
-	    set { facing = (short) (value * 255 / 100); }
+	    get { return (int) Math.Round((double) facing * 100 / 255); }
+	    set { facing = (short) Math.Round((double) value * 255 / 100); }
 	}
 
 	public bool UseLightForVolume {
