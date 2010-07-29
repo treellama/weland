@@ -11,7 +11,7 @@ namespace Weland {
     }
 
     public enum MediaFlags : ushort {
-	SoundObstructedByFloor
+	SoundObstructedByFloor = 0x1
     }
 
     public class Media : ISerializableBE {
