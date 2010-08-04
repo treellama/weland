@@ -48,7 +48,9 @@ namespace Weland {
 	MediaLight,
 	Media,
 	AmbientSound,
-	RandomSound
+	RandomSound,
+	FloorTexture,
+	CeilingTexture
     }
 
     public class MapDrawingArea : Gtk.DrawingArea {
@@ -404,6 +406,10 @@ namespace Weland {
 		drawer.FillPolygon(PaintColors[(short) polygon.AmbientSound], points);
 	    } else if (Mode == DrawMode.RandomSound) {
 		drawer.FillPolygon(PaintColors[(short) polygon.RandomSound], points);
+	    } else if (Mode == DrawMode.FloorTexture) {
+		drawer.TexturePolygon(polygon.FloorTexture, points);
+	    } else if (Mode == DrawMode.CeilingTexture) {
+		drawer.TexturePolygon(polygon.CeilingTexture, points);
 	    } else {
 		if (color == PolygonColor.Selected) {
 		    drawer.FillPolygon(selectedPolygonColor, points);

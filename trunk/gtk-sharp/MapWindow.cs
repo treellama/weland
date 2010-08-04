@@ -50,6 +50,8 @@ namespace Weland {
 	[Widget] MenuItem drawModeItem;
 	[Widget] MenuItem floorHeightItem;
 	[Widget] MenuItem ceilingHeightItem;
+	[Widget] MenuItem floorTextureItem;
+	[Widget] MenuItem ceilingTextureItem;
 	[Widget] MenuItem polygonTypeItem;
 	[Widget] MenuItem floorLightItem;
 	[Widget] MenuItem ceilingLightItem;
@@ -74,6 +76,8 @@ namespace Weland {
 	[Widget] RadioToolButton mediaButton;
 	[Widget] RadioToolButton ambientSoundButton;
 	[Widget] RadioToolButton randomSoundButton; 
+	[Widget] RadioToolButton floorTextureButton;
+	[Widget] RadioToolButton ceilingTextureButton;
 
 	[Widget] ToggleToolButton showGridButton;
 	[Widget] ToggleToolButton snapToGridButton;
@@ -88,6 +92,8 @@ namespace Weland {
 	[Widget] VButtonBox paletteButtonbox;
 	[Widget] Button paletteAddButton;
 	[Widget] Button paletteEditButton;
+
+	[Widget] VBox texturePalette;
 
 	[Widget] Statusbar statusbar;
 
@@ -189,6 +195,8 @@ namespace Weland {
 	    SetIconResource(mediaButton, "liquids.png");
 	    SetIconResource(ambientSoundButton, "ambient-sound.png");
 	    SetIconResource(randomSoundButton, "random-sound.png");
+	    SetIconResource(floorTextureButton, "floor-texture.png");
+	    SetIconResource(ceilingTextureButton, "ceiling-texture.png");
 
 	    SetIconResource(showGridButton, "grid.png");
 	    SetIconResource(snapToGridButton, "snap.png");
@@ -243,6 +251,11 @@ namespace Weland {
 
 	    Level.FilterPoints = !Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
 
+	    // glade doesn't hook this up?
+	    textureIcons.SelectionChanged += OnTextureSelected;
+
+	    Weland.ShapesChanged += OnShapesChanged;
+
 	    window1.AllowShrink = true;
 	    int width = Weland.Settings.GetSetting("MapWindow/Width", 800);
 	    int height = Weland.Settings.GetSetting("MapWindow/Height", 600);
@@ -255,6 +268,7 @@ namespace Weland {
 	    window1.Show();
 
 	    window1.Focus = null;
+
 	}
 
 	void UpdateStatusBar() {
@@ -546,6 +560,8 @@ namespace Weland {
 		}
 	    } else if (editor.Tool == Tool.Annotation && editor.EditAnnotation) {
 		EditAnnotation();
+	    } else if (editor.Tool == Tool.FloorTexture || editor.Tool == Tool.CeilingTexture) {
+		UpdateTexturePalette();
 	    }
 
 	    UpdateInspector();
@@ -988,6 +1004,10 @@ namespace Weland {
 		ChooseTool(Tool.AmbientSound);
 	    } else if (button == randomSoundButton) {
 		ChooseTool(Tool.RandomSound);
+	    } else if (button == floorTextureButton) {
+		ChooseTool(Tool.FloorTexture);
+	    } else if (button == ceilingTextureButton) {
+		ChooseTool(Tool.CeilingTexture);
 	    }
 	}
 
@@ -999,6 +1019,10 @@ namespace Weland {
 		floorHeightButton.Active = true;
 	    } else if (item == ceilingHeightItem) {
 		ceilingHeightButton.Active = true;
+	    } else if (item == floorTextureItem) {
+		floorTextureButton.Active = true;
+	    } else if (item == ceilingTextureItem) {
+		ceilingTextureButton.Active = true;
 	    } else if (item == polygonTypeItem) {
 		polygonTypeButton.Active = true;
 	    } else if (item == floorLightItem) {
@@ -1152,8 +1176,7 @@ namespace Weland {
 	    paletteAddButton.Sensitive = true;
 	    paletteEditButton.Sensitive = true;
 	}
-	    
-
+	
 	void ChooseTool(Tool tool) {
 	    editor.Tool = tool;
 	    if (tool == Tool.Zoom) {
@@ -1171,42 +1194,62 @@ namespace Weland {
 	    if (tool == Tool.FloorHeight) {
 		BuildHeightPalette(editor.GetFloorHeights());
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.FloorHeight;
 	    } else if (tool == Tool.CeilingHeight) {
 		BuildHeightPalette(editor.GetCeilingHeights());
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.CeilingHeight;
 	    } else if (tool == Tool.PolygonType) {
 		BuildPolygonTypePalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.PolygonType;
 	    } else if (tool == Tool.FloorLight) {
 		BuildLightsPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.FloorLight;
 	    } else if (tool == Tool.CeilingLight) {
 		BuildLightsPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.CeilingLight;
 	    } else if (tool == Tool.MediaLight) {
 		BuildLightsPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.MediaLight;
 	    } else if (tool == Tool.Media) {
 		BuildMediaPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.Media;
 	    } else if (tool == Tool.AmbientSound) {
 		BuildAmbientSoundPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.AmbientSound;
 	    } else if (tool == Tool.RandomSound) {
 		BuildRandomSoundPalette();
 		palette.Show();
+		texturePalette.Hide();
 		drawingArea.Mode = DrawMode.RandomSound;
+	    } else if (tool == Tool.FloorTexture) {
+		palette.Hide();
+		BuildTexturePalette();
+		texturePalette.Show();
+		drawingArea.Mode = DrawMode.FloorTexture;
+	    } else if (tool == Tool.CeilingTexture) {
+		palette.Hide();
+		BuildTexturePalette();
+		texturePalette.Show();
+		drawingArea.Mode = DrawMode.CeilingTexture;
 	    } else {
 		drawingArea.Mode = DrawMode.Draw;
 		palette.Hide();
+		texturePalette.Hide();
 	    }
 	    UpdateInspector();
 	    UpdateStatusBar();

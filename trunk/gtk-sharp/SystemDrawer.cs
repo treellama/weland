@@ -4,6 +4,27 @@ using System.Collections.Generic;
 
 namespace Weland {
     public class SystemDrawer : Drawer {
+	class TextureCache : IDisposable {
+	    public TextureCache() {
+		Weland.ShapesChanged += new ShapesFileChangedEventHandler(cache.Clear);
+	    }
+
+	    public void Dispose() {
+		Weland.ShapesChanged -= new ShapesFileChangedEventHandler(cache.Clear);
+	    }
+
+	    public System.Drawing.Bitmap GetBitmap(ShapeDescriptor d) {
+		if (!cache.ContainsKey((ushort) d)) {
+		    cache.Add((ushort) d, Weland.Shapes.GetShape(d));
+		}
+		return cache[(ushort) d];
+	    }
+
+	    Dictionary<ushort, System.Drawing.Bitmap> cache = new Dictionary<ushort, System.Drawing.Bitmap>();
+	}
+
+	static TextureCache cache = new TextureCache();
+
 	Graphics graphics;
 	public SystemDrawer(Gdk.Window window, bool antialias) {
 	    graphics = Gtk.DotNet.Graphics.FromDrawable(window);
@@ -59,6 +80,16 @@ namespace Weland {
 
 	public override void Dispose() { 
 	    graphics.Dispose();
+	}
+
+	public override void TexturePolygon(ShapeDescriptor d, List<Point> points) {
+	    System.Drawing.PointF[] pointArray = new System.Drawing.PointF[points.Count];
+	    for (int i = 0; i < points.Count; ++i) {
+		pointArray[i].X = (float) points[i].X;
+		pointArray[i].Y = (float) points[i].Y;
+	    }
+
+	    graphics.FillPolygon(new TextureBrush(cache.GetBitmap(d)), pointArray);
 	}
     }
 }
