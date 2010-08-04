@@ -29,8 +29,15 @@ namespace Weland {
 	public abstract void DrawPoint(Color c, Point p);
 	public abstract void DrawLine(Color c, Point p1, Point p2);
 	public abstract void FillPolygon(Color c, List<Point> points);
+	public abstract void TexturePolygon(ShapeDescriptor d, List<Point> points);
 	public abstract void FillStrokePolygon(Color fill, Color stroke, List<Point> points, bool dashed);
 	public abstract void DrawGridIntersect(Color c, Point p);
 	public abstract void Dispose();
+
+	public virtual ShapesFile Shapes {
+	    get { return shapes; }
+	    set { shapes = value; }
+	}
+	protected ShapesFile shapes;
     }
 }

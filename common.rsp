@@ -15,6 +15,7 @@ gtk-sharp/GdkDrawer.cs
 Geometry.cs
 mac/IgeMacMenu.cs
 mac/IgeMacMenuGroup.cs
+gtk-sharp/ImageUtilities.cs
 gtk-sharp/Inspector.cs
 level/Level.cs
 gtk-sharp/LevelParametersDialog.cs
@@ -42,6 +43,7 @@ Settings.cs
 level/Side.cs
 level/Sounds.cs
 gtk-sharp/SoundParametersDialogs.cs
+gtk-sharp/TexturePalette.cs
 Wadfile.cs
 Weland.cs
 gtk-sharp/Widgets.cs
@@ -58,10 +60,12 @@ gtk-sharp/Widgets.cs
 /resource:images/arrow.png
 /resource:images/ceiling-height.png
 /resource:images/ceiling-light.png
+/resource:images/ceiling-texture.png
 /resource:images/fill.png
 /resource:images/flag.png
 /resource:images/floor-height.png
 /resource:images/floor-light.png
+/resource:images/floor-texture.png
 /resource:images/flower.png,flower.png
 /resource:images/fusion-ammo.png
 /resource:images/fusion.png

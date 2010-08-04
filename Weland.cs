@@ -40,8 +40,25 @@ namespace Weland {
         static extern int uname (IntPtr buf);
     }
 
+    public delegate void ShapesFileChangedEventHandler();
+
     public class Weland {
 	public static Settings Settings = new Settings();
+
+	static ShapesFile shapes;
+
+	public static event ShapesFileChangedEventHandler ShapesChanged;
+
+	public static ShapesFile Shapes {
+	    get { return shapes; }
+	    set {
+		bool changed = (shapes != value);
+		shapes = value;
+		if (changed && ShapesChanged != null) {
+		    ShapesChanged();
+		}
+	    }
+	}
 
 	static void OnUnhandledException(Exception outer) {
 	    Exception e;
@@ -74,6 +91,9 @@ namespace Weland {
 	    GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(OnUnhandledException);
 	    Application.Init();
 	    
+	    ShapesFile shapes = new ShapesFile();
+	    shapes.Load(Settings.GetSetting("ShapesFile/Path", ""));
+	    Shapes = shapes;
 	    MapWindow window = new MapWindow("Weland");
 
 	    if (args.Length == 1 && !args[0].StartsWith("-psn_"))

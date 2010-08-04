@@ -12,6 +12,47 @@ namespace Weland {
 	    }
 	}
 
+	class TextureCache : IDisposable {
+	    public TextureCache() {
+		Weland.ShapesChanged += new ShapesFileChangedEventHandler(OnShapesChanged);
+	    }
+
+	    public void Dispose() {
+		Weland.ShapesChanged -= new ShapesFileChangedEventHandler(OnShapesChanged);
+	    }
+
+	    public void OnShapesChanged() {
+		bcache.Clear();
+		cache.Clear();
+	    }
+
+	    public ImageSurface GetSurface(ShapeDescriptor d) {
+		if (!cache.ContainsKey((ushort) d)) {
+		    System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
+		    byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
+		    for (int x = 0; x < bitmap.Width; ++x) {
+			for (int y = 0; y < bitmap.Height; ++y) {
+			    System.Drawing.Color c  = bitmap.GetPixel(x, y);
+			    int offset = (y * bitmap.Width + x) * 4;
+			    bytes[offset] = c.B;
+			    bytes[offset + 1] = c.G;
+			    bytes[offset + 2] = c.R;
+			    bytes[offset + 3] = c.A;
+			}
+		    }
+		    
+		    bcache.Add((ushort) d, bytes);
+		    cache.Add((ushort) d, new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, bitmap.Width * 4));
+		}
+		return cache[(ushort) d];
+	    }
+
+	    Dictionary<ushort, ImageSurface> cache = new Dictionary<ushort, ImageSurface>();
+	    Dictionary<ushort, byte[]> bcache = new Dictionary<ushort, byte[]>();
+	}
+
+	static TextureCache cache = new TextureCache();
+
 	public override void Clear(Color c) {
 	    context.Save();
 
@@ -100,6 +141,18 @@ namespace Weland {
 	    context.Restore();
 	}
 
+	public override void TexturePolygon(ShapeDescriptor d, List<Point> points) { 
+	    context.Save();
+
+	    OutlinePolygon(points);
+	    SurfacePattern pattern = new SurfacePattern(cache.GetSurface(d));
+	    pattern.Extend = Cairo.Extend.Repeat;
+	    context.Source = pattern;
+	    context.Fill();
+
+	    context.Restore();
+	}
+	
 	public override void Dispose() {
 	    ((IDisposable) context.Target).Dispose();
 	    ((IDisposable) context).Dispose();

@@ -18,7 +18,9 @@ namespace Weland {
 	MediaLight,
 	Media,
 	AmbientSound,
-	RandomSound
+	RandomSound,
+	FloorTexture,
+	CeilingTexture
     }
 
     [Flags] public enum EditorModifiers {
@@ -103,6 +105,8 @@ namespace Weland {
 	}
 	Tool tool;
 	public short PaintIndex;
+	public ShapeDescriptor PaintDescriptor = new ShapeDescriptor();
+	public short PaintTransferMode;
 	MapObject lastObject = null;
 
 	bool undoSet = false;
@@ -879,6 +883,49 @@ namespace Weland {
 	    }
 	}
 
+	void GetFloorTexture(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintDescriptor = p.FloorTexture;
+		PaintTransferMode = p.FloorTransferMode;
+	    }
+	}
+	
+	void SetFloorTexture(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.FloorTexture = PaintDescriptor;
+		p.FloorTransferMode = PaintTransferMode;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
+
+	void GetCeilingTexture(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		PaintDescriptor = p.CeilingTexture;
+		PaintTransferMode = p.CeilingTransferMode;
+	    }
+	}
+	
+	void SetCeilingTexture(short X, short Y) {
+	    Polygon p = FindPolygon(X, Y);
+	    if (p != null) {
+		if (!undoSet) {
+		    SetUndo();
+		    undoSet = true;
+		}
+		p.CeilingTexture = PaintDescriptor;
+		p.CeilingTransferMode = PaintTransferMode;
+		DirtyPolygon(p);
+		Changed = true;
+	    }
+	}
 
 	public void ButtonPress(short X, short Y, EditorModifiers mods) {
 	    if (Tool == Tool.FloorHeight) {
@@ -943,6 +990,20 @@ namespace Weland {
 		} else {
 		    undoSet = false;
 		    SetRandomSound(X, Y);
+		}
+	    } else if (Tool == Tool.FloorTexture) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorTexture(X, Y);
+		} else {
+		    undoSet = false;
+		    SetFloorTexture(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingTexture) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingTexture(X, Y);
+		} else {
+		    undoSet = false;
+		    SetCeilingTexture(X, Y);
 		}
 	    } else if (Tool == Tool.Select) {
 		if (Alt(mods) || RightClick(mods)) {
@@ -1030,6 +1091,19 @@ namespace Weland {
 		} else {
 		    SetRandomSound(X, Y);
 		}
+	    } else if (Tool == Tool.FloorTexture) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetFloorTexture(X, Y);
+		} else {
+		    SetFloorTexture(X, Y);
+		}
+	    } else if (Tool == Tool.CeilingTexture) {
+		if (Alt(mods) || RightClick(mods)) {
+		    GetCeilingTexture(X, Y);
+		} else {
+		    SetCeilingTexture(X, Y);
+		}
+
 	    }
 
 	    lastX = X;

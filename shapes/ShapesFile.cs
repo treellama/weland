@@ -23,5 +23,38 @@ namespace Weland {
 		}
 	    }
 	}
+
+	public void Load(string filename) {
+	    try {
+		BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open));
+		Load(reader);
+	    } catch (Exception) {
+		collectionHeaders = new CollectionHeader[ShapeDescriptor.MaximumCollections];
+		collections = new Collection[collectionHeaders.Length];
+		for (int i = 0; i < collectionHeaders.Length; ++i) {
+		    collectionHeaders[i] = new CollectionHeader();
+		    collections[i] = new Collection();
+		}
+	    }
+	}
+
+	public Collection GetCollection(int n) {
+	    return collections[n];
+	}
+
+	public System.Drawing.Bitmap GetShape(ShapeDescriptor d) {
+	    Collection coll = collections[d.Collection];
+	    if (d.Bitmap < coll.BitmapCount && d.CLUT < coll.ColorTableCount) {
+		return coll.GetShape(d.CLUT, d.Bitmap);
+	    } else {
+		System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(128, 128);
+		using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap)) {
+		    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, 128, 128);
+		    graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(127, 127, 127)), rect);
+		}
+
+		return bitmap;
+	    }
+	}
     }
 }

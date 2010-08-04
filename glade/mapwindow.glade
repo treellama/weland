@@ -4,12 +4,12 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="delete_event" handler="OnDelete"/>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -203,6 +203,34 @@
                             </child>
                             <child>
                               <widget class="GtkMenuItem" id="ceilingHeightItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Ceiling</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitem20">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Textures</property>
+                        <property name="use_underline">True</property>
+                        <child>
+                          <widget class="GtkMenu" id="menu9">
+                            <property name="visible">True</property>
+                            <child>
+                              <widget class="GtkMenuItem" id="floorTextureItem">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Floor</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="OnViewMenu"/>
+                              </widget>
+                            </child>
+                            <child>
+                              <widget class="GtkMenuItem" id="ceilingTextureItem">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Ceiling</property>
                                 <property name="use_underline">True</property>
@@ -835,6 +863,34 @@
                   </packing>
                 </child>
                 <child>
+                  <widget class="GtkRadioToolButton" id="floorTextureButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Floor Textures</property>
+                    <property name="label" translatable="yes">Floor Textures</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioToolButton" id="ceilingTextureButton">
+                    <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Ceiling Textures</property>
+                    <property name="label" translatable="yes">Ceiling Textures</property>
+                    <property name="use_underline">True</property>
+                    <property name="group">selectButton</property>
+                    <signal name="toggled" handler="OnChooseTool"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
                   <widget class="GtkRadioToolButton" id="polygonTypeButton">
                     <property name="visible">True</property>
                     <property name="tooltip" translatable="yes">Polygon Types</property>
@@ -942,7 +998,7 @@
               <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
                 <property name="n_rows">2</property>
-                <property name="n_columns">4</property>
+                <property name="n_columns">5</property>
                 <child>
                   <widget class="GtkHScrollbar" id="hscrollbar1">
                     <property name="visible">True</property>
@@ -2530,6 +2586,122 @@ Green</property>
                     <property name="right_attach">4</property>
                     <property name="x_options"></property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkVBox" id="texturePalette">
+                    <property name="border_width">5</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox26">
+                        <property name="visible">True</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <widget class="GtkLabel" id="label26">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Collection:</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkComboBox" id="textureCollection">
+                            <property name="visible">True</property>
+                            <property name="items" translatable="yes">Water
+Lava
+Sewage
+Jjaro
+Pfhor
+Day
+Night
+Moon
+Space</property>
+                            <signal name="changed" handler="OnCollectionChanged"/>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkHBox" id="hbox27">
+                        <property name="visible">True</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <widget class="GtkLabel" id="label27">
+                            <property name="visible">True</property>
+                            <property name="xalign">0.039999999105930328</property>
+                            <property name="label" translatable="yes">Texture Mode:</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkComboBox" id="textureTransferMode">
+                            <property name="visible">True</property>
+                            <property name="items" translatable="yes">Normal
+Pulsate
+Wobble
+Fast Wobble
+Landscape
+Horizontal Slide
+Fast Horizontal Slide
+Vertical Slide
+Fast Vertical Slide
+Wander
+Fast Wander</property>
+                            <signal name="changed" handler="OnTransferModeChanged"/>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkScrolledWindow" id="scrolledwindow2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">never</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <child>
+                          <widget class="GtkIconView" id="textureIcons">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">4</property>
+                    <property name="right_attach">5</property>
+                    <property name="x_options"></property>
+                    <property name="y_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>

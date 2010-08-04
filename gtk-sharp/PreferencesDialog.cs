@@ -48,11 +48,20 @@ namespace Weland {
 	    objectDistance.Value = editor.ObjectSnapDistance;
 	    dragInertia.Value = editor.InertiaDistance;
 
+	    shapesFileButton.SetFilename(Weland.Settings.GetSetting("ShapesFile/Path", ""));
+
 	    dialog1.ShowAll();
 	    dialog1.Show();
 	    if (dialog1.Run() == (int) ResponseType.Ok) {
 		Weland.Settings.PutSetting("Drawer/SmoothLines", antialias.Active);
 		Weland.Settings.PutSetting("MapWindow/ShowHiddenVertices", showHiddenVertices.Active);
+		if (Weland.Settings.GetSetting("ShapesFile/Path", "") != shapesFileButton.Filename) {
+		    Weland.Settings.PutSetting("ShapesFile/Path", shapesFileButton.Filename);
+		    ShapesFile shapes = new ShapesFile();
+		    shapes.Load(shapesFileButton.Filename);
+		    Weland.Shapes = shapes;
+		}
+
 		Level.FilterPoints = !showHiddenVertices.Active;
 
 		area.backgroundColor = FromGDK(backgroundColor.Color);
@@ -115,5 +124,7 @@ namespace Weland {
 	[Widget] HScale selectionDistance;
 	[Widget] HScale objectDistance;
 	[Widget] HScale dragInertia;
+
+	[Widget] FileChooserButton shapesFileButton;
     }
 }

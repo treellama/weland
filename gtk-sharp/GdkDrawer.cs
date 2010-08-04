@@ -4,10 +4,37 @@ using System.Collections.Generic;
 
 namespace Weland {
     public class GdkDrawer : Drawer {
+	class TextureCache : IDisposable {
+	    public TextureCache() {
+		Weland.ShapesChanged += new ShapesFileChangedEventHandler(cache.Clear);
+	    }
+
+	    public void Dispose() {
+		Weland.ShapesChanged -= new ShapesFileChangedEventHandler(cache.Clear);
+	    }
+
+	    public Gdk.Pixmap GetPixmap(ShapeDescriptor d) {
+		if (!cache.ContainsKey((ushort) d)) {
+		    System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
+		    Gdk.Pixbuf pixbuf = ImageUtilities.ImageToPixbuf(bitmap);
+		    Gdk.Pixmap pixmap;
+		    Gdk.Pixmap mask;
+		    pixbuf.RenderPixmapAndMask(out pixmap, out mask, 0);
+		    cache.Add((ushort) d, pixmap);
+		}
+
+		return cache[(ushort) d];
+	    }
+
+	    Dictionary<ushort, Gdk.Pixmap> cache = new Dictionary<ushort, Gdk.Pixmap>();  
+	}
+
 	Gdk.Window window;
 	public GdkDrawer(Gdk.Window w) { 
 	    window = w;
 	}
+
+	static TextureCache cache = new TextureCache();
 
 	Gdk.Color GdkColor(Color c) {
 	    return new Gdk.Color((byte) (c.R * 255), (byte) (c.G * 255), (byte) (c.B * 255));
@@ -72,6 +99,19 @@ namespace Weland {
 	    g.RgbFgColor = GdkColor(c);
 	    window.DrawLine(g, (int) p.X, (int) (p.Y - 1), (int) p.X, (int) (p.Y + 1));
 	    window.DrawLine(g, (int) (p.X - 1), (int) p.Y, (int) (p.X + 1), (int) p.Y);
+	}
+
+	public override void TexturePolygon(ShapeDescriptor d, List<Point> points) { 
+	    Gdk.Point[] pointArray = new Gdk.Point[points.Count];
+	    for (int i = 0; i < points.Count; ++i) {
+		pointArray[i].X = (int) points[i].X;
+		pointArray[i].Y = (int) points[i].Y;
+	    }
+
+	    Gdk.GC g = new Gdk.GC(window);
+	    g.Tile = cache.GetPixmap(d);
+	    g.Fill = Gdk.Fill.Tiled;
+	    window.DrawPolygon(g, true, pointArray);
 	}
 
 	public override void Dispose() {

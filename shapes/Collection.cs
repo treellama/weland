@@ -31,7 +31,7 @@ namespace Weland {
 	Scenery
     }
 
-    class Collection {
+    public class Collection {
 #pragma warning disable 0414
 	public short Version;
 	public CollectionType Type;
@@ -50,6 +50,12 @@ namespace Weland {
 	public short BitmapCount {
 	    get {
 		return bitmapCount;
+	    }
+	}
+
+	public int ColorTableCount {
+	    get {
+		return colorTables.Count;
 	    }
 	}
 
@@ -124,7 +130,7 @@ namespace Weland {
 	    }
 	}
 
-	public void GetShape(Stream stream, byte ColorTableIndex, byte BitmapIndex) {
+	public System.Drawing.Bitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
 	    Bitmap bitmap = bitmaps[BitmapIndex];
 	    ColorValue[] colorTable = colorTables[ColorTableIndex];
 	    Color[] colors = new Color[colorTable.Length];
@@ -134,15 +140,15 @@ namespace Weland {
 					   color.Green >> 8,
 					   color.Blue >> 8);
 	    }
-
+	    
 	    System.Drawing.Bitmap result = new System.Drawing.Bitmap(bitmap.Width, bitmap.Height);
 	    for (int x = 0; x < bitmap.Width; ++x) {
 		for (int y = 0; y < bitmap.Height; ++y) {
 		    result.SetPixel(x, y, colors[bitmap.Data[x + y * bitmap.Width]]);
 		}
 	    }
-
-	    result.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+	    
+	    return result;
 	}
     }
 }
