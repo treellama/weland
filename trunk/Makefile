@@ -18,8 +18,6 @@ all: .FORCE
 
 windows: .FORCE
 	gmcs @windows.rsp
-windows-corflags: windows
-	wine ~/bin/CorFlags.exe Weland.exe /32BIT+	
 Weland.app: .FORCE
 	gmcs @weland.rsp
 	rm -rf Weland.app
