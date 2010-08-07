@@ -636,7 +636,7 @@ namespace Weland {
 		if (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R) {
 		    optionKey = true;
 		    return;
-		} else if ((args.Event.State & ModifierType.MetaMask) != 0) {
+		} else if ((args.Event.State & ModifierType.MetaMask) != 0 || (args.Event.State & ModifierType.Mod1Mask) != 0) {
 		    if (HandleMacAccelerator(args.Event.Key)) {
 			return;
 		    }
