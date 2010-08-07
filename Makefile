@@ -30,7 +30,7 @@ Weland.app: .FORCE
 	chmod u+x Weland.app/Contents/MacOS/weland
 	cp Weland.exe Weland.app/Contents/MacOS/Weland.exe
 
-winzip: windows-corflags
+winzip: windows
 	$(create-zipdir)
 	$(copy-readme)
 	cp Weland.exe "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
