@@ -965,6 +965,28 @@ namespace Weland {
 		return success;
 	    }
 	}
+	
+	internal void OnExportOBJ(object obj, EventArgs args) {
+	    FileChooserDialog d = new FileChooserDialog("Export OBJ as", window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
+	    d.CurrentName = Level.Name + ".obj";
+	    d.DoOverwriteConfirmation = true;
+	    try {
+		if (d.Run() == (int) ResponseType.Accept) {
+		    OBJExporter exporter = new OBJExporter(Level);
+		    exporter.Export(d.Filename);
+		    
+		    Weland.Settings.PutSetting("LastSave/FoldeR", Path.GetDirectoryName(d.Filename));
+		}
+	    } catch (Exception e) {
+		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
+		m.Title = "Export error";
+		m.SecondaryText = e.Message;
+		m.Run();
+		m.Destroy();
+	    }
+	    d.Destroy();
+	}
 
 	internal void OnSave(object obj, EventArgs args) {
 	    Save();
