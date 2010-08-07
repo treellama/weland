@@ -28,6 +28,7 @@ level/MapObject.cs
 gtk-sharp/MapWindow.cs
 level/Media.cs
 gtk-sharp/MediaParametersDialog.cs
+level/OBJExporter.cs
 gtk-sharp/ParametersDialogs.cs
 level/Platform.cs
 gtk-sharp/PlatformParametersDialog.cs
