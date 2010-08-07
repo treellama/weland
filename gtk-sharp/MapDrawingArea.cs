@@ -422,7 +422,7 @@ namespace Weland {
 		}
 	    }
 
-	    if (polygon.Type == PolygonType.Platform) {
+	    if (Mode == DrawMode.Draw && polygon.Type == PolygonType.Platform) {
 		Drawer.Point center = Transform.ToScreenPoint(Level.PolygonCenter(polygon));
 		Layout layout = new Pango.Layout(this.PangoContext);
 		layout.SetMarkup(String.Format("{0}", polygon_index));
