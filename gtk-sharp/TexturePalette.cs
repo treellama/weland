@@ -65,7 +65,7 @@ namespace Weland {
 
 	void BuildTexturePalette() {
 	    editor.PaintDescriptor.Collection = (byte) (Level.Environment + 17);
-	    UpdateTexturePalette();
+	    UpdateTexturePalette(false);
 	}
 
 	void OnShapesChanged() {
@@ -73,7 +73,7 @@ namespace Weland {
 	}
 
 	// update palette based on settings in editor
-	void UpdateTexturePalette(bool forceCollection = false) {
+	void UpdateTexturePalette(bool forceCollection) {
 	    int textureCollectionIndex = collectionMapping.IndexOf(editor.PaintDescriptor.Collection);
 	    if (forceCollection || textureCollection.Active != textureCollectionIndex) {
 		UpdateCollection(editor.PaintDescriptor.Collection);

@@ -561,7 +561,7 @@ namespace Weland {
 	    } else if (editor.Tool == Tool.Annotation && editor.EditAnnotation) {
 		EditAnnotation();
 	    } else if (editor.Tool == Tool.FloorTexture || editor.Tool == Tool.CeilingTexture) {
-		UpdateTexturePalette();
+		UpdateTexturePalette(false);
 	    }
 
 	    UpdateInspector();
