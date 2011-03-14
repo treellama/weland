@@ -35,6 +35,19 @@ namespace Weland {
 	public bool Visible = true;
 	public bool Snap = true;
 	public short Resolution = 1024;
+	
+	/*** begin custom grid code ***/
+	public double Rotation = 0;
+	public Point Center = new Point(0,0);
+	public double Scale = 1;
+	public bool UseCustomGrid = true;
+	
+	public int CurrentGrid = 0;
+	public double[] Rotations = {0,0,0,0,0,0};
+	public Point[] Centers = {new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0)};
+	public double[] Scales = {1,1,1,1,1,1};
+	/*** end custom grid code ***/
+
     }
 
     public class Selection {
@@ -146,7 +159,32 @@ namespace Weland {
 	int Inertia() {
 	    return (int) Math.Round(InertiaDistance / Scale);
 	}
-
+	
+	/*** begin custom grid code ***/
+	
+	Point GridAdjust(Point p) {
+		double s,c;
+		int i,j;
+		
+		if (Grid.Visible && Grid.Snap) {
+		if(Grid.UseCustomGrid) {
+		c=Math.Cos(Grid.Rotation*2*Math.PI/360);
+		s=Math.Sin(Grid.Rotation*2*Math.PI/360);
+		
+		i=(int)(Grid.Resolution*Grid.Scale*Math.Round((c*(p.X-Grid.Center.X)-s*(p.Y-Grid.Center.Y))/(Grid.Resolution*Grid.Scale)));
+		j=(int)(Grid.Resolution*Grid.Scale*Math.Round((s*(p.X-Grid.Center.X)+c*(p.Y-Grid.Center.Y))/(Grid.Resolution*Grid.Scale)));
+		p.X = (short)((double)Grid.Center.X + c*i + s*j);
+		p.Y = (short)((double)Grid.Center.Y - s*i + c*j);
+		} else {
+		p.X = (short) (Math.Round((double) p.X / Grid.Resolution) * Grid.Resolution);
+		p.Y = (short) (Math.Round((double) p.Y / Grid.Resolution) * Grid.Resolution);
+		}	
+	    }
+		return p;
+	}
+	
+	/*** old code ***/
+	/*
 	short GridAdjust(short value) {
 	    if (Grid.Visible && Grid.Snap) {
 		return (short) (Math.Round((double) value / Grid.Resolution) * Grid.Resolution);
@@ -154,6 +192,10 @@ namespace Weland {
 		return value;
 	    }
 	}
+	*/
+	
+	/*** end custom grid code ***/
+	
 
 	short ClosestAnnotation(Point p) {
 	    short index = Level.GetClosestAnnotation(p);
@@ -199,14 +241,19 @@ namespace Weland {
 
 	    double r = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
 	    double theta = Math.Atan2(Y, X);
+	    
+	    /*** begin custom grid code ***/
 	    if (constrainLength) {
-		r = Math.Round(r / Grid.Resolution) * Grid.Resolution;
+			if(Grid.UseCustomGrid) r = Math.Round(r / (Grid.Resolution * Grid.Scale)) * Grid.Resolution * Grid.Scale;
+			else r = Math.Round(r / Grid.Resolution) * Grid.Resolution;
 	    }
 
 	    if (constrainAngle) {
 		double smallest_angle = Math.PI / 8;
-		theta = Math.Round(theta / smallest_angle) * smallest_angle;
+			if(Grid.UseCustomGrid) theta = -Grid.Rotation*Math.PI/180 + Math.Round((theta + Grid.Rotation*Math.PI/180) / smallest_angle) * smallest_angle;
+			else theta = Math.Round(theta / smallest_angle) * smallest_angle;
 	    }
+	    /*** end custom grid code ***/
 
 	    return new Point((short) (Math.Round(r * Math.Cos(theta)) + StartX), (short) (Math.Round(r * Math.Sin(theta)) + StartY));
 	}
@@ -217,7 +264,8 @@ namespace Weland {
 	    Point p = new Point(X, Y);
 	    short index = ClosestPoint(p);
 	    if (index == -1) {
-		p = new Point(GridAdjust(X), GridAdjust(Y));
+		p = GridAdjust(new Point(X,Y));	//custom grid code
+		//p = new Point(GridAdjust(X), GridAdjust(Y));	old code
 		index = ClosestPoint(p);
 	    }
 	    
@@ -254,7 +302,8 @@ namespace Weland {
 	    } else {
 		index = ClosestPoint(p);
 		if (index == -1) {
-		    p = new Point(GridAdjust(X), GridAdjust(Y));
+		    p = GridAdjust(new Point(X,Y));	//custom grid code
+		    //p = new Point(GridAdjust(X), GridAdjust(Y));	old code
 		    index = ClosestPoint(p);
 		}
 	    }
@@ -277,7 +326,8 @@ namespace Weland {
 	    }
 
 	    Point p = new Point(X, Y);
-	    Point ap = new Point(GridAdjust(X), GridAdjust(Y));
+	    Point ap = GridAdjust(new Point(X,Y));	//custom grid code
+	    //Point ap = new Point(GridAdjust(X), GridAdjust(Y));	old code
 	    Point z = ap;
 	    if (constrainAngle || constrainLength) {
 		p = Constrain(p, constrainAngle, constrainLength);
@@ -516,19 +566,38 @@ namespace Weland {
 		Point p = Level.Endpoints[Selection.Point];
 		short newX = (short) (p.X + X);
 		short newY = (short) (p.Y + Y);
+		/*** custom grid code ***/
 		if (Grid.Visible && Grid.Snap) {
-		    if (X > 0) {
-			newX += Grid.Resolution;
-		    } else if (X < 0) {
-			newX -= Grid.Resolution;
-		    }
-		    if (Y > 0) {
-			newY += Grid.Resolution;
-		    } else if (Y < 0) {
-			newY -= Grid.Resolution;
-		    }
+			if(Grid.UseCustomGrid) {
+			    if (X > 0) {
+				newX += (short)(Grid.Resolution*Grid.Scale);
+			    } else if (X < 0) {
+				newX -= (short)(Grid.Resolution*Grid.Scale);
+			    }
+			    if (Y > 0) {
+				newY += (short)(Grid.Resolution*Grid.Scale);
+			    } else if (Y < 0) {
+				newY -= (short)(Grid.Resolution*Grid.Scale);
+			    }
+			} else {
+				//original code
+				if (X > 0) {
+				newX += Grid.Resolution;
+			    } else if (X < 0) {
+				newX -= Grid.Resolution;
+			    }
+			    if (Y > 0) {
+				newY += Grid.Resolution;
+			    } else if (Y < 0) {
+				newY -= Grid.Resolution;
+				}
+			}
 		}
-		MovePoint(Selection.Point, GridAdjust(newX), GridAdjust(newY));
+		Point adjp = new Point(newX,newY);
+		adjp = GridAdjust(adjp);
+		MovePoint(Selection.Point, adjp.X, adjp.Y);
+		//MovePoint(Selection.Point, GridAdjust(newX), GridAdjust(newY));	old code
+		/*** end custom grid code ***/
 	    } else if (Selection.Object != -1) {
 		MapObject obj = Level.Objects[Selection.Object];
 		Point p = new Point((short) (obj.X + X), (short) (obj.Y + Y));
@@ -595,7 +664,12 @@ namespace Weland {
 		    undoSet = true;
 		}
 		
-		MovePoint(Selection.Point, GridAdjust(X), GridAdjust(Y));
+		/*** begin custom grid code ***/
+		Point adjp = new Point(X,Y);
+		adjp=GridAdjust(adjp);
+		MovePoint(Selection.Point, adjp.X, adjp.Y);
+		/*** end custom grid code ***/
+		//MovePoint(Selection.Point, GridAdjust(X), GridAdjust(Y));	old code
 	    } else if (Selection.Object != -1) {
 		if (!undoSet) {
 		    SetUndo();
@@ -1355,3 +1429,4 @@ namespace Weland {
 	}
     }
 }
+

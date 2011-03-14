@@ -324,35 +324,144 @@ namespace Weland {
 	    short Top = Transform.ToMapY(0);
 	    short Bottom = Transform.ToMapY(Allocation.Height);
 	    
-	    // draw horizontal map lines
-	    for (int j = (Top / Grid.Resolution) * Grid.Resolution; j < Bottom; j += Grid.Resolution) {
-		p1.X = Left;
-		p1.Y = (short) j;
-		p2.X = Right;
-		p2.Y = (short) j;
-		
-		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
-	    }
-
-	    // draw vertical map lines
-	    for (int i = (Left  / Grid.Resolution) * Grid.Resolution; i < Right; i += Grid.Resolution) {
-		p1.X = (short) i;
-		p1.Y = Top;
-		p2.X = (short) i;
-		p2.Y = Bottom;
-		
-		drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
-	    }
-
-	    // draw grid intersects
-	    int wu = Math.Max(1024, (int) Grid.Resolution);
-	    for (int i = (Left / wu) * wu; i < Right; i += wu) {
-		for (int j = (Top / wu) * wu; j < Bottom; j += wu) {
-		    p1.X = (short) i;
-		    p1.Y = (short) j;
-		    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
+	    /*** begin custom grid code ***/
+	    
+	   	double s,c,lpx,lpy,tmp,tmp2;
+	    int nlines,wu,intoffpar,intoffperp,intskip,r;
+	    
+		if(!Grid.UseCustomGrid) {
+		//the original code
+		    // draw horizontal map lines
+		    for (int j = (Top / Grid.Resolution) * Grid.Resolution; j < Bottom; j += Grid.Resolution) {
+			p1.X = Left;
+			p1.Y = (short) j;
+			p2.X = Right;
+			p2.Y = (short) j;
+			
+			drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
+		    }
+	
+		    // draw vertical map lines
+		    for (int i = (Left  / Grid.Resolution) * Grid.Resolution; i < Right; i += Grid.Resolution) {
+			p1.X = (short) i;
+			p1.Y = Top;
+			p2.X = (short) i;
+			p2.Y = Bottom;
+			
+			drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
+		    }
+		    
+		     // draw grid intersects
+		    wu = Math.Max(1024, (int) Grid.Resolution);
+		    for (int i = (Left / wu) * wu; i < Right; i += wu) {
+			for (int j = (Top / wu) * wu; j < Bottom; j += wu) {
+			    p1.X = (short) i;
+			    p1.Y = (short) j;
+			    drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
+			}
+		    }
+		    return;
 		}
-	    }
+		
+		//lpx and lpy represent a point on a line. they are used to write the parametric form of each line,
+		//x(t) = lpx + t*c ,  y(t) = lpy - t*s   for lines that are horizontal when the rotation angle is 0, and
+		//x(t) = lpx + t*s ,  y(t) = lpy + t*c   for the perpendicular lines.
+		
+		r=(int)(Grid.Resolution*Grid.Scale);
+		c=Math.Cos(Grid.Rotation*2*Math.PI/360);
+		s=Math.Sin(Grid.Rotation*2*Math.PI/360);
+		lpx=Grid.Center.X; lpy=Grid.Center.Y;
+		
+		//draw the lines that are horizontal with no rotation
+		//find the line that is closest to the upper left corner and move (lpx,lpy) onto it
+		tmp=c*(Left-lpx)-s*(Top-lpy);
+		//tmp=r*Math.Ceiling(tmp/r);
+		lpx+=tmp*c; lpy-=tmp*s;
+		if(Math.Abs(s)>Math.Abs(c)) tmp=Math.Ceiling((Left-lpx)/(r*s));
+		else tmp=Math.Ceiling((Top-lpy)/(r*c));
+		lpx+=r*tmp*s; lpy+=r*tmp*c;
+
+		//calculate the number of lines to draw
+		tmp=c*(Right-lpx)-s*(Bottom-lpy);
+		if(Math.Abs(s)>Math.Abs(c)) nlines=(int)Math.Ceiling((Right-lpx-tmp*c)/(r*s));
+		else nlines=(int)Math.Ceiling((Bottom-lpy+tmp*s)/(r*c));
+
+		//draw the lines
+		for(;nlines>0;nlines--) {
+			//calculate the intersection of this line with the edges of the viewing area
+			//have to use a double temporary value because of precision issues
+			tmp=lpx+(lpy-Bottom)*c/s;
+			//i used to check here in case s is close to 0 but for some reason that doesn't seem necessary
+			if(tmp<Left) { p1.X=Left; p1.Y=(short)(lpy+(lpx-Left)*s/c); }
+			else { p1.X=(short)tmp; p1.Y=Bottom; }
+			tmp=lpx+(lpy-Top)*c/s;
+			if(tmp>Right) { p2.X=Right; p2.Y=(short)(lpy+(lpx-Right)*s/c); }
+			else { p2.X=(short)tmp; p2.Y=Top; }
+			drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
+			
+			//move to the next line
+			lpx+=r*s; lpy+=r*c;
+		}
+		
+		//do the same for the perpendicular lines, drawing from bottom left to upper right
+		//also draw intersections while drawing lines since it's easier to do that here than afterward
+		//fist calculate the number of lines between drawn intersections
+		wu = Math.Max(1024, (int) Grid.Resolution);
+		intskip=Math.Max(1,wu/Grid.Resolution);
+		//note that i use Grid.Resolution instead of r here because the scaling factor should multiply wu, which would then cancel in the division
+
+		lpx=Grid.Center.X; lpy=Grid.Center.Y;
+		tmp=s*(Left-lpx)+c*(Bottom-lpy);
+		tmp=r*Math.Ceiling(tmp/r);
+		lpx+=tmp*s; lpy+=tmp*c;
+		//save the offset between the center and the next intersection that needs to be drawn, parallel to the lines
+		intoffpar=((int)(tmp/r))%intskip;
+		if(Math.Abs(c)>Math.Abs(s)) tmp=Math.Ceiling((Left-lpx)/(r*c));
+		else tmp=Math.Ceiling((Bottom-lpy)/(r*-s));
+		lpx+=r*tmp*c; lpy+=r*tmp*-s;
+		intoffperp=((int)tmp)%intskip;	//same as above but in the perpendicular direction
+		tmp=s*(Right-lpx)+c*(Top-lpy);
+		if(Math.Abs(c)>Math.Abs(s)) nlines=(int)Math.Ceiling((Right-lpx-tmp*s)/(r*c));
+		else nlines=(int)Math.Ceiling((Top-lpy-tmp*c)/(r*-s));
+
+		for(int j=0;j<nlines;j++) {
+			tmp=lpx-(lpy-Bottom)*s/c;
+			if(tmp>Right) { p1.X=Right; p1.Y=(short)(lpy-(lpx-Right)*c/s); }
+			else { p1.X=(short)tmp; p1.Y=Bottom; }
+			tmp=lpx-(lpy-Top)*s/c;
+			if(tmp<Left) { p2.X=Left; p2.Y=(short)(lpy-(lpx-Left)*c/s); }
+			else { p2.X=(short)tmp; p2.Y=Top; }
+			drawer.DrawLine(gridLineColor, Transform.ToScreenPoint(p1), Transform.ToScreenPoint(p2));
+			
+			//draw the intersections
+			//this is done in two steps, once for either direction away from the perpendicular line passing through (lpx,lpy)
+			//only do this when we are at one of the intersections that needs drawing
+			if((j+intoffperp)%intskip==0) {
+				//find the next line 
+				tmp=lpx-r*intoffpar*s; tmp2=lpy-r*intoffpar*c;
+				//this seems a little silly, but i don't know of an easier/better way around it; when the screen contains portions of the world
+				//near the edges, we might start out offworld - so just keep hopping over lines until we're onworld or we've gone too far
+				while((tmp<short.MinValue || tmp2<short.MinValue || tmp>short.MaxValue || tmp2>short.MaxValue) && (tmp>Left && tmp2>Top)) {
+					tmp-=r*intskip*s; tmp2-=r*intskip*c; }
+				while(tmp>Left && tmp2>Top) {
+					p1.X=(short)tmp; p1.Y=(short)tmp2;
+					drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
+					tmp-=r*intskip*s; tmp2-=r*intskip*c;
+				}
+				tmp=lpx+r*(intskip-intoffpar)*s; tmp2=lpy+r*(intskip-intoffpar)*c;
+				while((tmp<short.MinValue || tmp2<short.MinValue || tmp>short.MaxValue || tmp2>short.MaxValue) && (tmp<Right && tmp2<Bottom)) {
+					tmp+=r*intskip*s; tmp2+=r*intskip*c; }
+				while(tmp<Right && tmp2<Bottom) {
+					p1.X=(short)tmp; p1.Y=(short)tmp2;
+					drawer.DrawGridIntersect(gridPointColor, Transform.ToScreenPoint(p1));
+					tmp+=r*intskip*s; tmp2+=r*intskip*c;
+				}
+			}
+			
+			lpx+=r*c; lpy-=r*s;
+		}
+		
+		/*** end custom grid code ***/
 	}
 	    
 
