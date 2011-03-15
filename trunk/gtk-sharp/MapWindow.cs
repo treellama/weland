@@ -87,6 +87,7 @@ namespace Weland {
 	[Widget] ToggleToolButton showPlayersButton;
 	[Widget] ToggleToolButton showGoalsButton;
 	[Widget] ToggleToolButton showSoundsButton;
+	[Widget] ToggleToolButton showCustomGridButton;
 
 	[Widget] VBox palette;
 	[Widget] VButtonBox paletteButtonbox;
@@ -206,6 +207,7 @@ namespace Weland {
 	    SetIconResource(showPlayersButton, "player.png");
 	    SetIconResource(showGoalsButton, "flag.png");
 	    SetIconResource(showSoundsButton, "sound.png");
+	    SetIconResource(showCustomGridButton, "custom-grid.png");
 
 	    double[] angles = { 0, 240, 120, 22, 300, 180, 60 };
 	    for (int s = 0; s < 3; ++s) {
