@@ -62,6 +62,7 @@ gtk-sharp/Widgets.cs
 /resource:images/ceiling-height.png
 /resource:images/ceiling-light.png
 /resource:images/ceiling-texture.png
+/resource:images/custom-grid.png
 /resource:images/fill.png
 /resource:images/flag.png
 /resource:images/floor-height.png
