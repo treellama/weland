@@ -30,6 +30,7 @@ namespace Weland {
 	[Widget] VScrollbar vscrollbar1;
 	[Widget] HScrollbar hscrollbar1;
 	[Widget] MenuItem levelItem;
+	[Widget] MenuItem pluginsItem;
 	[Widget] Table table1;
 
 	[Widget] MenuItem quitItem;
@@ -208,6 +209,8 @@ namespace Weland {
 	    SetIconResource(showGoalsButton, "flag.png");
 	    SetIconResource(showSoundsButton, "sound.png");
 	    SetIconResource(showCustomGridButton, "custom-grid.png");
+
+	    BuildPluginMenu();
 
 	    double[] angles = { 0, 240, 120, 22, 300, 180, 60 };
 	    for (int s = 0; s < 3; ++s) {
@@ -819,6 +822,27 @@ namespace Weland {
 	    }
 	    menu.ShowAll();
 	    levelItem.Submenu = menu;
+	}
+
+	void BuildPluginMenu()
+	{
+	    Menu menu = new Menu();
+	    for (int i = 0; i < Weland.plugins.Length; ++i)
+	    {
+		MenuItem item = new MenuItem(Weland.plugins.GetName(i));
+		int pluginNumber = i;
+		item.Activated += delegate(object obj, EventArgs args) { Weland.plugins.GtkRun(Level, pluginNumber); };
+		menu.Append(item);
+	    }
+
+	    if (menu.Children.Length == 0) {
+		MenuItem item = new MenuItem("None");
+		item.Sensitive = false;
+		menu.Append(item);
+	    }
+
+	    menu.ShowAll();
+	    pluginsItem.Submenu = menu;
 	}
 
 	public void SelectLevel(int n) {
@@ -1641,6 +1665,23 @@ namespace Weland {
 	    Level.NukeObjects();
 	    editor.Changed = true;
 	    Redraw();
+	}
+
+	protected void OnPlugin(object o, EventArgs e)
+	{
+	    Assembly a = Assembly.LoadFrom("Plugin.dll");
+	    
+	    foreach (Type t in a.GetTypes())
+	    {
+		MethodInfo method = t.GetMethod("Run");
+
+		if (method != null && method.IsStatic)
+		{
+		    object[] args = { Level };
+		    method.Invoke(0, args);
+		    break;
+		}
+	    }
 	}
 
 	void PaletteNext() {
