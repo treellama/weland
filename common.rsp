@@ -32,6 +32,7 @@ level/OBJExporter.cs
 gtk-sharp/ParametersDialogs.cs
 level/Platform.cs
 gtk-sharp/PlatformParametersDialog.cs
+Plugins.cs
 level/Point.cs
 level/Polygon.cs
 gtk-sharp/PopupParametersDialogs.cs

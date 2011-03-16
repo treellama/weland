@@ -46,6 +46,7 @@ namespace Weland {
 	public static Settings Settings = new Settings();
 
 	static ShapesFile shapes;
+	public static Plugins plugins = new Plugins();
 
 	public static event ShapesFileChangedEventHandler ShapesChanged;
 
