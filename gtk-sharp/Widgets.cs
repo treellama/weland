@@ -1,5 +1,6 @@
 using Gtk;
 using Gdk;
+using Glade;
 using System;
 using System.IO;
 
@@ -233,6 +234,46 @@ namespace Weland {
 
 	void OnEntryActivated(object obj, EventArgs args) {
 	    Respond(ResponseType.Ok);
+	}
+    }
+
+    public class PointDialog {
+	public PointDialog(Gtk.Window w) {
+	    Glade.XML gxml = new Glade.XML(null, "pointparameters.glade", "dialog1", null);
+	    gxml.Autoconnect(this);
+	    dialog1.TransientFor = w;
+	}
+
+	public void Run() {
+	    dialog1.Run();
+
+	    short i;
+	    if (short.TryParse(pointX.Text, out i)) {
+		p.X = i;
+	    }
+
+	    if (short.TryParse(pointY.Text, out i)) {
+		p.Y = i;
+	    }
+	    dialog1.Destroy();
+	}
+
+	Point p;
+	
+	[Widget] Dialog dialog1;
+	[Widget] Entry pointX;
+	[Widget] Entry pointY;
+
+	public Point Value {
+	    get {
+		return p;
+	    }
+
+	    set {
+		p = value;
+		pointX.Text = String.Format("{0}", p.X);
+		pointY.Text = String.Format("{0}", p.Y);
+	    }
 	}
     }
 }

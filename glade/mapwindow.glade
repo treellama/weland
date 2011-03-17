@@ -4,12 +4,12 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="scroll_event" handler="OnScroll"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
+    <signal name="scroll_event" handler="OnScroll"/>
     <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="delete_event" handler="OnDelete"/>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -767,56 +767,155 @@
         </child>
         <child>
           <widget class="GtkHBox" id="customGridHBox">
-            <property name="width_request">1024</property>
+            <property name="border_width">5</property>
+            <property name="spacing">30</property>
             <child>
-              <widget class="GtkLabel" id="label28">
+              <widget class="GtkButton" id="gridResetButton">
+                <property name="label" translatable="yes">Reset</property>
+                <property name="width_request">80</property>
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Rotation:</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Match custom grid to selected line, or reset custom grid</property>
+                <signal name="clicked" handler="OnGridReset"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="padding">3</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="gridRotationButton">
-                <property name="label" translatable="yes">0.0</property>
-                <property name="width_request">48</property>
+              <widget class="GtkHBox" id="hbox28">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridRotationClick"/>
+                <child>
+                  <widget class="GtkLabel" id="label28">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Rotation:</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">3</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkHScale" id="gridRotationScale">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="adjustment">1 0 90 0.10000000000000001 1 0</property>
+                    <property name="digits">3</property>
+                    <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="OnGridRotationChange"/>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="button4">
+                    <property name="label" translatable="yes">Set</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Prompt for custom grid rotation, or match selected line</property>
+                    <signal name="clicked" handler="OnGridRotateSet"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkHScale" id="gridRotationScale">
-                <property name="width_request">128</property>
+              <widget class="GtkHBox" id="hbox29">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="adjustment">1 0 90 0.10000000000000001 1 0</property>
-                <property name="draw_value">False</property>
-                <signal name="value_changed" handler="OnGridRotationChange"/>
+                <child>
+                  <widget class="GtkLabel" id="gridScaleLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Scale: 1.000</property>
+                    <property name="justify">fill</property>
+                    <property name="ellipsize">start</property>
+                    <property name="width_chars">12</property>
+                    <property name="single_line_mode">True</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">3</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkHScale" id="gridScaleScale">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="adjustment">0 -1 1 0.01 0.10000000000000001 0</property>
+                    <property name="digits">3</property>
+                    <property name="draw_value">False</property>
+                    <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="OnGridScaleChange"/>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="button5">
+                    <property name="label" translatable="yes">Set</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Prompt for custom grid scale, or match selected line</property>
+                    <signal name="clicked" handler="OnGridScaleSet"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button4">
-                <property name="label" translatable="yes">To Line</property>
+              <widget class="GtkHBox" id="hbox30">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridRotateToLine"/>
+                <child>
+                  <widget class="GtkLabel" id="label29">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Origin:</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">3</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="gridOriginButton">
+                    <property name="label" translatable="yes">Set</property>
+                    <property name="width_request">64</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip" translatable="yes">Prompt for custom grid origin, or use selected point</property>
+                    <signal name="clicked" handler="OnGridOriginSet"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -825,235 +924,127 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label31">
+              <widget class="GtkHBox" id="hbox31">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Scale:</property>
+                <property name="spacing">5</property>
+                <child>
+                  <widget class="GtkRadioButton" id="grid1Button">
+                    <property name="label" translatable="yes">1</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 1</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioButton" id="grid2Button">
+                    <property name="label" translatable="yes">2</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 2</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">grid1Button</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioButton" id="grid3Button">
+                    <property name="label" translatable="yes">3</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 3</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">grid1Button</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioButton" id="grid4Button">
+                    <property name="label" translatable="yes">4</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 4</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">grid1Button</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioButton" id="grid5Button">
+                    <property name="label" translatable="yes">5</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 5</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">grid1Button</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkRadioButton" id="grid6Button">
+                    <property name="label" translatable="yes">6</property>
+                    <property name="width_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip" translatable="yes">Custom Grid Preset 6</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">grid1Button</property>
+                    <signal name="toggled" handler="OnGridChange"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="padding">3</property>
                 <property name="position">4</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="gridScaleButton">
-                <property name="label" translatable="yes">1.0</property>
-                <property name="width_request">48</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridScaleClick"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">5</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkHScale" id="gridScaleScale">
-                <property name="width_request">128</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="adjustment">0 -1 1 0.01 0.10000000000000001 0</property>
-                <property name="digits">3</property>
-                <property name="draw_value">False</property>
-                <signal name="value_changed" handler="OnGridScaleChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">6</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button5">
-                <property name="label" translatable="yes">To Line</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridScaleToLine"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">7</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label29">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Center X:</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="padding">3</property>
-                <property name="position">8</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="gridCenterXButton">
-                <property name="label" translatable="yes">0</property>
-                <property name="width_request">64</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridCenterXClick"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">9</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label30">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Y:</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="padding">3</property>
-                <property name="position">10</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="gridCenterYButton">
-                <property name="label" translatable="yes">0</property>
-                <property name="width_request">64</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridCenterYClick"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">11</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button3">
-                <property name="label" translatable="yes">At Point</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="OnGridCenterAtPoint"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">12</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkVSeparator" id="vseparator1">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">8</property>
-                <property name="position">13</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid1Button">
-                <property name="label" translatable="yes">1</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">False</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">14</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid2Button">
-                <property name="label" translatable="yes">2</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">False</property>
-                <property name="group">grid1Button</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">15</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid3Button">
-                <property name="label" translatable="yes">3</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">False</property>
-                <property name="group">grid1Button</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">16</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid4Button">
-                <property name="label" translatable="yes">4</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">False</property>
-                <property name="group">grid1Button</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">17</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid5Button">
-                <property name="label" translatable="yes">5</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">False</property>
-                <property name="group">grid1Button</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">18</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkRadioButton" id="grid6Button">
-                <property name="label" translatable="yes">6</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">False</property>
-                <property name="group">grid1Button</property>
-                <signal name="toggled" handler="OnGridChange"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">19</property>
               </packing>
             </child>
           </widget>
