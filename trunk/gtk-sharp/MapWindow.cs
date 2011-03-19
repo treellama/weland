@@ -1488,46 +1488,26 @@ namespace Weland {
 
 	    gridRotationScale.Value = grid.Rotation;
 	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 	}
 
 	internal void OnGridReset(object o, EventArgs e) {
 	    if (selection.Line != -1)
 	    {
-		Line l = Level.Lines[selection.Line];
-		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
-		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
-		double d = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y) ) / World.One;
-
-		if (d >= Math.Pow(10, gridScaleScale.Adjustment.Lower) && d <= Math.Pow(10, gridScaleScale.Adjustment.Upper)) {
-		    grid.Scale = d;
-		    gridScaleScale.Value = Math.Log10(d);
-		    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", d);
-
-		    grid.Rotation = -(180 / Math.PI) * Math.Atan2(p2.Y-p1.Y, p2.X-p1.X);
-		    while(grid.Rotation < 0)
-			grid.Rotation += 90;
-		    
-		    while(grid.Rotation > 90)
-			grid.Rotation -= 90;
-		    
-		    gridRotationScale.Value = grid.Rotation;
-
-		    grid.Center.X = p1.X;
-		    grid.Center.Y = p1.Y;
-		    Redraw();
-		}
-	    }
-	    else
-	    {
+		editor.SetCustomGridOriginToSelected();
+		editor.SetCustomGridRotationToSelected();
+		editor.SetCustomGridScaleToSelected();
+	    } else {
 		grid.Rotation = 0.0;
 		grid.Center.X = 0;
 		grid.Center.Y = 0;
 		grid.Scale = 1.0;
+	    }		
 		
-		gridRotationScale.Value = grid.Rotation;
-		gridScaleScale.Value = Math.Log10(grid.Scale);
-		Redraw();
-	    }
+	    gridRotationScale.Value = grid.Rotation;
+	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
+	    Redraw();
 	}
 	
 	internal void OnGridRotationChange(object o, EventArgs e) {
@@ -1542,12 +1522,8 @@ namespace Weland {
 	}
 
 	internal void OnGridOriginSet(object o, EventArgs e) {
-	    if (selection.Point!=-1) {
-		Point p = Level.Endpoints[selection.Point];
-		grid.Center.X = p.X;
-		grid.Center.Y = p.Y;
-		Redraw();
-	    } else {
+	    if (!editor.SetCustomGridOriginToSelected())
+	    {
 		Point p;
 		p.X = grid.Center.X;
 		p.Y = grid.Center.Y;
@@ -1557,25 +1533,12 @@ namespace Weland {
 		dialog.Run();
 		grid.Center.X = dialog.Value.X;
 		grid.Center.Y = dialog.Value.Y;
-		Redraw();
 	    }    
+	    Redraw();
 	}
 	
 	internal void OnGridRotateSet(object o, EventArgs e) {
-	    if (selection.Line != -1) {
-		Line l = Level.Lines[selection.Line];
-		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
-		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
-		grid.Rotation = -(180 / Math.PI) * Math.Atan2(p2.Y-p1.Y, p2.X-p1.X);
-		while(grid.Rotation < 0)
-		    grid.Rotation += 90;
-
-		while(grid.Rotation > 90)
-		    grid.Rotation -= 90;
-
-		gridRotationScale.Value = grid.Rotation;
-
-	    } else {
+	    if (!editor.SetCustomGridRotationToSelected()) {
 		double v;
 		DoubleDialog dialog = new DoubleDialog("Set Grid Rotation", window1);
 		dialog.Value = grid.Rotation;
@@ -1589,43 +1552,34 @@ namespace Weland {
 		    }
 
 		    grid.Rotation = v;
-		    gridRotationScale.Value = grid.Rotation;
 		}
 		dialog.Destroy();
 	    }
+	    gridRotationScale.Value = grid.Rotation;
 	    Redraw();
 	}
 
 	internal void OnGridScaleSet(object o, EventArgs e)
 	{
-	    if (selection.Line != -1) {
-		Line l = Level.Lines[selection.Line];
-		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
-		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
-		double d = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y) ) / World.One;
-		if (d >= Math.Pow(10, gridScaleScale.Adjustment.Lower) && d <= Math.Pow(10, gridScaleScale.Adjustment.Upper)) {
-		    grid.Scale = d;
-		    gridScaleScale.Value = Math.Log10(d);
-		    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", d);
-		    Redraw();
-		}
-	    } else {
+	    if (!editor.SetCustomGridScaleToSelected())
+	    {
 		double v;
 		DoubleDialog dialog = new DoubleDialog("Set Grid Scale", window1);
 		dialog.Value = grid.Scale;
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    v = dialog.Value;
-		    if(v < Math.Pow(10, gridScaleScale.Adjustment.Lower)) {
-			v = Math.Pow(10, gridScaleScale.Adjustment.Lower);
-		    } else if (v > Math.Pow(10, gridScaleScale.Adjustment.Upper)) {
-			v = Math.Pow(10, gridScaleScale.Adjustment.Upper);
+		    if(v < grid.MinScale) {
+			v = grid.MinScale;
+		    } else if (v > grid.MaxScale) {
+			v = grid.MaxScale;
 		    }
 		    grid.Scale = v;
-		    gridScaleScale.Value = Math.Log10(grid.Scale);
 		}
 		dialog.Destroy();
-		Redraw();
 	    }
+	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
+	    Redraw();
 	}
 
 	protected void OnGridChange(object o, EventArgs e) {
