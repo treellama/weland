@@ -1477,10 +1477,16 @@ namespace Weland {
 		Line l = Level.Lines[Selection.Line];
 		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
 		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
-		double d = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y) ) / World.One;
-		if (d >= Grid.MinScale && d <= Grid.MaxScale) {
-		    Grid.Scale = d;
+		double d = Math.Sqrt((double) (p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y) ) / World.One;
+
+		while (d > Grid.MaxScale) {
+		    d /= 2.0;
 		}
+		while (d < Grid.MinScale) {
+		    d *= 2.0;
+		}
+
+		Grid.Scale = d;
 		return true;
 	    }
 
