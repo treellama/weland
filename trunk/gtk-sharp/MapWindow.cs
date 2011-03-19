@@ -1487,7 +1487,7 @@ namespace Weland {
 	    grid.UseCustomGrid = button.Active;
 
 	    gridRotationScale.Value = grid.Rotation;
-	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
 	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 	}
 
@@ -1505,7 +1505,7 @@ namespace Weland {
 	    }		
 		
 	    gridRotationScale.Value = grid.Rotation;
-	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
 	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 	    Redraw();
 	}
@@ -1516,7 +1516,7 @@ namespace Weland {
 	}
 	
 	internal void OnGridScaleChange(object o, EventArgs e) {
-		grid.Scale = Math.Pow(10, ((Range) o).Value);
+		grid.Scale = Math.Pow(2, ((Range) o).Value);
 		gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 		Redraw();
 	}
@@ -1577,7 +1577,7 @@ namespace Weland {
 		}
 		dialog.Destroy();
 	    }
-	    gridScaleScale.Value = Math.Log10(grid.Scale);
+	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
 	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 	    Redraw();
 	}
@@ -1600,7 +1600,7 @@ namespace Weland {
 			gridRotationScale.Value = grid.Rotation;
 			grid.Center=grid.Centers[i];
 			grid.Scale=grid.Scales[i];
-			gridScaleScale.Value = Math.Log10(grid.Scale);
+			gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
 			gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 
 			grid.CurrentGrid=i;
