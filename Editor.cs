@@ -46,6 +46,8 @@ namespace Weland {
 	public double[] Rotations = {0,0,0,0,0,0};
 	public Point[] Centers = {new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0)};
 	public double[] Scales = {1,1,1,1,1,1};
+	public double MaxScale = 8.0;
+	public double MinScale = 1.0 / 8.0;
 	/*** end custom grid code ***/
 
     }
@@ -1426,6 +1428,63 @@ namespace Weland {
 	    }
 	    
 	    Changed = true;
+	}
+
+	public bool SetCustomGridOriginToSelected() {
+	    if (Selection.Point != -1) {
+		Point p = Level.Endpoints[Selection.Point];
+		Grid.Center.X = p.X;
+		Grid.Center.Y = p.Y;
+		return true;
+	    } else if (Selection.Line != -1) {
+		Line l = Level.Lines[Selection.Line];
+		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
+		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
+		
+		if (Grid.Center.X == p1.X && Grid.Center.Y == p1.Y) {
+		    Grid.Center.X = p2.X;
+		    Grid.Center.Y = p2.Y;
+		} else {
+		    Grid.Center.X = p1.X;
+		    Grid.Center.Y = p1.Y;
+		}
+		return true;
+	    }
+	    
+	    return false;
+	}
+
+	public bool SetCustomGridRotationToSelected() {
+	    if (Selection.Line != -1) {
+		Line l = Level.Lines[Selection.Line];
+		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
+		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
+		Grid.Rotation = -(180 / Math.PI) * Math.Atan2(p2.Y-p1.Y, p2.X-p1.X);
+		while(Grid.Rotation < 0)
+		    Grid.Rotation += 90;
+		
+		while(Grid.Rotation > 90)
+		    Grid.Rotation -= 90;
+
+		return true;
+	    }
+
+	    return false;
+	}
+
+	public bool SetCustomGridScaleToSelected() {
+	    if (Selection.Line != -1) {
+		Line l = Level.Lines[Selection.Line];
+		Point p1 = Level.Endpoints[l.EndpointIndexes[0]];
+		Point p2 = Level.Endpoints[l.EndpointIndexes[1]];
+		double d = Math.Sqrt((p2.X - p1.X) * (p2.X - p1.X) + (p2.Y - p1.Y) * (p2.Y - p1.Y) ) / World.One;
+		if (d >= Grid.MinScale && d <= Grid.MaxScale) {
+		    Grid.Scale = d;
+		}
+		return true;
+	    }
+
+	    return false;
 	}
     }
 }
