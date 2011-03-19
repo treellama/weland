@@ -4,11 +4,11 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="window1">
     <property name="events">GDK_STRUCTURE_MASK | GDK_SCROLL_MASK</property>
-    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
+    <signal name="configure_event" handler="OnWindowConfigure"/>
     <signal name="key_press_event" handler="OnSpecialKeyPressed"/>
     <signal name="key_press_event" handler="OnKeyPressed"/>
     <signal name="scroll_event" handler="OnScroll"/>
-    <signal name="configure_event" handler="OnWindowConfigure"/>
+    <signal name="key_release_event" handler="OnSpecialKeyReleased"/>
     <signal name="delete_event" handler="OnDelete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -772,7 +772,7 @@
             <child>
               <widget class="GtkButton" id="gridResetButton">
                 <property name="label" translatable="yes">Reset</property>
-                <property name="width_request">80</property>
+                <property name="width_request">64</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -815,6 +815,7 @@
                 <child>
                   <widget class="GtkButton" id="button4">
                     <property name="label" translatable="yes">Set</property>
+                    <property name="width_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -855,10 +856,9 @@
                   <widget class="GtkHScale" id="gridScaleScale">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="adjustment">0 -1 1 0.01 0.10000000000000001 0</property>
+                    <property name="adjustment">0 -3 3 0.01 1 0</property>
                     <property name="digits">3</property>
                     <property name="draw_value">False</property>
-                    <property name="value_pos">left</property>
                     <signal name="value_changed" handler="OnGridScaleChange"/>
                   </widget>
                   <packing>
@@ -868,6 +868,7 @@
                 <child>
                   <widget class="GtkButton" id="button5">
                     <property name="label" translatable="yes">Set</property>
+                    <property name="width_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -903,7 +904,7 @@
                 <child>
                   <widget class="GtkButton" id="gridOriginButton">
                     <property name="label" translatable="yes">Set</property>
-                    <property name="width_request">64</property>
+                    <property name="width_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
