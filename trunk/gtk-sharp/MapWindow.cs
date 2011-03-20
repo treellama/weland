@@ -840,7 +840,7 @@ namespace Weland {
 	    {
 		MenuItem item = new MenuItem(Weland.plugins.GetName(i));
 		int pluginNumber = i;
-		item.Activated += delegate(object obj, EventArgs args) { Weland.plugins.GtkRun(Level, pluginNumber); };
+		item.Activated += delegate(object obj, EventArgs args) { Weland.plugins.GtkRun(editor, pluginNumber); };
 		menu.Append(item);
 	    }
 
@@ -1011,7 +1011,7 @@ namespace Weland {
 		    OBJExporter exporter = new OBJExporter(Level);
 		    exporter.Export(d.Filename);
 		    
-		    Weland.Settings.PutSetting("LastSave/FoldeR", Path.GetDirectoryName(d.Filename));
+		    Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
 		}
 	    } catch (Exception e) {
 		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
@@ -1652,23 +1652,6 @@ namespace Weland {
 	    Level.NukeObjects();
 	    editor.Changed = true;
 	    Redraw();
-	}
-
-	protected void OnPlugin(object o, EventArgs e)
-	{
-	    Assembly a = Assembly.LoadFrom("Plugin.dll");
-	    
-	    foreach (Type t in a.GetTypes())
-	    {
-		MethodInfo method = t.GetMethod("Run");
-
-		if (method != null && method.IsStatic)
-		{
-		    object[] args = { Level };
-		    method.Invoke(0, args);
-		    break;
-		}
-	    }
 	}
 
 	void PaletteNext() {

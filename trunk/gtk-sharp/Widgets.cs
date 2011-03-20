@@ -276,4 +276,80 @@ namespace Weland {
 	    }
 	}
     }
+
+    public class LogWindow : Gtk.Window {
+	public LogWindow(string title, string contents) : base(title) {
+	    this.contents = contents;
+	    
+	    SetDefaultSize(640, 480);
+
+	    VBox vbox = new VBox(false, 2);
+	    vbox.BorderWidth = 5;
+
+	    ScrolledWindow scrolledWindow = new ScrolledWindow();
+
+	    TextView textView = new TextView();
+	    textView.Buffer.Text = contents;
+	    textView.Editable = false;
+	    
+	    scrolledWindow.Add(textView);
+	    scrolledWindow.ShowAll();
+	    
+	    HButtonBox buttonBox = new HButtonBox();
+	    buttonBox.Layout = ButtonBoxStyle.End;
+	    buttonBox.Spacing = 5;
+	    
+	    Button saveAs = new Button(Stock.SaveAs);
+	    saveAs.Clicked += delegate(object obj, EventArgs args) {
+		this.SaveAs();
+	    };
+
+	    buttonBox.Add(saveAs);
+
+	    Button close = new Button(Stock.Close);
+	    close.CanDefault = true;
+	    close.Clicked += delegate(object obj, EventArgs args) {
+		this.Close();
+	    };
+
+	    buttonBox.Add(close);
+
+	    vbox.PackStart(scrolledWindow, true, true, 5);
+	    vbox.PackStart(buttonBox, false, false, 5);
+
+	    Add(vbox);
+
+	    ShowAll();
+
+	    close.GrabDefault();
+	}
+
+	public void Close() {
+	    this.Destroy(); 
+	}
+
+	public void SaveAs() {
+	    FileChooserDialog d = new FileChooserDialog("Save log as", this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
+	    d.CurrentName = "Log.txt";
+	    d.DoOverwriteConfirmation = true;
+	    try {
+		if (d.Run() == (int) ResponseType.Accept) {
+		    using (TextWriter w = new StreamWriter(d.Filename)) {
+			w.Write(contents);
+		    }
+		    Weland.Settings.PutSetting("LastSave/Folder", System.IO.Path.GetDirectoryName(d.Filename));
+		}
+	    } catch (Exception e) {
+		MessageDialog m = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
+		m.Title = "Save error";
+		m.SecondaryText = e.Message;
+		m.Run();
+		m.Destroy();	
+	    }
+	    d.Destroy();
+	}
+
+	string contents;
+    }
 }
