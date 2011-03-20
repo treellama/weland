@@ -1478,6 +1478,24 @@ namespace Weland {
 	[Widget] RadioButton grid5Button;
 	[Widget] RadioButton grid6Button;
 	[Widget] Label gridScaleLabel;
+
+	void LoadGrid() {
+	    grid.Rotation = Weland.Settings.GetSetting(String.Format("CustomGrids/Grid{0}/Rotation", grid.CurrentGrid), 0.0);
+	    grid.Scale = Weland.Settings.GetSetting(String.Format("CustomGrids/Grid{0}/Scale", grid.CurrentGrid), 1.0);
+	    grid.Center.X = (short) Weland.Settings.GetSetting(String.Format("CustomGrids/Grid{0}/Origin/X", grid.CurrentGrid), 0);
+	    grid.Center.Y = (short) Weland.Settings.GetSetting(String.Format("CustomGrids/Grid{0}/Origin/Y", grid.CurrentGrid), 0);
+
+	    gridRotationScale.Value = grid.Rotation;
+	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
+	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
+	}
+
+	void SaveGrid() {
+	    Weland.Settings.PutSetting(String.Format("CustomGrids/Grid{0}/Rotation", grid.CurrentGrid), grid.Rotation);
+	    Weland.Settings.PutSetting(String.Format("CustomGrids/Grid{0}/Scale", grid.CurrentGrid), grid.Scale);
+	    Weland.Settings.PutSetting(String.Format("CustomGrids/Grid{0}/Origin/X", grid.CurrentGrid), grid.Center.X);
+	    Weland.Settings.PutSetting(String.Format("CustomGrids/Grid{0}/Origin/Y", grid.CurrentGrid), grid.Center.Y);
+	}
 		
 	internal void OnShowCustomGridToggle(object o, EventArgs e) {
 	    ToggleToolButton button = (ToggleToolButton) o;
@@ -1502,7 +1520,9 @@ namespace Weland {
 		grid.Center.X = 0;
 		grid.Center.Y = 0;
 		grid.Scale = 1.0;
-	    }		
+	    }
+
+	    SaveGrid();
 		
 	    gridRotationScale.Value = grid.Rotation;
 	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
@@ -1512,11 +1532,13 @@ namespace Weland {
 	
 	internal void OnGridRotationChange(object o, EventArgs e) {
 		grid.Rotation = ((Range) o).Value;
+		SaveGrid();
 		Redraw();
 	}
 	
 	internal void OnGridScaleChange(object o, EventArgs e) {
 		grid.Scale = Math.Pow(2, ((Range) o).Value);
+		SaveGrid();
 		gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 		Redraw();
 	}
@@ -1533,6 +1555,7 @@ namespace Weland {
 		dialog.Run();
 		grid.Center.X = dialog.Value.X;
 		grid.Center.Y = dialog.Value.Y;
+		SaveGrid();
 	    }    
 	    Redraw();
 	}
@@ -1552,6 +1575,7 @@ namespace Weland {
 		    }
 
 		    grid.Rotation = v;
+		    SaveGrid();
 		}
 		dialog.Destroy();
 	    }
@@ -1574,6 +1598,7 @@ namespace Weland {
 			v = grid.MaxScale;
 		    }
 		    grid.Scale = v;
+		    SaveGrid();
 		}
 		dialog.Destroy();
 	    }
@@ -1583,30 +1608,22 @@ namespace Weland {
 	}
 
 	protected void OnGridChange(object o, EventArgs e) {
-		int i=0;
-		if( ((RadioButton) o).Active) {
-			if(o == grid1Button) i=0;
-			else if(o == grid2Button) i=1;
-			else if(o == grid3Button) i=2;
-			else if(o == grid4Button) i=3;
-			else if(o == grid5Button) i=4;
-			else if(o == grid6Button) i=5;
-			
-			grid.Rotations[grid.CurrentGrid]=grid.Rotation;
-			grid.Centers[grid.CurrentGrid]=grid.Center;
-			grid.Scales[grid.CurrentGrid]=grid.Scale;
-			
-			grid.Rotation=grid.Rotations[i];
-			gridRotationScale.Value = grid.Rotation;
-			grid.Center=grid.Centers[i];
-			grid.Scale=grid.Scales[i];
-			gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
-			gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
+	    if (((RadioButton) o).Active) {
+		if (o == grid1Button) grid.CurrentGrid = 1;
+		else if (o == grid2Button) grid.CurrentGrid = 2;
+		else if (o == grid3Button) grid.CurrentGrid = 3;
+		else if (o == grid4Button) grid.CurrentGrid = 4;
+		else if (o == grid5Button) grid.CurrentGrid = 5;
+		else if (o == grid6Button) grid.CurrentGrid = 6;
 
-			grid.CurrentGrid=i;
-			
-			Redraw();
-		}
+		LoadGrid();
+		
+		gridRotationScale.Value = grid.Rotation;
+		gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
+		gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
+		
+		Redraw();
+	    }
 	}
 	
 	/*** end custom grid code ***/

@@ -42,10 +42,8 @@ namespace Weland {
 	public double Scale = 1;
 	public bool UseCustomGrid = true;
 	
-	public int CurrentGrid = 0;
-	public double[] Rotations = {0,0,0,0,0,0};
-	public Point[] Centers = {new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0),new Point(0,0)};
-	public double[] Scales = {1,1,1,1,1,1};
+	public int CurrentGrid = 1;
+
 	public double MaxScale = 8.0;
 	public double MinScale = 1.0 / 8.0;
 	/*** end custom grid code ***/
