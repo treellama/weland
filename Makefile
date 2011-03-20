@@ -23,6 +23,9 @@ all: .FORCE
 	make -C Plugins
 .FORCE:
 
+plugins:
+	make -C Plugins
+
 windows: .FORCE
 	gmcs @windows.rsp
 Weland.app: .FORCE
@@ -37,14 +40,14 @@ Weland.app: .FORCE
 	chmod u+x Weland.app/Contents/MacOS/weland
 	cp Weland.exe Weland.app/Contents/MacOS/Weland.exe
 
-winzip: windows
+winzip: windows plugins
 	$(create-zipdir)
 	$(copy-readme)
 	$(copy-plugins)
 	cp Weland.exe "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
 	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION)-win.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
-maczip: Weland.app
+maczip: Weland.app plugins
 	$(create-zipdir)
 	$(copy-readme)
 	$(copy-plugins)
@@ -57,7 +60,7 @@ dist:
 	unzip -d "$(BUILD_ZIP_DIR)/$(ZIP_DIR)" "$(BUILD_ZIP_DIR)/tmp.zip"
 	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION)-src.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
-release: winzip maczip dist
+release: winzip maczip plugins dist
 .PHONY: clean
 clean:
 	$(remove-zipdir)
