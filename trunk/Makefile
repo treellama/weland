@@ -20,6 +20,7 @@ endef
 
 all: .FORCE
 	gmcs @weland.rsp
+	make -C Plugins
 .FORCE:
 
 windows: .FORCE
@@ -64,3 +65,4 @@ clean:
 	rm -rf Weland.app
 	rm -rf *.zip
 	rm -rf *.mdb
+	make -C Plugins clean
