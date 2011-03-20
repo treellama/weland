@@ -14,6 +14,7 @@ endef
 
 define copy-plugins
 	mkdir -p "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins"
+	cp Plugins/README.txt "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
 	cp Plugins/*.dll "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
 endef
 
