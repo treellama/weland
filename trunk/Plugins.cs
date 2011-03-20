@@ -14,19 +14,29 @@ namespace Weland {
 	List<PluginInfo> plugins = new List<PluginInfo>();
 
 	public Plugins() {
-	    string[] files = new string[0];
+	    List<string> files = new List<string>();
+
 	    string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	    try {
-		string pluginsFolder = Path.Combine(exePath, "Plugins");
-		files = Directory.GetFiles(pluginsFolder, "*.dll");
+		foreach (string file in Directory.GetFiles(Path.Combine(exePath, "Plugins"), "*.dll")) {
+		    files.Add(file);
+		}
 	    } catch { }
-
-	    if (files.Length == 0 && PlatformDetection.IsMac) {
+		
+	    if (PlatformDetection.IsMac) {
 		try {
-		    exePath = Path.GetDirectoryName(Path.GetDirectoryName(exePath));
-		    files = Directory.GetFiles(Path.Combine(exePath, "Plugins"), "*.dll");
+		    foreach (string file in Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(exePath)), "Plugins"), "*.dll")) {
+			files.Add(file);
+		    }
 		} catch { }
 	    }
+
+	    string applicationData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Weland");
+	    try {
+		foreach (string file in Directory.GetFiles(Path.Combine(applicationData, "Plugins"), "*.dll")) {
+		    files.Add(file);
+		}
+	    } catch { }
 
 	    foreach (string file in files)
 	    {
