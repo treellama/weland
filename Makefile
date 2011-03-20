@@ -12,6 +12,11 @@ define copy-readme
 	cp README.txt "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
 endef
 
+define copy-plugins
+	mkdir -p "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins"
+	cp Plugins/*.dll "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
+endef
+
 all: .FORCE
 	gmcs @weland.rsp
 .FORCE:
@@ -33,12 +38,14 @@ Weland.app: .FORCE
 winzip: windows
 	$(create-zipdir)
 	$(copy-readme)
+	$(copy-plugins)
 	cp Weland.exe "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
 	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION)-win.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
 maczip: Weland.app
 	$(create-zipdir)
 	$(copy-readme)
+	$(copy-plugins)
 	cp -r Weland.app "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
 	cd "$(BUILD_ZIP_DIR)" && zip -y -r "../weland-$(VERSION)-mac.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
