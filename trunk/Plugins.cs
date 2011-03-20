@@ -23,7 +23,7 @@ namespace Weland {
 
 	    if (files.Length == 0 && PlatformDetection.IsMac) {
 		try {
-		    exePath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(exePath)));
+		    exePath = Path.GetDirectoryName(Path.GetDirectoryName(exePath));
 		    files = Directory.GetFiles(Path.Combine(exePath, "Plugins"), "*.dll");
 		} catch { }
 	    }
