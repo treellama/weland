@@ -121,7 +121,37 @@ namespace Weland {
 	public static readonly uint Tag = Wadfile.Chunk("OBJS");
 	public const int Size = 16;
 
-	public ObjectType Type;
+	private ObjectType type;
+  public ObjectType Type 
+  {
+    get { return type; }
+    set
+    {
+      if(value != type)
+      {
+      if(value == ObjectType.Scenery)
+      {
+          //Fix Bug #3504813
+          SetFlag(MapObjectFlags.Invisible, false);
+          SetFlag(MapObjectFlags.OnPlatform, false);
+          SetFlag(MapObjectFlags.Blind, false);
+          SetFlag(MapObjectFlags.Deaf, false);
+          SetFlag(MapObjectFlags.Floats, false);
+          SetFlag(MapObjectFlags.NetworkOnly, false);
+      }
+      else if(value == ObjectType.Item)
+      {
+          //Fix Bug #3504812
+          SetFlag(MapObjectFlags.OnPlatform, false);
+          SetFlag(MapObjectFlags.Blind, false);
+          SetFlag(MapObjectFlags.Deaf, false);
+          SetFlag(MapObjectFlags.Floats, false);
+      }
+      this.type = value;
+      }
+      
+    }
+  }
 	public short Index;
 	short facing;
 	
