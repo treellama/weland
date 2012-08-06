@@ -131,17 +131,20 @@ namespace Weland {
 	public int DefaultSnapDistance;
 	public int ObjectSnapDistance;
 	public int InertiaDistance;
+	public bool SplitPolygonLines;
 
 	public void LoadSettings() {
 	    DefaultSnapDistance = Weland.Settings.GetSetting("Distance/Select/Default", 4);
 	    ObjectSnapDistance = Weland.Settings.GetSetting("Distance/Select/Object", 8);
 	    InertiaDistance = Weland.Settings.GetSetting("Distance/Inertia/Default", 8);
+	    SplitPolygonLines = Weland.Settings.GetSetting("Editor/SplitPolygonLines", true);
 	}
 
 	public void SaveSettings() {
 	    Weland.Settings.PutSetting("Distance/Select/Default", DefaultSnapDistance);
 	    Weland.Settings.PutSetting("Distance/Select/Object", ObjectSnapDistance);
 	    Weland.Settings.PutSetting("Distance/Inertia/Default", InertiaDistance);
+	    Weland.Settings.PutSetting("Editor/SplitPolygonLines", SplitPolygonLines);
 	}
 
 	public Editor() {
@@ -258,6 +261,23 @@ namespace Weland {
 	    return new Point((short) (Math.Round(r * Math.Cos(theta)) + StartX), (short) (Math.Round(r * Math.Sin(theta)) + StartY));
 	}
 
+	bool CanSplitLine(short index) {
+	    Line line = Level.Lines[index];
+	    if (line.ClockwisePolygonOwner == -1 && line.CounterclockwisePolygonOwner == -1) {
+		return true;
+	    }
+
+	    if (line.ClockwisePolygonOwner != -1 && Level.Polygons[line.ClockwisePolygonOwner].VertexCount == Polygon.MaxVertexCount) {
+		return false;
+	    }
+
+	    if (line.CounterclockwisePolygonOwner != -1 && Level.Polygons[line.CounterclockwisePolygonOwner].VertexCount == Polygon.MaxVertexCount) {
+		return false;
+	    }
+
+	    return SplitPolygonLines;
+	}
+
 	public void StartLine(short X, short Y) {
 	    SetUndo();
 	    Selection.Clear();
@@ -274,7 +294,7 @@ namespace Weland {
 		Level.TemporaryLineEnd = p;
 	    } else {
 		index = Level.GetClosestLine(p);
-		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
+		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && CanSplitLine(index)) {
 		    //split
 		    Point onLine = Level.ClosestPointOnLine(p, Level.Lines[index]);
 		    Level.TemporaryLineStartIndex = Level.SplitLine(index, onLine.X, onLine.Y);
@@ -374,7 +394,7 @@ namespace Weland {
 		Selection.Point = index;
 	    } else {
 		index = Level.GetClosestLine(p);
-		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && Level.Lines[index].ClockwisePolygonOwner == -1 && Level.Lines[index].CounterclockwisePolygonOwner == -1) {
+		if (index != -1 && Level.Distance(p, Level.Lines[index]) < DefaultSnap() && CanSplitLine(index)) {
 		    Point onLine = Level.ClosestPointOnLine(p, Level.Lines[index]);
 		    Line line = Level.Lines[index];
 		    if (line.EndpointIndexes[0] != Level.TemporaryLineStartIndex && line.EndpointIndexes[1] != Level.TemporaryLineStartIndex) {

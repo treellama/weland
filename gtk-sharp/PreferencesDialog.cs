@@ -47,6 +47,7 @@ namespace Weland {
 	    selectionDistance.Value = editor.DefaultSnapDistance;
 	    objectDistance.Value = editor.ObjectSnapDistance;
 	    dragInertia.Value = editor.InertiaDistance;
+	    splitPolygonLines.Active = editor.SplitPolygonLines;
 
 	    shapesFileButton.SetFilename(Weland.Settings.GetSetting("ShapesFile/Path", ""));
 
@@ -85,6 +86,7 @@ namespace Weland {
 		editor.DefaultSnapDistance = (int) selectionDistance.Value;
 		editor.ObjectSnapDistance = (int) objectDistance.Value;
 		editor.InertiaDistance = (int) dragInertia.Value;
+		editor.SplitPolygonLines = splitPolygonLines.Active;
 		editor.SaveSettings();
 	    }
 	    dialog1.Destroy();
@@ -103,6 +105,7 @@ namespace Weland {
 
 	[Widget] ToggleButton antialias;
 	[Widget] ToggleButton showHiddenVertices;
+	[Widget] ToggleButton splitPolygonLines;
 
 	[Widget] ColorButton backgroundColor;
 	[Widget] ColorButton gridColor;
