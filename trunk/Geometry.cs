@@ -201,11 +201,92 @@ namespace Weland {
 	    short e0 = line.EndpointIndexes[0];
 	    short e1 = line.EndpointIndexes[1];
 	    short p = NewPoint(X, Y);
-	    
-	    DeleteLineIndex(index);
 
-	    NewLine(e0, p);
-	    NewLine(p, e1);
+	    short l1 = NewLine(e0, p);
+	    short l2 = NewLine(p, e1);
+
+	    if (line.ClockwisePolygonSideIndex != -1) {
+		DeleteSide(line.ClockwisePolygonSideIndex);
+	    }
+
+	    if (line.CounterclockwisePolygonSideIndex != -1) {
+		DeleteSide(line.CounterclockwisePolygonSideIndex);
+	    }
+
+	    if (line.ClockwisePolygonOwner != -1) {
+		Polygon polygon = Polygons[line.ClockwisePolygonOwner];
+
+		for (int i = 0; i < Polygon.MaxVertexCount; ++i) {
+		    if (polygon.LineIndexes[i] == index) {
+			for (int j = Polygon.MaxVertexCount - 2; j >= i; --j) {
+			    polygon.LineIndexes[j + 1] = polygon.LineIndexes[j];
+			    polygon.AdjacentPolygonIndexes[j + 1] = polygon.AdjacentPolygonIndexes[j];
+			    polygon.SideIndexes[j + 1] = polygon.SideIndexes[j];
+			    polygon.EndpointIndexes[j + 1] = polygon.EndpointIndexes[j];
+			}
+
+
+			polygon.LineIndexes[i] = l1;
+			polygon.LineIndexes[i + 1] = l2;
+			polygon.SideIndexes[i] = -1;
+			polygon.SideIndexes[i + 1] = -1;
+			if (polygon.EndpointIndexes[i] == e0) {
+			    polygon.EndpointIndexes[i + 1] = p;
+			} else {
+			    polygon.EndpointIndexes[i] = p;
+			}
+			EndpointPolygons[p].Add(polygon);
+
+			polygon.VertexCount++;
+			UpdatePolygonConcavity(polygon);
+			break;
+		    }
+		}
+
+		Lines[l1].ClockwisePolygonOwner = line.ClockwisePolygonOwner;
+		Lines[l2].ClockwisePolygonOwner = line.ClockwisePolygonOwner;
+	    }
+
+	    if (line.CounterclockwisePolygonOwner != -1) {
+		Polygon polygon = Polygons[line.CounterclockwisePolygonOwner];
+		for (int i = 0; i < Polygon.MaxVertexCount; ++i) {
+		    if (polygon.LineIndexes[i] == index) {
+			for (int j = Polygon.MaxVertexCount - 2; j >= i; --j) {
+			    polygon.LineIndexes[j + 1] = polygon.LineIndexes[j];
+			    polygon.AdjacentPolygonIndexes[j + 1] = polygon.AdjacentPolygonIndexes[j];
+			    polygon.SideIndexes[j + 1] = polygon.SideIndexes[j];
+			    polygon.EndpointIndexes[j + 1] = polygon.EndpointIndexes[j];
+			}
+
+
+			polygon.LineIndexes[i] = l2;
+			polygon.LineIndexes[i + 1] = l1;
+			polygon.SideIndexes[i] = -1;
+			polygon.SideIndexes[i + 1] = -1;
+			if (polygon.EndpointIndexes[i] == e0) {
+			    polygon.EndpointIndexes[i] = p;
+			} else {
+			    polygon.EndpointIndexes[i + 1] = p;
+			}
+
+			polygon.VertexCount++;
+			UpdatePolygonConcavity(polygon);
+			break;
+		    }
+		}
+
+		Lines[l1].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
+		Lines[l2].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
+		if (Lines[l1].ClockwisePolygonOwner != -1) {
+		    Lines[l1].Transparent = true;
+		}
+
+		if (Lines[l2].ClockwisePolygonOwner != -1) {
+		    Lines[l2].Transparent = true;
+		}
+	    }
+
+	    DeleteLineIndex(index);
 
 	    return p;
 	}
