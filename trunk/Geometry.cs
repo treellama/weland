@@ -12,6 +12,11 @@ namespace Weland {
 	public static PolygonFilter Filter = p => true;
 	public static ObjectFilter ObjectFilter = o => true;
 	public static bool FilterPoints = false;
+	public static bool RememberDeletedSides = false;
+
+	Dictionary<short, Side> ClockwiseOrphanedSides = new Dictionary<short, Side>();
+	Dictionary<short, Side> CounterClockwiseOrphanedSides = new Dictionary<short, Side>();
+	HashSet<short> LinesReflectingOrphanedSides = new HashSet<short>();
 
 	public bool FilterLine(PolygonFilter f, Line line) {
 	    if (line.ClockwisePolygonOwner == -1) {
@@ -602,15 +607,36 @@ namespace Weland {
 		Line line = Lines[loop[i]];
 		if (line.EndpointIndexes[1] == polygon.EndpointIndexes[i]) {
 		    line.ClockwisePolygonOwner = index;
-		    if (adjacent == null && line.CounterclockwisePolygonOwner != -1) {
-			adjacent = Polygons[line.CounterclockwisePolygonOwner];
+		    if (line.CounterclockwisePolygonOwner != -1 && adjacent == null) {
+			    adjacent = Polygons[line.CounterclockwisePolygonOwner];
+		    }
+		    
+		    if (RememberDeletedSides && ClockwiseOrphanedSides.ContainsKey(loop[i])) {
+			Side side = ClockwiseOrphanedSides[loop[i]];
+			line.ClockwisePolygonSideIndex = (short) Sides.Count;
+			side.LineIndex = loop[i];
+			side.PolygonIndex = index;
+			Sides.Add(side);
+			FixSideType(side);
+			ClockwiseOrphanedSides.Remove(loop[i]);
 		    }
 		} else {
 		    line.CounterclockwisePolygonOwner = index;
-		    if (adjacent == null && line.ClockwisePolygonOwner != -1) {
+		    if (line.ClockwisePolygonOwner != -1 && adjacent == null) {
 			adjacent = Polygons[line.ClockwisePolygonOwner];
 		    }
+
+		    if (RememberDeletedSides && CounterClockwiseOrphanedSides.ContainsKey(loop[i])) {
+			Side side = CounterClockwiseOrphanedSides[loop[i]];
+			line.CounterclockwisePolygonSideIndex = (short) Sides.Count;
+			side.LineIndex = loop[i];
+			side.PolygonIndex = index;
+			Sides.Add(side);
+			FixSideType(side);
+			CounterClockwiseOrphanedSides.Remove(loop[i]);
+		    }
 		}
+
 		if (line.ClockwisePolygonOwner != -1 &&
 		    line.CounterclockwisePolygonOwner != -1) {
 		    line.Flags = LineFlags.Transparent;
@@ -618,15 +644,24 @@ namespace Weland {
 		    // empty the side opposite
 		    if (line.ClockwisePolygonOwner == index) {
 			if (line.CounterclockwisePolygonSideIndex != -1) {
-			    Sides[line.CounterclockwisePolygonSideIndex].Clear();
+			    if (RememberDeletedSides && LinesReflectingOrphanedSides.Contains(loop[i])) {
+				LinesReflectingOrphanedSides.Remove(loop[i]);
+			    } else {
+				Sides[line.CounterclockwisePolygonSideIndex].Clear();
+			    }
 			}
 		    } else {
 			if (line.ClockwisePolygonSideIndex != -1) {
-			    Sides[line.ClockwisePolygonSideIndex].Clear();
+			    if (RememberDeletedSides && LinesReflectingOrphanedSides.Contains(loop[i])) {
+				LinesReflectingOrphanedSides.Remove(loop[i]);
+			    } else {
+				Sides[line.ClockwisePolygonSideIndex].Clear();
+			    }
 			}
 		    }
 		}
 	    }
+
 	    if (adjacent != null) {
 		// copy some settings from it
 		polygon.FloorHeight = adjacent.FloorHeight;
@@ -696,11 +731,19 @@ namespace Weland {
 	    }
 	    Polygons.RemoveAt(index);
 
-	    foreach (Line line in Lines) {
+	    for (short line_index = 0; line_index < Lines.Count; ++line_index) {
+		Line line = Lines[line_index];
 		if (line.ClockwisePolygonOwner > index) {
 		    --line.ClockwisePolygonOwner;
 		} else if (line.ClockwisePolygonOwner == index) {
 		    line.ClockwisePolygonOwner = -1;
+		    if (RememberDeletedSides) {
+			if (LinesReflectingOrphanedSides.Contains(line_index)) {
+			    LinesReflectingOrphanedSides.Remove(line_index);
+			} else {
+			    LinesReflectingOrphanedSides.Add(line_index);
+			}
+		    }
 		    line.Flags = LineFlags.Solid;
 		}
 		
@@ -708,6 +751,13 @@ namespace Weland {
 		    --line.CounterclockwisePolygonOwner;
 		} else if (line.CounterclockwisePolygonOwner == index) {
 		    line.CounterclockwisePolygonOwner = -1;
+		    if (RememberDeletedSides) {
+			if (LinesReflectingOrphanedSides.Contains(line_index)) {
+			    LinesReflectingOrphanedSides.Remove(line_index);
+			} else {
+			    LinesReflectingOrphanedSides.Add(line_index);
+			}
+		    }
 		    line.Flags = LineFlags.Solid;
 		}
 
@@ -785,6 +835,11 @@ namespace Weland {
 	    Line line = Lines[index];
 	    EndpointLines[line.EndpointIndexes[0]].Remove(line);
 	    EndpointLines[line.EndpointIndexes[1]].Remove(line);
+	    if (RememberDeletedSides) {
+		ClockwiseOrphanedSides.Remove(index);
+		CounterClockwiseOrphanedSides.Remove(index);
+		LinesReflectingOrphanedSides.Remove(index);
+	    }
 	    Lines.RemoveAt(index);
 	    foreach (Polygon poly in Polygons) {
 		poly.DeleteLine(index);
@@ -973,16 +1028,24 @@ namespace Weland {
 	}
 
 	public void DeleteSide(short side_index) {
+	    Side side = Sides[side_index];
 	    Sides.RemoveAt(side_index);
-	    foreach (Line line in Lines) {
+	    for (short line_index = 0; line_index < Lines.Count; ++line_index) {
+		Line line = Lines[line_index];
 		if (line.CounterclockwisePolygonSideIndex > side_index) {
 		    --line.CounterclockwisePolygonSideIndex;
 		} else if (line.CounterclockwisePolygonSideIndex == side_index) {
+		    if (RememberDeletedSides) {
+			CounterClockwiseOrphanedSides[line_index] = side;
+		    }
 		    line.CounterclockwisePolygonSideIndex = -1;
 		}
 		if (line.ClockwisePolygonSideIndex > side_index) {
 		    --line.ClockwisePolygonSideIndex;
 		} else if (line.ClockwisePolygonSideIndex == side_index) {
+		    if (RememberDeletedSides) {
+			ClockwiseOrphanedSides[line_index] = side;
+		    }
 		    line.ClockwisePolygonSideIndex = -1;
 		}
 	    }
@@ -1000,8 +1063,14 @@ namespace Weland {
 	    FixSideType(side);
 
 	    if (line.ClockwisePolygonOwner == polygon_index) {
+		if (RememberDeletedSides) {
+		    ClockwiseOrphanedSides.Remove(line_index);
+		}
 		line.ClockwisePolygonSideIndex = side_index;
 	    } else if (line.CounterclockwisePolygonOwner == polygon_index) {
+		if (RememberDeletedSides) {
+		    CounterClockwiseOrphanedSides.Remove(line_index);
+		}
 		line.CounterclockwisePolygonSideIndex = side_index;
 	    } else {
 		Debug.Assert(false);

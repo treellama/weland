@@ -137,7 +137,7 @@ namespace Weland {
 	    DefaultSnapDistance = Weland.Settings.GetSetting("Distance/Select/Default", 4);
 	    ObjectSnapDistance = Weland.Settings.GetSetting("Distance/Select/Object", 8);
 	    InertiaDistance = Weland.Settings.GetSetting("Distance/Inertia/Default", 8);
-	    SplitPolygonLines = Weland.Settings.GetSetting("Editor/SplitPolygonLines", true);
+	    SplitPolygonLines = Weland.Settings.GetSetting("Editor/SplitPolygonLines", false);
 	}
 
 	public void SaveSettings() {
