@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Weland {
     public delegate bool PolygonFilter(Polygon p);
@@ -205,14 +206,6 @@ namespace Weland {
 	    short l1 = NewLine(e0, p);
 	    short l2 = NewLine(p, e1);
 
-	    if (line.ClockwisePolygonSideIndex != -1) {
-		DeleteSide(line.ClockwisePolygonSideIndex);
-	    }
-
-	    if (line.CounterclockwisePolygonSideIndex != -1) {
-		DeleteSide(line.CounterclockwisePolygonSideIndex);
-	    }
-
 	    if (line.ClockwisePolygonOwner != -1) {
 		Polygon polygon = Polygons[line.ClockwisePolygonOwner];
 
@@ -221,15 +214,13 @@ namespace Weland {
 			for (int j = Polygon.MaxVertexCount - 2; j >= i; --j) {
 			    polygon.LineIndexes[j + 1] = polygon.LineIndexes[j];
 			    polygon.AdjacentPolygonIndexes[j + 1] = polygon.AdjacentPolygonIndexes[j];
-			    polygon.SideIndexes[j + 1] = polygon.SideIndexes[j];
 			    polygon.EndpointIndexes[j + 1] = polygon.EndpointIndexes[j];
 			}
 
 
 			polygon.LineIndexes[i] = l1;
 			polygon.LineIndexes[i + 1] = l2;
-			polygon.SideIndexes[i] = -1;
-			polygon.SideIndexes[i + 1] = -1;
+
 			if (polygon.EndpointIndexes[i] == e0) {
 			    polygon.EndpointIndexes[i + 1] = p;
 			} else {
@@ -239,6 +230,42 @@ namespace Weland {
 
 			polygon.VertexCount++;
 			UpdatePolygonConcavity(polygon);
+
+			if (line.ClockwisePolygonSideIndex != -1) {
+			    // clone it
+			    Side side = Sides[line.ClockwisePolygonSideIndex];
+			    MemoryStream stream = new MemoryStream();
+			    BinaryWriterBE writer = new BinaryWriterBE(stream);
+			    side.Save(writer);
+			    
+			    stream.Seek(0, SeekOrigin.Begin);
+			    Side s1 = new Side();
+			    BinaryReaderBE reader = new BinaryReaderBE(stream);
+			    s1.Load(reader);
+			    s1.LineIndex = l1;
+			    Lines[l1].ClockwisePolygonSideIndex = (short) Sides.Count;
+			    Sides.Add(s1);
+			    
+			    stream.Seek(0, SeekOrigin.Begin);
+			    Side s2 = new Side();
+			    s2.Load(reader);
+			    s2.LineIndex = l2;
+			    short l1_length = (short) Distance(Endpoints[e0], Endpoints[p]);
+			    if (!s2.Primary.Texture.IsEmpty()) {
+				s2.Primary.X += l1_length;
+			    }
+
+			    if (!s2.Secondary.Texture.IsEmpty()) {
+				s2.Secondary.X += l1_length;
+			    }
+
+			    if (!s2.Transparent.Texture.IsEmpty()) {
+				s2.Transparent.X += l1_length;
+			    }
+
+			    Lines[l2].ClockwisePolygonSideIndex = (short) Sides.Count;
+			    Sides.Add(s2);
+			}
 			break;
 		    }
 		}
@@ -254,15 +281,12 @@ namespace Weland {
 			for (int j = Polygon.MaxVertexCount - 2; j >= i; --j) {
 			    polygon.LineIndexes[j + 1] = polygon.LineIndexes[j];
 			    polygon.AdjacentPolygonIndexes[j + 1] = polygon.AdjacentPolygonIndexes[j];
-			    polygon.SideIndexes[j + 1] = polygon.SideIndexes[j];
 			    polygon.EndpointIndexes[j + 1] = polygon.EndpointIndexes[j];
 			}
 
 
 			polygon.LineIndexes[i] = l2;
 			polygon.LineIndexes[i + 1] = l1;
-			polygon.SideIndexes[i] = -1;
-			polygon.SideIndexes[i + 1] = -1;
 			if (polygon.EndpointIndexes[i] == e0) {
 			    polygon.EndpointIndexes[i] = p;
 			} else {
@@ -271,12 +295,49 @@ namespace Weland {
 
 			polygon.VertexCount++;
 			UpdatePolygonConcavity(polygon);
+
+			if (line.CounterclockwisePolygonSideIndex != -1) {
+			    // clone it
+			    Side side = Sides[line.CounterclockwisePolygonSideIndex];
+			    MemoryStream stream = new MemoryStream();
+			    BinaryWriterBE writer = new BinaryWriterBE(stream);
+			    side.Save(writer);
+			    
+			    stream.Seek(0, SeekOrigin.Begin);
+			    Side s1 = new Side();
+			    BinaryReaderBE reader = new BinaryReaderBE(stream);
+			    s1.Load(reader);
+			    s1.LineIndex = l1;
+			    Lines[l1].CounterclockwisePolygonSideIndex = (short) Sides.Count;
+			    Sides.Add(s1);
+			    
+			    stream.Seek(0, SeekOrigin.Begin);
+			    Side s2 = new Side();
+			    s2.Load(reader);
+			    s2.LineIndex = l2;
+			    short l1_length = (short) Distance(Endpoints[e0], Endpoints[p]);
+			    if (!s2.Primary.Texture.IsEmpty()) {
+				s2.Primary.X += l1_length;
+			    }
+
+			    if (!s2.Secondary.Texture.IsEmpty()) {
+				s2.Secondary.X += l1_length;
+			    }
+
+			    if (!s2.Transparent.Texture.IsEmpty()) {
+				s2.Transparent.X += l1_length;
+			    }
+
+			    Lines[l2].CounterclockwisePolygonSideIndex = (short) Sides.Count;
+			    Sides.Add(s2);
+			}
 			break;
 		    }
 		}
 
 		Lines[l1].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
 		Lines[l2].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
+
 		if (Lines[l1].ClockwisePolygonOwner != -1) {
 		    Lines[l1].Transparent = true;
 		}
@@ -284,6 +345,14 @@ namespace Weland {
 		if (Lines[l2].ClockwisePolygonOwner != -1) {
 		    Lines[l2].Transparent = true;
 		}
+	    }
+
+	    if (line.ClockwisePolygonSideIndex != -1) {
+		DeleteSide(line.ClockwisePolygonSideIndex);
+	    }
+
+	    if (line.CounterclockwisePolygonSideIndex != -1) {
+		DeleteSide(line.CounterclockwisePolygonSideIndex);
 	    }
 
 	    DeleteLineIndex(index);
