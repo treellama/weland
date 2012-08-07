@@ -42,6 +42,7 @@ namespace Weland {
 	public void Run() {
 	    antialias.Active = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	    showHiddenVertices.Active = Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
+	    rememberDeletedSides.Active = Weland.Settings.GetSetting("Editor/RememberDeletedSides", false);
 
 	    LoadColors(area);
 	    selectionDistance.Value = editor.DefaultSnapDistance;
@@ -56,6 +57,7 @@ namespace Weland {
 	    if (dialog1.Run() == (int) ResponseType.Ok) {
 		Weland.Settings.PutSetting("Drawer/SmoothLines", antialias.Active);
 		Weland.Settings.PutSetting("MapWindow/ShowHiddenVertices", showHiddenVertices.Active);
+		Weland.Settings.PutSetting("Editor/RememberDeletedSides", rememberDeletedSides.Active);
 		if (Weland.Settings.GetSetting("ShapesFile/Path", "") != shapesFileButton.Filename) {
 		    Weland.Settings.PutSetting("ShapesFile/Path", shapesFileButton.Filename);
 		    ShapesFile shapes = new ShapesFile();
@@ -64,6 +66,7 @@ namespace Weland {
 		}
 
 		Level.FilterPoints = !showHiddenVertices.Active;
+		Level.RememberDeletedSides = rememberDeletedSides.Active;
 
 		area.backgroundColor = FromGDK(backgroundColor.Color);
 		area.gridLineColor = FromGDK(gridColor.Color);
@@ -106,6 +109,7 @@ namespace Weland {
 	[Widget] ToggleButton antialias;
 	[Widget] ToggleButton showHiddenVertices;
 	[Widget] ToggleButton splitPolygonLines;
+	[Widget] ToggleButton rememberDeletedSides;
 
 	[Widget] ColorButton backgroundColor;
 	[Widget] ColorButton gridColor;
