@@ -177,7 +177,13 @@ namespace Weland {
 	}
 
 	public MapWindow(string title) {
-	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
+	    Glade.XML gxml;
+	    if (PlatformDetection.IsMac) {
+		gxml = new Glade.XML(null, "macmapwindow.glade", "window1", null);
+	    } else {
+		gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
+	    }
+
 	    gxml.Autoconnect(this);
 	    SetupDrawingArea();
 
