@@ -1673,6 +1673,7 @@ namespace Weland {
 	protected void OnNukeObjects(object o, EventArgs e) {
 	    editor.SetUndo();
 	    Level.NukeObjects();
+	    editor.Selection.Object = -1;
 	    editor.Changed = true;
 	    Redraw();
 	}
