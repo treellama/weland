@@ -846,7 +846,7 @@ namespace Weland {
 	    {
 		MenuItem item = new MenuItem(Weland.plugins.GetName(i));
 		int pluginNumber = i;
-		item.Activated += delegate(object obj, EventArgs args) { Weland.plugins.GtkRun(editor, pluginNumber); };
+		item.Activated += delegate(object obj, EventArgs args) { Weland.plugins.GtkRun(editor, pluginNumber); Redraw(); };
 		menu.Append(item);
 	    }
 
