@@ -4,7 +4,7 @@ using GTK#
 It is available under the GNU General Public License, see the file
 COPYING for details.
 
-To run it, you will need a C# runtime (either .NET 3.5 or Mono 2.0 or
+To run it, you will need a C# runtime (either .NET 4 or Mono 2.10 or
 higher), as well as GTK#
 
 Windows
@@ -15,13 +15,8 @@ Windows
     http://www.go-mono.com/mono-downloads/download.html
 
 Mac OS X
-    Download the Mono runtime, which includes everything you need.
-
-    If you are using Mac OS X 10.5 or newer, you can use the latest Mono:
+    Download the Mono runtime, which includes everything you need:
     http://www.go-mono.com/mono-downloads/download.html
-    
-    If you are using Mac OS X 10.4 (Tiger) you must use Mono 2.6.4:
-    http://ftp.novell.com/pub/mono/archive/2.6.4/download/
 
 Linux
-    Install Mono and gtk-sharp from your distributions package system
+    Install Mono and gtk-sharp from your distribution's package system
