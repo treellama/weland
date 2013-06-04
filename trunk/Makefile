@@ -20,7 +20,7 @@ define copy-plugins
 endef
 
 all: .FORCE
-	gmcs @weland.rsp
+	mono-csc @weland.rsp
 	make -C Plugins
 .FORCE:
 
@@ -28,9 +28,9 @@ plugins:
 	make -C Plugins
 
 windows: .FORCE
-	gmcs @windows.rsp
+	mono-csc @windows.rsp
 Weland.app: .FORCE
-	gmcs @weland.rsp
+	mono-csc @weland.rsp
 	rm -rf Weland.app
 	mkdir -p Weland.app/Contents
 	sed -e 's/WELAND_VERSION/$(VERSION)/g' mac/Info.plist > Weland.app/Contents/Info.plist
