@@ -56,7 +56,7 @@ namespace Weland {
 	public override void Clear(Color c) {
 	    context.Save();
 
-	    context.Color = new Cairo.Color(c.R, c.G, c.B);
+	    context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
 	    context.Paint();
 
 	    context.Restore();
@@ -68,7 +68,7 @@ namespace Weland {
 	    context.MoveTo(new PointD(p.X + 0.5, p.Y + 0.5));
 	    context.ClosePath();
 	    context.LineCap = LineCap.Round;
-	    context.Color = new Cairo.Color(c.R, c.G, c.B);
+            context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
 	    context.LineWidth = 2.5;
 	    context.Stroke();
 
@@ -86,7 +86,7 @@ namespace Weland {
 	    context.LineTo(new PointD(p.X + 0.5, p.Y + 1.5));
 	    context.ClosePath();
 
-	    context.Color = new Cairo.Color(c.R, c.G, c.B);
+            context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
 	    context.LineWidth = 1.0;
 	    context.Stroke();
 
@@ -99,7 +99,7 @@ namespace Weland {
 	    context.MoveTo(new PointD(p1.X + 0.5, p1.Y + 0.5));
 	    context.LineTo(new PointD(p2.X + 0.5, p2.Y + 0.5));
 	    context.ClosePath();
-	    context.Color = new Cairo.Color(c.R, c.G, c.B);
+            context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
 	    context.LineWidth = 1.0;
 	    context.Stroke();
 
@@ -118,7 +118,7 @@ namespace Weland {
 	    context.Save();
 
 	    OutlinePolygon(points);
-	    context.Color = new Cairo.Color(c.R, c.G, c.B);
+            context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
 	    context.Fill();
 
 	    context.Restore();
@@ -128,13 +128,13 @@ namespace Weland {
 	    context.Save();
 	    
 	    OutlinePolygon(points);
-	    context.Color = new Cairo.Color(fill.R, fill.G, fill.B);
+            context.SetSourceRGBA(fill.R, fill.G, fill.B, 1.0);
 	    context.FillPreserve();
 	    
 	    if (dashed) {
 		context.SetDash(new double[] { 2.0, 2.0 }, 0);
 	    }
-	    context.Color = new Cairo.Color(stroke.R, stroke.G, stroke.B);
+            context.SetSourceRGBA(stroke.R, stroke.G, stroke.B, 1.0);
 	    context.LineWidth = 1.0;
 	    context.Stroke();
 
@@ -147,14 +147,14 @@ namespace Weland {
 	    OutlinePolygon(points);
             using (SurfacePattern pattern = new SurfacePattern(cache.GetSurface(d))) {
                 pattern.Extend = Cairo.Extend.Repeat;
-                context.Source = pattern;
+                context.SetSource(pattern);
                 context.Fill();
             }
 	    context.Restore();
 	}
 	
 	public override void Dispose() {
-	    ((IDisposable) context.Target).Dispose();
+	    ((IDisposable) context.GetTarget()).Dispose();
 	    ((IDisposable) context).Dispose();
 	}
     }
