@@ -145,11 +145,11 @@ namespace Weland {
 	    context.Save();
 
 	    OutlinePolygon(points);
-	    SurfacePattern pattern = new SurfacePattern(cache.GetSurface(d));
-	    pattern.Extend = Cairo.Extend.Repeat;
-	    context.Source = pattern;
-	    context.Fill();
-
+            using (SurfacePattern pattern = new SurfacePattern(cache.GetSurface(d))) {
+                pattern.Extend = Cairo.Extend.Repeat;
+                context.Source = pattern;
+                context.Fill();
+            }
 	    context.Restore();
 	}
 	
