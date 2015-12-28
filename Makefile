@@ -1,4 +1,4 @@
-CC= mcs
+CC=mcs
 
 VERSION := $(shell grep "^\[assembly\:AssemblyVersionAttribute" Assembly.cs | awk -F\" '{ print $$2 }' - | awk -F\. '{printf "%s.%s", $$1, $$2; if ($$3 != '0') printf ".%s", $$3}')
 BUILD_ZIP_DIR=.build-zip
@@ -20,7 +20,7 @@ define copy-plugins
 endef
 
 all: .FORCE
-	mono-csc @weland.rsp
+	$(CC) @weland.rsp
 	make -C Plugins
 .FORCE:
 
@@ -28,9 +28,9 @@ plugins:
 	make -C Plugins
 
 windows: .FORCE
-	mono-csc @windows.rsp
+	$(CC) @windows.rsp
 Weland.app: .FORCE
-	mono-csc @weland.rsp
+	$(CC) @weland.rsp
 	rm -rf Weland.app
 	mkdir -p Weland.app/Contents
 	sed -e 's/WELAND_VERSION/$(VERSION)/g' mac/Info.plist > Weland.app/Contents/Info.plist
