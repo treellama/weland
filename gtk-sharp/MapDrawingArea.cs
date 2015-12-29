@@ -560,6 +560,7 @@ namespace Weland {
 	void DrawImage(Gdk.Pixbuf image, double X, double Y, bool highlight) {
 	    int x = (int) X - image.Width / 2;
 	    int y = (int) Y - image.Height / 2;
+#if !SYSTEM_DRAWING
 	    if (drawer is CairoDrawer) {
 		Cairo.Context context = ((CairoDrawer) drawer).Context;
 
@@ -575,6 +576,9 @@ namespace Weland {
 		Gdk.CairoHelper.SetSourcePixbuf(context, image, x, y);
 		context.Paint();
 	    } else {
+#else
+		{
+#endif
 		if (highlight) {
 		    Gdk.GC gc = new Gdk.GC(GdkWindow);
 		    Gdk.Pixmap mask = new Gdk.Pixmap(null, image.Width, image.Height, 1);
