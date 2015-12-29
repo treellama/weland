@@ -565,10 +565,10 @@ namespace Weland {
 
 		if (highlight) {
 		    List<Drawer.Point> points = new List<Drawer.Point>();
-		    points.Add(new Drawer.Point(x - 1.5, y - 1.5));
-		    points.Add(new Drawer.Point(x + image.Width + 0.5, y - 1.5));
-		    points.Add(new Drawer.Point(x + image.Width + 0.5, y + image.Height + 0.5));
-		    points.Add(new Drawer.Point(x - 1.5, y + image.Height + 0.5));
+		    points.Add(new Drawer.Point(x - 2.5, y - 2.5));
+		    points.Add(new Drawer.Point(x + image.Width + 1.5, y - 2.5));
+		    points.Add(new Drawer.Point(x + image.Width + 1.5, y + image.Height + 1.5));
+		    points.Add(new Drawer.Point(x - 2.5, y + image.Height + 1.5));
 		    drawer.FillPolygon(new Drawer.Color(1, 1, 0), points);
 		}
 		
