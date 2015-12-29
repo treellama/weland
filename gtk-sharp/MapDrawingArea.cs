@@ -560,25 +560,39 @@ namespace Weland {
 	void DrawImage(Gdk.Pixbuf image, double X, double Y, bool highlight) {
 	    int x = (int) X - image.Width / 2;
 	    int y = (int) Y - image.Height / 2;
-	    if (highlight) {
-		Gdk.GC gc = new Gdk.GC(GdkWindow);
-		if (!PlatformDetection.IsMac) { // UGH
+	    if (drawer is CairoDrawer) {
+		Cairo.Context context = ((CairoDrawer) drawer).Context;
+
+		if (highlight) {
+		    List<Drawer.Point> points = new List<Drawer.Point>();
+		    points.Add(new Drawer.Point(x - 1.5, y - 1.5));
+		    points.Add(new Drawer.Point(x + image.Width + 0.5, y - 1.5));
+		    points.Add(new Drawer.Point(x + image.Width + 0.5, y + image.Height + 0.5));
+		    points.Add(new Drawer.Point(x - 1.5, y + image.Height + 0.5));
+		    drawer.FillPolygon(new Drawer.Color(1, 1, 0), points);
+		}
+		
+		Gdk.CairoHelper.SetSourcePixbuf(context, image, x, y);
+		context.Paint();
+	    } else {
+		if (highlight) {
+		    Gdk.GC gc = new Gdk.GC(GdkWindow);
 		    Gdk.Pixmap mask = new Gdk.Pixmap(null, image.Width, image.Height, 1);
 		    image.RenderThresholdAlpha(mask, 0, 0, 0, 0, -1, -1, 1);
 		    
 		    gc.ClipMask = mask;
-		}
-		
-		for (int i = -2; i <= 2; ++i) {
-		    for (int j = -2; j <= 2; ++j) {
-			gc.SetClipOrigin(x + i, y + j);
-			gc.RgbFgColor = new Gdk.Color(255, 255, 0);
-			GdkWindow.DrawRectangle(gc, true, x + i, y + j, image.Width, image.Height);
+		    
+		    for (int i = -2; i <= 2; ++i) {
+			for (int j = -2; j <= 2; ++j) {
+			    gc.SetClipOrigin(x + i, y + j);
+			    gc.RgbFgColor = new Gdk.Color(255, 255, 0);
+			    GdkWindow.DrawRectangle(gc, true, x + i, y + j, image.Width, image.Height);
+			}
 		    }
 		}
+		
+		GdkWindow.DrawPixbuf(new Gdk.GC(GdkWindow), image, 0, 0, x, y, -1, -1, Gdk.RgbDither.Normal, 0, 0);
 	    }
-
-	    GdkWindow.DrawPixbuf(new Gdk.GC(GdkWindow), image, 0, 0, x, y, -1, -1, Gdk.RgbDither.Normal, 0, 0);
 	}
 
 	void DrawObject(MapObject obj, bool highlight) {
