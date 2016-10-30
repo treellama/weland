@@ -432,9 +432,9 @@ namespace Weland {
 	    if (depth >= 8) {
 		return false;
 	    } else if (current == target) {
-		int other_index = Lines[list[list.Count - 1]].EndpointIndexes[0];
+		int other_index = Lines[list[0]].EndpointIndexes[0];
 		if (other_index == current)
-		    other_index = Lines[list[list.Count - 1]].EndpointIndexes[1];
+		    other_index = Lines[list[0]].EndpointIndexes[1];
 		double cross = Cross(Diff(Endpoints[prev], Endpoints[current]), Diff(Endpoints[other_index], Endpoints[current]));
 		if (cross >= 0.0) {
 		    return true;
