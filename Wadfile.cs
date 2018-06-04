@@ -47,7 +47,7 @@ namespace Weland {
 	    }
 	}
 
-	short applicationSpecificDirectoryDataSize;
+	protected short applicationSpecificDirectoryDataSize;
 	short entryHeaderSize;
 	short directoryEntryBaseSize;
 	public uint ParentChecksum;
@@ -69,13 +69,7 @@ namespace Weland {
 	public class DirectoryEntry {
 	    internal const short BaseSize = 10;
 
-	    public MissionFlags MissionFlags;
-	    public EnvironmentFlags EnvironmentFlags;
-	    public EntryPointFlags EntryPointFlags;
-	    public string LevelName;
 	    public Dictionary<uint, byte[]> Chunks = new Dictionary<uint, byte[]> ();
-		
-	    internal const short DataSize = 74;
 	    internal const short HeaderSize = 16;
 	    internal int Offset;
 	    internal short Index;
@@ -95,14 +89,6 @@ namespace Weland {
 		Index = reader.ReadInt16();
 	    }
 	    
-			
-	    internal void LoadData(BinaryReaderBE reader) {
-		MissionFlags = (MissionFlags) reader.ReadInt16();
-		EnvironmentFlags = (EnvironmentFlags) reader.ReadInt16();
-		EntryPointFlags = (EntryPointFlags) reader.ReadInt32();
-		LevelName = reader.ReadMacString(MapInfo.LevelNameLength);
-	    }
-
 	    internal void LoadChunks(BinaryReaderBE reader) {
 		long position = reader.BaseStream.Position;
 		int nextOffset;
@@ -125,21 +111,12 @@ namespace Weland {
 		writer.Write(Index);
 	    }	
 
-	    internal void SaveData(BinaryWriterBE writer) {
-		writer.Write((short) MissionFlags);
-		writer.Write((short) EnvironmentFlags);
-		writer.Write((int) EntryPointFlags);
-		writer.WriteMacString(LevelName, MapInfo.LevelNameLength);
-	    }
-
-	    readonly uint[] TagOrder = { Point.Tag, Line.Tag, Side.Tag, Polygon.Tag, Light.Tag, Annotation.Tag, MapObject.Tag, MapInfo.Tag, Placement.Tag, Platform.StaticTag, Media.Tag, AmbientSound.Tag, RandomSound.Tag };
-	    
-	    internal void SaveChunks(BinaryWriterBE writer) {
+	    internal void SaveChunks(BinaryWriterBE writer, uint[] tagOrder) {
 		// build a list of tags to write in order
 		HashSet<uint> Used = new HashSet<uint>();
 		List<uint> Tags = new List<uint>();
 
-		foreach (uint tag in TagOrder) {
+		foreach (uint tag in tagOrder) {
 		    if (Chunks.ContainsKey(tag)) {
 			Tags.Add(tag);
 			Used.Add(tag);
@@ -203,7 +180,23 @@ namespace Weland {
 
 	public SortedDictionary<int, DirectoryEntry> Directory = new SortedDictionary<int, DirectoryEntry> ();
 
-	public void Load(string filename) {
+        protected virtual void LoadApplicationSpecificDirectoryData(BinaryReaderBE reader, int index) {
+            reader.ReadBytes(applicationSpecificDirectoryDataSize);
+        }
+
+        protected virtual void SaveApplicationSpecificDirectoryData(BinaryWriterBE writer, int index) {
+
+        }
+
+        protected virtual void SetApplicationSpecificDirectoryDataSize() {
+            applicationSpecificDirectoryDataSize = 0;
+        }
+
+        protected virtual uint[] GetTagOrder() {
+            return new uint[] { };
+        }
+
+	public virtual void Load(string filename) {
 	    BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open));
 	    try {
 		// is it MacBinary?
@@ -238,33 +231,15 @@ namespace Weland {
 		for (int i = 0; i < wadCount; ++i) {
 		    DirectoryEntry entry = new DirectoryEntry();
 		    entry.LoadEntry(reader);
-		    
-		    if (applicationSpecificDirectoryDataSize == DirectoryEntry.DataSize) {
-			entry.LoadData(reader);
-		    } else {
-			reader.ReadBytes(applicationSpecificDirectoryDataSize);
-		    }		
 		    Directory[entry.Index] = entry;
+
+                    LoadApplicationSpecificDirectoryData(reader, entry.Index);
 		}
 		
 		// load all the wads(!)
 		foreach (KeyValuePair<int, DirectoryEntry> kvp in Directory) {
 		    reader.BaseStream.Seek(kvp.Value.Offset + fork_start, SeekOrigin.Begin);
 		    kvp.Value.LoadChunks(reader);
-		}
-		
-		if (applicationSpecificDirectoryDataSize != DirectoryEntry.DataSize) {
-		    foreach(var kvp in Directory) {
-			if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
-			    MapInfo info = new MapInfo();
-			    BinaryReaderBE chunkReader = new BinaryReaderBE(new MemoryStream(kvp.Value.Chunks[MapInfo.Tag]));
-			    info.Load(chunkReader);
-			    kvp.Value.MissionFlags = info.MissionFlags;
-			    kvp.Value.EnvironmentFlags = info.EnvironmentFlags;
-			    kvp.Value.EntryPointFlags = info.EntryPointFlags;
-			    kvp.Value.LevelName = info.Name;
-			}
-		    }
 		}
 	    } finally {
 		reader.Close();
@@ -291,11 +266,8 @@ namespace Weland {
 		    kvp.Value.Index = (short) kvp.Key;
 		    directoryOffset += kvp.Value.Size;
 		}
-		if (Directory.Count == 1) {
-		    applicationSpecificDirectoryDataSize = 0;
-		} else {
-		    applicationSpecificDirectoryDataSize = DirectoryEntry.DataSize;
-		}
+
+                SetApplicationSpecificDirectoryDataSize();
 		entryHeaderSize = DirectoryEntry.HeaderSize;
 		directoryEntryBaseSize = DirectoryEntry.BaseSize;
 		ParentChecksum = 0;
@@ -315,16 +287,14 @@ namespace Weland {
 
 		// write wads
 		foreach (var kvp in Directory) {
-		    kvp.Value.SaveChunks(writer);
+		    kvp.Value.SaveChunks(writer, GetTagOrder());
 		}
 
 		// write directory
 		foreach (var kvp in Directory) {
 		    kvp.Value.SaveEntry(writer);
-		    if (applicationSpecificDirectoryDataSize > 0) {
-			kvp.Value.SaveData(writer);
-		    }
-		}
+                    SaveApplicationSpecificDirectoryData(writer, kvp.Value.Index);
+                }
 
 		// fix the checksum!
 		checksum = crcStream.GetCRC();

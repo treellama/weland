@@ -17,7 +17,7 @@ namespace Weland {
 	    }
 	}
 
-	Wadfile wadfile = new Wadfile();
+	Mapfile mapfile = new Mapfile();
 	Editor editor = new Editor();
 	Grid grid = new Grid();
 	Selection selection = new Selection();
@@ -822,9 +822,9 @@ namespace Weland {
 
 	void BuildLevelMenu() {
 	    Menu menu = new Menu();
-	    foreach (var kvp in wadfile.Directory) {
+	    foreach (var kvp in mapfile.Directory) {
 		if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
-		    MenuItem item = new MenuItem(kvp.Value.LevelName);
+		    MenuItem item = new MenuItem(mapfile.Overlays[kvp.Value.Index].LevelName);
 		    int levelNumber = kvp.Key;
 		    item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
 		    menu.Append(item);
@@ -863,14 +863,14 @@ namespace Weland {
 	public void SelectLevel(int n) {
 	    if (CheckSave()) {
 		Level = new Level();
-		Level.Load(wadfile.Directory[n]);
+		Level.Load(mapfile.Directory[n]);
 		selection.Clear();
 		editor.ClearUndo();
 		Center(0, 0);
 		AdjustScrollRange();
 		layer1.Active = true;
 		ResetViewHeight();
-		window1.Title = wadfile.Directory[n].LevelName;
+		window1.Title = mapfile.Overlays[n].LevelName;
 		ChooseTool(editor.Tool);
 		editor.Changed = false;
 	    }
@@ -878,10 +878,10 @@ namespace Weland {
 
 	public void OpenFile(string filename) {
 	    try {
-		Wadfile w = new Wadfile();
+		Mapfile w = new Mapfile();
 		w.Load(filename);
-		wadfile = w;
-		if (wadfile.Directory.Count > 1) {
+		mapfile = w;
+		if (mapfile.Directory.Count > 1) {
 		    Filename =  "";
 		} else {
 		    Filename = filename;
@@ -920,7 +920,7 @@ namespace Weland {
 	}
 
 	public void NewLevel() {
-	    wadfile = new Wadfile();
+	    mapfile = new Mapfile();
 	    Level = new Level();
 	    levelItem.Submenu = null;
 	    Center(0, 0);
@@ -945,7 +945,7 @@ namespace Weland {
 	bool SaveAs() {
 	    bool saved = false;
 	    string message;
-	    if (wadfile.Directory.Count > 1) {
+	    if (mapfile.Directory.Count > 1) {
 		message = "Export level";
 	    } else {
 		message = "Save level as";
@@ -956,11 +956,11 @@ namespace Weland {
 	    d.DoOverwriteConfirmation = true;
 	    try {
 		if (d.Run() == (int) ResponseType.Accept) {
-		    wadfile = new Wadfile();
+		    mapfile = new Mapfile();
 		    Level.AssurePlayerStart();
 		    Redraw();
-		    wadfile.Directory[0] = Level.Save();
-		    wadfile.Save(d.Filename);
+		    mapfile.Directory[0] = Level.Save();
+		    mapfile.Save(d.Filename);
 		    Filename = d.Filename;
 		    
 		    Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
@@ -992,8 +992,8 @@ namespace Weland {
 		try {
 		    Level.AssurePlayerStart();
 		    Redraw();
-		    wadfile.Directory[0] = Level.Save();
-		    wadfile.Save(Filename);
+		    mapfile.Directory[0] = Level.Save();
+		    mapfile.Save(Filename);
 		    editor.Changed = false;
 		    success = true;
 		} catch (Exception e) {

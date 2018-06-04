@@ -26,6 +26,7 @@ gtk-sharp/MapDrawingArea.cs
 level/MapInfo.cs
 level/MapObject.cs
 gtk-sharp/MapWindow.cs
+level/Mapfile.cs
 level/Media.cs
 gtk-sharp/MediaParametersDialog.cs
 level/OBJExporter.cs
