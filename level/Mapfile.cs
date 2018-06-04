@@ -59,6 +59,10 @@ namespace Weland {
         public override void Load(string filename) {
             base.Load(filename);
 
+            if (DataVersion < 1) {
+                throw new BadMapException("Only Marathon 2 and higher maps are supported");
+            }
+
             if (applicationSpecificDirectoryDataSize != Overlay.DataSize) {
                 foreach(var kvp in Directory) {
                     if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {

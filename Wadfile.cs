@@ -217,9 +217,9 @@ namespace Weland {
 		entryHeaderSize = reader.ReadInt16();
 		
 		directoryEntryBaseSize = reader.ReadInt16();
-		
+
 		// sanity check the map
-		if (Version < 2 || DataVersion < 1 || entryHeaderSize != 16 || directoryEntryBaseSize != 10) {
+		if (Version < 2 || entryHeaderSize != 16 || directoryEntryBaseSize != 10) {
 		    throw new BadMapException("Only Marathon 2 and higher maps are supported");
 		}
 		
