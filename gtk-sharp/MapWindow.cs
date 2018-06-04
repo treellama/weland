@@ -17,7 +17,7 @@ namespace Weland {
 	    }
 	}
 
-	Mapfile mapfile = new Mapfile();
+	MapFile mapfile = new MapFile();
 	Editor editor = new Editor();
 	Grid grid = new Grid();
 	Selection selection = new Selection();
@@ -878,7 +878,7 @@ namespace Weland {
 
 	public void OpenFile(string filename) {
 	    try {
-		Mapfile w = new Mapfile();
+		MapFile w = new MapFile();
 		w.Load(filename);
 		mapfile = w;
 		if (mapfile.Directory.Count > 1) {
@@ -920,7 +920,7 @@ namespace Weland {
 	}
 
 	public void NewLevel() {
-	    mapfile = new Mapfile();
+	    mapfile = new MapFile();
 	    Level = new Level();
 	    levelItem.Submenu = null;
 	    Center(0, 0);
@@ -956,7 +956,7 @@ namespace Weland {
 	    d.DoOverwriteConfirmation = true;
 	    try {
 		if (d.Run() == (int) ResponseType.Accept) {
-		    mapfile = new Mapfile();
+		    mapfile = new MapFile();
 		    Level.AssurePlayerStart();
 		    Redraw();
 		    mapfile.Directory[0] = Level.Save();

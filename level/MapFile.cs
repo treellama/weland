@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Weland {
-    public class Mapfile : Wadfile {
+    public class MapFile : Wadfile {
         public class Overlay {
             public MissionFlags MissionFlags;
 	    public EnvironmentFlags EnvironmentFlags;
