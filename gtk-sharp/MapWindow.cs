@@ -173,7 +173,9 @@ namespace Weland {
 		quitSeparator.Hide();
 
 		menubar1.Hide();
-	    } catch (DllNotFoundException) { }	    
+	    } catch (Exception e) {
+		Console.WriteLine("Mac integration failed {0}", e);
+	    }
 	}
 
 	public MapWindow(string title) {
