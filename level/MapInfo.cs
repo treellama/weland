@@ -9,6 +9,13 @@ namespace Weland{
 	Magnetic = 0x0002,
 	Rebellion = 0x0004,
 	LowGravity = 0x0008,
+        GlueM1 = 0x0010,
+        OuchM1 = 0x0020,
+        RebellionM1 = 0x0040,
+        SongIndexM1 = 0x0080,
+        TerminalsStopTime = 0x0100,
+        M1ActivationRange = 0x0200,
+        M1Weapons = 0x0400,
 	Network = 0x2000,
 	SinglePlayer = 0x4000
     }
@@ -20,7 +27,10 @@ namespace Weland{
 	Exploration = 0x0002,
 	Retrieval = 0x0004,
 	Repair = 0x0008,
-	Rescue = 0x0010
+	Rescue = 0x0010,
+        ExplorationM1 = 0x0020,
+        RescueM1 = 0x0040,
+        RepairM1 = 0x0080
     }
 
     [Flags]

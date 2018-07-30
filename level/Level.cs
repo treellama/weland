@@ -445,6 +445,69 @@ namespace Weland {
 	    }
 	}
 
+        public bool RebellionM1 {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.RebellionM1);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.RebellionM1, value);
+            }
+        }
+
+        public bool GlueM1 {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.GlueM1);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.GlueM1, value);
+            }
+        }
+
+        public bool OuchM1 {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.OuchM1);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.OuchM1, value);
+            }
+        }
+
+        public bool SongIndexM1 {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.SongIndexM1);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.SongIndexM1, value);
+            }
+        }
+
+        public bool TerminalsStopTime {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.TerminalsStopTime);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.TerminalsStopTime, value);
+            }
+        }
+
+        public bool M1ActivationRange {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.M1ActivationRange);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.M1ActivationRange, value);
+            }
+        }
+
+        public bool M1Weapons {
+            get {
+                return GetEnvironmentFlag(EnvironmentFlags.M1Weapons);
+            }
+            set {
+                SetEnvironmentFlag(EnvironmentFlags.M1Weapons, value);
+            }
+        }
+
 	public bool Extermination {
 	    get {
 		return GetMissionFlag(MissionFlags.Extermination);
@@ -487,6 +550,33 @@ namespace Weland {
 	    }
 	    set {
 		SetMissionFlag(MissionFlags.Rescue, value);
+	    }
+	}
+
+        public bool ExplorationM1 {
+	    get {
+		return GetMissionFlag(MissionFlags.ExplorationM1);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.ExplorationM1, value);
+	    }
+	}
+
+        public bool RescueM1 {
+	    get {
+		return GetMissionFlag(MissionFlags.RescueM1);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.RescueM1, value);
+	    }
+	}
+
+        public bool RepairM1 {
+	    get {
+		return GetMissionFlag(MissionFlags.RepairM1);
+	    }
+	    set {
+		SetMissionFlag(MissionFlags.RepairM1, value);
 	    }
 	}
 
