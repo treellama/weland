@@ -84,9 +84,48 @@ namespace Weland {
 		Blue = reader.ReadUInt16();
 	    }
 	}
+	    
+    	/// <summary>
+        /// This is "Frame" data in Anvil terms.
+        /// </summary>
+        struct LowLevelShapeDefinition
+        {
+            public ushort Flags;
+            public double MinimumLightIntensity;
+            public short BitmapIndex;
+            public short OriginX, OriginY;
+            public short KeyX, KeyY;
+            public short WorldLeft, WorldRight, WorldTop, WorldBottom;
+            public short WorldX0, WorldY0;
+            private short[] Unused;
+
+            public void Load(BinaryReaderBE reader)
+            {
+                Flags = reader.ReadUInt16();
+                MinimumLightIntensity = reader.ReadFixed();
+                BitmapIndex = reader.ReadInt16();
+                OriginX = reader.ReadInt16();
+                OriginY = reader.ReadInt16();
+                KeyX = reader.ReadInt16();
+                KeyY = reader.ReadInt16();
+                WorldLeft = reader.ReadInt16();
+                WorldRight = reader.ReadInt16();
+                WorldTop = reader.ReadInt16();
+                WorldBottom = reader.ReadInt16();
+                WorldX0 = reader.ReadInt16();
+                WorldY0 = reader.ReadInt16();
+
+                Unused = new short[4];
+                for (int i = 0; i < Unused.Length; i++)
+                {
+                    Unused[i] = reader.ReadInt16();
+                }
+            }
+        }
 
 	List<ColorValue[]> colorTables = new List<ColorValue[]>();
 	List<Bitmap> bitmaps = new List<Bitmap>();
+    	List<LowLevelShapeDefinition> lowLevelShapes = new List<LowLevelShapeDefinition>();
 
 	public void Load(BinaryReaderBE reader) {
 	    long origin = reader.BaseStream.Position;
@@ -117,21 +156,41 @@ namespace Weland {
 		colorTables.Add(table);
 	    }
 
-	    reader.BaseStream.Seek(origin + bitmapOffsetTableOffset, SeekOrigin.Begin);
 	    bitmaps.Clear();
-	    for (int i = 0; i < bitmapCount; ++i) {
-		int offset = reader.ReadInt32();
-		long position = reader.BaseStream.Position;
-		reader.BaseStream.Seek(origin + offset, SeekOrigin.Begin);
-		Bitmap bitmap = new Bitmap();
-		bitmap.Load(reader);
-		bitmaps.Add(bitmap);
-		reader.BaseStream.Seek(position, SeekOrigin.Begin);
-	    }
+            reader.BaseStream.Seek(origin + bitmapOffsetTableOffset, SeekOrigin.Begin);
+            for (int i = 0; i < bitmapCount; ++i)
+            {
+                int bitmapPosition = reader.ReadInt32();
+                long nextPositionInOffsetTable = reader.BaseStream.Position;
+
+                reader.BaseStream.Seek(origin + bitmapPosition, SeekOrigin.Begin);
+
+                Bitmap bitmap = new Bitmap();
+                bitmap.Load(reader);
+                bitmaps.Add(bitmap);
+
+                reader.BaseStream.Seek(nextPositionInOffsetTable, SeekOrigin.Begin);
+            }
+
+            lowLevelShapes.Clear();
+            reader.BaseStream.Seek(origin + lowLevelShapeOffsetTableOffset, SeekOrigin.Begin);
+            for (int i = 0; i < lowLevelShapeCount; i++)
+            {
+                long shapeDefinitionPosition = origin + reader.ReadInt32();
+                long nextPositionInOffsetTable = reader.BaseStream.Position;
+
+                reader.BaseStream.Seek(shapeDefinitionPosition, SeekOrigin.Begin);
+
+                LowLevelShapeDefinition lowLevelShapeDefinition = new LowLevelShapeDefinition();
+                lowLevelShapeDefinition.Load(reader);
+                lowLevelShapes.Add(lowLevelShapeDefinition);
+
+                reader.BaseStream.Seek(nextPositionInOffsetTable, SeekOrigin.Begin);
+            }
 	}
 
 	public System.Drawing.Bitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
-	    Bitmap bitmap = bitmaps[BitmapIndex];
+	    Bitmap bitmap = Type == CollectionType.Wall ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
 	    ColorValue[] colorTable = colorTables[ColorTableIndex];
 	    Color[] colors = new Color[colorTable.Length];
 	    for (int i = 0; i < colorTable.Length; ++i) {
