@@ -190,7 +190,7 @@ namespace Weland {
 	}
 
 	public System.Drawing.Bitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
-	    Bitmap bitmap = Type == CollectionType.Wall ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
+	    Bitmap bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
 	    ColorValue[] colorTable = colorTables[ColorTableIndex];
 	    Color[] colors = new Color[colorTable.Length];
 	    for (int i = 0; i < colorTable.Length; ++i) {
