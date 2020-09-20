@@ -467,6 +467,11 @@ namespace Weland {
 	    double Y = drawingArea.Transform.ToScreenY(Yt);
 	    double originalScale = drawingArea.Transform.Scale;
 	    double scale = originalScale * factor;
+            if (scale > 4) {
+                scale = 4;
+            } else if (scale < 1.0 / 128) {
+                scale = 1.0/128;
+            }
 	    drawingArea.Transform.Scale = scale;
 	    editor.Scale = scale;
 	    int xNew = (int) Math.Round(X / originalScale - X / scale + drawingArea.Transform.XOffset);
