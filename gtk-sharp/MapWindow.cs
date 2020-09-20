@@ -1542,13 +1542,13 @@ namespace Weland {
 	}
 	
 	internal void OnGridRotationChange(object o, EventArgs e) {
-		grid.Rotation = ((Range) o).Value;
+		grid.Rotation = ((Gtk.Range) o).Value;
 		SaveGrid();
 		Redraw();
 	}
 	
 	internal void OnGridScaleChange(object o, EventArgs e) {
-		grid.Scale = Math.Pow(2, ((Range) o).Value);
+		grid.Scale = Math.Pow(2, ((Gtk.Range) o).Value);
 		SaveGrid();
 		gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
 		Redraw();
