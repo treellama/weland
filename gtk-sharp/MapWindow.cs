@@ -824,15 +824,17 @@ namespace Weland {
 
 	void BuildLevelMenu() {
 	    Menu menu = new Menu();
-	    foreach (var kvp in mapfile.Directory) {
-		if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
-		    MenuItem item = new MenuItem(mapfile.Overlays[kvp.Value.Index].LevelName);
-		    int levelNumber = kvp.Key;
-		    item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
-		    menu.Append(item);
-		}
-	    }
-	    if (menu.Children.Length == 0) {
+            if (mapfile.Directory.Count > 1) {
+                // assume it has overlays
+                foreach (var kvp in mapfile.Directory) {
+                    if (kvp.Value.Chunks.ContainsKey(MapInfo.Tag)) {
+                        MenuItem item = new MenuItem(mapfile.Overlays[kvp.Value.Index].LevelName);
+                        int levelNumber = kvp.Key;
+                        item.Activated += delegate(object obj, EventArgs args) { SelectLevel(levelNumber); };
+                        menu.Append(item);
+                    }
+                }
+            } else {
 		MenuItem item = new MenuItem(Level.Name);
 		item.Sensitive = false;
 		menu.Append(item);
@@ -969,6 +971,7 @@ namespace Weland {
 		    
 		    editor.Changed = false;
 		    saved = true;
+                    BuildLevelMenu();
 		}
 	    } catch (Exception e) {
 		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
