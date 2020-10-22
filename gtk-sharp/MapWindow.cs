@@ -1973,6 +1973,31 @@ namespace Weland {
             Level.AssurePlayerStart();
             Redraw();
             toEditor.Directory[0] = Level.Save();
+
+            if (editor.Selection.Polygon != -1) {
+                var center = Level.PolygonCenter(Level.Polygons[editor.Selection.Polygon]);
+                // add a little LUAS to teleport the player
+                var script =
+                    String.Format("Triggers = {{}}\nfunction Triggers.idle()\nPlayers[0]:position({0}, {1}, {2}, {3})\nTriggers.idle = nil\nend\n", center.X / 1024.0, center.Y / 1024.0, Level.Polygons[editor.Selection.Polygon].FloorHeight / 1024.0, editor.Selection.Polygon);
+
+                Console.WriteLine(script);
+
+                var bytes = System.Text.Encoding.ASCII.GetBytes(script);
+
+                MemoryStream stream = new MemoryStream();
+                BinaryWriterBE writer = new BinaryWriterBE(stream);
+                writer.Write((short) 1); // one script
+                writer.Write((uint) 4); // no flags
+                writer.Write(System.Text.Encoding.ASCII.GetBytes("VISUAL MODE"));
+                for (int i = 0; i < 55; ++i) { // empty name
+                    writer.Write((byte) 0);
+                }
+                writer.Write((uint) bytes.Length);
+                writer.Write(bytes);
+
+                toEditor.Directory[0].Chunks[Wadfile.Chunk("LUAS")] = stream.ToArray();
+            }
+            
             toEditor.Save(toEditorName);
             
             Process p = new Process();
@@ -1986,6 +2011,7 @@ namespace Weland {
                 Gtk.Application.Invoke(delegate {
                         MapFile fromEditor = new MapFile();
                         fromEditor.Load(fromEditorName);
+                        fromEditor.Directory[0].Chunks.Remove(Wadfile.Chunk("LUAS"));
                         Level = new Level();
                         Level.Load(fromEditor.Directory[0]);
                         editor.ClearUndo();
