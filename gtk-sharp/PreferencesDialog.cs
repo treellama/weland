@@ -1,6 +1,8 @@
 using Glade;
 using Gtk;
 using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Weland {
     public class PreferencesDialog {
@@ -51,6 +53,8 @@ namespace Weland {
 	    splitPolygonLines.Active = editor.SplitPolygonLines;
 
 	    shapesFileButton.SetFilename(Weland.Settings.GetSetting("ShapesFile/Path", ""));
+            alephOneButton.SetFilename(Weland.Settings.GetSetting("VisualMode/AlephOne", ""));
+            scenarioButton.SetFilename(Weland.Settings.GetSetting("VisualMode/Scenario", ""));
 
 	    dialog1.ShowAll();
 	    dialog1.Show();
@@ -64,6 +68,8 @@ namespace Weland {
 		    shapes.Load(shapesFileButton.Filename);
 		    Weland.Shapes = shapes;
 		}
+                Weland.Settings.PutSetting("VisualMode/AlephOne", alephOneButton.Filename);
+                Weland.Settings.PutSetting("VisualMode/Scenario", scenarioButton.Filename);
 
 		Level.FilterPoints = !showHiddenVertices.Active;
 		Level.RememberDeletedSides = rememberDeletedSides.Active;
@@ -101,6 +107,24 @@ namespace Weland {
 	    LoadColors(defaults);
 	}
 
+        protected void OnEditPreferences(object o, EventArgs args) {
+            Process p = new Process();
+            p.StartInfo.FileName = alephOneButton.Filename;
+            p.StartInfo.Arguments = "-s -e \"" + scenarioButton.Filename + "\"";
+            p.EnableRaisingEvents = true;
+
+             MessageDialog d = new MessageDialog(dialog1, DialogFlags.DestroyWithParent | DialogFlags.Modal, MessageType.Other, ButtonsType.None, "Edit Visual Mode Preferences...");
+
+            p.Exited += delegate(object sender, EventArgs e) {
+                Gtk.Application.Invoke(delegate {
+                        d.Destroy();
+                    });
+            };
+
+            p.Start();
+            d.Run();
+        }
+
 	MapDrawingArea area;
 	Editor editor;
 
@@ -133,5 +157,7 @@ namespace Weland {
 	[Widget] HScale dragInertia;
 
 	[Widget] FileChooserButton shapesFileButton;
+        [Widget] FileChooserButton alephOneButton;
+        [Widget] FileChooserButton scenarioButton;
     }
 }

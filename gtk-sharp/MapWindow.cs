@@ -2,6 +2,7 @@ using Gtk;
 using Gdk;
 using Glade;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
@@ -49,6 +50,7 @@ namespace Weland {
 	[Widget] RadioButton layer6;
 
 	[Widget] MenuItem drawModeItem;
+        [Widget] MenuItem visualModeItem;
 	[Widget] MenuItem floorHeightItem;
 	[Widget] MenuItem ceilingHeightItem;
 	[Widget] MenuItem floorTextureItem;
@@ -1088,6 +1090,8 @@ namespace Weland {
 	    MenuItem item = (MenuItem) obj;
 	    if (item == drawModeItem) {
 		selectButton.Active = true;
+            } else if (item == visualModeItem) {
+                VisualMode();
 	    } else if (item == floorHeightItem) {
 		floorHeightButton.Active = true;
 	    } else if (item == ceilingHeightItem) {
@@ -1960,5 +1964,42 @@ namespace Weland {
 	    drawingArea.Antialias = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	    Redraw();
 	}
+
+        internal void VisualMode() {
+            string toEditorName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".sceA";
+            string fromEditorName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".sceA";
+
+            MapFile toEditor = new MapFile();
+            Level.AssurePlayerStart();
+            Redraw();
+            toEditor.Directory[0] = Level.Save();
+            toEditor.Save(toEditorName);
+            
+            Process p = new Process();
+            p.StartInfo.FileName = Weland.Settings.GetSetting("VisualMode/AlephOne", "");
+            p.StartInfo.Arguments = "-s -e -o \"" + fromEditorName + "\" \"" + Weland.Settings.GetSetting("ShapesFile/Path", "") + "\" \"" + Weland.Settings.GetSetting("VisualMode/Scenario", "") + "\" \"" + toEditorName + "\"";
+            p.EnableRaisingEvents = true;
+            
+            MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent | DialogFlags.Modal, MessageType.Other, ButtonsType.None, "Entering Visual Mode...");
+
+            p.Exited += delegate(object sender, EventArgs e) {
+                Gtk.Application.Invoke(delegate {
+                        MapFile fromEditor = new MapFile();
+                        fromEditor.Load(fromEditorName);
+                        Level = new Level();
+                        Level.Load(fromEditor.Directory[0]);
+                        editor.ClearUndo();
+                        editor.Changed = true;
+
+                        d.Destroy();
+                    });
+            };
+
+            p.Start();
+            d.Run();
+
+            File.Delete(toEditorName);
+            File.Delete(fromEditorName);
+        }
     }
 }
