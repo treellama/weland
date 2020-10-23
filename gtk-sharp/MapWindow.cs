@@ -1985,10 +1985,12 @@ namespace Weland {
             Redraw();
             toEditor.Directory[0] = Level.Save();
 
-            if (Level.VisualModePolygonIndex != -1) {
+            var polygonIndex = Level.VisualModePolygonIndex;
+            var point = Level.VisualModePoint;
+            if (polygonIndex != -1) {
                 // add a little LUAS to teleport the player
                 var script =
-                    String.Format("Triggers = {{}}\nfunction Triggers.init()\nPlayers[0]:position({0}, {1}, {2}, {3})\nend\n", Level.VisualModePoint.X / 1024.0, Level.VisualModePoint.Y / 1024.0, Level.Polygons[Level.VisualModePolygonIndex].FloorHeight / 1024.0, Level.VisualModePolygonIndex);
+                    String.Format("Triggers = {{}}\nfunction Triggers.init()\nPlayers[0]:position({0}, {1}, {2}, {3})\nend\n", point.X / 1024.0, point.Y / 1024.0, Level.Polygons[polygonIndex].FloorHeight / 1024.0, polygonIndex);
 
                 Console.WriteLine(script);
 
@@ -2025,6 +2027,10 @@ namespace Weland {
                         fromEditor.Directory[0].Chunks.Remove(Wadfile.Chunk("LUAS"));
                         Level = new Level();
                         Level.Load(fromEditor.Directory[0]);
+                        if (polygonIndex != -1) {
+                            Level.VisualModePolygonIndex = polygonIndex;
+                            Level.VisualModePoint = point;
+                        }
                         editor.ClearUndo();
                         editor.Changed = true;
 
