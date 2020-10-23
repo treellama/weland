@@ -68,7 +68,7 @@ namespace Weland {
 	}
       
 	private XmlNode createMissingNode(string xPath) { 
-	    string[] xPathSections = xPath.Split('/');
+	    string[] xPathSections = xPath.Split(new char[] {'/'});
 	    string currentXPath = "";
 	    XmlNode testNode = null;
 	    XmlNode currentNode = xmlDocument.SelectSingleNode("settings");

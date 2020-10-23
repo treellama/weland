@@ -275,7 +275,7 @@ namespace Weland {
 		// write the header
 		writer.Write(version);
 		writer.Write(DataVersion);
-		writer.WriteMacString(filename.Split('.')[0], maxFilename);
+		writer.WriteMacString(filename.Split(new char[] {'.'})[0], maxFilename);
 		writer.Write(checksum);
 		writer.Write(directoryOffset);
 		writer.Write((short) Directory.Count);

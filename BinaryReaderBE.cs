@@ -47,6 +47,6 @@ public class BinaryReaderBE : BinaryReader
 	{
 		byte[] bytes = ReadBytes(length);
 		Encoding macRoman = Encoding.GetEncoding(10000);
-		return macRoman.GetString(bytes).Split('\0')[0];
+		return macRoman.GetString(bytes).Split(new char[] {'\0'})[0];
 	}
 }
