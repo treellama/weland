@@ -128,6 +128,7 @@ namespace Weland {
 	Gdk.Pixbuf sceneryImage = new Gdk.Pixbuf(null, "flower.png");
 	Gdk.Pixbuf soundImage = new Gdk.Pixbuf(null, "sound.png");
 	Gdk.Pixbuf goalImage = new Gdk.Pixbuf(null, "flag.png");
+        Gdk.Pixbuf visualModeImage = new Gdk.Pixbuf(null, "dingle.png");
 
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
@@ -257,6 +258,16 @@ namespace Weland {
 			    }
 			}
 		    }
+
+                    if (Level.VisualModePolygonIndex != -1 &&
+                        Level.VisualModePoint.X > Left - ObjectSize &&
+                        Level.VisualModePoint.X < Right + ObjectSize &&
+                        Level.VisualModePoint.Y > Top - ObjectSize &&
+                        Level.VisualModePoint.Y < Bottom + ObjectSize) {
+
+                        DrawVisualMode(Level.VisualModePoint);
+                    }
+
 		    if (selectedObj != null && selectedObj.X > Left - ObjectSize && selectedObj.X < Right + ObjectSize && selectedObj.Y > Top - ObjectSize && selectedObj.Y < Bottom + ObjectSize) {
 			if (selectedObj.PolygonIndex == -1 || Filter(Level.Polygons[selectedObj.PolygonIndex])) {
 			    DrawObject(selectedObj, true);
@@ -637,6 +648,10 @@ namespace Weland {
 		}
 	    }
 	}
+
+        void DrawVisualMode(Point p) {
+            DrawImage(visualModeImage, Transform.ToScreenX(p.X), Transform.ToScreenY(p.Y), false);
+        }
 
 	void DrawAnnotation(Annotation note, bool selected) {
 	    int X = (int) Transform.ToScreenX(note.X);

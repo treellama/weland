@@ -55,6 +55,9 @@ namespace Weland {
 	public short TemporaryLineStartIndex = -1;
 	public Point TemporaryLineEnd;
 
+        public short VisualModePolygonIndex = -1;
+        public Point VisualModePoint;
+
 	// for hiding points
 	public List<HashSet<Polygon>> EndpointPolygons = new List<HashSet<Polygon>>();
 	public List<HashSet<Line>> EndpointLines = new List<HashSet<Line>>();

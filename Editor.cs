@@ -20,7 +20,8 @@ namespace Weland {
 	AmbientSound,
 	RandomSound,
 	FloorTexture,
-	CeilingTexture
+	CeilingTexture,
+        VisualMode
     }
 
     [Flags] public enum EditorModifiers {
@@ -502,6 +503,11 @@ namespace Weland {
 		}
 	    }
 	}
+
+        void PlaceVisualMode(short X, short Y) {
+            Level.VisualModePoint = new Point(X, Y);
+            Level.VisualModePolygonIndex = Level.GetEnclosingPolygon(Level.VisualModePoint);
+        }
 
 	void PlaceObject(short X, short Y) {
 	    Point p = new Point(X, Y);
@@ -1115,7 +1121,9 @@ namespace Weland {
 		    PlaceObject(X, Y);
 		} else if (Tool == Tool.Annotation) {
 		    PlaceAnnotation(X, Y);
-		}
+		} else if (Tool == Tool.VisualMode) {
+                    PlaceVisualMode(X, Y);
+                }
 	    }
 
 	    downX = lastX = X;

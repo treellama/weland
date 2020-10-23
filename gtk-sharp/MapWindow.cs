@@ -680,6 +680,12 @@ namespace Weland {
 		    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);		    
 		}
 		break;
+            case Gdk.Key.x:
+                if (editor.Tool == Tool.Select) {
+                    editor.Tool = Tool.VisualMode;
+                    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
+                }
+                break;
 	    case Gdk.Key.Up:
 		if (palette.Visible) {
 		    PalettePrev();
@@ -802,6 +808,11 @@ namespace Weland {
 		ChooseTool(oldTool);
 		oldTool = Tool.Move;
 		args.RetVal = true;
+            } else if (args.Event.Key == Gdk.Key.x) {
+                if (editor.Tool == Tool.VisualMode) {
+                    ChooseTool(Tool.Select);
+                    args.RetVal = true;
+                }
 	    } else if (PlatformDetection.IsMac && (args.Event.Key == Gdk.Key.Alt_L || args.Event.Key == Gdk.Key.Alt_R)) {
 		optionKey = false;
 		args.RetVal = true;
@@ -1974,22 +1985,22 @@ namespace Weland {
             Redraw();
             toEditor.Directory[0] = Level.Save();
 
-            if (editor.Selection.Polygon != -1) {
-                var center = Level.PolygonCenter(Level.Polygons[editor.Selection.Polygon]);
+            if (Level.VisualModePolygonIndex != -1) {
                 // add a little LUAS to teleport the player
                 var script =
-                    String.Format("Triggers = {{}}\nfunction Triggers.idle()\nPlayers[0]:position({0}, {1}, {2}, {3})\nTriggers.idle = nil\nend\n", center.X / 1024.0, center.Y / 1024.0, Level.Polygons[editor.Selection.Polygon].FloorHeight / 1024.0, editor.Selection.Polygon);
+                    String.Format("Triggers = {{}}\nfunction Triggers.init()\nPlayers[0]:position({0}, {1}, {2}, {3})\nend\n", Level.VisualModePoint.X / 1024.0, Level.VisualModePoint.Y / 1024.0, Level.Polygons[Level.VisualModePolygonIndex].FloorHeight / 1024.0, Level.VisualModePolygonIndex);
 
                 Console.WriteLine(script);
 
                 var bytes = System.Text.Encoding.ASCII.GetBytes(script);
 
+                string scriptName = "Weland Visual Mode Locator";
                 MemoryStream stream = new MemoryStream();
                 BinaryWriterBE writer = new BinaryWriterBE(stream);
                 writer.Write((short) 1); // one script
                 writer.Write((uint) 4); // no flags
-                writer.Write(System.Text.Encoding.ASCII.GetBytes("VISUAL MODE"));
-                for (int i = 0; i < 55; ++i) { // empty name
+                writer.Write(System.Text.Encoding.ASCII.GetBytes(scriptName));
+                for (int i = 0; i < 66 - scriptName.Length; ++i) {
                     writer.Write((byte) 0);
                 }
                 writer.Write((uint) bytes.Length);

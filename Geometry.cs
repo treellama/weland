@@ -828,6 +828,10 @@ namespace Weland {
 		    } 
 		}
 	    }
+
+            if (VisualModePolygonIndex == index) {
+                VisualModePolygonIndex = -1;
+            }
 	}
 
 
