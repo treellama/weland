@@ -2000,8 +2000,6 @@ namespace Weland {
                 var script =
                     String.Format("Triggers = {{}}\nfunction Triggers.init()\nPlayers[0]:position({0}, {1}, {2}, {3})\nend\n", point.X / 1024.0, point.Y / 1024.0, Level.Polygons[polygonIndex].FloorHeight / 1024.0, polygonIndex);
 
-                Console.WriteLine(script);
-
                 var bytes = System.Text.Encoding.ASCII.GetBytes(script);
 
                 string scriptName = "Weland Visual Mode Locator";
@@ -2042,7 +2040,6 @@ namespace Weland {
             arguments.Add("\"" + EscapeArgument(Weland.Settings.GetSetting("VisualMode/Scenario", "")) + "\"");
             arguments.Add("\"" + EscapeArgument(toEditorName) + "\"");
             p.StartInfo.Arguments = String.Join(" ", arguments);
-            Console.WriteLine(String.Join(" ", arguments));
             p.EnableRaisingEvents = true;
             
             MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent | DialogFlags.Modal, MessageType.Other, ButtonsType.None, "Entering Visual Mode...");
