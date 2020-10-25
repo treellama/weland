@@ -197,6 +197,16 @@
                       </widget>
                     </child>
                     <child>
+                      <widget class="GtkMenuItem" id="visualModeItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Visual Mode</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="OnViewMenu" swapped="no"/>
+                        <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkSeparatorMenuItem" id="separatormenuitem4">
                         <property name="visible">True</property>
                       </widget>

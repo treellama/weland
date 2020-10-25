@@ -1976,6 +1976,14 @@ namespace Weland {
 	    Redraw();
 	}
 
+        internal string EscapeArgument(string s) {
+            if (PlatformDetection.IsMac) {
+                return "-C" + s;
+            } else {
+                return s;
+            }
+        }
+
         internal void VisualMode() {
             string toEditorName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".sceA";
             string fromEditorName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".sceA";
@@ -2014,8 +2022,27 @@ namespace Weland {
             toEditor.Save(toEditorName);
             
             Process p = new Process();
-            p.StartInfo.FileName = Weland.Settings.GetSetting("VisualMode/AlephOne", "");
-            p.StartInfo.Arguments = "-s -e -o \"" + fromEditorName + "\" \"" + Weland.Settings.GetSetting("ShapesFile/Path", "") + "\" \"" + Weland.Settings.GetSetting("VisualMode/Scenario", "") + "\" \"" + toEditorName + "\"";
+
+            List<string> arguments = new List<string>();
+            if (PlatformDetection.IsMac) {
+                p.StartInfo.FileName = "open";
+                arguments.Add("-a");
+                arguments.Add("\"" + Weland.Settings.GetSetting("VisualMode/AlephOne", "") + "\"");
+                arguments.Add("-W");
+                arguments.Add("--args");
+            } else {
+                p.StartInfo.FileName = Weland.Settings.GetSetting("VisualMode/AlephOne", "");
+            }
+
+            arguments.Add("-s");
+            arguments.Add("-e");
+            arguments.Add("-o");
+            arguments.Add("\"" + EscapeArgument(fromEditorName) + "\"");
+            arguments.Add("\"" + EscapeArgument(Weland.Settings.GetSetting("ShapesFile/Path", "")) + "\"");
+            arguments.Add("\"" + EscapeArgument(Weland.Settings.GetSetting("VisualMode/Scenario", "")) + "\"");
+            arguments.Add("\"" + EscapeArgument(toEditorName) + "\"");
+            p.StartInfo.Arguments = String.Join(" ", arguments);
+            Console.WriteLine(String.Join(" ", arguments));
             p.EnableRaisingEvents = true;
             
             MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent | DialogFlags.Modal, MessageType.Other, ButtonsType.None, "Entering Visual Mode...");

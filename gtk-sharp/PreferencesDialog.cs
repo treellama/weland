@@ -1,6 +1,7 @@
 using Glade;
 using Gtk;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -10,6 +11,9 @@ namespace Weland {
 	    Glade.XML gxml = new Glade.XML(null, "preferences.glade", "dialog1", null);
 	    gxml.Autoconnect(this);
 	    dialog1.TransientFor = parent;
+            if (PlatformDetection.IsMac) {
+                alephOneButton.Action = FileChooserAction.SelectFolder;
+            }
 	    area = drawingArea;
 	    editor = theEditor;
 	}
@@ -107,10 +111,33 @@ namespace Weland {
 	    LoadColors(defaults);
 	}
 
+        internal string EscapeArgument(string s) {
+            if (PlatformDetection.IsMac) {
+                return "-C" + s;
+            } else {
+                return s;
+            }
+        }
+
         protected void OnEditPreferences(object o, EventArgs args) {
             Process p = new Process();
-            p.StartInfo.FileName = alephOneButton.Filename;
-            p.StartInfo.Arguments = "-s -e \"" + scenarioButton.Filename + "\"";
+            List<string> arguments = new List<string>();
+
+            if (PlatformDetection.IsMac) {
+                p.StartInfo.FileName = "open";
+                arguments.Add("-a");
+                arguments.Add("\"" + alephOneButton.Filename + "\"");
+                arguments.Add("-W");
+                arguments.Add("--args");
+            } else {
+                p.StartInfo.FileName = alephOneButton.Filename;
+            }
+
+            arguments.Add("-s");
+            arguments.Add("-e");
+            arguments.Add("\"" + EscapeArgument(scenarioButton.Filename) + "\"");
+
+            p.StartInfo.Arguments = String.Join(" ", arguments);
             p.EnableRaisingEvents = true;
 
              MessageDialog d = new MessageDialog(dialog1, DialogFlags.DestroyWithParent | DialogFlags.Modal, MessageType.Other, ButtonsType.None, "Edit Visual Mode Preferences...");
