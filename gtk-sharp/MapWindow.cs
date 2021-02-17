@@ -909,9 +909,9 @@ namespace Weland {
 		} else {
 		    Filename = filename;
 		}
-		BuildLevelMenu();
 		editor.Changed = false;
 		SelectLevel(0);
+		BuildLevelMenu();
 	    }
 	    catch (Wadfile.BadMapException e) {
 		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
