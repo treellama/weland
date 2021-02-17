@@ -2033,7 +2033,6 @@ namespace Weland {
                 p.StartInfo.FileName = Weland.Settings.GetSetting("VisualMode/AlephOne", "");
             }
 
-            arguments.Add("-s");
             arguments.Add("-e");
             arguments.Add("-o");
             arguments.Add("\"" + EscapeArgument(fromEditorName) + "\"");

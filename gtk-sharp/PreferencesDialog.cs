@@ -133,7 +133,6 @@ namespace Weland {
                 p.StartInfo.FileName = alephOneButton.Filename;
             }
 
-            arguments.Add("-s");
             arguments.Add("-e");
             arguments.Add("\"" + EscapeArgument(scenarioButton.Filename) + "\"");
 
