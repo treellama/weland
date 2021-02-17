@@ -26,8 +26,10 @@ namespace Weland {
 
 	public void Load(string filename) {
 	    try {
-		BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open));
-		Load(reader);
+                using (BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open)))
+                {
+                    Load(reader);
+                }
 	    } catch (Exception) {
 		collectionHeaders = new CollectionHeader[ShapeDescriptor.MaximumCollections];
 		collections = new Collection[collectionHeaders.Length];
