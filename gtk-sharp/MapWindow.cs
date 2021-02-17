@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace Weland {
     // resizable, scrollable map view
@@ -2046,19 +2047,33 @@ namespace Weland {
 
             p.Exited += delegate(object sender, EventArgs e) {
                 Gtk.Application.Invoke(delegate {
-                        MapFile fromEditor = new MapFile();
-                        fromEditor.Load(fromEditorName);
-                        fromEditor.Directory[0].Chunks.Remove(Wadfile.Chunk("LUAS"));
-                        Level = new Level();
-                        Level.Load(fromEditor.Directory[0]);
-                        if (polygonIndex != -1) {
-                            Level.VisualModePolygonIndex = polygonIndex;
-                            Level.VisualModePoint = point;
+                        try
+                        {
+                            MapFile fromEditor = new MapFile();
+                            fromEditor.Load(fromEditorName);
+                            fromEditor.Directory[0].Chunks.Remove(Wadfile.Chunk("LUAS"));
+                            Level = new Level();
+                            Level.Load(fromEditor.Directory[0]);
+                            if (polygonIndex != -1) {
+                                Level.VisualModePolygonIndex = polygonIndex;
+                                Level.VisualModePoint = point;
+                            }
+                            editor.ClearUndo();
+                            editor.Changed = true;
+                            
+                            d.Destroy();
                         }
-                        editor.ClearUndo();
-                        editor.Changed = true;
-
-                        d.Destroy();
+                        catch (Exception exc)
+                        {
+                            StringBuilder sb = new StringBuilder("Visual Mode Failed!\n");
+                            sb.Append("Exception: " + exc.Message + "\n");
+                            sb.Append("Arguments: ");
+                            sb.Append(String.Join(" ", arguments));
+                            
+                            MessageDialog dd = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, sb.ToString());
+                            dd.Run();
+                            dd.Destroy();
+                        }
                     });
             };
 
