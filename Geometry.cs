@@ -777,7 +777,9 @@ namespace Weland {
 		if (side.IsControlPanel && side.IsPlatformSwitch()) {
 		    if (side.ControlPanelPermutation > index) {
 			--side.ControlPanelPermutation;
-		    }
+		    } else if (side.ControlPanelPermutation == index) {
+                        side.IsControlPanel = false;
+                    }
 		}
 	    }
 	    
@@ -825,7 +827,9 @@ namespace Weland {
 			   polygon.Type == PolygonType.PlatformOffTrigger) {
 		    if (polygon.Permutation > index) {
 			--polygon.Permutation;
-		    } 
+		    } else if (polygon.Permutation == index) {
+                        polygon.Type = PolygonType.Normal;
+                    }
 		}
 	    }
 
