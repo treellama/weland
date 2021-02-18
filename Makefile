@@ -9,12 +9,12 @@ remove-zipdir=rm -rf "$(BUILD_ZIP_DIR)"
 
 define copy-readme
 	cp COPYING.txt "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
-	cp README.txt "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
+	cp README.md "$(BUILD_ZIP_DIR)/$(ZIP_DIR)"
 endef
 
 define copy-plugins
 	mkdir -p "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins"
-	cp Plugins/README.txt "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
+	cp Plugins/README.md "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
 	cp Plugins/*.dll "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
 	cp Plugins/Makefile "$(BUILD_ZIP_DIR)/$(ZIP_DIR)/Plugins/"
 endef
@@ -57,7 +57,7 @@ maczip: Weland.app plugins
 	$(remove-zipdir)
 dist:
 	$(create-zipdir)
-	zip -r "$(BUILD_ZIP_DIR)/tmp.zip" . -i Makefile -i \*.cs -i \*.png -i \*.glade -i \*.txt -i \*.rsp -i mac/Info.plist -i mac/weland.sh -i icons/Weland.icns -i icons/Weland.ico -i Plugins/Makefile -i Plugins/README.txt
+	zip -r "$(BUILD_ZIP_DIR)/tmp.zip" . -i Makefile -i \*.cs -i \*.png -i \*.glade -i \*.txt -i \*.rsp -i mac/Info.plist -i mac/weland.sh -i icons/Weland.icns -i icons/Weland.ico -i Plugins/Makefile -i Plugins/README.md
 	unzip -d "$(BUILD_ZIP_DIR)/$(ZIP_DIR)" "$(BUILD_ZIP_DIR)/tmp.zip"
 	cd "$(BUILD_ZIP_DIR)" && zip -r "../weland-$(VERSION)-src.zip" "$(ZIP_DIR)"
 	$(remove-zipdir)
