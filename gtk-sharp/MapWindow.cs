@@ -1864,7 +1864,7 @@ namespace Weland {
 					    "effigy <this.effigy@gmail.com> (tooltips)",
 					    "with thanks to Eric Peterson for Smithy"};
 	    dialog.License = "Weland is available under the GNU General Public License, Version 2. See the file COPYING for details";
-	    dialog.Website = "http://sourceforge.net/projects/weland";
+	    dialog.Website = "https://github.com/treellama/weland";
 	    dialog.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 	    dialog.Run();
 	    dialog.Destroy();
