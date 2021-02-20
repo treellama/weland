@@ -136,7 +136,7 @@ namespace Weland {
 #if SYSTEM_DRAWING
 	    drawer = new SystemDrawer(GdkWindow, Antialias);
 #else
-	    if (!Antialias && !PlatformDetection.IsMac) {
+	    if (!Antialias && PlatformDetection.IsX11) {
 		drawer = new GdkDrawer(GdkWindow);
 	    } else {
 		drawer = new CairoDrawer(GdkWindow, Antialias);
