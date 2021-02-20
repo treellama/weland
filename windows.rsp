@@ -1,8 +1,9 @@
 /out:Weland.exe
 /pkg:gtk-dotnet-2.0
 /win32icon:"icons/Weland.ico"
-/define:SYSTEM_DRAWING
 /platform:x86
 
+/r:Mono.Cairo
+
 @common.rsp
-gtk-sharp/SystemDrawer.cs
+gtk-sharp/CairoDrawer.cs
