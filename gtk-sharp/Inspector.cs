@@ -48,7 +48,9 @@ namespace Weland {
 	[Widget] CheckButton itemTeleportsIn;
 	[Widget] CheckButton itemNetworkOnly;
 
-	[Widget] ComboBox goalType;
+	[Widget] Entry goalCheckpoint;
+        [Widget] HScale goalFacing;
+        [Widget] Entry goalHeight;
 
 	[Widget] ComboBox soundType;
 	[Widget] HScale soundVolume;
@@ -124,7 +126,9 @@ namespace Weland {
 		    itemTeleportsIn.Active = mapObject.Invisible;
 		    itemNetworkOnly.Active = mapObject.NetworkOnly;
 		} else if (mapObject.Type == ObjectType.Goal) {
-		    goalType.Active = mapObject.Index;
+                    goalCheckpoint.Text = String.Format("{0}", mapObject.Index);
+                    goalFacing.Value = mapObject.Facing;
+                    goalHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
 		} else if (mapObject.Type == ObjectType.Sound) {
 		    soundType.Active = mapObject.Index;
 		    soundHeight.Text = String.Format("{0:0.000}", World.ToDouble(mapObject.Z));
@@ -257,7 +261,14 @@ namespace Weland {
 		mapObject.Invisible = itemTeleportsIn.Active;
 		mapObject.NetworkOnly = itemNetworkOnly.Active;
 	    } else if (mapObject.Type == ObjectType.Goal) {
-		mapObject.Index = (short) goalType.Active;
+                try {
+                    mapObject.Index = short.Parse(goalCheckpoint.Text);
+                }
+                catch (Exception) { }
+                mapObject.Facing = goalFacing.Value;
+                try {
+                    mapObject.Z = World.FromDouble(double.Parse(goalHeight.Text));
+                } catch (Exception) { }
 	    } else if (mapObject.Type == ObjectType.Sound) {
 		mapObject.Index = (short) soundType.Active;
 		try {
