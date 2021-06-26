@@ -978,6 +978,7 @@ namespace Weland {
 	    d.CurrentName = Level.Name + ".sceA";
 	    d.DoOverwriteConfirmation = true;
 	    try {
+                Level.Validate();
 		if (d.Run() == (int) ResponseType.Accept) {
 		    mapfile = new MapFile();
 		    Level.AssurePlayerStart();
@@ -1014,6 +1015,7 @@ namespace Weland {
 	    } else {
 		bool success = false;
 		try {
+                    Level.Validate();
 		    Level.AssurePlayerStart();
 		    Redraw();
 		    mapfile.Directory[0] = Level.Save();

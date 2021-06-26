@@ -347,6 +347,29 @@ namespace Weland {
 	    }	    
 	}
 
+        void ValidatePlatformTriggers() {
+	    for (int i = 0; i < Polygons.Count; ++i) {
+		    Polygon polygon = Polygons[i];
+		    if (polygon.Type == PolygonType.PlatformOnTrigger || polygon.Type == PolygonType.PlatformOffTrigger) {
+                        bool found = false;
+	                foreach (Platform platform in Platforms) {
+				if (platform.PolygonIndex == polygon.Permutation) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				string message = "Invalid map: Platform trigger at polygon " + i + " does not have a valid platform assigned.";
+				throw new Wadfile.BadMapException(message);
+			}
+		    }
+            }
+        }
+
+	public void Validate() {
+		ValidatePlatformTriggers();
+        }
+
 	public Wadfile.DirectoryEntry Save() {
 	    Wadfile.DirectoryEntry wad = new Wadfile.DirectoryEntry();
 	    wad.Chunks = Chunks;
