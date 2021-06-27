@@ -368,7 +368,7 @@ namespace Weland {
 
 	public void Validate() {
 	    ValidatePlatformTriggers();
-        }
+	}
 
 	public Wadfile.DirectoryEntry Save() {
 	    Wadfile.DirectoryEntry wad = new Wadfile.DirectoryEntry();
