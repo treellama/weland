@@ -347,7 +347,7 @@ namespace Weland {
 	    }	    
 	}
 
-        void ValidatePlatformTriggers() {
+	void ValidatePlatformTriggers() {
 	    for (int i = 0; i < Polygons.Count; ++i) {
 	        Polygon polygon = Polygons[i];
 		if (polygon.Type == PolygonType.PlatformOnTrigger || polygon.Type == PolygonType.PlatformOffTrigger) {
