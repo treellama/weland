@@ -3,6 +3,7 @@ using System.IO;
 
 namespace Weland {
     [Flags] public enum LineFlags : ushort {
+        Decorative = 0x100,
 	HasTransparentSide = 0x200,
 	VariableElevation = 0x400,
 	Elevation = 0x800,
@@ -26,6 +27,11 @@ namespace Weland {
 	public short CounterclockwisePolygonSideIndex = -1;
 	public short ClockwisePolygonOwner = -1;
 	public short CounterclockwisePolygonOwner = -1;
+
+        public bool Decorative {
+            get { return (Flags & LineFlags.Decorative) != 0; }
+            set { if (value) Flags |= LineFlags.Decorative; else Flags &= ~LineFlags.Decorative; }
+        }
 
 	public bool Transparent {
 	    get { return (Flags & LineFlags.Transparent) != 0; }

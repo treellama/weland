@@ -17,9 +17,11 @@ namespace Weland {
 	    solid.Active = line.Solid;
 	    solid.Sensitive = !(line.ClockwisePolygonOwner == -1 || line.CounterclockwisePolygonOwner == -1);
 	    transparent.Active = line.Transparent;
+            decorative.Active = line.Decorative;
 	    dialog1.Run();
 	    line.Solid = solid.Active;
 	    line.Transparent = transparent.Active;
+            line.Decorative = decorative.Active;
 	    dialog1.Destroy();
 	}
 
@@ -39,6 +41,7 @@ namespace Weland {
 
 	[Widget] CheckButton solid;
 	[Widget] CheckButton transparent;
+        [Widget] CheckButton decorative;
     }
 
     public class PointParametersDialog {
