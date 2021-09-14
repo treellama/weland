@@ -26,7 +26,7 @@ namespace Weland {
 
 	public void Load(string filename) {
 	    try {
-                using (BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open)))
+                using (BinaryReaderBE reader = new BinaryReaderBE(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read)))
                 {
                     Load(reader);
                 }
