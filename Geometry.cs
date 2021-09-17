@@ -722,6 +722,17 @@ namespace Weland {
 	    Objects.RemoveAt(index);
 	}
 
+        public void DeletePlatform(short index) {
+            Platforms.RemoveAt(index);
+            foreach (Polygon polygon in Polygons) {
+                if (polygon.Type == PolygonType.Platform) {
+                    if (polygon.Permutation > index) {
+                        --polygon.Permutation;
+                    }
+                }
+            }
+        }
+
 	public void DeletePolygon(short index) {
 	    Polygon polygonRef = Polygons[index];
 	    
@@ -792,15 +803,8 @@ namespace Weland {
 	    }
 
 	    if (platformIndex != -1) {
-		Platforms.RemoveAt(platformIndex);
-		foreach (Polygon polygon in Polygons) {
-		    if (polygon.Type == PolygonType.Platform) {
-			if (polygon.Permutation > platformIndex) {
-			    --polygon.Permutation;
-			}
-		    }
-		}
-	    }
+                DeletePlatform(platformIndex);
+            }
 
 	    for (int i = Platforms.Count - 1; i >= 0; --i) {
 		if (Platforms[i].PolygonIndex > index) {

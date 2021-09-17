@@ -96,7 +96,7 @@ namespace Weland {
 		tool = value;
 		if (Level.TemporaryLineStartIndex != -1) {
 		    if (Level.FindEndpointLines(Level.TemporaryLineStartIndex).Count == 0) {
-			Level.DeletePoint(Level.TemporaryLineStartIndex);
+                        Level.DeletePoint(Level.TemporaryLineStartIndex);
 		    }
 		    Level.TemporaryLineStartIndex = -1;
 		}
@@ -1385,11 +1385,11 @@ namespace Weland {
 	    for (int i = Level.Platforms.Count - 1; i >= 0; --i) {
 		Platform platform = Level.Platforms[i];
 		if (platform.PolygonIndex == -1) {
-		    Level.Platforms.RemoveAt(i);
+                    Level.DeletePlatform((short) i);
 		} else {
 		    Polygon polygon = Level.Polygons[platform.PolygonIndex];
 		    if (polygon.Type != PolygonType.Platform) {
-			Level.Platforms.RemoveAt(i);
+                        Level.DeletePlatform((short) i);
 		    } else {
 			map[platform.PolygonIndex] = platform;
 		    }
