@@ -1,6 +1,7 @@
 using Cairo;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Weland {
     public class CairoDrawer : Drawer {
@@ -17,6 +18,47 @@ namespace Weland {
 	    }
 	}
 
+        class TextureSurface : IDisposable {
+            public TextureSurface(ShapeDescriptor d)
+            {
+                System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
+                byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
+                for (int x = 0; x < bitmap.Width; ++x)
+                {
+                    for (int y = 0; y < bitmap.Height; ++y)
+                    {
+                        System.Drawing.Color c  = bitmap.GetPixel(x, y);
+                        int offset = (y * bitmap.Width + x) * 4;
+                        bytes[offset] = c.B;
+                        bytes[offset + 1] = c.G;
+                        bytes[offset + 2] = c.R;
+                        bytes[offset + 3] = c.A;
+                    }
+                }
+
+                handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+                surface = new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, bitmap.Width * 4);
+            }
+
+            public void Dispose()
+            {
+                surface.Dispose();
+
+                if (handle.IsAllocated)
+                {
+                    handle.Free();
+                }
+            }
+
+            public ImageSurface Surface
+            {
+                get { return surface; }
+            }
+
+            private ImageSurface surface;
+            private GCHandle handle;
+        }
+
 	class TextureCache : IDisposable {
 	    public TextureCache() {
 		Weland.ShapesChanged += new ShapesFileChangedEventHandler(OnShapesChanged);
@@ -24,36 +66,31 @@ namespace Weland {
 
 	    public void Dispose() {
 		Weland.ShapesChanged -= new ShapesFileChangedEventHandler(OnShapesChanged);
+                foreach (var kvp in cache)
+                {
+                    kvp.Value.Dispose();
+                }
 	    }
 
 	    public void OnShapesChanged() {
-		bcache.Clear();
+                foreach (var kvp in cache)
+                {
+                    kvp.Value.Dispose();
+                }
 		cache.Clear();
 	    }
 
-	    public ImageSurface GetSurface(ShapeDescriptor d) {
-		if (!cache.ContainsKey((ushort) d)) {
-		    System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
-		    byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
-		    for (int x = 0; x < bitmap.Width; ++x) {
-			for (int y = 0; y < bitmap.Height; ++y) {
-			    System.Drawing.Color c  = bitmap.GetPixel(x, y);
-			    int offset = (y * bitmap.Width + x) * 4;
-			    bytes[offset] = c.B;
-			    bytes[offset + 1] = c.G;
-			    bytes[offset + 2] = c.R;
-			    bytes[offset + 3] = c.A;
-			}
-		    }
-		    
-		    bcache.Add((ushort) d, bytes);
-		    cache.Add((ushort) d, new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, bitmap.Width * 4));
-		}
-		return cache[(ushort) d];
-	    }
+	    public ImageSurface GetSurface(ShapeDescriptor d)
+            {
+                if (!cache.ContainsKey((ushort) d))
+                {
+                    cache.Add((ushort) d, new TextureSurface(d));
+                }
 
-	    Dictionary<ushort, ImageSurface> cache = new Dictionary<ushort, ImageSurface>();
-	    Dictionary<ushort, byte[]> bcache = new Dictionary<ushort, byte[]>();
+                return cache[(ushort) d].Surface;
+            }
+
+	    Dictionary<ushort, TextureSurface> cache = new Dictionary<ushort, TextureSurface>();
 	}
 
 	static TextureCache cache = new TextureCache();
