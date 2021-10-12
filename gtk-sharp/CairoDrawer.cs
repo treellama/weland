@@ -23,21 +23,39 @@ namespace Weland {
             {
                 System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
                 byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
-                for (int x = 0; x < bitmap.Width; ++x)
+                if (d.Collection >= 27)
                 {
-                    for (int y = 0; y < bitmap.Height; ++y)
+                    for (int x = 0; x < bitmap.Width; ++x)
                     {
-                        System.Drawing.Color c  = bitmap.GetPixel(x, y);
-                        int offset = (y * bitmap.Width + x) * 4;
-                        bytes[offset] = c.B;
-                        bytes[offset + 1] = c.G;
-                        bytes[offset + 2] = c.R;
-                        bytes[offset + 3] = c.A;
+                        for (int y = 0; y < bitmap.Height; ++y)
+                        {
+                            System.Drawing.Color c  = bitmap.GetPixel(x, y);
+                            int offset = (y * bitmap.Width + x) * 4;
+                            bytes[offset] = c.B;
+                            bytes[offset + 1] = c.G;
+                            bytes[offset + 2] = c.R;
+                            bytes[offset + 3] = c.A;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < bitmap.Width; ++x)
+                    {
+                        for (int y = 0; y < bitmap.Height; ++y)
+                        {
+                            System.Drawing.Color c  = bitmap.GetPixel(x, y);
+                            int offset = (x * bitmap.Width + y) * 4;
+                            bytes[offset] = c.B;
+                            bytes[offset + 1] = c.G;
+                            bytes[offset + 2] = c.R;
+                            bytes[offset + 3] = c.A;
+                        }
                     }
                 }
 
                 handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-                surface = new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, bitmap.Width * 4);
+                surface = new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, d.Collection >= 27 ? bitmap.Width * 4 : bitmap.Height * 4);
             }
 
             public void Dispose()
