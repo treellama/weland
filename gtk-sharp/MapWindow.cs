@@ -28,17 +28,11 @@ namespace Weland {
 	List<Gdk.Color> paintColors = new List<Gdk.Color>();
 
 	[Widget] Gtk.Window window1;
-	[Widget] MenuBar menubar1;
 	[Widget] VScrollbar vscrollbar1;
 	[Widget] HScrollbar hscrollbar1;
 	[Widget] MenuItem levelItem;
 	[Widget] MenuItem pluginsItem;
 	[Widget] Table table1;
-
-	[Widget] MenuItem quitItem;
-	[Widget] MenuItem quitSeparator;
-	[Widget] MenuItem aboutItem;
-	[Widget] MenuItem preferencesItem;
 
 	[Widget] HScale viewFloorHeight;
 	[Widget] HScale viewCeilingHeight;
@@ -164,30 +158,8 @@ namespace Weland {
 	    Redraw();
 	}
 
-	void DoMacIntegration() {
-	    try {
-		IgeMacIntegration.IgeMacMenu.MenuBar = menubar1;
-		IgeMacIntegration.IgeMacMenu.QuitMenuItem = quitItem;
-
-		IgeMacIntegration.IgeMacMenuGroup appMenuGroup = IgeMacIntegration.IgeMacMenu.AddAppMenuGroup();
-		appMenuGroup.AddMenuItem(aboutItem, "About Weland");
-		appMenuGroup.AddMenuItem(new SeparatorMenuItem(), "-");
-		appMenuGroup.AddMenuItem(preferencesItem, "Preferences…");
-		quitSeparator.Hide();
-
-		menubar1.Hide();
-	    } catch (Exception e) {
-		Console.WriteLine("Mac integration failed {0}", e);
-	    }
-	}
-
 	public MapWindow(string title) {
-	    Glade.XML gxml;
-	    if (PlatformDetection.IsMac) {
-		gxml = new Glade.XML(null, "macmapwindow.glade", "window1", null);
-	    } else {
-		gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
-	    }
+	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
 
 	    gxml.Autoconnect(this);
 	    SetupDrawingArea();
@@ -243,10 +215,6 @@ namespace Weland {
 	    drawingArea.Grid = grid;
 	    drawingArea.Selection = selection;
 	    drawingArea.Filter = HeightFilter;
-
-	    if (PlatformDetection.IsMac) {
-		DoMacIntegration();
-	    }
 
 	    SetupInspector();
 

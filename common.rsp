@@ -108,7 +108,6 @@ gtk-sharp/Widgets.cs
 /resource:glade/levelparameters.glade
 /resource:glade/lightparameters.glade
 /resource:glade/lineparameters.glade
-/resource:glade/macmapwindow.glade
 /resource:glade/mapwindow.glade
 /resource:glade/mediaparameters.glade
 /resource:glade/platformparameters.glade
