@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netframework4.8</TargetFramework>
+    <Platforms>x86</Platforms>
+    <BaseOutputPath>..\bin\</BaseOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="EnumerateTags.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Weland.csproj" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist $(TargetDir)Plugins MkDir $(TargetDir)Plugins &#xD;&#xA;move /Y $(TargetDir)$(AssemblyName).* $(TargetDir)Plugins" />
+  </Target>
+</Project>

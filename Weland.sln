@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Weland", "Weland.csproj", "{8056C0B2-5C00-44CD-AE96-8B264DA81823}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumerateTags", "Plugins\EnumerateTags.csproj", "{7C79C733-A177-4E26-8D42-BDF9750D2642}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shade", "Plugins\Shade.csproj", "{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{DDBA50C6-CBA7-4404-B692-2A49ABDCE329}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8056C0B2-5C00-44CD-AE96-8B264DA81823}.Debug|x86.ActiveCfg = Debug|x86
+		{8056C0B2-5C00-44CD-AE96-8B264DA81823}.Debug|x86.Build.0 = Debug|x86
+		{8056C0B2-5C00-44CD-AE96-8B264DA81823}.Release|x86.ActiveCfg = Release|x86
+		{8056C0B2-5C00-44CD-AE96-8B264DA81823}.Release|x86.Build.0 = Release|x86
+		{7C79C733-A177-4E26-8D42-BDF9750D2642}.Debug|x86.ActiveCfg = Debug|x86
+		{7C79C733-A177-4E26-8D42-BDF9750D2642}.Debug|x86.Build.0 = Debug|x86
+		{7C79C733-A177-4E26-8D42-BDF9750D2642}.Release|x86.ActiveCfg = Release|x86
+		{7C79C733-A177-4E26-8D42-BDF9750D2642}.Release|x86.Build.0 = Release|x86
+		{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6}.Debug|x86.ActiveCfg = Debug|x86
+		{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6}.Debug|x86.Build.0 = Debug|x86
+		{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6}.Release|x86.ActiveCfg = Release|x86
+		{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7C79C733-A177-4E26-8D42-BDF9750D2642} = {DDBA50C6-CBA7-4404-B692-2A49ABDCE329}
+		{A004135F-B4AB-48B4-ACFA-DC7F1F3946E6} = {DDBA50C6-CBA7-4404-B692-2A49ABDCE329}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F11EBDD1-6CC9-4836-9B08-6BD968DD8FE6}
+	EndGlobalSection
+EndGlobal

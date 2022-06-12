@@ -1,0 +1,223 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netframework4.8</TargetFramework>
+    <StartupObject>Weland.Weland</StartupObject>
+    <ApplicationIcon>icons\Weland.ico</ApplicationIcon>
+    <Platforms>x86</Platforms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Plugins\**" />
+    <EmbeddedResource Remove="Plugins\**" />
+    <None Remove="Plugins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Makefile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icons\Weland.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="glade\ambientsoundparameters.glade">
+      <LogicalName>ambientsoundparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\goto.glade">
+      <LogicalName>goto.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\levelparameters.glade">
+      <LogicalName>levelparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\lightparameters.glade">
+      <LogicalName>lightparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\lineparameters.glade">
+      <LogicalName>lineparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\mapwindow.glade">
+      <LogicalName>mapwindow.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\mediaparameters.glade">
+      <LogicalName>mediaparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\platformparameters.glade">
+      <LogicalName>platformparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\pointparameters.glade">
+      <LogicalName>pointparameters.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\preferences.glade">
+      <LogicalName>preferences.glade</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="glade\randomsoundparameters.glade">
+      <LogicalName>randomsoundparameters.glade</LogicalName>
+    </EmbeddedResource>
+    
+    <EmbeddedResource Include="images\1x.png">
+      <LogicalName>1x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\2x.png">
+      <LogicalName>2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\3x.png">
+      <LogicalName>3x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\alien-gun.png">
+      <LogicalName>alien-gun.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ambient-sound.png">
+      <LogicalName>ambient-sound.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\annotation.png">
+      <LogicalName>annotation.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ar-ammo.png">
+      <LogicalName>ar-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ar-grenades.png">
+      <LogicalName>ar-grenades.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ar.png">
+      <LogicalName>ar.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\arrow.png">
+      <LogicalName>arrow.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ceiling-height.png">
+      <LogicalName>ceiling-height.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ceiling-light.png">
+      <LogicalName>ceiling-light.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\ceiling-texture.png">
+      <LogicalName>ceiling-texture.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\custom-grid.png">
+      <LogicalName>custom-grid.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\dingle.png">
+      <LogicalName>dingle.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\fill.png">
+      <LogicalName>fill.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\flag.png">
+      <LogicalName>flag.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\floor-height.png">
+      <LogicalName>floor-height.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\floor-light.png">
+      <LogicalName>floor-light.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\floor-texture.png">
+      <LogicalName>floor-texture.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\flower.png">
+      <LogicalName>flower.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\fusion-ammo.png">
+      <LogicalName>fusion-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\fusion.png">
+      <LogicalName>fusion.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\grid.png">
+      <LogicalName>grid.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\invinc.png">
+      <LogicalName>invinc.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\keycard.png">
+      <LogicalName>keycard.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\line.png">
+      <LogicalName>line.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\liquids.png">
+      <LogicalName>liquids.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\media-light.png">
+      <LogicalName>media-light.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\monster.png">
+      <LogicalName>monster.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\move.png">
+      <LogicalName>move.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\object.png">
+      <LogicalName>object.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\oxygen.png">
+      <LogicalName>oxygen.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\pistol-ammo.png">
+      <LogicalName>pistol-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\pistol.png">
+      <LogicalName>pistol.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\player.png">
+      <LogicalName>player.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\polygon-type.png">
+      <LogicalName>polygon-type.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\powerup.png">
+      <LogicalName>powerup.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\random-sound.png">
+      <LogicalName>random-sound.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\rl-ammo.png">
+      <LogicalName>rl-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\rl.png">
+      <LogicalName>rl.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\shotgun-ammo.png">
+      <LogicalName>shotgun-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\shotgun.png">
+      <LogicalName>shotgun.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\skull.png">
+      <LogicalName>skull.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\smg-ammo.png">
+      <LogicalName>smg-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\smg.png">
+      <LogicalName>smg.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\snap.png">
+      <LogicalName>snap.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\sound.png">
+      <LogicalName>sound.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\tozt-ammo.png">
+      <LogicalName>tozt-ammo.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\tozt.png">
+      <LogicalName>tozt.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\uplink-chip.png">
+      <LogicalName>uplink-chip.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="images\zoom.png">
+      <LogicalName>zoom.png</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.GtkSharp" Version="2.12.0.1" />
+  </ItemGroup>
+
+</Project>
