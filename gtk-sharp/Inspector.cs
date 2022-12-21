@@ -47,6 +47,7 @@ namespace Weland {
 	[Widget] CheckButton itemFromCeiling;
 	[Widget] CheckButton itemTeleportsIn;
 	[Widget] CheckButton itemNetworkOnly;
+	[Widget] HScale itemAngle;
 
 	[Widget] Entry goalCheckpoint;
         [Widget] HScale goalFacing;
@@ -125,6 +126,7 @@ namespace Weland {
 		    itemFromCeiling.Active = mapObject.FromCeiling;
 		    itemTeleportsIn.Active = mapObject.Invisible;
 		    itemNetworkOnly.Active = mapObject.NetworkOnly;
+		    itemAngle.Value = mapObject.Facing;
 		} else if (mapObject.Type == ObjectType.Goal) {
                     goalCheckpoint.Text = String.Format("{0}", mapObject.Index);
                     goalFacing.Value = mapObject.Facing;
@@ -260,6 +262,7 @@ namespace Weland {
 		mapObject.FromCeiling = itemFromCeiling.Active;
 		mapObject.Invisible = itemTeleportsIn.Active;
 		mapObject.NetworkOnly = itemNetworkOnly.Active;
+		mapObject.Facing = itemAngle.Value;
 	    } else if (mapObject.Type == ObjectType.Goal) {
                 try {
                     mapObject.Index = short.Parse(goalCheckpoint.Text);
