@@ -353,8 +353,8 @@ namespace Weland {
 	protected void OnObjectTypeChanged(object obj, EventArgs args) {
 	    if (!applyChanges) return;
 
-	    MapObject mapObject = Level.Objects[selection.Object];
-	    mapObject.Type = (ObjectType) objectGroup.Active;
+            editor.SetObjectType(Level.Objects[selection.Object], (ObjectType) objectGroup.Active);
+
 	    RedrawSelectedObject();
 	    UpdateInspector();
 	}
