@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 
@@ -8,6 +9,8 @@ namespace Weland {
 	XmlDocument xmlDocument = new XmlDocument();
 	string applicationData;
 	string documentPath;
+
+        private CultureInfo ic = CultureInfo.InvariantCulture;
 	
 	public Settings() {
 	    applicationData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "//Weland";
@@ -20,27 +23,27 @@ namespace Weland {
 	}
 	
 	public int GetSetting(string xPath, int defaultValue) { 
-	    return Convert.ToInt32(GetSetting(xPath, Convert.ToString(defaultValue))); 
+	    return Convert.ToInt32(GetSetting(xPath, Convert.ToString(defaultValue, ic)), ic); 
 	}
 	
 	public void PutSetting(string xPath, int value) { 
-	    PutSetting(xPath, Convert.ToString(value)); 
+	    PutSetting(xPath, Convert.ToString(value, ic)); 
 	}
 
 	public bool GetSetting(string xPath, bool defaultValue) {
-	    return Convert.ToBoolean(GetSetting(xPath, Convert.ToString(defaultValue)));
+	    return Convert.ToBoolean(GetSetting(xPath, Convert.ToString(defaultValue, ic)), ic);
 	}
 
 	public double GetSetting(string xPath, double defaultValue) {
-	    return Convert.ToDouble(GetSetting(xPath, Convert.ToString(defaultValue)));
+	    return Convert.ToDouble(GetSetting(xPath, Convert.ToString(defaultValue, ic)), ic);
 	}
 
 	public void PutSetting(string xPath, double value) {
-	    PutSetting(xPath, Convert.ToString(value));
+	    PutSetting(xPath, Convert.ToString(value, ic));
 	}
 
 	public void PutSetting(string xPath, bool value) {
-	    PutSetting(xPath, Convert.ToString(value));
+	    PutSetting(xPath, Convert.ToString(value, ic));
 	}
 
 	public string GetSetting(string xPath,  string defaultValue) { 
