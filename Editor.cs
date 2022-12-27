@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Weland.Models;
 
 namespace Weland {
     public enum Tool {
@@ -135,17 +136,21 @@ namespace Weland {
 	public bool SplitPolygonLines;
 
 	public void LoadSettings() {
+        /*
 	    DefaultSnapDistance = Weland.Settings.GetSetting("Distance/Select/Default", 4);
 	    ObjectSnapDistance = Weland.Settings.GetSetting("Distance/Select/Object", 8);
 	    InertiaDistance = Weland.Settings.GetSetting("Distance/Inertia/Default", 8);
 	    SplitPolygonLines = Weland.Settings.GetSetting("Editor/SplitPolygonLines", false);
+            */
 	}
 
 	public void SaveSettings() {
+        /*
 	    Weland.Settings.PutSetting("Distance/Select/Default", DefaultSnapDistance);
 	    Weland.Settings.PutSetting("Distance/Select/Object", ObjectSnapDistance);
 	    Weland.Settings.PutSetting("Distance/Inertia/Default", InertiaDistance);
 	    Weland.Settings.PutSetting("Editor/SplitPolygonLines", SplitPolygonLines);
+            */
 	}
 
 	public Editor() {

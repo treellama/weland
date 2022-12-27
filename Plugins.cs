@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Gtk;
 
 namespace Weland {
     public class Plugins {
 	class PluginInfo {
 	    public string Name;
-	    public MethodInfo GtkRun;
+//	    public MethodInfo GtkRun;
 	    public MethodInfo Run;
 	};
 	List<PluginInfo> plugins = new List<PluginInfo>();
@@ -23,13 +22,14 @@ namespace Weland {
 		}
 	    } catch { }
 		
-	    if (PlatformDetection.IsMac) {
+/*	    if (PlatformDetection.IsMac) {
 		try {
 		    foreach (string file in Directory.GetFiles(Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(exePath)), "Plugins"), "*.dll")) {
 			files.Add(file);
 		    }
 		} catch { }
-	    }
+	}
+    */
 
 	    string applicationData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Weland");
 	    try {
@@ -59,19 +59,13 @@ namespace Weland {
 			{
 			    plugin.Name = (string) nameMethod.Invoke(0, new object[0]);
 			    plugin.Run = t.GetMethod("Run");
-			    plugin.GtkRun = t.GetMethod("GtkRun");
 
 			    if (plugin.Run != null && !plugin.Run.IsStatic)
 			    {
 				plugin.Run = null;
 			    }
 
-			    if (plugin.GtkRun != null && !plugin.GtkRun.IsStatic)
-			    {
-				plugin.GtkRun = null;
-			    }
-
-			    if (plugin.Run != null || plugin.GtkRun != null)
+			    if (plugin.Run != null)
 			    {
 				plugins.Add(plugin);
 				break;
@@ -92,35 +86,6 @@ namespace Weland {
 
 	public string GetName(int plugin) {
 	    return plugins[plugin].Name;
-	}
-
-	public void GtkRun(Editor editor, int plugin) {
-	    try 
-	    {
-		object[] args = { editor };
-		if (plugins[plugin].GtkRun != null) {
-		    plugins[plugin].GtkRun.Invoke(0, args);
-		} else if (plugins[plugin].Run != null) {
-		    StringWriter log = new StringWriter();
-		    Console.SetOut(log);
-
-		    plugins[plugin].Run.Invoke(0, args);
-		    
-		    StreamWriter stdout = new StreamWriter(Console.OpenStandardOutput());
-		    stdout.AutoFlush = true;
-		    Console.SetOut(stdout);
-		    
-		    if (log.GetStringBuilder().Length > 0) {
-			new LogWindow(plugins[plugin].Name, log.ToString());
-		    }
-		}
-	    } catch (Exception e) {
-		MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
-		d.Title = "Plugin Exception";
-		d.SecondaryText = e.StackTrace;
-		d.Run();
-		d.Destroy();
-	    }
 	}
     }
 }
