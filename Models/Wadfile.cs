@@ -3,7 +3,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Weland
+namespace Weland.Models
 {
     enum WadfileVersion
     {
