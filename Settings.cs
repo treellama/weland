@@ -58,7 +58,7 @@ namespace Weland
 
         public string GetSetting(string xPath, string defaultValue)
         {
-            XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
+            var xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
             if (xmlNode != null)
             {
                 return xmlNode.InnerText;
@@ -71,7 +71,7 @@ namespace Weland
 
         public void PutSetting(string xPath, string value)
         {
-            XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
+            var xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
             if (xmlNode == null)
             {
                 xmlNode = createMissingNode("settings/" + xPath);
@@ -94,8 +94,8 @@ namespace Weland
         {
             string[] xPathSections = xPath.Split(new char[] { '/' });
             string currentXPath = "";
-            XmlNode testNode = null;
-            XmlNode currentNode = xmlDocument.SelectSingleNode("settings");
+            XmlNode? testNode = null;
+            XmlNode currentNode = xmlDocument.SelectSingleNode("settings")!;
             foreach (string xPathSection in xPathSections)
             {
                 currentXPath += xPathSection;
@@ -106,7 +106,7 @@ namespace Weland
                     xPathSection + "></" +
                     xPathSection + ">";
                 }
-                currentNode = xmlDocument.SelectSingleNode(currentXPath);
+                currentNode = xmlDocument.SelectSingleNode(currentXPath)!;
                 currentXPath += "/";
             }
             return currentNode;

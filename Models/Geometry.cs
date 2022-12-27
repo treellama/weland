@@ -739,7 +739,7 @@ namespace Weland.Models
 
             short index = (short)Polygons.Count;
             Polygons.Add(polygon);
-            Polygon adjacent = null;
+            Polygon? adjacent = null;
             for (int i = 0; i < loop.Count; ++i)
             {
                 Line line = Lines[loop[i]];
@@ -1195,7 +1195,7 @@ namespace Weland.Models
         {
             Polygon adjacent = Polygons[side.PolygonIndex];
             Line line = Lines[side.LineIndex];
-            Polygon opposite = null;
+            Polygon? opposite = null;
             if (line.CounterclockwisePolygonOwner == side.PolygonIndex &&
             line.ClockwisePolygonOwner != -1)
             {
@@ -1418,7 +1418,7 @@ namespace Weland.Models
                     // only pave if there's no polygon opposite
                     Polygon adjacent = Polygons[side.PolygonIndex];
                     Line line = Lines[side.LineIndex];
-                    Polygon opposite = null;
+                    Polygon? opposite = null;
                     if (line.CounterclockwisePolygonOwner == side.PolygonIndex &&
                     line.ClockwisePolygonOwner != -1)
                     {
@@ -1501,8 +1501,8 @@ namespace Weland.Models
             for (int i = 0; i < Lines.Count; ++i)
             {
                 Line line = Lines[i];
-                Polygon cw_polygon = null;
-                Polygon ccw_polygon = null;
+                Polygon? cw_polygon = null;
+                Polygon? ccw_polygon = null;
                 if (line.ClockwisePolygonOwner != -1)
                 {
                     cw_polygon = Polygons[line.ClockwisePolygonOwner];
@@ -1512,13 +1512,13 @@ namespace Weland.Models
                     ccw_polygon = Polygons[line.CounterclockwisePolygonOwner];
                 }
 
-                Side cw_side = null;
+                Side? cw_side = null;
                 if (line.ClockwisePolygonSideIndex != -1)
                 {
                     cw_side = Sides[line.ClockwisePolygonSideIndex];
                 }
 
-                Side ccw_side = null;
+                Side? ccw_side = null;
                 if (line.CounterclockwisePolygonSideIndex != -1)
                 {
                     ccw_side = Sides[line.CounterclockwisePolygonSideIndex];

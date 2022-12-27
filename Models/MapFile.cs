@@ -10,7 +10,7 @@ namespace Weland.Models
             public MissionFlags MissionFlags;
             public EnvironmentFlags EnvironmentFlags;
             public EntryPointFlags EntryPointFlags;
-            public string LevelName;
+            public string LevelName = "";
 
             internal const short DataSize = 74;
 

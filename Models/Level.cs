@@ -327,8 +327,8 @@ namespace Weland.Models
             for (short index = 0; index < Lines.Count; ++index)
             {
                 Line line = Lines[index];
-                Polygon p1 = null;
-                Polygon p2 = null;
+                Polygon? p1 = null;
+                Polygon? p2 = null;
                 if (line.ClockwisePolygonOwner != -1)
                 {
                     p1 = Polygons[line.ClockwisePolygonOwner];

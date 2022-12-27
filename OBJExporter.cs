@@ -119,8 +119,8 @@ namespace Weland
         {
             int left;
             int right;
-            Polygon opposite = null;
-            Side side = null;
+            Polygon? opposite = null;
+            Side? side = null;
             if (line.ClockwisePolygonOwner != -1 && level.Polygons[line.ClockwisePolygonOwner] == p)
             {
                 left = line.EndpointIndexes[0];

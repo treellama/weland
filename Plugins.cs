@@ -9,9 +9,9 @@ namespace Weland
     {
         class PluginInfo
         {
-            public string Name;
+            public string Name = "";
             //	    public MethodInfo GtkRun;
-            public MethodInfo Run;
+            public MethodInfo? Run;
         };
         List<PluginInfo> plugins = new List<PluginInfo>();
 
@@ -19,15 +19,19 @@ namespace Weland
         {
             List<string> files = new List<string>();
 
-            string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            try
+            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (exePath is not null)
             {
-                foreach (string file in Directory.GetFiles(Path.Combine(exePath, "Plugins"), "*.dll"))
+                try
                 {
-                    files.Add(file);
+                    foreach (string file in Directory.GetFiles(Path.Combine(exePath, "Plugins"), "*.dll"))
+                    {
+                        files.Add(file);
+                    }
                 }
+                catch { }
             }
-            catch { }
 
             /*	    if (PlatformDetection.IsMac) {
                     try {
@@ -59,16 +63,27 @@ namespace Weland
                     foreach (Type t in a.GetTypes())
                     {
                         PluginInfo plugin = new PluginInfo();
-                        MethodInfo compatibleMethod = t.GetMethod("Compatible");
-                        if (compatibleMethod == null || !compatibleMethod.IsStatic || !((bool)compatibleMethod.Invoke(0, new object[0])))
+                        var compatibleMethod = t.GetMethod("Compatible");
+                        if (compatibleMethod == null || !compatibleMethod.IsStatic)
                         {
                             continue;
                         }
 
-                        MethodInfo nameMethod = t.GetMethod("Name");
-                        if (nameMethod != null && nameMethod.IsStatic)
+                        var compatible = compatibleMethod.Invoke(0, new object[0]);
+                        if (compatible == null || !(bool)compatible)
                         {
-                            plugin.Name = (string)nameMethod.Invoke(0, new object[0]);
+                            continue;
+                        }
+
+                        var nameMethod = t.GetMethod("Name");
+                        if (nameMethod is not null && nameMethod.IsStatic)
+                        {
+                            var name = nameMethod.Invoke(0, new object[0]);
+                            if (name != null)
+                            {
+                                plugin.Name = (string)name;
+                            }
+
                             plugin.Run = t.GetMethod("Run");
 
                             if (plugin.Run != null && !plugin.Run.IsStatic)

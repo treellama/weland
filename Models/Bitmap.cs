@@ -23,7 +23,7 @@ namespace Weland.Models
         }
         public short BitDepth;
 
-        byte[] data;
+        byte[] data = new byte[0];
         public byte[] Data
         {
             get

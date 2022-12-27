@@ -38,7 +38,7 @@ namespace Weland.Models
         short version;
 
         public short DataVersion;
-        public string Filename;
+        public string? Filename;
         const int maxFilename = 64;
         public uint Checksum
         {

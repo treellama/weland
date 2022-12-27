@@ -91,13 +91,13 @@ namespace Weland
         public short RedrawTop, RedrawBottom, RedrawLeft, RedrawRight;
 
         public bool Changed = false;
-        public Grid Grid;
-        public Selection Selection;
-        Wadfile.DirectoryEntry undoState;
-        Selection undoSelection;
+        public Grid Grid = new Grid();
+        public Selection Selection = new Selection();
+        Wadfile.DirectoryEntry? undoState;
+        Selection undoSelection = new Selection();
 
         public double Scale;
-        public Level Level;
+        public Level Level = new Level();
         public Tool Tool
         {
             get
@@ -143,7 +143,7 @@ namespace Weland
         public short PaintIndex;
         public ShapeDescriptor PaintDescriptor = new ShapeDescriptor();
         public short PaintTransferMode;
-        MapObject lastObject = null;
+        MapObject? lastObject = null;
 
         bool undoSet = false;
         short lastX;
@@ -516,7 +516,7 @@ namespace Weland
         {
             if (!undoSet)
             {
-                Wadfile.DirectoryEntry prevUndo = null;
+                Wadfile.DirectoryEntry? prevUndo = null;
                 if (undoState != null)
                 {
                     prevUndo = undoState.Clone();
@@ -536,7 +536,7 @@ namespace Weland
             {
                 if (Level.FillPolygon(X, Y))
                 {
-                    Polygon p = FindPolygon(X, Y);
+                    Polygon? p = FindPolygon(X, Y);
                     if (p != null) DirtyPolygon(p);
                 }
             }
@@ -1009,7 +1009,7 @@ namespace Weland
             return ((mods & EditorModifiers.RightClick) != 0);
         }
 
-        Polygon FindPolygon(short X, short Y)
+        Polygon? FindPolygon(short X, short Y)
         {
             short index = Level.GetEnclosingPolygon(new Point(X, Y));
             if (index != -1)
@@ -1024,7 +1024,7 @@ namespace Weland
 
         void GetFloorHeight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.FloorHeight;
@@ -1033,7 +1033,7 @@ namespace Weland
 
         void SetFloorHeight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1049,7 +1049,7 @@ namespace Weland
 
         void GetCeilingHeight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.CeilingHeight;
@@ -1058,7 +1058,7 @@ namespace Weland
 
         void SetCeilingHeight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1074,7 +1074,7 @@ namespace Weland
 
         void GetPolygonType(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = (short)p.Type;
@@ -1083,7 +1083,7 @@ namespace Weland
 
         void SetPolygonType(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1103,7 +1103,7 @@ namespace Weland
 
         void GetFloorLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.FloorLight;
@@ -1112,7 +1112,7 @@ namespace Weland
 
         void SetMediaLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1128,7 +1128,7 @@ namespace Weland
 
         void GetMediaLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.MediaLight;
@@ -1137,7 +1137,7 @@ namespace Weland
 
         void SetFloorLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1153,7 +1153,7 @@ namespace Weland
 
         void GetCeilingLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.CeilingLight;
@@ -1162,7 +1162,7 @@ namespace Weland
 
         void SetCeilingLight(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1178,7 +1178,7 @@ namespace Weland
 
         void GetMedia(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.MediaIndex;
@@ -1187,7 +1187,7 @@ namespace Weland
 
         void SetMedia(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1203,7 +1203,7 @@ namespace Weland
 
         void GetAmbientSound(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.AmbientSound;
@@ -1212,7 +1212,7 @@ namespace Weland
 
         void SetAmbientSound(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1228,7 +1228,7 @@ namespace Weland
 
         void GetRandomSound(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintIndex = p.RandomSound;
@@ -1237,7 +1237,7 @@ namespace Weland
 
         void SetRandomSound(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1253,7 +1253,7 @@ namespace Weland
 
         void GetFloorTexture(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintDescriptor = p.FloorTexture;
@@ -1263,7 +1263,7 @@ namespace Weland
 
         void SetFloorTexture(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1280,7 +1280,7 @@ namespace Weland
 
         void GetCeilingTexture(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 PaintDescriptor = p.CeilingTexture;
@@ -1290,7 +1290,7 @@ namespace Weland
 
         void SetCeilingTexture(short X, short Y)
         {
-            Polygon p = FindPolygon(X, Y);
+            var p = FindPolygon(X, Y);
             if (p != null)
             {
                 if (!undoSet)
@@ -1661,7 +1661,7 @@ namespace Weland
                     return Level.Distance(Level.Endpoints[p0], Level.Endpoints[Selection.Point]) - Level.Distance(Level.Endpoints[p1], Level.Endpoints[Selection.Point]);
                 });
 
-                Line nextLine = null;
+                Line? nextLine = null;
                 int nextLineEndpointIndex = 0;
                 foreach (short point_index in nextPointCandidates)
                 {

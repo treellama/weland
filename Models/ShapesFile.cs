@@ -5,8 +5,8 @@ namespace Weland.Models
 {
     public class ShapesFile
     {
-        CollectionHeader[] collectionHeaders;
-        Collection[] collections;
+        CollectionHeader[] collectionHeaders = new CollectionHeader[0];
+        Collection[] collections = new Collection[0];
 
         public void Load(BinaryReaderBE reader)
         {

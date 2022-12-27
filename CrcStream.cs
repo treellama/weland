@@ -102,7 +102,6 @@ namespace Weland
 
         void BuildTable()
         {
-            table = new uint[256];
             for (int i = 0; i < table.Length; ++i)
             {
                 uint crc = (uint)i;
@@ -117,7 +116,7 @@ namespace Weland
             }
         }
 
-        uint[] table;
+        uint[] table = new uint[256];
         uint crc = 0xffffffff;
         const uint polynomial = 0xedb88320;
         Stream stream;

@@ -10,7 +10,7 @@ namespace Weland.Models
         public short X;
         public short Y;
         public short PolygonIndex;
-        public string Text;
+        public string Text = "";
 
         public void Load(BinaryReaderBE reader)
         {

@@ -20,8 +20,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public Interaction<Unit, string?> ShowOpenFileDialog { get; }
 
-    public MapFile MapFile { get; set; }
-    public Level Level { get; set; }
+    public MapFile? MapFile { get; set; }
+    public Level? Level { get; set; }
 
     private async Task OpenFileAsync()
     {
