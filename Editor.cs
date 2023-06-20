@@ -1118,7 +1118,8 @@ namespace Weland {
 		    undoSet = false;
 		    Fill(X, Y);
 		} else if (Tool == Tool.Object) {
-		    PlaceObject(X, Y);
+		    Point p = GridAdjust(new Point(X, Y));
+		    PlaceObject(p.X, p.Y);
 		} else if (Tool == Tool.Annotation) {
 		    PlaceAnnotation(X, Y);
 		} else if (Tool == Tool.VisualMode) {
