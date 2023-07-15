@@ -133,14 +133,14 @@ namespace Weland {
 	public int ObjectSnapDistance;
 	public int InertiaDistance;
 	public bool SplitPolygonLines;
-	public bool SnapPlaceObjects;
+	public bool SnapObjects;
 
 	public void LoadSettings() {
 	    DefaultSnapDistance = Weland.Settings.GetSetting("Distance/Select/Default", 4);
 	    ObjectSnapDistance = Weland.Settings.GetSetting("Distance/Select/Object", 8);
 	    InertiaDistance = Weland.Settings.GetSetting("Distance/Inertia/Default", 8);
 	    SplitPolygonLines = Weland.Settings.GetSetting("Editor/SplitPolygonLines", false);
-	    SnapPlaceObjects = Weland.Settings.GetSetting("Editor/SnapPlaceObjects", false);
+	    SnapObjects = Weland.Settings.GetSetting("Editor/SnapObjects", false);
 	}
 
 	public void SaveSettings() {
@@ -148,7 +148,7 @@ namespace Weland {
 	    Weland.Settings.PutSetting("Distance/Select/Object", ObjectSnapDistance);
 	    Weland.Settings.PutSetting("Distance/Inertia/Default", InertiaDistance);
 	    Weland.Settings.PutSetting("Editor/SplitPolygonLines", SplitPolygonLines);
-	    Weland.Settings.PutSetting("Editor/SnapPlaceObjects", SnapPlaceObjects);
+	    Weland.Settings.PutSetting("Editor/SnapObjects", SnapObjects);
 	}
 
 	public Editor() {
@@ -708,6 +708,7 @@ namespace Weland {
 		MapObject obj = Level.Objects[Selection.Object];
 		AddDirty(new Point(obj.X, obj.Y));
 		Point p = new Point((short) (X), (short) (Y));
+		if (SnapObjects) { p = GridAdjust(p); }
 		short polygon_index = Level.GetEnclosingPolygon(p);
 		if (polygon_index != -1) {
 		    obj.X = p.X;
@@ -1123,7 +1124,7 @@ namespace Weland {
 		    undoSet = false;
 		    Fill(X, Y);
 		} else if (Tool == Tool.Object) {
-		    if (SnapPlaceObjects) { p = GridAdjust(p); }
+		    if (SnapObjects) { p = GridAdjust(p); }
 		    PlaceObject(p.X, p.Y);
 		} else if (Tool == Tool.Annotation) {
 		    PlaceAnnotation(X, Y);

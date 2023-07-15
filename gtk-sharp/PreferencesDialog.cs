@@ -49,7 +49,7 @@ namespace Weland {
 	    antialias.Active = Weland.Settings.GetSetting("Drawer/SmoothLines", true);
 	    showHiddenVertices.Active = Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
 	    rememberDeletedSides.Active = Weland.Settings.GetSetting("Editor/RememberDeletedSides", false);
-	    snapPlaceObjects.Active = Weland.Settings.GetSetting("Editor/SnapPlaceObjects", false);
+	    snapObjects.Active = Weland.Settings.GetSetting("Editor/SnapObjects", false);
 
 	    LoadColors(area);
 	    selectionDistance.Value = editor.DefaultSnapDistance;
@@ -67,7 +67,7 @@ namespace Weland {
 		Weland.Settings.PutSetting("Drawer/SmoothLines", antialias.Active);
 		Weland.Settings.PutSetting("MapWindow/ShowHiddenVertices", showHiddenVertices.Active);
 		Weland.Settings.PutSetting("Editor/RememberDeletedSides", rememberDeletedSides.Active);
-		Weland.Settings.PutSetting("Editor/SnapPlaceObjects", snapPlaceObjects.Active);
+		Weland.Settings.PutSetting("Editor/SnapObjects", snapObjects.Active);
 		if (Weland.Settings.GetSetting("ShapesFile/Path", "") != shapesFileButton.Filename) {
 		    Weland.Settings.PutSetting("ShapesFile/Path", shapesFileButton.Filename);
 		    ShapesFile shapes = new ShapesFile();
@@ -102,7 +102,7 @@ namespace Weland {
 		editor.ObjectSnapDistance = (int) objectDistance.Value;
 		editor.InertiaDistance = (int) dragInertia.Value;
 		editor.SplitPolygonLines = splitPolygonLines.Active;
-		editor.SnapPlaceObjects = snapPlaceObjects.Active;
+		editor.SnapObjects = snapObjects.Active;
 		editor.SaveSettings();
 	    }
 	    dialog1.Destroy();
@@ -163,7 +163,7 @@ namespace Weland {
 	[Widget] ToggleButton showHiddenVertices;
 	[Widget] ToggleButton splitPolygonLines;
 	[Widget] ToggleButton rememberDeletedSides;
-	[Widget] ToggleButton snapPlaceObjects;
+	[Widget] ToggleButton snapObjects;
 
 	[Widget] ColorButton backgroundColor;
 	[Widget] ColorButton gridColor;

@@ -863,8 +863,8 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="snapPlaceObjects">
-                            <property name="label" translatable="yes">Snap When Placing Objects</property>
+                          <widget class="GtkCheckButton" id="snapObjects">
+                            <property name="label" translatable="yes">Snap Objects To Grid</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
