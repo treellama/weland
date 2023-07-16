@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
-<glade-interface>
+<interface>
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy project-wide -->
-  <widget class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Ambient Sounds</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkTable" id="table1">
+          <object class="GtkTable" id="table1">
             <property name="visible">True</property>
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <property name="column_spacing">5</property>
             <property name="row_spacing">5</property>
             <child>
-              <widget class="GtkComboBox" id="type">
+              <object class="GtkComboBox" id="type">
                 <property name="visible">True</property>
                 <property name="items" translatable="yes">Water
 Sewage
@@ -50,7 +50,7 @@ Pfhor Platform
 Pfhor Ship #1
 Pfhor Ship #2
 Jjaro Ship</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -59,24 +59,24 @@ Jjaro Ship</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Type of ambient sound.</property>
+                <property name="tooltip_text" translatable="yes">Type of ambient sound.</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Type:</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options">GTK_FILL</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Specifies volume by percent. 100% is the loudest value.</property>
+                <property name="tooltip_text" translatable="yes">Specifies volume by percent. 100% is the loudest value.</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">Volume:</property>
-              </widget>
+              </object>
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
@@ -85,13 +85,13 @@ Jjaro Ship</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="volume">
+              <object class="GtkEntry" id="volume">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">3</property>
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="width_chars">3</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -101,24 +101,24 @@ Jjaro Ship</property>
                 <property name="y_options">GTK_FILL</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button2">
+              <object class="GtkButton" id="button2">
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -126,28 +126,28 @@ Jjaro Ship</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button1">
+              <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">gtk-ok</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

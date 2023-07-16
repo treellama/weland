@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<glade-interface>
+<interface>
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy project-wide -->
-  <widget class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Platform Parameters</property>
     <property name="resizable">False</property>
@@ -11,41 +11,41 @@
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkVBox" id="vbox1">
+          <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <property name="spacing">20</property>
             <child>
-              <widget class="GtkHBox" id="hbox1">
+              <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
                 <property name="spacing">20</property>
                 <child>
-                  <widget class="GtkVBox" id="vbox2">
+                  <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">20</property>
                     <child>
-                      <widget class="GtkTable" id="table1">
+                      <object class="GtkTable" id="table1">
                         <property name="visible">True</property>
                         <property name="n_rows">4</property>
                         <property name="n_columns">2</property>
                         <property name="column_spacing">20</property>
                         <property name="row_spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox5">
+                          <object class="GtkHBox" id="hbox5">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label9">
+                              <object class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Choose a platform type to determine the sound the plaform will make when it moves.</property>
+                                <property name="tooltip_text" translatable="yes">Choose a platform type to determine the sound the plaform will make when it moves.</property>
                                 <property name="label" translatable="yes">Type:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -53,7 +53,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="platformType">
+                              <object class="GtkComboBox" id="platformType">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">S'pht Door
 S'pht Door Split
@@ -64,36 +64,36 @@ S'pht Door Heavy
 Pfhor Door
 S'pht Platform Heavy
 Pfhor Platform</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="button3">
+                              <object class="GtkButton" id="button3">
                                 <property name="label" translatable="yes">Defaults</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip" translatable="yes">This button will change the platform to the Platform Type's default parameters.</property>
+                                <property name="tooltip_text" translatable="yes">This button will change the platform to the Platform Type's default parameters.</property>
                                 <signal name="clicked" handler="OnDefaults"/>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="hbox6">
+                          <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label10">
+                              <object class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Use the parameters of a previously created platform.</property>
+                                <property name="tooltip_text" translatable="yes">Use the parameters of a previously created platform.</property>
                                 <property name="label" translatable="yes">Based On:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -101,29 +101,29 @@ Pfhor Platform</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="basedOn">
+                              <object class="GtkComboBox" id="basedOn">
                                 <property name="visible">True</property>
                                 <signal name="changed" handler="OnBasedOnChanged"/>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="top_attach">1</property>
                             <property name="bottom_attach">2</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="hbox7">
+                          <object class="GtkHBox" id="hbox7">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label11">
+                              <object class="GtkLabel" id="label11">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Speed (WU/sec):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -131,32 +131,32 @@ Pfhor Platform</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="speed">
+                              <object class="GtkEntry" id="speed">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">6</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">6</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="top_attach">2</property>
                             <property name="bottom_attach">3</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="hbox8">
+                          <object class="GtkHBox" id="hbox8">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label12">
+                              <object class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Delay (sec):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -164,46 +164,46 @@ Pfhor Platform</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="delay">
+                              <object class="GtkEntry" id="delay">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">6</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">6</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="top_attach">3</property>
                             <property name="bottom_attach">4</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="autocalcMinHeight">
+                          <object class="GtkCheckButton" id="autocalcMinHeight">
                             <property name="label" translatable="yes">Autocalc Min Height</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="OnAutocalcMinHeightToggled"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="hbox9">
+                          <object class="GtkHBox" id="hbox9">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label13">
+                              <object class="GtkLabel" id="label13">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Min Height:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -211,18 +211,18 @@ Pfhor Platform</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="minHeight">
+                              <object class="GtkEntry" id="minHeight">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">6</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">6</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
@@ -231,14 +231,14 @@ Pfhor Platform</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="autocalcMaxHeight">
+                          <object class="GtkCheckButton" id="autocalcMaxHeight">
                             <property name="label" translatable="yes">Autocalc Max Height</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="OnAutocalcMaxHeightToggled"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
@@ -247,14 +247,14 @@ Pfhor Platform</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="hbox10">
+                          <object class="GtkHBox" id="hbox10">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label14">
+                              <object class="GtkLabel" id="label14">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Max Height:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -262,18 +262,18 @@ Pfhor Platform</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="maxHeight">
+                              <object class="GtkEntry" id="maxHeight">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">6</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">6</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
@@ -281,211 +281,211 @@ Pfhor Platform</property>
                             <property name="bottom_attach">4</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkHBox" id="hbox2">
+                      <object class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
                         <property name="spacing">20</property>
                         <child>
-                          <widget class="GtkFrame" id="frame1">
+                          <object class="GtkFrame" id="frame1">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
                             <child>
-                              <widget class="GtkAlignment" id="alignment1">
+                              <object class="GtkAlignment" id="alignment1">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox4">
+                                  <object class="GtkVBox" id="vbox4">
                                     <property name="visible">True</property>
                                     <property name="border_width">5</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkCheckButton" id="initiallyActive">
+                                      <object class="GtkCheckButton" id="initiallyActive">
                                         <property name="label" translatable="yes">Active</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will begin moving when the level loads.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will begin moving when the level loads.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="initiallyExtended">
+                                      <object class="GtkCheckButton" id="initiallyExtended">
                                         <property name="label" translatable="yes">Extended</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will be fully extended when the level loads.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will be fully extended when the level loads.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label1">
+                              <object class="GtkLabel" id="label1">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">&lt;b&gt;Initially&lt;/b&gt;</property>
                                 <property name="use_markup">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="type">label_item</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkFrame" id="frame2">
+                          <object class="GtkFrame" id="frame2">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
                             <child>
-                              <widget class="GtkAlignment" id="alignment2">
+                              <object class="GtkAlignment" id="alignment2">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox5">
+                                  <object class="GtkVBox" id="vbox5">
                                     <property name="visible">True</property>
                                     <property name="border_width">5</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkCheckButton" id="controllableByPlayers">
+                                      <object class="GtkCheckButton" id="controllableByPlayers">
                                         <property name="label" translatable="yes">Players</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The player can activate the platform.</property>
+                                        <property name="tooltip_text" translatable="yes">The player can activate the platform.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="controllableByMonsters">
+                                      <object class="GtkCheckButton" id="controllableByMonsters">
                                         <property name="label" translatable="yes">Aliens</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">Monsters can activate the platform.</property>
+                                        <property name="tooltip_text" translatable="yes">Monsters can activate the platform.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label2">
+                              <object class="GtkLabel" id="label2">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">&lt;b&gt;Controllable By&lt;/b&gt;</property>
                                 <property name="use_markup">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="type">label_item</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkFrame" id="frame3">
+                          <object class="GtkFrame" id="frame3">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
                             <child>
-                              <widget class="GtkAlignment" id="alignment3">
+                              <object class="GtkAlignment" id="alignment3">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox6">
+                                  <object class="GtkVBox" id="vbox6">
                                     <property name="visible">True</property>
                                     <property name="border_width">5</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkCheckButton" id="causesDamage">
+                                      <object class="GtkCheckButton" id="causesDamage">
                                         <property name="label" translatable="yes">Causes Damage</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a platform, or if it closes on the player he will be crushed. Select "Reverses Direction" below in conjunction with this option if you only want to injure the player.</property>
+                                        <property name="tooltip_text" translatable="yes">If the player is allowed between the floor or ceiling and a platform, or if it closes on the player he will be crushed. Select "Reverses Direction" below in conjunction with this option if you only want to injure the player.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="reversesDirection">
+                                      <object class="GtkCheckButton" id="reversesDirection">
                                         <property name="label" translatable="yes">Reverses Direction</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">If the player is allowed between the floor or ceiling and a plaform, or if it closes on the player the platform or door will retract immediately.</property>
+                                        <property name="tooltip_text" translatable="yes">If the player is allowed between the floor or ceiling and a plaform, or if it closes on the player the platform or door will retract immediately.</property>
                                         <property name="yalign">0.55000001192092896</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label3">
+                              <object class="GtkLabel" id="label3">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">&lt;b&gt;When It Hits An Obstruction It&lt;/b&gt;</property>
                                 <property name="use_markup">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="type">label_item</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkVBox" id="vbox7">
+                  <object class="GtkVBox" id="vbox7">
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <widget class="GtkCheckButton" id="isADoor">
+                      <object class="GtkCheckButton" id="isADoor">
                         <property name="label" translatable="yes">Platform is a Door</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="tooltip" translatable="yes">When this option is disabled Players and Monsters must stand on the platform to activate it as a lift. When this option is enabled it allows the platform to be used as a door, and may be activated with the action key when the player is near the door. </property>
+                        <property name="tooltip_text" translatable="yes">When this option is disabled Players and Monsters must stand on the platform to activate it as a lift. When this option is enabled it allows the platform to be used as a door, and may be activated with the action key when the player is near the door. </property>
                         <property name="draw_indicator">True</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -493,97 +493,97 @@ Pfhor Platform</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkFrame" id="frame4">
+                      <object class="GtkFrame" id="frame4">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
                         <child>
-                          <widget class="GtkAlignment" id="alignment4">
+                          <object class="GtkAlignment" id="alignment4">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkVBox" id="vbox8">
+                              <object class="GtkVBox" id="vbox8">
                                 <property name="visible">True</property>
                                 <property name="border_width">5</property>
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">10</property>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox15">
+                                  <object class="GtkVBox" id="vbox15">
                                     <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkRadioButton" id="fromFloor">
+                                      <object class="GtkRadioButton" id="fromFloor">
                                         <property name="label" translatable="yes">From Floor</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will move from the floor.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will move from the floor.</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="fromCeiling">
+                                      <object class="GtkRadioButton" id="fromCeiling">
                                         <property name="label" translatable="yes">From Ceiling</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will move from the ceiling.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will move from the ceiling.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">fromFloor</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="fromBoth">
+                                      <object class="GtkRadioButton" id="fromBoth">
                                         <property name="label" translatable="yes">From Both</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">Half the platform will move from the floor and the other half from the ceiling.</property>
+                                        <property name="tooltip_text" translatable="yes">Half the platform will move from the floor and the other half from the ceiling.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">fromFloor</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">2</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="floorToCeiling">
+                                  <object class="GtkCheckButton" id="floorToCeiling">
                                     <property name="label" translatable="yes">Floor to Ceiling</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">Autocalculate height values so that the platform will extend from floor to ceiling.</property>
+                                    <property name="tooltip_text" translatable="yes">Autocalculate height values so that the platform will extend from floor to ceiling.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label4">
+                          <object class="GtkLabel" id="label4">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">&lt;b&gt;Extends&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="type">label_item</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -591,116 +591,116 @@ Pfhor Platform</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox3">
+              <object class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
                 <property name="spacing">20</property>
                 <child>
-                  <widget class="GtkVBox" id="vbox3">
+                  <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <widget class="GtkFrame" id="frame5">
+                      <object class="GtkFrame" id="frame5">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
                         <child>
-                          <widget class="GtkAlignment" id="alignment5">
+                          <object class="GtkAlignment" id="alignment5">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkVBox" id="vbox9">
+                              <object class="GtkVBox" id="vbox9">
                                 <property name="visible">True</property>
                                 <property name="border_width">5</property>
                                 <property name="orientation">vertical</property>
                                 <child>
-                                  <widget class="GtkCheckButton" id="onlyOnce">
+                                  <object class="GtkCheckButton" id="onlyOnce">
                                     <property name="label" translatable="yes">Only Once</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">Activate the platform once. It will not be possilbe to activate the platform again.</property>
+                                    <property name="tooltip_text" translatable="yes">Activate the platform once. It will not be possilbe to activate the platform again.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="activatesPolygonLights">
+                                  <object class="GtkCheckButton" id="activatesPolygonLights">
                                     <property name="label" translatable="yes">Activates Polygon Lights</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">When the platform activates the lights of the polygon it's in will activate.</property>
+                                    <property name="tooltip_text" translatable="yes">When the platform activates the lights of the polygon it's in will activate.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="activatesAdjacentPlatform">
+                                  <object class="GtkCheckButton" id="activatesAdjacentPlatform">
                                     <property name="label" translatable="yes">Activates Adjacent Platform</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">Any platform sharing at least two vertices will be activated when this platform activates.</property>
+                                    <property name="tooltip_text" translatable="yes">Any platform sharing at least two vertices will be activated when this platform activates.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="deactivatesAdjacentPlatform">
+                                  <object class="GtkCheckButton" id="deactivatesAdjacentPlatform">
                                     <property name="label" translatable="yes">Deactivates Adjacent Platform</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">Any platform sharing at least two vertices will be deactived when this platform is activated.</property>
+                                    <property name="tooltip_text" translatable="yes">Any platform sharing at least two vertices will be deactived when this platform is activated.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="adjacentAtEachLevel">
+                                  <object class="GtkCheckButton" id="adjacentAtEachLevel">
                                     <property name="label" translatable="yes">Adjacent At Each Level</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip" translatable="yes">The platform will activate adjacent platforms at each floor and ceiling elevation it comes to.</property>
+                                    <property name="tooltip_text" translatable="yes">The platform will activate adjacent platforms at each floor and ceiling elevation it comes to.</property>
                                     <property name="draw_indicator">True</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">4</property>
                                   </packing>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label5">
+                          <object class="GtkLabel" id="label5">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">&lt;b&gt;Activates&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="type">label_item</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -708,15 +708,15 @@ Pfhor Platform</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkHBox" id="hbox4">
+                      <object class="GtkHBox" id="hbox4">
                         <property name="visible">True</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkLabel" id="label6">
+                          <object class="GtkLabel" id="label6">
                             <property name="visible">True</property>
-                            <property name="tooltip" translatable="yes">Giving the platform a Tag will allow it to be activated by chips,  wires (both require tags to operate platforms) and tag switches. A Tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
+                            <property name="tooltip_text" translatable="yes">Giving the platform a Tag will allow it to be activated by chips,  wires (both require tags to operate platforms) and tag switches. A Tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
                             <property name="label" translatable="yes">Tag:</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -724,7 +724,7 @@ Pfhor Platform</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkComboBox" id="tag">
+                          <object class="GtkComboBox" id="tag">
                             <property name="visible">True</property>
                             <property name="items" translatable="yes">NONE
 1
@@ -757,12 +757,12 @@ Pfhor Platform</property>
 28
 29
 30</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -770,144 +770,144 @@ Pfhor Platform</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkVBox" id="vbox10">
+                  <object class="GtkVBox" id="vbox10">
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <widget class="GtkFrame" id="frame6">
+                      <object class="GtkFrame" id="frame6">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
                         <child>
-                          <widget class="GtkAlignment" id="alignment6">
+                          <object class="GtkAlignment" id="alignment6">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkVBox" id="vbox11">
+                              <object class="GtkVBox" id="vbox11">
                                 <property name="visible">True</property>
                                 <property name="border_width">5</property>
                                 <property name="orientation">vertical</property>
                                 <property name="spacing">10</property>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox12">
+                                  <object class="GtkVBox" id="vbox12">
                                     <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkRadioButton" id="neverDeactivates">
+                                      <object class="GtkRadioButton" id="neverDeactivates">
                                         <property name="label" translatable="yes">Never</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">When activated, the platform will extend to its Max Height and retract to its Min Height (or vice versa) continuously. If the platform is switch activated it can be deactivated and re-activated (stopping the platform at its current height) by the switch unless "Miscellaneous: Can't Deactivate Externally" is checked.</property>
+                                        <property name="tooltip_text" translatable="yes">When activated, the platform will extend to its Max Height and retract to its Min Height (or vice versa) continuously. If the platform is switch activated it can be deactivated and re-activated (stopping the platform at its current height) by the switch unless "Miscellaneous: Can't Deactivate Externally" is checked.</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="deactivatesAtEachLevel">
+                                      <object class="GtkRadioButton" id="deactivatesAtEachLevel">
                                         <property name="label" translatable="yes">At Each Level</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and stop.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and stop.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">neverDeactivates</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="deactivatesAtInitialLevel">
+                                      <object class="GtkRadioButton" id="deactivatesAtInitialLevel">
                                         <property name="label" translatable="yes">At Initial Level</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and return to its initial height.</property>
+                                        <property name="tooltip_text" translatable="yes">The platform will move up to its maximum height, or down to its minimum height, and return to its initial height.</property>
                                         <property name="draw_indicator">True</property>
                                         <property name="group">neverDeactivates</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">2</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkVBox" id="vbox14">
+                                  <object class="GtkVBox" id="vbox14">
                                     <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <widget class="GtkCheckButton" id="deactivatesPolygonLights">
+                                      <object class="GtkCheckButton" id="deactivatesPolygonLights">
                                         <property name="label" translatable="yes">Deactivates Polygon Lights</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">When the platform stops the lights of the polygon it's in will deactivate.</property>
+                                        <property name="tooltip_text" translatable="yes">When the platform stops the lights of the polygon it's in will deactivate.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="deactivatesAdjacentPlatform2">
+                                      <object class="GtkCheckButton" id="deactivatesAdjacentPlatform2">
                                         <property name="label" translatable="yes">Deactivates Adjacent Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">Any platform sharing at least two vertices will be deactivated when this platform deactivates.</property>
+                                        <property name="tooltip_text" translatable="yes">Any platform sharing at least two vertices will be deactivated when this platform deactivates.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkCheckButton" id="activatesAdjacentPlatform2">
+                                      <object class="GtkCheckButton" id="activatesAdjacentPlatform2">
                                         <property name="label" translatable="yes">Activates Adjacent Platform</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="tooltip" translatable="yes">Any platform sharing at least two vertices will be activated when this platform deactivates.</property>
+                                        <property name="tooltip_text" translatable="yes">Any platform sharing at least two vertices will be activated when this platform deactivates.</property>
                                         <property name="draw_indicator">True</property>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">2</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label7">
+                          <object class="GtkLabel" id="label7">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">&lt;b&gt;Deactivates&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="type">label_item</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -917,7 +917,7 @@ Pfhor Platform</property>
                     <child>
                       <placeholder/>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
@@ -925,152 +925,152 @@ Pfhor Platform</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkFrame" id="frame7">
+                  <object class="GtkFrame" id="frame7">
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
                     <child>
-                      <widget class="GtkAlignment" id="alignment7">
+                      <object class="GtkAlignment" id="alignment7">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkVBox" id="vbox13">
+                          <object class="GtkVBox" id="vbox13">
                             <property name="visible">True</property>
                             <property name="border_width">5</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <widget class="GtkCheckButton" id="cantDeactivateExternally">
+                              <object class="GtkCheckButton" id="cantDeactivateExternally">
                                 <property name="label" translatable="yes">Can't Deactivate Externally</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">If the platform is activated by a switch, or by the player it will not respond to the switch or the player until activation is complete.</property>
+                                <property name="tooltip_text" translatable="yes">If the platform is activated by a switch, or by the player it will not respond to the switch or the player until activation is complete.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="usesNativePolygonHeights">
+                              <object class="GtkCheckButton" id="usesNativePolygonHeights">
                                 <property name="label" translatable="yes">Uses Native Polygon Heights</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">Min and Max height will be set to the platform's polygon floor and ceiling elevations.</property>
+                                <property name="tooltip_text" translatable="yes">Min and Max height will be set to the platform's polygon floor and ceiling elevations.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="delayBeforeActivation">
+                              <object class="GtkCheckButton" id="delayBeforeActivation">
                                 <property name="label" translatable="yes">Delay Before Activation</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">When toggled, the platform will run through its Delay time before activating, and then it will function normally.</property>
+                                <property name="tooltip_text" translatable="yes">When toggled, the platform will run through its Delay time before activating, and then it will function normally.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="doesntActivateParent">
+                              <object class="GtkCheckButton" id="doesntActivateParent">
                                 <property name="label" translatable="yes">Doesn't Activate Parent</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">If this platform was activated by an adjacent platform, it will not activate the adjacent platform it was activated by.</property>
+                                <property name="tooltip_text" translatable="yes">If this platform was activated by an adjacent platform, it will not activate the adjacent platform it was activated by.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="contractsSlower">
+                              <object class="GtkCheckButton" id="contractsSlower">
                                 <property name="label" translatable="yes">Contracts Slower</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">The platform will contract slower than it extends. Extending will function according to the specified Speed.</property>
+                                <property name="tooltip_text" translatable="yes">The platform will contract slower than it extends. Extending will function according to the specified Speed.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="lockedDoor">
+                              <object class="GtkCheckButton" id="lockedDoor">
                                 <property name="label" translatable="yes">Locked Door</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">(NOT IMPLEMENTED) Intended for doors that would need to be unlocked to be opened, or to make the "won't open" sound when attempting to open a door that are only present for aesthetics.</property>
+                                <property name="tooltip_text" translatable="yes">(NOT IMPLEMENTED) Intended for doors that would need to be unlocked to be opened, or to make the "won't open" sound when attempting to open a door that are only present for aesthetics.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkCheckButton" id="secret">
+                              <object class="GtkCheckButton" id="secret">
                                 <property name="label" translatable="yes">Secret</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="tooltip" translatable="yes">This platform will not display as red on the automap.</property>
+                                <property name="tooltip_text" translatable="yes">This platform will not display as red on the automap.</property>
                                 <property name="draw_indicator">True</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">6</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label8">
+                      <object class="GtkLabel" id="label8">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;Miscellaneous&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="type">label_item</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button2">
+              <object class="GtkButton" id="button2">
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -1078,28 +1078,28 @@ Pfhor Platform</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button1">
+              <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">gtk-ok</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<glade-interface>
+<interface>
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy project-wide -->
-  <widget class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Light Parameters</property>
     <property name="resizable">False</property>
@@ -12,12 +12,12 @@
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkTable" id="table1">
+          <object class="GtkTable" id="table1">
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <property name="n_rows">3</property>
@@ -25,20 +25,20 @@
             <property name="column_spacing">20</property>
             <property name="row_spacing">20</property>
             <child>
-              <widget class="GtkVBox" id="vbox2">
+              <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">5</property>
                 <child>
-                  <widget class="GtkHBox" id="hbox1">
+                  <object class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
-                      <widget class="GtkLabel" id="label1">
+                      <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Presets for Normal, Strobe and Media (Liquid) lights.</property>
+                        <property name="tooltip_text" translatable="yes">Presets for Normal, Strobe and Media (Liquid) lights.</property>
                         <property name="label" translatable="yes">Preset:</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -46,33 +46,33 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkComboBox" id="preset">
+                      <object class="GtkComboBox" id="preset">
                         <property name="visible">True</property>
                         <property name="extension_events">cursor</property>
                         <property name="items" translatable="yes">Normal
 Strobe
 Media</property>
                         <signal name="changed" handler="OnPresetChanged"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox2">
+                  <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
-                      <widget class="GtkLabel" id="label2">
+                      <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Use the parameters of a previously created light.</property>
+                        <property name="tooltip_text" translatable="yes">Use the parameters of a previously created light.</property>
                         <property name="label" translatable="yes">Based On:</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -80,29 +80,29 @@ Media</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkComboBox" id="basedOn">
+                      <object class="GtkComboBox" id="basedOn">
                         <property name="visible">True</property>
                         <signal name="changed" handler="OnBasedOnChanged"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox3">
+                  <object class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
-                      <widget class="GtkLabel" id="label3">
+                      <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Specifies the delay before the light activates in increments of 1/30th of a second (eg. a value of "1" would delay the light from activating by 1/30th of a second).</property>
+                        <property name="tooltip_text" translatable="yes">Specifies the delay before the light activates in increments of 1/30th of a second (eg. a value of "1" would delay the light from activating by 1/30th of a second).</property>
                         <property name="label" translatable="yes">Phase:</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -110,40 +110,40 @@ Media</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="phase">
+                      <object class="GtkEntry" id="phase">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">5</property>
                         <property name="invisible_char">&#x25CF;</property>
                         <property name="width_chars">5</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">2</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="y_options"></property>
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="vbox3">
+              <object class="GtkVBox" id="vbox3">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <widget class="GtkCheckButton" id="stateless">
+                  <object class="GtkCheckButton" id="stateless">
                     <property name="label" translatable="yes">Stateless</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="tooltip" translatable="yes">(NOT IMPLEMENTED) Cycle continuously through all states: Becoming Active, Primary Active, Secondary Active, Becoming Inactive, Primary Inactive, Secondary Inactive.</property>
+                    <property name="tooltip_text" translatable="yes">(NOT IMPLEMENTED) Cycle continuously through all states: Becoming Active, Primary Active, Secondary Active, Becoming Inactive, Primary Inactive, Secondary Inactive.</property>
                     <property name="draw_indicator">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
@@ -151,14 +151,14 @@ Media</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="initiallyActive">
+                  <object class="GtkCheckButton" id="initiallyActive">
                     <property name="label" translatable="yes">Initially Active</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="tooltip" translatable="yes">When the level loads the light will be displayed according to the Primary Active parameters below.</property>
+                    <property name="tooltip_text" translatable="yes">When the level loads the light will be displayed according to the Primary Active parameters below.</property>
                     <property name="draw_indicator">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
@@ -166,15 +166,15 @@ Media</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox4">
+                  <object class="GtkHBox" id="hbox4">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
-                      <widget class="GtkLabel" id="label4">
+                      <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Giving the light a Tag will allow it to be activated by chips, wires (both require tags to operate lights) and tag switches. A tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
+                        <property name="tooltip_text" translatable="yes">Giving the light a Tag will allow it to be activated by chips, wires (both require tags to operate lights) and tag switches. A tag may be used more than once, but remember all platforms and lights with the same Tag will be operable by the same switch, etc.</property>
                         <property name="label" translatable="yes">Tag:</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -182,7 +182,7 @@ Media</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkComboBox" id="tag">
+                      <object class="GtkComboBox" id="tag">
                         <property name="visible">True</property>
                         <property name="items" translatable="yes">NONE
 1
@@ -215,50 +215,50 @@ Media</property>
 28
 29
 30</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame1">
+              <object class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment1">
+                  <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox4">
+                      <object class="GtkVBox" id="vbox4">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox5">
+                          <object class="GtkHBox" id="hbox5">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label6">
+                              <object class="GtkLabel" id="label6">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -266,49 +266,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function1">
+                              <object class="GtkComboBox" id="function1">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table2">
+                          <object class="GtkTable" id="table2">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label7">
+                              <object class="GtkLabel" id="label7">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period1">
+                              <object class="GtkEntry" id="period1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -316,12 +316,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label8">
+                              <object class="GtkLabel" id="label8">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -330,13 +330,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod1">
+                              <object class="GtkEntry" id="deltaPeriod1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -344,49 +344,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table3">
+                          <object class="GtkTable" id="table3">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label9">
+                              <object class="GtkLabel" id="label9">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity1">
+                              <object class="GtkEntry" id="intensity1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label10">
+                              <object class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -394,13 +394,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity1">
+                              <object class="GtkEntry" id="deltaIntensity1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -408,26 +408,26 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label5">
+                  <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Becoming Active&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
@@ -436,31 +436,31 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame2">
+              <object class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment2">
+                  <object class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox5">
+                      <object class="GtkVBox" id="vbox5">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox6">
+                          <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label11">
+                              <object class="GtkLabel" id="label11">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -468,49 +468,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function2">
+                              <object class="GtkComboBox" id="function2">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table4">
+                          <object class="GtkTable" id="table4">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label12">
+                              <object class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period2">
+                              <object class="GtkEntry" id="period2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -518,12 +518,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label13">
+                              <object class="GtkLabel" id="label13">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -532,13 +532,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod2">
+                              <object class="GtkEntry" id="deltaPeriod2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -546,49 +546,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table5">
+                          <object class="GtkTable" id="table5">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label14">
+                              <object class="GtkLabel" id="label14">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity2">
+                              <object class="GtkEntry" id="intensity2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label15">
+                              <object class="GtkLabel" id="label15">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -596,13 +596,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity2">
+                              <object class="GtkEntry" id="deltaIntensity2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -610,26 +610,26 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label16">
+                  <object class="GtkLabel" id="label16">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Primary Active&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -640,31 +640,31 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame3">
+              <object class="GtkFrame" id="frame3">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment3">
+                  <object class="GtkAlignment" id="alignment3">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox6">
+                      <object class="GtkVBox" id="vbox6">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox7">
+                          <object class="GtkHBox" id="hbox7">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label17">
+                              <object class="GtkLabel" id="label17">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -672,49 +672,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function3">
+                              <object class="GtkComboBox" id="function3">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table6">
+                          <object class="GtkTable" id="table6">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label18">
+                              <object class="GtkLabel" id="label18">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period3">
+                              <object class="GtkEntry" id="period3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -722,12 +722,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label19">
+                              <object class="GtkLabel" id="label19">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -736,13 +736,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod3">
+                              <object class="GtkEntry" id="deltaPeriod3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -750,49 +750,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table7">
+                          <object class="GtkTable" id="table7">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label20">
+                              <object class="GtkLabel" id="label20">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity3">
+                              <object class="GtkEntry" id="intensity3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label21">
+                              <object class="GtkLabel" id="label21">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -800,13 +800,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity3">
+                              <object class="GtkEntry" id="deltaIntensity3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -814,26 +814,26 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label22">
+                  <object class="GtkLabel" id="label22">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Secondary Active&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
@@ -844,31 +844,31 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame4">
+              <object class="GtkFrame" id="frame4">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment4">
+                  <object class="GtkAlignment" id="alignment4">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox7">
+                      <object class="GtkVBox" id="vbox7">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox8">
+                          <object class="GtkHBox" id="hbox8">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label23">
+                              <object class="GtkLabel" id="label23">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -876,49 +876,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function4">
+                              <object class="GtkComboBox" id="function4">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table8">
+                          <object class="GtkTable" id="table8">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label24">
+                              <object class="GtkLabel" id="label24">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period4">
+                              <object class="GtkEntry" id="period4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -926,12 +926,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label25">
+                              <object class="GtkLabel" id="label25">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -940,13 +940,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod4">
+                              <object class="GtkEntry" id="deltaPeriod4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -954,49 +954,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table9">
+                          <object class="GtkTable" id="table9">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label26">
+                              <object class="GtkLabel" id="label26">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity4">
+                              <object class="GtkEntry" id="intensity4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label27">
+                              <object class="GtkLabel" id="label27">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -1004,13 +1004,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity4">
+                              <object class="GtkEntry" id="deltaIntensity4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1018,26 +1018,26 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label28">
+                  <object class="GtkLabel" id="label28">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Becoming Inactive&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
@@ -1046,31 +1046,31 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame5">
+              <object class="GtkFrame" id="frame5">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment5">
+                  <object class="GtkAlignment" id="alignment5">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox8">
+                      <object class="GtkVBox" id="vbox8">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox9">
+                          <object class="GtkHBox" id="hbox9">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label29">
+                              <object class="GtkLabel" id="label29">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -1078,49 +1078,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function5">
+                              <object class="GtkComboBox" id="function5">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table10">
+                          <object class="GtkTable" id="table10">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label30">
+                              <object class="GtkLabel" id="label30">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period5">
+                              <object class="GtkEntry" id="period5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1128,12 +1128,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label31">
+                              <object class="GtkLabel" id="label31">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -1142,13 +1142,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod5">
+                              <object class="GtkEntry" id="deltaPeriod5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1156,49 +1156,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table11">
+                          <object class="GtkTable" id="table11">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label32">
+                              <object class="GtkLabel" id="label32">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity5">
+                              <object class="GtkEntry" id="intensity5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label33">
+                              <object class="GtkLabel" id="label33">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -1206,13 +1206,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity5">
+                              <object class="GtkEntry" id="deltaIntensity5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1220,27 +1220,27 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label34">
+                  <object class="GtkLabel" id="label34">
                     <property name="visible">True</property>
                     <property name="xalign">0.33000001311302185</property>
                     <property name="label" translatable="yes">&lt;b&gt;Primary Inactive&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -1251,31 +1251,31 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="frame6">
+              <object class="GtkFrame" id="frame6">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment6">
+                  <object class="GtkAlignment" id="alignment6">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkVBox" id="vbox9">
+                      <object class="GtkVBox" id="vbox9">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox10">
+                          <object class="GtkHBox" id="hbox10">
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label35">
+                              <object class="GtkLabel" id="label35">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Constant = no change or changes state instantly to Intensity
+                                <property name="tooltip_text" translatable="yes">Constant = no change or changes state instantly to Intensity
 Linear = changes state at a consistent increment to Intensity
 Smooth = changes state exponentially to Intensity
 Flicker = changes state at random values to Intensity</property>
                                 <property name="label" translatable="yes">Function:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
@@ -1283,49 +1283,49 @@ Flicker = changes state at random values to Intensity</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="function6">
+                              <object class="GtkComboBox" id="function6">
                                 <property name="visible">True</property>
                                 <property name="items" translatable="yes">Constant
 Linear
 Smooth
 Flicker</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table12">
+                          <object class="GtkTable" id="table12">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label36">
+                              <object class="GtkLabel" id="label36">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
+                                <property name="tooltip_text" translatable="yes">Specifies how long the specifed phase will last in 1/30ths of a second (eg. a value of 30 will last 1 second).</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="period6">
+                              <object class="GtkEntry" id="period6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1333,12 +1333,12 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label37">
+                              <object class="GtkLabel" id="label37">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Period:</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -1347,13 +1347,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaPeriod6">
+                              <object class="GtkEntry" id="deltaPeriod6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1361,49 +1361,49 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table13">
+                          <object class="GtkTable" id="table13">
                             <property name="visible">True</property>
                             <property name="n_rows">2</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
-                              <widget class="GtkLabel" id="label38">
+                              <object class="GtkLabel" id="label38">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
+                                <property name="tooltip_text" translatable="yes">How bright the light is by percent. 100% is the brightest value.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="intensity6">
+                              <object class="GtkEntry" id="intensity6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label39">
+                              <object class="GtkLabel" id="label39">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
+                                <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Intensity specified by percent.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">&#x2206; Intensity (%):</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
@@ -1411,13 +1411,13 @@ Flicker</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="deltaIntensity6">
+                              <object class="GtkEntry" id="deltaIntensity6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">5</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">5</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
@@ -1425,26 +1425,26 @@ Flicker</property>
                                 <property name="bottom_attach">2</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label40">
+                  <object class="GtkLabel" id="label40">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Secondary Inactive&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="type">label_item</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
@@ -1457,24 +1457,24 @@ Flicker</property>
             <child>
               <placeholder/>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button2">
+              <object class="GtkButton" id="button2">
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -1482,28 +1482,28 @@ Flicker</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button1">
+              <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">gtk-ok</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

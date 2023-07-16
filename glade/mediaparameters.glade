@@ -1,48 +1,48 @@
 <?xml version="1.0"?>
-<glade-interface>
+<interface>
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy project-wide -->
-  <widget class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Liquid Parameters</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkVBox" id="vbox1">
+          <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <property name="spacing">10</property>
             <child>
-              <widget class="GtkTable" id="table1">
+              <object class="GtkTable" id="table1">
                 <property name="visible">True</property>
                 <property name="n_rows">3</property>
                 <property name="n_columns">2</property>
                 <property name="column_spacing">5</property>
                 <property name="row_spacing">5</property>
                 <child>
-                  <widget class="GtkLabel" id="label1">
+                  <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Type of liquid</property>
+                    <property name="tooltip_text" translatable="yes">Type of liquid</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Type:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
                     <property name="y_options">GTK_FILL</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label2">
+                  <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Use the parameters of a previously created liquid.</property>
+                    <property name="tooltip_text" translatable="yes">Use the parameters of a previously created liquid.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Based On:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
@@ -51,12 +51,12 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label3">
+                  <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Determines the behavior the liquid will use to acheive it's low and high tide. The Tide Parameter is defined by choosing a previously created Light Parameter.</property>
+                    <property name="tooltip_text" translatable="yes">Determines the behavior the liquid will use to acheive it's low and high tide. The Tide Parameter is defined by choosing a previously created Light Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Tide Parameter:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
@@ -65,14 +65,14 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBox" id="type">
+                  <object class="GtkComboBox" id="type">
                     <property name="visible">True</property>
                     <property name="items" translatable="yes">Water
 Lava
 Goo
 Sewage
 Jjaro</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -80,10 +80,10 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBox" id="basedOn">
+                  <object class="GtkComboBox" id="basedOn">
                     <property name="visible">True</property>
                     <signal name="changed" handler="OnBasedOnChanged"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -93,9 +93,9 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBox" id="tide">
+                  <object class="GtkComboBox" id="tide">
                     <property name="visible">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -104,71 +104,71 @@ Jjaro</property>
                     <property name="y_options">GTK_FILL</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="vbox2">
+              <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <widget class="GtkLabel" id="label4">
+                  <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
+                    <property name="tooltip_text" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
                     <property name="label" translatable="yes">Angle (0 is East):</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHScale" id="angle">
+                  <object class="GtkHScale" id="angle">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
+                    <property name="tooltip_text" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
                     <property name="adjustment">0 0 360 1 10 0</property>
                     <property name="digits">0</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTable" id="table2">
+              <object class="GtkTable" id="table2">
                 <property name="visible">True</property>
                 <property name="n_rows">3</property>
                 <property name="n_columns">2</property>
                 <property name="column_spacing">5</property>
                 <property name="row_spacing">5</property>
                 <child>
-                  <widget class="GtkLabel" id="label5">
+                  <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Specify a value between 0 and 1 to determine how fast a liquid moves. Values between 0.003 and 0.010 are recommended, however, a liquid must have a value of 0 if it's in a teleporting polygon.</property>
+                    <property name="tooltip_text" translatable="yes">Specify a value between 0 and 1 to determine how fast a liquid moves. Values between 0.003 and 0.010 are recommended, however, a liquid must have a value of 0 if it's in a teleporting polygon.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Flow Strength:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
                     <property name="y_options">GTK_FILL</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label6">
+                  <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Specifies the lowest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
+                    <property name="tooltip_text" translatable="yes">Specifies the lowest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Low Tide:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
@@ -177,12 +177,12 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label7">
+                  <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Specifies the highest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
+                    <property name="tooltip_text" translatable="yes">Specifies the highest elevation a liquid will reach according to the behavior of the specified Tide Parameter.</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">High Tide:</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
@@ -191,13 +191,13 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="currentMagnitude">
+                  <object class="GtkEntry" id="currentMagnitude">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="width_chars">6</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -205,13 +205,13 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="low">
+                  <object class="GtkEntry" id="low">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="width_chars">6</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -221,13 +221,13 @@ Jjaro</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="high">
+                  <object class="GtkEntry" id="high">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="width_chars">6</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -236,44 +236,44 @@ Jjaro</property>
                     <property name="y_options">GTK_FILL</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkCheckButton" id="obstructed">
+              <object class="GtkCheckButton" id="obstructed">
                 <property name="label" translatable="yes">Liquid's sound obstructed by floor</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="tooltip" translatable="yes">This option will prevent hearing the liquid when the player is in an area of the map that overlaps the liquid, and also, if the player is in a polygon that has the liquid, but the liquid tide is lower than the floor.</property>
+                <property name="tooltip_text" translatable="yes">This option will prevent hearing the liquid when the player is in an area of the map that overlaps the liquid, and also, if the player is in a polygon that has the liquid, but the liquid tide is lower than the floor.</property>
                 <property name="draw_indicator">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button1">
+              <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -281,28 +281,28 @@ Jjaro</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button2">
+              <object class="GtkButton" id="button2">
                 <property name="label" translatable="yes">gtk-ok</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>
