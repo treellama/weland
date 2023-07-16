@@ -1,16 +1,106 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Water</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sewage</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Lava</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Goo</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Under Media</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Wind</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Waterfall</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Siren</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fan</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">S'pht Door</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">S'pht Platform</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Heavy S'pht Door</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Heavy S'pht Platform</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Light Machinery</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Heavy Machinery</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Transformer</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sparking Transformer</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Machine Binder</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Machine Bookpress</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Machine Puncher</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Electric Hum</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Alarm</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Night Wind</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pfhor Door</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pfhor Platform</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pfhor Ship #1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pfhor Ship #2</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jjaro Ship</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Ambient Sounds</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkTable" id="table1">
@@ -22,34 +112,13 @@
             <child>
               <object class="GtkComboBox" id="type">
                 <property name="visible">True</property>
-                <property name="items" translatable="yes">Water
-Sewage
-Lava
-Goo
-Under Media
-Wind
-Waterfall
-Siren
-Fan
-S'pht Door
-S'pht Platform
-Heavy S'pht Door
-Heavy S'pht Platform
-Light Machinery
-Heavy Machinery
-Transformer
-Sparking Transformer
-Machine Binder
-Machine Bookpress
-Machine Puncher
-Electric Hum
-Siren
-Night Wind
-Pfhor Door
-Pfhor Platform
-Pfhor Ship #1
-Pfhor Ship #2
-Jjaro Ship</property>
+                <property name="model">liststore1</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -89,7 +158,7 @@ Jjaro Ship</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">3</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <property name="width_chars">3</property>
               </object>
               <packing>
@@ -112,11 +181,11 @@ Jjaro Ship</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">gtk-cancel</property>
-                <property name="response_id">-6</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -127,11 +196,11 @@ Jjaro Ship</property>
             </child>
             <child>
               <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">gtk-ok</property>
-                <property name="response_id">-5</property>
+                <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -149,5 +218,9 @@ Jjaro Ship</property>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="-6">button2</action-widget>
+      <action-widget response="-5">button1</action-widget>
+    </action-widgets>
   </object>
 </interface>
