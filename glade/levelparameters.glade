@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog1">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Level Parameters</property>
     <property name="resizable">False</property>
@@ -13,68 +12,20 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="button1">
-                <property name="label">gtk-cancel</property>
-                <property name="response_id">-6</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button2">
-                <property name="label">gtk-ok</property>
-                <property name="response_id">-5</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Level Name:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
                     <property name="padding">5</property>
                     <property name="position">0</property>
                   </packing>
@@ -83,21 +34,14 @@
                   <object class="GtkEntry" id="levelName">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="secondary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">True</property>
-                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
                 <property name="padding">5</property>
                 <property name="position">0</property>
               </packing>
@@ -105,24 +49,21 @@
             <child>
               <object class="GtkTable" id="table1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="n_rows">2</property>
                 <property name="n_columns">3</property>
                 <child>
                   <object class="GtkTable" id="table2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="n_rows">3</property>
                     <property name="n_columns">2</property>
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="xalign">1</property>
                         <property name="label" translatable="yes">Environment:</property>
                       </object>
                       <packing>
-                        <property name="y_options"/>
+                        <property name="y_options"></property>
                         <property name="x_padding">5</property>
                         <property name="y_padding">5</property>
                       </packing>
@@ -130,14 +71,13 @@
                     <child>
                       <object class="GtkLabel" id="landscapeLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="xalign">1</property>
                         <property name="label" translatable="yes">Landscape:</property>
                       </object>
                       <packing>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
-                        <property name="y_options"/>
+                        <property name="y_options"></property>
                         <property name="x_padding">5</property>
                         <property name="y_padding">5</property>
                       </packing>
@@ -145,20 +85,20 @@
                     <child>
                       <object class="GtkComboBox" id="environment">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="model">liststore_environment</property>
                         <property name="active">2</property>
-                        <property name="items" translatable="yes">Water
-Lava
-Sewage
-Jjaro
-Pfhor
-</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"/>
+                        <property name="y_options"></property>
                         <property name="x_padding">5</property>
                         <property name="y_padding">5</property>
                       </packing>
@@ -166,19 +106,20 @@ Pfhor
                     <child>
                       <object class="GtkComboBox" id="landscape">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="items" translatable="yes">Daytime Lh'owon
-Nighttime Lh'owon
-Moon
-Space
-</property>
+                        <property name="model">liststore_landscape</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
-                        <property name="y_options"/>
+                        <property name="y_options"></property>
                         <property name="x_padding">5</property>
                         <property name="y_padding">5</property>
                       </packing>
@@ -186,7 +127,6 @@ Space
                     <child>
                       <object class="GtkLabel" id="songIndexLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="xalign">1</property>
                         <property name="label" translatable="yes">Song Index (M1):</property>
                       </object>
@@ -202,10 +142,6 @@ Space
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -218,27 +154,24 @@ Space
                     </child>
                   </object>
                   <packing>
-                    <property name="y_options"/>
+                    <property name="y_options"></property>
                     <property name="x_padding">6</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkFrame" id="frame1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment1">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="yalign">0</property>
                         <property name="yscale">0</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox2">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckButton" id="vacuum">
                                 <property name="label" translatable="yes">Vacuum</property>
@@ -246,11 +179,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player will lose a small amount of oxygen each "tick" (1/30th of a second). Functional weapons are restricted to the Pistol(s), the Fusion Pistol, the SMG, the Shotgun(s), and the Alien Weapon.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -261,11 +193,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player starts the level with no weapons, and a small amount of health.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -276,11 +207,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Low Gravity.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -291,11 +221,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The motion sensor will be unreliable.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -306,11 +235,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Changes alliances, but weapons/health aren't stripped.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
@@ -318,16 +246,12 @@ Space
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="label4">
+                    <child type="label">
+                      <object class="GtkLabel" id="frame1-label">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;Environment Type&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
-                      <packing>
-                        <property name="type">label_item</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -340,20 +264,17 @@ Space
                 <child>
                   <object class="GtkFrame" id="frame2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment2">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="yalign">0</property>
                         <property name="yscale">0</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox3">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckButton" id="solo">
                                 <property name="label" translatable="yes">Single Player</property>
@@ -361,11 +282,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">(REDUNDANT) The level may be played as a solo mission.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -376,11 +296,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The level may be played cooperatively with other players.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -391,11 +310,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Multiplayer, Teams are optional. Death Match between all players or teams.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -406,11 +324,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Multiplayer, Teams are optional. The player or team who has the most time on the hill at the end of the round wins.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -421,11 +338,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Multiplayer, Teams are optional. The player or team who can have possession of the ball the longest wins. </property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
@@ -436,11 +352,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Multiplayer, Teams. Each team must defend their base to prevent capture of their flag, at the same time each team must also work to capture the opposing team's flag and bring it back to their base while their flag is not captured to score points.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
@@ -451,11 +366,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Multiplayer, Teams. Teams compete for possesion of "the ball." The objective is to score points by carrying the ball to the opposing team's base. When a player has the ball he may not use weapons. If the player attempts to use a weapon the ball will be dropped.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
@@ -463,16 +377,12 @@ Space
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="label5">
+                    <child type="label">
+                      <object class="GtkLabel" id="frame2-label">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;Game Type&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
-                      <packing>
-                        <property name="type">label_item</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -484,18 +394,15 @@ Space
                 <child>
                   <object class="GtkFrame" id="frame3">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment3">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox4">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckButton" id="extermination">
                                 <property name="label" translatable="yes">Extermination</property>
@@ -503,11 +410,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player only has to kill everything if the map is also flagged as Rebellion. Otherwise the player can leave up to 7 monsters alive. Note that this does include friendlies (eg. Bobs).</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -518,11 +424,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player must enter polygons of type "Must Be Explored" in order to exit the level.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -533,11 +438,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player must find all Uplink Chips and S'pht key cards in order to exit the level.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -548,11 +452,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">The player must toggle all switches with the repair flag set.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -563,11 +466,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Doesn't actually do anything. You probably want Rescue (M1)</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
@@ -578,11 +480,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">All exploration polygons must be seen on the automap to complete the level.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
@@ -593,11 +494,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">More than 50% of civilians (BoBs) must survive.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
@@ -608,11 +508,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Like M2 rescue, but preserves the bug whereby only the last repair switch is checked.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">7</property>
                               </packing>
                             </child>
@@ -620,16 +519,12 @@ Space
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="label6">
+                    <child type="label">
+                      <object class="GtkLabel" id="frame3-label">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;Mission Type&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
-                      <packing>
-                        <property name="type">label_item</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -645,20 +540,17 @@ Space
                 <child>
                   <object class="GtkFrame" id="frame4">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment4">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="yalign">0</property>
                         <property name="yscale">0</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox5">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckButton" id="glueM1">
                                 <property name="label" translatable="yes">Glue</property>
@@ -666,11 +558,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Enable glue trigger behavior</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -681,11 +572,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Ouch polygons are lava.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -696,12 +586,11 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Play music based on the level's song index (instead of landscape).</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="OnSongIndexM1" swapped="no"/>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -712,11 +601,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">In a single player game, the game pauses while reading terminals.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -727,11 +615,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Limit monster activations.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
@@ -742,11 +629,10 @@ Space
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Enable mutiple weapon pick-ups in TC, and low gravity grenades.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
@@ -754,16 +640,12 @@ Space
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkLabel" id="label7">
+                    <child type="label">
+                      <object class="GtkLabel" id="frame4-label">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;M1 Compatibility&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
-                      <packing>
-                        <property name="type">label_item</property>
-                      </packing>
                     </child>
                   </object>
                   <packing>
@@ -775,19 +657,103 @@ Space
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="-6">button1</action-widget>
+      <action-widget response="-5">button2</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore_environment">
+    <columns>
+      <!-- column-name environment -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Water</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Lava</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sewage</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jjaro</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pfhor</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore_landscape">
+    <columns>
+      <!-- column-name landscape -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Daytime Lh'owon</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Nighttime Lh'owon</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Moon</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Space</col>
+      </row>
+    </data>
   </object>
 </interface>
