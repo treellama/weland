@@ -1,21 +1,23 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">360</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Liquid Parameters</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">10</property>
             <child>
               <object class="GtkTable" id="table1">
@@ -67,11 +69,13 @@
                 <child>
                   <object class="GtkComboBox" id="type">
                     <property name="visible">True</property>
-                    <property name="items" translatable="yes">Water
-Lava
-Goo
-Sewage
-Jjaro</property>
+                    <property name="model">liststore1</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -82,7 +86,7 @@ Jjaro</property>
                 <child>
                   <object class="GtkComboBox" id="basedOn">
                     <property name="visible">True</property>
-                    <signal name="changed" handler="OnBasedOnChanged"/>
+                    <signal name="changed" handler="OnBasedOnChanged" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -113,7 +117,6 @@ Jjaro</property>
             <child>
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
@@ -130,7 +133,8 @@ Jjaro</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Specifying an Angle will set the flow direction of the liquid from East to West.</property>
-                    <property name="adjustment">0 0 360 1 10 0</property>
+                    <property name="adjustment">adjustment1</property>
+                    <property name="fill_level">0</property>
                     <property name="digits">0</property>
                   </object>
                   <packing>
@@ -195,7 +199,7 @@ Jjaro</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">6</property>
                   </object>
                   <packing>
@@ -209,7 +213,7 @@ Jjaro</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">6</property>
                   </object>
                   <packing>
@@ -225,7 +229,7 @@ Jjaro</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">6</property>
                   </object>
                   <packing>
@@ -250,6 +254,7 @@ Jjaro</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">This option will prevent hearing the liquid when the player is in an area of the map that overlaps the liquid, and also, if the player is in a polygon that has the liquid, but the liquid tide is lower than the floor.</property>
                 <property name="draw_indicator">True</property>
+				<property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -267,11 +272,11 @@ Jjaro</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">gtk-cancel</property>
-                <property name="response_id">-6</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -282,11 +287,11 @@ Jjaro</property>
             </child>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">gtk-ok</property>
-                <property name="response_id">-5</property>
+                <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -304,5 +309,32 @@ Jjaro</property>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="-6">button1</action-widget>
+      <action-widget response="-5">button2</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Water</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Lava</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Goo</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sewage</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jjaro</col>
+      </row>
+    </data>
   </object>
 </interface>
