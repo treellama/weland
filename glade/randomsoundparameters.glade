@@ -1,21 +1,23 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkAdjustment" id="adjustment_angle_delta">
+    <property name="upper">360</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Random Sounds</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">20</property>
             <child>
               <object class="GtkHBox" id="hbox1">
@@ -36,11 +38,13 @@
                 <child>
                   <object class="GtkComboBox" id="type">
                     <property name="visible">True</property>
-                    <property name="items" translatable="yes">Dripping Water
-Thunder
-Underground Explosions
-Lh'owon Loon
-Jjaro Ship Creak</property>
+                    <property name="model">liststore1</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -76,7 +80,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">3</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">3</property>
                   </object>
                   <packing>
@@ -90,7 +94,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="tooltip_text" translatable="yes">Specifies a random change in volume.</property>
                     <property name="xalign">1</property>
-                    <property name="label" translatable="yes">&#x394; Volume:</property>
+                    <property name="label" translatable="yes">Δ Volume:</property>
                   </object>
                   <packing>
                     <property name="top_attach">1</property>
@@ -104,7 +108,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">3</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">3</property>
                   </object>
                   <packing>
@@ -120,7 +124,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">5</property>
                   </object>
                   <packing>
@@ -150,7 +154,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">5</property>
                   </object>
                   <packing>
@@ -166,7 +170,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="tooltip_text" translatable="yes">Add or subtract a random amount of time from the Period specified.</property>
                     <property name="xalign">1</property>
-                    <property name="label" translatable="yes">&#x394; Period:</property>
+                    <property name="label" translatable="yes">Δ Period:</property>
                   </object>
                   <packing>
                     <property name="top_attach">4</property>
@@ -180,7 +184,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">6</property>
                   </object>
                   <packing>
@@ -210,7 +214,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">6</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">6</property>
                   </object>
                   <packing>
@@ -226,7 +230,7 @@ Jjaro Ship Creak</property>
                     <property name="visible">True</property>
                     <property name="tooltip_text" translatable="yes">Specifies the value used to change the perceivable distance between the player and the sound.</property>
                     <property name="xalign">1</property>
-                    <property name="label" translatable="yes">&#x394; Pitch:</property>
+                    <property name="label" translatable="yes">Δ Pitch:</property>
                   </object>
                   <packing>
                     <property name="top_attach">7</property>
@@ -272,7 +276,6 @@ Jjaro Ship Creak</property>
             <child>
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkCheckButton" id="nondirectional">
@@ -281,6 +284,7 @@ Jjaro Ship Creak</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">The sound will be ambient.</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -291,7 +295,6 @@ Jjaro Ship Creak</property>
                 <child>
                   <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label8">
                         <property name="visible">True</property>
@@ -308,7 +311,7 @@ Jjaro Ship Creak</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Specify the sound's perceivable direction from the player.</property>
-                        <property name="adjustment">0 0 360 1 10 0</property>
+                        <property name="adjustment">adjustment_angle_direction</property>
                         <property name="digits">0</property>
                       </object>
                       <packing>
@@ -324,13 +327,12 @@ Jjaro Ship Creak</property>
                 <child>
                   <object class="GtkVBox" id="vbox4">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label9">
                         <property name="visible">True</property>
                         <property name="tooltip_text" translatable="yes">Specify a value to randomize the sound's perceivable direction from the player.</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&#x394; Direction:</property>
+                        <property name="label" translatable="yes">Δ Direction:</property>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -341,7 +343,7 @@ Jjaro Ship Creak</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Specify a value to randomize the sound's perceivable direction from the player.</property>
-                        <property name="adjustment">0 0 360 1 10 0</property>
+                        <property name="adjustment">adjustment_angle_delta</property>
                         <property name="digits">0</property>
                       </object>
                       <packing>
@@ -370,10 +372,11 @@ Jjaro Ship Creak</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -384,11 +387,11 @@ Jjaro Ship Creak</property>
             </child>
             <child>
               <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">gtk-ok</property>
-                <property name="response_id">-5</property>
+                <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -406,5 +409,37 @@ Jjaro Ship Creak</property>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="0">button2</action-widget>
+      <action-widget response="-5">button1</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Dripping Water</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Thunder</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Underground Explosions</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Lh'owon Loon</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jjaro Ship Creak</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkAdjustment" id="adjustment_angle_direction">
+    <property name="upper">360</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
 </interface>
