@@ -160,9 +160,8 @@ namespace Weland {
 	}
 
 	public MapWindow(string title) {
-	    Glade.XML gxml = new Glade.XML(null, "mapwindow.glade", "window1", null);
-
-	    gxml.Autoconnect(this);
+		var builder = new Builder("mapwindow.glade");
+		builder.Autoconnect(this);
 	    SetupDrawingArea();
 
 	    SetIconResource(selectButton, "arrow.png");

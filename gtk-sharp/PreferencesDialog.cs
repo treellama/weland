@@ -8,8 +8,8 @@ using Widget = Gtk.Builder.ObjectAttribute;
 namespace Weland {
     public class PreferencesDialog {
 	public PreferencesDialog(Window parent, MapDrawingArea drawingArea, Editor theEditor) {
-	    Glade.XML gxml = new Glade.XML(null, "preferences.glade", "dialog1", null);
-	    gxml.Autoconnect(this);
+		var builder = new Builder("preferences.glade");
+		builder.Autoconnect(this);
 	    dialog1.TransientFor = parent;
             if (PlatformDetection.IsMac) {
                 alephOneButton.Action = FileChooserAction.SelectFolder;

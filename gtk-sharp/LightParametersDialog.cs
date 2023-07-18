@@ -8,8 +8,8 @@ namespace Weland {
 	public LightParametersDialog(Window parent, Level theLevel, short index) {
 	    level = theLevel;
 	    light_index = index;
-	    Glade.XML gxml = new Glade.XML(null, "lightparameters.glade", "dialog1", null);
-	    gxml.Autoconnect(this);
+		var builder = new Builder("lightparameters.glade");
+		builder.Autoconnect(this);
 	    dialog1.TransientFor = parent;
 	}
 

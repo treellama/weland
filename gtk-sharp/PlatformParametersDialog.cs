@@ -8,8 +8,8 @@ namespace Weland {
 	public PlatformParametersDialog(Window parent, Level theLevel, short index) {
 	    level = theLevel;
 	    platform_index = index;
-	    Glade.XML gxml = new Glade.XML(null, "platformparameters.glade", "dialog1", null);
-	    gxml.Autoconnect(this);
+		var builder = new Builder("platformparameters.glade");
+		builder.Autoconnect(this);
 	    dialog1.TransientFor = parent;
 	}
 
