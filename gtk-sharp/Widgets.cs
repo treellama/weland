@@ -85,18 +85,18 @@ namespace Weland {
 	    Child.ModifyFg(StateType.Prelight, labelColor);
 	}
 
-	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-	    Gdk.Window win = GdkWindow;
-	    Gdk.GC g = new Gdk.GC(win);
-	    g.RgbFgColor = color;
-	    win.DrawRectangle(g, true, Allocation.X + margin, Allocation.Y + margin, Allocation.Width - margin * 2, Allocation.Height - margin * 2);
+	protected override bool OnDrawn(Cairo.Context cr) {
 
-	    if (Active || State == StateType.Active) {
-		g.RgbFgColor = boxColor;
-		win.DrawRectangle(g, false, Allocation.X + 1, Allocation.Y + 1, Allocation.Width - 3, Allocation.Height - 3);
+		cr.SetSourceRGB(color.Red, color.Green, color.Blue);
+		cr.Rectangle(Allocation.X + margin, Allocation.Y + margin, Allocation.Width - margin * 2, Allocation.Height - margin * 2);
+		cr.Fill();
+
+		if (Active || State == StateType.Active) {
+			cr.SetSourceRGB(boxColor.Red, boxColor.Green, boxColor.Blue);
+			cr.Rectangle(Allocation.X + 1, Allocation.Y + 1, Allocation.Width - 3, Allocation.Height - 3);
 	    }
 
-	    PropagateExpose(Child, args);
+	    PropagateDraw(Child, cr);
 
 	    return false;
 	}
