@@ -132,8 +132,8 @@ namespace Weland {
 
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
-	protected override bool OnExposeEvent(Gdk.EventExpose args) {
-		drawer = new CairoDrawer(GdkWindow, Antialias);
+	protected override bool OnDrawn(Cairo.Context cr) {
+		drawer = new CairoDrawer(Window, Antialias);
 	    drawer.Clear(backgroundColor);
 	    
 	    if (Grid.Visible) {
@@ -143,11 +143,11 @@ namespace Weland {
 	    if (Level != null) {
 
 		// clipping area to Map
-		int Left, Right, Top, Bottom;
-		Left = Transform.ToMapX(args.Area.X);
-		Right = Transform.ToMapX(args.Area.Width + args.Area.X);
-		Top = Transform.ToMapY(args.Area.Y);
-		Bottom = Transform.ToMapY(args.Area.Height + args.Area.Y);
+		var rectangle = cr.ClipExtents();
+		int Left = Transform.ToMapX(rectangle.X);
+		int Right = Transform.ToMapX(rectangle.Width + rectangle.X);
+		int Top = Transform.ToMapY(rectangle.Y);
+		int Bottom = Transform.ToMapY(rectangle.Height + rectangle.Y);
 
 		CohenSutherland[] Points = new CohenSutherland[Level.Endpoints.Count];
 
