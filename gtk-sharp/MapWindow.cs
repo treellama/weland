@@ -646,13 +646,13 @@ namespace Weland {
 		if (editor.Tool != Tool.Move) {
 		    oldTool = editor.Tool;
 		    editor.Tool = Tool.Move;
-		    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);		    
+		    drawingArea.Window.Cursor = new Cursor(CursorType.Fleur);		    
 		}
 		break;
             case Gdk.Key.x:
                 if (editor.Tool == Tool.Select) {
                     editor.Tool = Tool.VisualMode;
-                    drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
+                    drawingArea.Window.Cursor = new Cursor(CursorType.Cross);
                 }
                 break;
 	    case Gdk.Key.Up:
@@ -1237,15 +1237,15 @@ namespace Weland {
 	void ChooseTool(Tool tool) {
 	    editor.Tool = tool;
 	    if (tool == Tool.Zoom) {
-		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Target);
+		drawingArea.Window.Cursor = new Cursor(CursorType.Target);
 	    } else if (tool == Tool.Move) {
-		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Fleur);
+		drawingArea.Window.Cursor = new Cursor(CursorType.Fleur);
 	    } else if (tool == Tool.Line || tool == Tool.Object || tool == Tool.Annotation) {
-		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Cross);
+		drawingArea.Window.Cursor = new Cursor(CursorType.Cross);
 	    } else if (tool == Tool.Fill) {
-		drawingArea.GdkWindow.Cursor = new Cursor(CursorType.Spraycan);
+		drawingArea.Window.Cursor = new Cursor(CursorType.Spraycan);
 	    } else {
-		drawingArea.GdkWindow.Cursor = null;
+		drawingArea.Window.Cursor = null;
 	    }
 
 	    if (tool == Tool.FloorHeight) {
