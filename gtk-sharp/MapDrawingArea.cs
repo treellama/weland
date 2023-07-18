@@ -174,7 +174,7 @@ namespace Weland {
 			code &= Points[polygon.EndpointIndexes[v]];
 		    }
 		    if (code == CohenSutherland.Inside && Filter(polygon)) {
-			DrawPolygon((short) i, PolygonColor.Normal);
+			DrawPolygon((short) i, PolygonColor.Normal, cr);
 		    }
 		}
 
@@ -186,7 +186,7 @@ namespace Weland {
 			    code &= Points[polygon.EndpointIndexes[i]];
 			}
 			if (code == CohenSutherland.Inside) {
-			    DrawPolygon(Selection.Polygon, PolygonColor.Selected);
+			    DrawPolygon(Selection.Polygon, PolygonColor.Selected, cr);
 			}
 		    }
 
@@ -198,7 +198,7 @@ namespace Weland {
 				code &= Points[destination.EndpointIndexes[i]];
 			    }
 			    if (code == CohenSutherland.Inside) {
-				DrawPolygon(polygon.Permutation, PolygonColor.Destination);
+				DrawPolygon(polygon.Permutation, PolygonColor.Destination, cr);
 			    }
 			}
 		    }
@@ -234,7 +234,7 @@ namespace Weland {
 		if (Mode == DrawMode.Draw) {
 		    foreach (Annotation note in Level.Annotations) {
 			if (note.PolygonIndex == -1 || Filter(Level.Polygons[note.PolygonIndex])) {
-			    DrawAnnotation(note, note == selectedAnnotation);
+			    DrawAnnotation(note, note == selectedAnnotation, cr);
 			}
 		    }
 
@@ -494,7 +494,7 @@ namespace Weland {
 	    Destination
 	}
 
-	void DrawPolygon(short polygon_index, PolygonColor color) {
+	void DrawPolygon(short polygon_index, PolygonColor color, Cairo.Context cr) {
 	    Polygon polygon = Level.Polygons[polygon_index];
 	    List<Drawer.Point> points = new List<Drawer.Point>();
 	    for (int i = 0; i < polygon.VertexCount; ++i) {
@@ -536,11 +536,13 @@ namespace Weland {
 
 	    if (Mode == DrawMode.Draw && polygon.Type == PolygonType.Platform) {
 		Drawer.Point center = Transform.ToScreenPoint(Level.PolygonCenter(polygon));
-		Layout layout = new Pango.Layout(this.PangoContext);
+		Layout layout = new Layout(PangoContext);
 		layout.SetMarkup(String.Format("{0}", polygon_index));
-		int width, height;
-		layout.GetPixelSize(out width, out height);
-		this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), (int) center.X - width / 2, (int) center.Y - height / 2, layout);
+		layout.GetPixelSize(out int width, out int height);
+		cr.Save();
+		cr.MoveTo((int)center.X - width / 2, (int)center.Y - height / 2);
+		CairoHelper.ShowLayout(cr, layout);
+		cr.Restore();
 	    }
 	}
 	
@@ -622,14 +624,16 @@ namespace Weland {
             DrawImage(visualModeImage, Transform.ToScreenX(p.X), Transform.ToScreenY(p.Y), false);
         }
 
-	void DrawAnnotation(Annotation note, bool selected) {
+	void DrawAnnotation(Annotation note, bool selected, Cairo.Context cr) {
 	    int X = (int) Transform.ToScreenX(note.X);
 	    int Y = (int) Transform.ToScreenY(note.Y);
-	    Layout layout = new Pango.Layout(this.PangoContext);
+	    Layout layout = new Layout(PangoContext);
 	    layout.SetMarkup(note.Text);
-	    int width, height;
-	    layout.GetPixelSize(out width, out height);
-	    this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), X, Y - height, layout);
+	    layout.GetPixelSize(out int width, out int height);
+		cr.Save();
+		cr.MoveTo(X, Y - height);
+		CairoHelper.ShowLayout(cr, layout);
+		cr.Restore();
 	    if (selected) {
 		DrawFatPoint(selectedLineColor, new Point(note.X, note.Y));
 	    } else {
