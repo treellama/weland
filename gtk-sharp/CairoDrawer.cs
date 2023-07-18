@@ -123,7 +123,7 @@ namespace Weland
         {
             Context.Save();
 
-            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.SetSourceRGB(c.R, c.G, c.B);
             Context.Paint();
 
             Context.Restore();
@@ -136,7 +136,7 @@ namespace Weland
             Context.MoveTo(new PointD(p.X + 0.5, p.Y + 0.5));
             Context.ClosePath();
             Context.LineCap = LineCap.Round;
-            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.SetSourceRGB(c.R, c.G, c.B);
             Context.LineWidth = 2.5;
             Context.Stroke();
 
@@ -155,7 +155,7 @@ namespace Weland
             Context.LineTo(new PointD(p.X + 0.5, p.Y + 1.5));
             Context.ClosePath();
 
-            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.SetSourceRGB(c.R, c.G, c.B);
             Context.LineWidth = 1.0;
             Context.Stroke();
 
@@ -169,7 +169,7 @@ namespace Weland
             Context.MoveTo(new PointD(p1.X + 0.5, p1.Y + 0.5));
             Context.LineTo(new PointD(p2.X + 0.5, p2.Y + 0.5));
             Context.ClosePath();
-            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.SetSourceRGB(c.R, c.G, c.B);
             Context.LineWidth = 1.0;
             Context.Stroke();
 
@@ -191,7 +191,7 @@ namespace Weland
             Context.Save();
 
             OutlinePolygon(points);
-            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.SetSourceRGB(c.R, c.G, c.B);
             Context.Fill();
 
             Context.Restore();
@@ -202,14 +202,14 @@ namespace Weland
             Context.Save();
 
             OutlinePolygon(points);
-            Context.SetSourceRGBA(fill.R, fill.G, fill.B, 1.0);
+            Context.SetSourceRGB(fill.R, fill.G, fill.B);
             Context.FillPreserve();
 
             if (dashed)
             {
                 Context.SetDash(new double[] { 2.0, 2.0 }, 0);
             }
-            Context.SetSourceRGBA(stroke.R, stroke.G, stroke.B, 1.0);
+            Context.SetSourceRGB(stroke.R, stroke.G, stroke.B);
             Context.LineWidth = 1.0;
             Context.Stroke();
 
