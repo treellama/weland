@@ -92,7 +92,7 @@ namespace Weland {
 	    tree.RulesHint = true;
 	    ScrolledWindow w = new ScrolledWindow();
 	    w.Add(tree);
-	    dialog.VBox.Add(w);
+	    dialog.ContentArea.Add(w);
 
 	    CellRendererText nameCell = new CellRendererText();
 	    

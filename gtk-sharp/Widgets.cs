@@ -129,7 +129,7 @@ namespace Weland {
 	    Resizable = false;
 	    entry.Visible = true;
 	    entry.Activated += OnEntryActivated;
-	    VBox.Add(entry);
+		ContentArea.Add(entry);
 	    
 	    AddActionWidget(new Button(Stock.Cancel), ResponseType.Cancel);
 	    
@@ -161,7 +161,7 @@ namespace Weland {
 	    Resizable = false;
 	    entry.Visible = true;
 	    entry.Activated += OnEntryActivated;
-	    VBox.Add(entry);
+	    ContentArea.Add(entry);
 	    
 	    AddActionWidget(new Button(Stock.Cancel), ResponseType.Cancel);
 
@@ -203,7 +203,7 @@ namespace Weland {
 	    Resizable = false;
 	    entry.Visible = true;
 	    entry.Activated += OnEntryActivated;
-	    VBox.Add(entry);
+	    ContentArea.Add(entry);
 	    
 	    AddActionWidget(new Button(Stock.Cancel), ResponseType.Cancel);
 
