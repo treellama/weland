@@ -5,7 +5,6 @@
     <TargetFramework>netframework4.8</TargetFramework>
     <StartupObject>Weland.Weland</StartupObject>
     <ApplicationIcon>icons\Weland.ico</ApplicationIcon>
-    <Platforms>x86</Platforms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 

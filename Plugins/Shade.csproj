@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netframework4.8</TargetFramework>
-    <Platforms>x86</Platforms>
     <BaseOutputPath>..\bin\</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
