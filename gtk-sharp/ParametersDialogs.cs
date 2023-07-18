@@ -11,7 +11,7 @@ namespace Weland {
 	    names = n;
 	}
 
-	void RandomCountData(TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter) {
+	void RandomCountData(TreeViewColumn column, CellRenderer cell, ITreeModel model, TreeIter iter) {
 	    int value = (int) model.GetValue(iter, 4);
 	    if (value == -1) {
 		(cell as CellRendererText).Text = "\u221e";
@@ -20,7 +20,7 @@ namespace Weland {
 	    }
 	}
 
-	void InfiniteAvailableData(TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter) {
+	void InfiniteAvailableData(TreeViewColumn column, CellRenderer cell, ITreeModel model, TreeIter iter) {
 	    (cell as CellRendererToggle).Active = (((int) model.GetValue(iter, 4)) == -1);
 	}
 
