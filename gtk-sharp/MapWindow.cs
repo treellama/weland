@@ -240,7 +240,7 @@ namespace Weland {
 
 	    Weland.ShapesChanged += OnShapesChanged;
 
-	    window1.AllowShrink = true;
+	    window1.Resizable = true;
 	    int width = Weland.Settings.GetSetting("MapWindow/Width", 800);
 	    int height = Weland.Settings.GetSetting("MapWindow/Height", 600);
 	    window1.Resize(width, height);
