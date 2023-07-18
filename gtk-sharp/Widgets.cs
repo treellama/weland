@@ -284,10 +284,12 @@ namespace Weland {
 	    
 	    SetDefaultSize(640, 480);
 
-	    VBox vbox = new VBox(false, 2);
-	    vbox.BorderWidth = 5;
+        var vbox = new Box(Orientation.Vertical, 2)
+        {
+            BorderWidth = 5
+        };
 
-	    ScrolledWindow scrolledWindow = new ScrolledWindow();
+        ScrolledWindow scrolledWindow = new ScrolledWindow();
 
 	    TextView textView = new TextView();
 	    textView.Buffer.Text = contents;
@@ -295,12 +297,14 @@ namespace Weland {
 	    
 	    scrolledWindow.Add(textView);
 	    scrolledWindow.ShowAll();
-	    
-	    HButtonBox buttonBox = new HButtonBox();
-	    buttonBox.Layout = ButtonBoxStyle.End;
-	    buttonBox.Spacing = 5;
-	    
-	    Button saveAs = new Button(Stock.SaveAs);
+
+        var buttonBox = new ButtonBox(Orientation.Horizontal)
+        {
+            Layout = ButtonBoxStyle.End,
+            Spacing = 5
+        };
+
+        Button saveAs = new Button(Stock.SaveAs);
 	    saveAs.Clicked += delegate(object obj, EventArgs args) {
 		this.SaveAs();
 	    };
