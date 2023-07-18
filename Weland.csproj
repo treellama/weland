@@ -217,7 +217,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mono.GtkSharp" Version="2.12.0.1" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
   </ItemGroup>
 
 </Project>
