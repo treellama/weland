@@ -1,8 +1,9 @@
 using Gtk;
 using Gdk;
-using Glade;
 using System;
 using System.IO;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public class HSV {

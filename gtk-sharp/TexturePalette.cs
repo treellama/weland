@@ -1,7 +1,8 @@
-using Glade;
 using Gtk;
 using System;
 using System.Collections.Generic;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public partial class MapWindow {

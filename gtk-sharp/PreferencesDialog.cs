@@ -1,9 +1,9 @@
-using Glade;
 using Gtk;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public class PreferencesDialog {

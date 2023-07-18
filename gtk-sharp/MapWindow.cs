@@ -1,12 +1,13 @@
 using Gtk;
 using Gdk;
-using Glade;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     // resizable, scrollable map view

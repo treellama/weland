@@ -1,6 +1,7 @@
-using Glade;
 using Gtk;
 using System;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public enum InspectorPage {

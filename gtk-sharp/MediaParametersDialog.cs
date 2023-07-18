@@ -1,6 +1,7 @@
 using Gtk;
-using Glade;
 using System;
+
+using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public class MediaParametersDialog {
