@@ -133,11 +133,11 @@ namespace Weland {
 	Dictionary<ItemType, Gdk.Pixbuf> itemImages = new Dictionary<ItemType, Gdk.Pixbuf>();
 
 	protected override bool OnDrawn(Cairo.Context cr) {
-		drawer = new CairoDrawer(Window, Antialias);
+		drawer = new CairoDrawer(cr, Antialias);
 	    drawer.Clear(backgroundColor);
 	    
 	    if (Grid.Visible) {
-		DrawGrid();
+			DrawGrid();
 	    }
 	    
 	    if (Level != null) {
