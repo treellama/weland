@@ -329,10 +329,6 @@ namespace Weland {
 	    close.GrabDefault();
 	}
 
-	public void Close() {
-	    this.Destroy(); 
-	}
-
 	public void SaveAs() {
 	    FileChooserDialog d = new FileChooserDialog("Save log as", this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
