@@ -26,7 +26,7 @@ namespace Weland {
 	Selection selection = new Selection();
 
 	SortedList<short, bool> paintIndexes = new SortedList<short, bool>();
-	List<Gdk.Color> paintColors = new List<Gdk.Color>();
+	List<Drawer.Color> paintColors = new List<Drawer.Color>();
 
 	[Widget] Gtk.Window window1;
 	[Widget] VScrollbar vscrollbar1;
@@ -1113,10 +1113,6 @@ namespace Weland {
 	    }
 	}
 
-	Drawer.Color GdkToDrawer(Gdk.Color c) {
-	    return new Drawer.Color((double) c.Red / ushort.MaxValue, (double) c.Green / ushort.MaxValue, (double) c.Blue / ushort.MaxValue);
-	}
-
 	void BuildHeightPalette(SortedList<short, bool> heights) {
 	    ClearPalette();
 	    drawingArea.PaintColors = new Dictionary<short, Drawer.Color>();
@@ -1127,14 +1123,14 @@ namespace Weland {
 	    }
 	    ColorRadioButton b = null;
 	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, String.Format("{0:0.000}", World.ToDouble(paintIndexes.Keys[i])), c);
 		b.Index = i;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 		
-		drawingArea.PaintColors[paintIndexes.Keys[i]] = GdkToDrawer(c);
+		drawingArea.PaintColors[paintIndexes.Keys[i]] = c;
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -1153,21 +1149,22 @@ namespace Weland {
 	    editor.PaintIndex = -1;
 
 	    // set up "none"
-	    ColorRadioButton b = new ColorRadioButton(null, "None", new Gdk.Color(127, 127, 127));
+		var color = new Drawer.Color(0.5, 0.5, 0.5);
+		ColorRadioButton b = new ColorRadioButton(null, "None", color);
 	    b.Index = 0;
 	    b.Toggled += OnChangePaintIndex;
-	    drawingArea.PaintColors[-1] = new Drawer.Color(0.5, 0.5, 0.5);
+	    drawingArea.PaintColors[-1] = color;
 	    paletteButtonbox.Add(b);
 
 	    for (int i = 0; i < paintIndexes.Keys.Count - 1; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, String.Format("{0}", i), c);
 		b.Index = i + 1;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+		drawingArea.PaintColors[(short) i] = c;
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -1184,21 +1181,22 @@ namespace Weland {
 	    }
 	    editor.PaintIndex = -1;
 
-	    ColorRadioButton b = new ColorRadioButton(null, "None", new Gdk.Color(127, 127, 127));
+		var color = new Drawer.Color(0.5, 0.5, 0.5);
+		ColorRadioButton b = new ColorRadioButton(null, "None", color);
 	    b.Index = 0;
 	    b.Toggled += OnChangePaintIndex;
-	    drawingArea.PaintColors[-1] = new Drawer.Color(0.5, 0.5, 0.5);
+	    drawingArea.PaintColors[-1] = color;
 	    paletteButtonbox.Add(b);
 	    
 	    for (int i = 0; i < paintIndexes.Keys.Count - 1; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, String.Format("{0}", i), c);
 		b.Index = i + 1;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+		drawingArea.PaintColors[(short) i] = c;
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -1215,21 +1213,22 @@ namespace Weland {
 	    }
 	    editor.PaintIndex = -1;
 
-	    ColorRadioButton b = new ColorRadioButton(null, "None", new Gdk.Color(127, 127, 127));
+		var color = new Drawer.Color(0.5, 0.5, 0.5);
+		ColorRadioButton b = new ColorRadioButton(null, "None", color);
 	    b.Index = 0;
 	    b.Toggled += OnChangePaintIndex;
-	    drawingArea.PaintColors[-1] = new Drawer.Color(0.5, 0.5, 0.5);
+	    drawingArea.PaintColors[-1] = color;
 	    paletteButtonbox.Add(b);
 	    
 	    for (int i = 0; i < paintIndexes.Keys.Count - 1; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, String.Format("{0}", i), c);
 		b.Index = i + 1;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+		drawingArea.PaintColors[(short) i] = c;
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -1354,13 +1353,13 @@ namespace Weland {
 
 	    ColorRadioButton b = null;
 	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, names[i], c);
 		b.Index = i;
 		b.Toggled += OnChangePaintIndex;
 		paletteButtonbox.Add(b);
 
-		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+		drawingArea.PaintColors[(short) i] = c;
 	    }
 
 	    paletteButtonbox.ShowAll();
@@ -1382,14 +1381,14 @@ namespace Weland {
 
 	    ColorRadioButton b = null;
 	    for (int i = 0; i < paintIndexes.Keys.Count; ++i) {
-		Gdk.Color c = paintColors[i % paintColors.Count];
+		var c = paintColors[i % paintColors.Count];
 		b = new ColorRadioButton(b, String.Format("{0}", i), c);
 		b.Index = i;
 		b.Toggled += OnChangePaintIndex;
 		b.DoubleClicked += OnPaletteEdit;
 		paletteButtonbox.Add(b);
 		
-		drawingArea.PaintColors[(short) i] = GdkToDrawer(c);
+		drawingArea.PaintColors[(short) i] = c;
 	    }
 	    
 	    paletteButtonbox.ShowAll();

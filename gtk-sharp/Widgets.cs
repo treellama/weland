@@ -7,15 +7,9 @@ using Widget = Gtk.Builder.ObjectAttribute;
 
 namespace Weland {
     public class HSV {
-	static byte Component(double v) {
-	    int b = (int) (v * 255);
-	    if (b < 0) b = 0;
-	    if (b > 255) b = 255;
-	    return (byte) b;
-	}
 
 	// h [0, 360) s [0,1] v [0,1]
-	public static Gdk.Color ToRGB(double h, double s, double v) {
+	public static Drawer.Color ToRGB(double h, double s, double v) {
 	    double r = 0;
 	    double g = 0;
 	    double b = 0;
@@ -62,7 +56,7 @@ namespace Weland {
 		}
 	    }
 
-	    return new Gdk.Color(Component(r), Component(g), Component(b));
+	    return new Drawer.Color(r, g, b);
 	}
     }
 
@@ -70,14 +64,14 @@ namespace Weland {
     public class ColorRadioButton : RadioButton {
 	const int margin = 4;
 	static readonly Gdk.Color labelColor = new Gdk.Color(0xff, 0xff, 0xff);
-	static readonly Gdk.Color boxColor = new Gdk.Color(0x0, 0x0, 0x0);
-	Gdk.Color color;
+	static readonly Drawer.Color boxColor = new Drawer.Color(0, 0, 0);
+	Drawer.Color color;
 
 	public int Index;
 
 	public event EventHandler DoubleClicked;
 
-	public ColorRadioButton(ColorRadioButton other, string label, Gdk.Color c) : base(other, label) {
+	public ColorRadioButton(ColorRadioButton other, string label, Drawer.Color c) : base(other, label) {
 	    DrawIndicator = false;
 	    color = c;
 	    Child.ModifyFg(StateType.Normal, labelColor);
@@ -87,12 +81,12 @@ namespace Weland {
 
 	protected override bool OnDrawn(Cairo.Context cr) {
 
-		cr.SetSourceRGB(color.Red, color.Green, color.Blue);
+		cr.SetSourceRGB(color.R, color.G, color.B);
 		cr.Rectangle(Allocation.X + margin, Allocation.Y + margin, Allocation.Width - margin * 2, Allocation.Height - margin * 2);
 		cr.Fill();
 
-		if (Active || State == StateType.Active) {
-			cr.SetSourceRGB(boxColor.Red, boxColor.Green, boxColor.Blue);
+		if (Active) {
+			cr.SetSourceRGB(boxColor.R, boxColor.G, boxColor.B);
 			cr.Rectangle(Allocation.X + 1, Allocation.Y + 1, Allocation.Width - 3, Allocation.Height - 3);
 	    }
 
