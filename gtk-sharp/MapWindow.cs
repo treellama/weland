@@ -111,6 +111,7 @@ namespace Weland {
 		EventMask.ButtonReleaseMask | 
 		EventMask.ButtonMotionMask;
 
+		//all GtkTable should be replaced with GtkGrid
 	    table1.Attach(drawingArea, 0, 1, 0, 1, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
 
 	    drawingArea.Show();
