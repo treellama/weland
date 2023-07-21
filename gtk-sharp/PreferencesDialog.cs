@@ -18,31 +18,37 @@ namespace Weland {
 	    editor = theEditor;
 	}
 
-	Gdk.Color ToGDK(Drawer.Color color) {
-	    return new Gdk.Color((byte) (color.R * 0xff), (byte) (color.G * 0xff), (byte) (color.B * 0xff));
+	Gdk.RGBA ToGDK(Drawer.Color color) {
+		return new Gdk.RGBA()
+		{
+			Red = color.R,
+			Green = color.G,
+			Blue = color.B,
+			Alpha = 1.0
+		};
 	}
 
-	Drawer.Color FromGDK(Gdk.Color color) {
-	    return new Drawer.Color((double) color.Red / ushort.MaxValue, (double) color.Green / ushort.MaxValue, (double) color.Blue / ushort.MaxValue);
+	Drawer.Color FromGDK(Gdk.RGBA color) {
+		return new Drawer.Color(color.Red, color.Green, color.Blue);
 	}
 
 	void LoadColors(MapDrawingArea a) {
-	    backgroundColor.Color = ToGDK(a.backgroundColor);
-	    gridColor.Color = ToGDK(a.gridLineColor);
-	    gridPointColor.Color = ToGDK(a.gridPointColor);
-	    polygonColor.Color = ToGDK(a.polygonColor);
-	    selectedPolygonColor.Color = ToGDK(a.selectedPolygonColor);
-	    invalidPolygonColor.Color = ToGDK(a.invalidPolygonColor);
-	    destinationPolygonColor.Color = ToGDK(a.destinationPolygonColor);
-	    pointColor.Color = ToGDK(a.pointColor);
-	    lineColor.Color = ToGDK(a.solidLineColor);
-	    transparentLineColor.Color = ToGDK(a.transparentLineColor);
-	    impassableLineColor.Color = ToGDK(a.impassableLineColor);
-	    selectionColor.Color = ToGDK(a.selectedLineColor);
-	    playerColor.Color = ToGDK(a.playerColor);
-	    monsterColor.Color = ToGDK(a.monsterColor);
-	    civilianColor.Color = ToGDK(a.civilianColor);
-	    annotationColor.Color = ToGDK(a.annotationColor);	    
+		backgroundColor.Rgba = ToGDK(a.backgroundColor);
+		gridColor.Rgba = ToGDK(a.gridLineColor);
+		gridPointColor.Rgba = ToGDK(a.gridPointColor);
+		polygonColor.Rgba = ToGDK(a.polygonColor);
+		selectedPolygonColor.Rgba = ToGDK(a.selectedPolygonColor);
+		invalidPolygonColor.Rgba = ToGDK(a.invalidPolygonColor);
+		destinationPolygonColor.Rgba = ToGDK(a.destinationPolygonColor);
+		pointColor.Rgba = ToGDK(a.pointColor);
+		lineColor.Rgba = ToGDK(a.solidLineColor);
+		transparentLineColor.Rgba = ToGDK(a.transparentLineColor);
+		impassableLineColor.Rgba = ToGDK(a.impassableLineColor);
+		selectionColor.Rgba = ToGDK(a.selectedLineColor);
+		playerColor.Rgba = ToGDK(a.playerColor);
+		monsterColor.Rgba = ToGDK(a.monsterColor);
+		civilianColor.Rgba = ToGDK(a.civilianColor);
+		annotationColor.Rgba = ToGDK(a.annotationColor);	    
 	}
     
 	public void Run() {
@@ -78,22 +84,22 @@ namespace Weland {
 		Level.FilterPoints = !showHiddenVertices.Active;
 		Level.RememberDeletedSides = rememberDeletedSides.Active;
 
-		area.backgroundColor = FromGDK(backgroundColor.Color);
-		area.gridLineColor = FromGDK(gridColor.Color);
-		area.gridPointColor = FromGDK(gridPointColor.Color);
-		area.polygonColor = FromGDK(polygonColor.Color);
-		area.selectedPolygonColor = FromGDK(selectedPolygonColor.Color);
-		area.invalidPolygonColor = FromGDK(invalidPolygonColor.Color);
-		area.destinationPolygonColor = FromGDK(destinationPolygonColor.Color);
-		area.pointColor = FromGDK(pointColor.Color);
-		area.solidLineColor = FromGDK(lineColor.Color);
-		area.transparentLineColor = FromGDK(transparentLineColor.Color);
-		area.impassableLineColor = FromGDK(impassableLineColor.Color);
-		area.selectedLineColor = FromGDK(selectionColor.Color);
-		area.playerColor = FromGDK(playerColor.Color);
-		area.monsterColor = FromGDK(monsterColor.Color);
-		area.civilianColor = FromGDK(civilianColor.Color);
-		area.annotationColor = FromGDK(annotationColor.Color);
+		area.backgroundColor = FromGDK(backgroundColor.Rgba);
+		area.gridLineColor = FromGDK(gridColor.Rgba);
+		area.gridPointColor = FromGDK(gridPointColor.Rgba);
+		area.polygonColor = FromGDK(polygonColor.Rgba);
+		area.selectedPolygonColor = FromGDK(selectedPolygonColor.Rgba);
+		area.invalidPolygonColor = FromGDK(invalidPolygonColor.Rgba);
+		area.destinationPolygonColor = FromGDK(destinationPolygonColor.Rgba);
+		area.pointColor = FromGDK(pointColor.Rgba);
+		area.solidLineColor = FromGDK(lineColor.Rgba);
+		area.transparentLineColor = FromGDK(transparentLineColor.Rgba);
+		area.impassableLineColor = FromGDK(impassableLineColor.Rgba);
+		area.selectedLineColor = FromGDK(selectionColor.Rgba);
+		area.playerColor = FromGDK(playerColor.Rgba);
+		area.monsterColor = FromGDK(monsterColor.Rgba);
+		area.civilianColor = FromGDK(civilianColor.Rgba);
+		area.annotationColor = FromGDK(annotationColor.Rgba);
 		area.SaveColors();
 
 		editor.DefaultSnapDistance = (int) selectionDistance.Value;
