@@ -63,36 +63,39 @@ namespace Weland {
     // draws a flat color
     public class ColorRadioButton : RadioButton {
 	const int margin = 4;
-	static readonly Gdk.Color labelColor = new Gdk.Color(0xff, 0xff, 0xff);
-	static readonly Drawer.Color boxColor = new Drawer.Color(0, 0, 0);
-	Drawer.Color color;
 
 	public int Index;
+	static CssProvider _cssProvider;
 
 	public event EventHandler DoubleClicked;
 
-	public ColorRadioButton(ColorRadioButton other, string label, Drawer.Color c) : base(other, label) {
-	    DrawIndicator = false;
-	    color = c;
-	    Child.ModifyFg(StateType.Normal, labelColor);
-	    Child.ModifyFg(StateType.Active, labelColor);
-	    Child.ModifyFg(StateType.Prelight, labelColor);
+	static ColorRadioButton()
+	{
+		_cssProvider = new CssProvider();
+		_cssProvider.LoadFromData($@"
+			button.color-radio-button:checked {{
+				border: 1px solid black;
+			}}
+			button.color-radio-button label {{
+				color: white;
+			}}
+		");
+
+		StyleContext.AddProviderForScreen(Screen.Default, _cssProvider, StyleProviderPriority.Application);
 	}
 
-	protected override bool OnDrawn(Cairo.Context cr) {
+	public ColorRadioButton(ColorRadioButton other, string label, Drawer.Color c) : base(other, label) {
+		DrawIndicator = false;
+		StyleContext.AddClass("color-radio-button");
 
-		cr.SetSourceRGB(color.R, color.G, color.B);
-		cr.Rectangle(Allocation.X + margin, Allocation.Y + margin, Allocation.Width - margin * 2, Allocation.Height - margin * 2);
-		cr.Fill();
+		var customCss = new CssProvider();
+			customCss.LoadFromData($@"
+			button.color-radio-button label {{
+				background-color: rgb({(int)(c.R * 255)}, {(int)(c.G * 255)}, {(int)(c.B * 255)});
+			}}"
+		);
 
-		if (Active) {
-			cr.SetSourceRGB(boxColor.R, boxColor.G, boxColor.B);
-			cr.Rectangle(Allocation.X + 1, Allocation.Y + 1, Allocation.Width - 3, Allocation.Height - 3);
-	    }
-
-	    PropagateDraw(Child, cr);
-
-	    return false;
+		Child.StyleContext.AddProvider(customCss, StyleProviderPriority.Application);
 	}
 
 	protected override void OnSizeAllocated(Gdk.Rectangle rect) {
