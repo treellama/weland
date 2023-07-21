@@ -89,9 +89,11 @@ namespace Weland {
 	    dialog.AddActionWidget(new Button(Stock.Ok), ResponseType.Ok);
 
 	    TreeView tree = new Gtk.TreeView();
-	    tree.RulesHint = true;
-	    ScrolledWindow w = new ScrolledWindow();
-	    w.Add(tree);
+        ScrolledWindow w = new ScrolledWindow
+        {
+            Expand = true
+        };
+        w.Add(tree);
 	    dialog.ContentArea.Add(w);
 
 	    CellRendererText nameCell = new CellRendererText();
