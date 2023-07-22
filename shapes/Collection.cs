@@ -3,89 +3,100 @@ using System.IO;
 using System.Collections.Generic;
 using SkiaSharp;
 
-namespace Weland {
-    class CollectionHeader {
-	public short Status;
-	public ushort Flags;
-	public int Offset;
-	public int Length;
-	public int Offset16;
-	public int Length16;
-	
-	public void Load(BinaryReaderBE reader) {
-	    Status = reader.ReadInt16();
-	    Flags = reader.ReadUInt16();
-	    Offset = reader.ReadInt32();
-	    Length = reader.ReadInt32();
-	    Offset16 = reader.ReadInt32();
-	    Length16 = reader.ReadInt32();
-	    reader.BaseStream.Seek(12, SeekOrigin.Current);
-	}
+namespace Weland
+{
+    class CollectionHeader
+    {
+        public short Status;
+        public ushort Flags;
+        public int Offset;
+        public int Length;
+        public int Offset16;
+        public int Length16;
+
+        public void Load(BinaryReaderBE reader)
+        {
+            Status = reader.ReadInt16();
+            Flags = reader.ReadUInt16();
+            Offset = reader.ReadInt32();
+            Length = reader.ReadInt32();
+            Offset16 = reader.ReadInt32();
+            Length16 = reader.ReadInt32();
+            reader.BaseStream.Seek(12, SeekOrigin.Current);
+        }
     }
 
-    public enum CollectionType : short {
-	Unused,
-	Wall,
-	Object,
-	Interface,
-	Scenery
+    public enum CollectionType : short
+    {
+        Unused,
+        Wall,
+        Object,
+        Interface,
+        Scenery
     }
 
-    public class Collection {
+    public class Collection
+    {
 #pragma warning disable 0414
-	public short Version;
-	public CollectionType Type;
-	public ushort Flags;
-	
-	short colorCount;
-	short colorTableCount;
-	int colorTableOffset;
+        public short Version;
+        public CollectionType Type;
+        public ushort Flags;
 
-	short highLevelShapeCount;
-	int highLevelShapeOffsetTableOffset;
+        short colorCount;
+        short colorTableCount;
+        int colorTableOffset;
 
-	short lowLevelShapeCount;
-	int lowLevelShapeOffsetTableOffset;
+        short highLevelShapeCount;
+        int highLevelShapeOffsetTableOffset;
 
-	public short BitmapCount {
-	    get {
-		return bitmapCount;
-	    }
-	}
+        short lowLevelShapeCount;
+        int lowLevelShapeOffsetTableOffset;
 
-	public int ColorTableCount {
-	    get {
-		return colorTables.Count;
-	    }
-	}
+        public short BitmapCount
+        {
+            get
+            {
+                return bitmapCount;
+            }
+        }
 
-	short bitmapCount;
-	int bitmapOffsetTableOffset;
+        public int ColorTableCount
+        {
+            get
+            {
+                return colorTables.Count;
+            }
+        }
 
-	short pixelsToWorld;
-	int size;
+        short bitmapCount;
+        int bitmapOffsetTableOffset;
+
+        short pixelsToWorld;
+        int size;
 
 #pragma warning restore 0414
 
-	struct ColorValue {
-	    public byte Flags;
-	    public byte Value;
-	    
-	    public ushort Red;
-	    public ushort Green;
-	    public ushort Blue;
+        struct ColorValue
+        {
+            public byte Flags;
+            public byte Value;
 
-	    public void Load(BinaryReaderBE reader) {
-		Flags = reader.ReadByte();
-		Value = reader.ReadByte();
-		
-		Red = reader.ReadUInt16();
-		Green = reader.ReadUInt16();
-		Blue = reader.ReadUInt16();
-	    }
-	}
-	    
-    	/// <summary>
+            public ushort Red;
+            public ushort Green;
+            public ushort Blue;
+
+            public void Load(BinaryReaderBE reader)
+            {
+                Flags = reader.ReadByte();
+                Value = reader.ReadByte();
+
+                Red = reader.ReadUInt16();
+                Green = reader.ReadUInt16();
+                Blue = reader.ReadUInt16();
+            }
+        }
+
+        /// <summary>
         /// This is "Frame" data in Anvil terms.
         /// </summary>
         struct LowLevelShapeDefinition
@@ -123,40 +134,43 @@ namespace Weland {
             }
         }
 
-	List<ColorValue[]> colorTables = new List<ColorValue[]>();
-	List<Bitmap> bitmaps = new List<Bitmap>();
-    	List<LowLevelShapeDefinition> lowLevelShapes = new List<LowLevelShapeDefinition>();
+        List<ColorValue[]> colorTables = new List<ColorValue[]>();
+        List<Bitmap> bitmaps = new List<Bitmap>();
+        List<LowLevelShapeDefinition> lowLevelShapes = new List<LowLevelShapeDefinition>();
 
-	public void Load(BinaryReaderBE reader) {
-	    long origin = reader.BaseStream.Position;
+        public void Load(BinaryReaderBE reader)
+        {
+            long origin = reader.BaseStream.Position;
 
-	    Version = reader.ReadInt16();
-	    Type = (CollectionType) reader.ReadInt16();
-	    Flags = reader.ReadUInt16();
-	    colorCount = reader.ReadInt16();
-	    colorTableCount = reader.ReadInt16();
-	    colorTableOffset = reader.ReadInt32();
-	    highLevelShapeCount = reader.ReadInt16();
-	    highLevelShapeOffsetTableOffset = reader.ReadInt32();
-	    lowLevelShapeCount = reader.ReadInt16();
-	    lowLevelShapeOffsetTableOffset = reader.ReadInt32();
-	    bitmapCount = reader.ReadInt16();
-	    bitmapOffsetTableOffset = reader.ReadInt32();
-	    pixelsToWorld = reader.ReadInt16();
-	    size = reader.ReadInt32();
-	    reader.BaseStream.Seek(253 * 2, SeekOrigin.Current);
+            Version = reader.ReadInt16();
+            Type = (CollectionType)reader.ReadInt16();
+            Flags = reader.ReadUInt16();
+            colorCount = reader.ReadInt16();
+            colorTableCount = reader.ReadInt16();
+            colorTableOffset = reader.ReadInt32();
+            highLevelShapeCount = reader.ReadInt16();
+            highLevelShapeOffsetTableOffset = reader.ReadInt32();
+            lowLevelShapeCount = reader.ReadInt16();
+            lowLevelShapeOffsetTableOffset = reader.ReadInt32();
+            bitmapCount = reader.ReadInt16();
+            bitmapOffsetTableOffset = reader.ReadInt32();
+            pixelsToWorld = reader.ReadInt16();
+            size = reader.ReadInt32();
+            reader.BaseStream.Seek(253 * 2, SeekOrigin.Current);
 
-	    colorTables.Clear();
-	    reader.BaseStream.Seek(origin + colorTableOffset, SeekOrigin.Begin);
-	    for (int i = 0; i < colorTableCount; ++i) {
-		ColorValue[] table = new ColorValue[colorCount];
-		for (int j = 0; j < colorCount; ++j) {
-		    table[j].Load(reader);
-		}
-		colorTables.Add(table);
-	    }
+            colorTables.Clear();
+            reader.BaseStream.Seek(origin + colorTableOffset, SeekOrigin.Begin);
+            for (int i = 0; i < colorTableCount; ++i)
+            {
+                ColorValue[] table = new ColorValue[colorCount];
+                for (int j = 0; j < colorCount; ++j)
+                {
+                    table[j].Load(reader);
+                }
+                colorTables.Add(table);
+            }
 
-	    bitmaps.Clear();
+            bitmaps.Clear();
             reader.BaseStream.Seek(origin + bitmapOffsetTableOffset, SeekOrigin.Begin);
             for (int i = 0; i < bitmapCount; ++i)
             {
@@ -187,30 +201,34 @@ namespace Weland {
 
                 reader.BaseStream.Seek(nextPositionInOffsetTable, SeekOrigin.Begin);
             }
-	}
+        }
 
-	public SKBitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
-	    Bitmap bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
-	    ColorValue[] colorTable = colorTables[ColorTableIndex];
-	    Color[] colors = new Color[colorTable.Length];
-	    for (int i = 0; i < colorTable.Length; ++i) {
-		ColorValue color = colorTable[i];
-		colors[i] = Color.FromArgb(color.Red >> 8,
-					   color.Green >> 8,
-					   color.Blue >> 8);
-	    }
+        public SKBitmap GetShape(byte ColorTableIndex, byte BitmapIndex)
+        {
+            Bitmap bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
+            ColorValue[] colorTable = colorTables[ColorTableIndex];
+            Color[] colors = new Color[colorTable.Length];
+            for (int i = 0; i < colorTable.Length; ++i)
+            {
+                ColorValue color = colorTable[i];
+                colors[i] = Color.FromArgb(color.Red >> 8,
+                               color.Green >> 8,
+                               color.Blue >> 8);
+            }
 
-		var imageBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+            var imageBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
 
-	    for (int x = 0; x < bitmap.Width; ++x) {
-		for (int y = 0; y < bitmap.Height; ++y) {
-			var color = colors[bitmap.Data[x + y * bitmap.Width]];
-			var skColor = new SKColor(color.R, color.G, color.B, color.A);
-			imageBitmap.SetPixel(x, y, skColor);
-		}
-	    }
-	    
-	    return imageBitmap;
-	}
+            for (int x = 0; x < bitmap.Width; ++x)
+            {
+                for (int y = 0; y < bitmap.Height; ++y)
+                {
+                    var color = colors[bitmap.Data[x + y * bitmap.Width]];
+                    var skColor = new SKColor(color.R, color.G, color.B, color.A);
+                    imageBitmap.SetPixel(x, y, skColor);
+                }
+            }
+
+            return imageBitmap;
+        }
     }
 }
