@@ -327,7 +327,7 @@ namespace Weland {
 	}
 
 	public void SaveAs() {
-	    FileChooserDialog d = new FileChooserDialog("Save log as", this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    using var d = new FileChooserDialog("Save log as", this, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
 	    d.CurrentName = "Log.txt";
 	    d.DoOverwriteConfirmation = true;
@@ -339,13 +339,11 @@ namespace Weland {
 		    Weland.Settings.PutSetting("LastSave/Folder", System.IO.Path.GetDirectoryName(d.Filename));
 		}
 	    } catch (Exception e) {
-		MessageDialog m = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
+		using var m = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
 		m.Title = "Save error";
 		m.SecondaryText = e.Message;
 		m.Run();
-		m.Destroy();	
 	    }
-	    d.Destroy();
 	}
 
 	string contents;

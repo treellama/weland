@@ -475,14 +475,13 @@ namespace Weland {
 
 	void EditAnnotation() {
 	    Annotation annotation = Level.Annotations[selection.Annotation];
-	    EntryDialog d = new EntryDialog("Annotation Text", window1);
+	    using var d = new EntryDialog("Annotation Text", window1);
 	    d.Text = annotation.Text;
 	    if (d.Run() == (int) ResponseType.Ok) {
 		annotation.Text = d.Text;
 		editor.Changed = true;
 		Redraw();
 	    }
-	    d.Destroy();	    
 	    editor.EditAnnotation = false;
 	}
 	
@@ -792,12 +791,11 @@ namespace Weland {
 
 	public bool CheckSave() {
 	    if (editor.Changed) {
-		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.None, "Do you wish to save changes?");
+		using var dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.None, "Do you wish to save changes?");
 		dialog.AddButton(Stock.Discard, ResponseType.No);
 		dialog.AddButton(Stock.Cancel, ResponseType.Cancel);
 		dialog.Default = dialog.AddButton(Stock.Save, ResponseType.Yes);
 		int response = dialog.Run();
-		dialog.Destroy();
 		if (response == (int) ResponseType.Yes) {
 		    return Save();
 		} else if (response == (int) ResponseType.No) {
@@ -883,23 +881,22 @@ namespace Weland {
 		BuildLevelMenu();
 	    }
 	    catch (Wadfile.BadMapException e) {
-		MessageDialog dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+		using var dialog = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
 		dialog.Run();
-		dialog.Destroy();
 	    }
 	}
 
 	internal void OnOpen(object obj, EventArgs args) {
 	    if (CheckSave()) {
-		FileChooserDialog d = new FileChooserDialog("Choose the file to open", window1, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+		using var d = new FileChooserDialog("Choose the file to open", window1, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
 		d.SetCurrentFolder(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 		d.SetCurrentFolder(Weland.Settings.GetSetting("LastOpen/Folder", d.CurrentFolder));
-		FileFilter filter = new FileFilter();
+		using var filter = new FileFilter();
 		filter.Name = "Marathon and Aleph One Maps";
 		filter.AddPattern("*.sceA");
 		filter.AddPattern("*.sce2");
 		d.AddFilter(filter);
-		filter = new FileFilter();
+		using var filter2 = new FileFilter();
 		filter.Name = "All Files";
 		filter.AddPattern("*");
 		d.AddFilter(filter);
@@ -907,7 +904,6 @@ namespace Weland {
 		    Weland.Settings.PutSetting("LastOpen/Folder", Path.GetDirectoryName(d.Filename));
 		    OpenFile(d.Filename);
 		}
-		d.Destroy();
 	    }
 	}
 
@@ -942,7 +938,7 @@ namespace Weland {
 	    } else {
 		message = "Save level as";
 	    }
-	    FileChooserDialog d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    using var d = new FileChooserDialog(message, window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
 	    d.CurrentName = Level.Name + ".sceA";
 	    d.DoOverwriteConfirmation = true;
@@ -962,13 +958,11 @@ namespace Weland {
                     BuildLevelMenu();
 		}
 	    } catch (Exception e) {
-		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
+		using var m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
 		m.Title = "Save Error";
 		m.SecondaryText = e.Message;
 		m.Run();
-		m.Destroy();
 	    }
-	    d.Destroy();
 
 	    return saved;
 	}
@@ -990,18 +984,17 @@ namespace Weland {
 		    editor.Changed = false;
 		    success = true;
 		} catch (Exception e) {
-		    MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
+		    using var m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occurred while saving.");
 		    m.Title = "Save Error";
 		    m.SecondaryText = e.Message;
 		    m.Run();
-		    m.Destroy();		    
 		}
 		return success;
 	    }
 	}
 	
 	internal void OnExportOBJ(object obj, EventArgs args) {
-	    FileChooserDialog d = new FileChooserDialog("Export OBJ as", window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
+	    using var d = new FileChooserDialog("Export OBJ as", window1, FileChooserAction.Save, "Cancel", ResponseType.Cancel, "Save", ResponseType.Accept);
 	    d.SetCurrentFolder(Weland.Settings.GetSetting("LastSave/Folder", Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
 	    d.CurrentName = Level.Name + ".obj";
 	    d.DoOverwriteConfirmation = true;
@@ -1013,13 +1006,11 @@ namespace Weland {
 		    Weland.Settings.PutSetting("LastSave/Folder", Path.GetDirectoryName(d.Filename));
 		}
 	    } catch (Exception e) {
-		MessageDialog m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
+		using var m = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "An error occured while exporting.");
 		m.Title = "Export error";
 		m.SecondaryText = e.Message;
 		m.Run();
-		m.Destroy();
 	    }
-	    d.Destroy();
 	}
 
 	internal void OnSave(object obj, EventArgs args) {
@@ -1562,11 +1553,10 @@ namespace Weland {
 	
 	internal void OnGridRotateSet(object o, EventArgs e) {
 	    if (!editor.SetCustomGridRotationToSelected()) {
-		double v;
-		DoubleDialog dialog = new DoubleDialog("Set Grid Rotation", window1);
+		using var dialog = new DoubleDialog("Set Grid Rotation", window1);
 		dialog.Value = grid.Rotation;
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
-		    v = dialog.Value;
+		    double v = dialog.Value;
 
 		    if (v < gridRotationScale.Adjustment.Lower) {
 			v = gridRotationScale.Adjustment.Lower;
@@ -1577,7 +1567,6 @@ namespace Weland {
 		    grid.Rotation = v;
 		    SaveGrid();
 		}
-		dialog.Destroy();
 	    }
 	    gridRotationScale.Value = grid.Rotation;
 	    Redraw();
@@ -1587,11 +1576,10 @@ namespace Weland {
 	{
 	    if (!editor.SetCustomGridScaleToSelected())
 	    {
-		double v;
-		DoubleDialog dialog = new DoubleDialog("Set Grid Scale", window1);
+		using var dialog = new DoubleDialog("Set Grid Scale", window1);
 		dialog.Value = grid.Scale;
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
-		    v = dialog.Value;
+		    double v = dialog.Value;
 		    if(v < grid.MinScale) {
 			v = grid.MinScale;
 		    } else if (v > grid.MaxScale) {
@@ -1600,7 +1588,6 @@ namespace Weland {
 		    grid.Scale = v;
 		    SaveGrid();
 		}
-		dialog.Destroy();
 	    }
 	    gridScaleScale.Value = Math.Log(grid.Scale, 2.0);
 	    gridScaleLabel.Text = String.Format("Scale: {0:0.000}", grid.Scale);
@@ -1691,7 +1678,7 @@ namespace Weland {
 
 	protected void OnPaletteAdd(object o, EventArgs e) {
 	    if (editor.Tool == Tool.FloorHeight) {
-		DoubleDialog dialog = new DoubleDialog("Add Floor Height", window1);
+		using var dialog = new DoubleDialog("Add Floor Height", window1);
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
 		    SortedList<short, bool> heights = editor.GetFloorHeights();
@@ -1700,9 +1687,8 @@ namespace Weland {
 		    ColorRadioButton b = (ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)];
 		    b.Active = true;
 		}
-		dialog.Destroy();
 	    } else if (editor.Tool == Tool.CeilingHeight) {
-		DoubleDialog dialog = new DoubleDialog("Add Ceiling Height", window1);
+		using var dialog = new DoubleDialog("Add Ceiling Height", window1);
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
 		    SortedList<short, bool> heights = editor.GetCeilingHeights();
@@ -1710,7 +1696,6 @@ namespace Weland {
 		    BuildHeightPalette(heights);
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		}
-		dialog.Destroy();
 	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight) {
 		Level.Lights.Add(new Light());
 		LightParametersDialog dialog = new LightParametersDialog(window1, Level, (short) (Level.Lights.Count - 1));
@@ -1756,7 +1741,7 @@ namespace Weland {
 	void PaletteEdit() {
 	    if (editor.Tool == Tool.FloorHeight) {
 		short original_height = editor.PaintIndex;
-		DoubleDialog dialog = new DoubleDialog("Edit Floor Height", window1);
+		using var dialog = new DoubleDialog("Edit Floor Height", window1);
 		dialog.Value = World.ToDouble(original_height);
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
@@ -1767,11 +1752,10 @@ namespace Weland {
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		    editor.Changed = true;
 		}
-		dialog.Destroy();
 		Redraw();
 	    } else if (editor.Tool == Tool.CeilingHeight) {
 		short original_height = editor.PaintIndex;
-		DoubleDialog dialog = new DoubleDialog("Edit Ceiling Height", window1);
+		using var dialog = new DoubleDialog("Edit Ceiling Height", window1);
 		dialog.Value = World.ToDouble(original_height);
 		if (dialog.Run() == (int) ResponseType.Ok && dialog.Valid) {
 		    short height = World.FromDouble(dialog.Value);
@@ -1782,7 +1766,6 @@ namespace Weland {
 		    ((ColorRadioButton) paletteButtonbox.Children[paintIndexes.IndexOfKey(height)]).Active = true;
 		    editor.Changed = true;
 		}
-		dialog.Destroy();
 		Redraw();
 	    } else if (editor.Tool == Tool.FloorLight || editor.Tool == Tool.CeilingLight || editor.Tool == Tool.MediaLight) {
 		short index = editor.PaintIndex;
@@ -1823,7 +1806,7 @@ namespace Weland {
 	}
 
 	protected void OnAbout(object o, EventArgs e) {
-	    AboutDialog dialog = new AboutDialog();
+	    using var dialog = new AboutDialog();
 	    dialog.ProgramName = "Weland";
 	    dialog.Artists = new string[] { "Robert Kreps (application icon)",
 					    "tango-art-libre, GIMP, openclipart.org (tool icons)" };
@@ -1835,7 +1818,6 @@ namespace Weland {
 	    dialog.Website = "https://github.com/treellama/weland";
 	    dialog.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 	    dialog.Run();
-	    dialog.Destroy();
 	}
 
 	protected void OnRecenterLevel(object o, EventArgs e) {
@@ -1844,7 +1826,7 @@ namespace Weland {
 	}
 
 	protected void OnGoto(object o, EventArgs e) {
-	    GotoDialog dialog = new GotoDialog(window1);
+	    using var dialog = new GotoDialog(window1);
 	    if (dialog.Run() == (int) ResponseType.Ok) {
 		short index = 0;
 		if (short.TryParse(dialog.Number.Text, out index)) {
@@ -1884,19 +1866,18 @@ namespace Weland {
 		    }
 		}
 	    }
-	    dialog.Destroy();
 	}
 
 	protected void OnFindZeroLengthLines(object o, EventArgs e) {
 	    short i = Level.FindZeroLengthLine();
 	    if (i == -1) {
-		MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, "No zero length lines found.");
+		using var d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, "No zero length lines found.");
 		d.Run();
-		d.Destroy();
 	    } else {
-		MessageDialog d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Ok, String.Format("Line {0} has zero length.", i));
-		d.Run();
-		d.Destroy();
+		using (var d = new MessageDialog(window1, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Ok, String.Format("Line {0} has zero length.", i)))
+		{
+			d.Run();
+		}
 		selection.Clear();
 		selectButton.Active = true;
 		selection.Line = i;
@@ -2027,8 +2008,8 @@ namespace Weland {
                             }
                             editor.ClearUndo();
                             editor.Changed = true;
-                            
-                            d.Destroy();
+
+							d.Dispose();
                         }
                         catch (Exception exc)
                         {
@@ -2037,9 +2018,8 @@ namespace Weland {
                             sb.Append("Arguments: ");
                             sb.Append(String.Join(" ", arguments));
                             
-                            MessageDialog dd = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, sb.ToString());
+                            using var dd = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, sb.ToString());
                             dd.Run();
-                            dd.Destroy();
                         }
                     });
             };

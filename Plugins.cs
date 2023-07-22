@@ -115,11 +115,10 @@ namespace Weland {
 		    }
 		}
 	    } catch (Exception e) {
-		MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+		using var d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
 		d.Title = "Plugin Exception";
 		d.SecondaryText = e.StackTrace;
 		d.Run();
-		d.Destroy();
 	    }
 	}
     }

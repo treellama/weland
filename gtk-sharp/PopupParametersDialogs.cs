@@ -81,7 +81,7 @@ namespace Weland {
 	[Widget] Entry pointY;
     }
 
-    public class GotoDialog {
+    public class GotoDialog : IDisposable {
 	public GotoDialog(Window parent) {
 		var builder = new Builder("goto.glade");
 		builder.Autoconnect(this);
@@ -94,8 +94,8 @@ namespace Weland {
 	    return dialog1.Run();
 	}
 
-	public void Destroy() {
-	    dialog1.Destroy();
+	public void Dispose() {
+	    dialog1.Dispose();
 	}
 
 	protected void OnEntryActivated(object obj, EventArgs args) {

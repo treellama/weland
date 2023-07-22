@@ -71,11 +71,10 @@ namespace Weland {
 		e = outer;
 	    }
 
-	    MessageDialog d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
+	    using var d = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, e.Message);
 	    d.Title = "Unhandled Exception";
 	    d.SecondaryText = e.StackTrace;
 	    d.Run();
-	    d.Destroy();		
 	}
 
 	public static void OnUnhandledException(object o, UnhandledExceptionEventArgs args) {
