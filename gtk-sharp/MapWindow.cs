@@ -908,7 +908,6 @@ namespace Weland {
 		    OpenFile(d.Filename);
 		}
 		d.Destroy();
-		d.Dispose();
 	    }
 	}
 
@@ -970,7 +969,6 @@ namespace Weland {
 		m.Destroy();
 	    }
 	    d.Destroy();
-		d.Dispose();
 
 	    return saved;
 	}
@@ -1022,7 +1020,6 @@ namespace Weland {
 		m.Destroy();
 	    }
 	    d.Destroy();
-		d.Dispose();
 	}
 
 	internal void OnSave(object obj, EventArgs args) {

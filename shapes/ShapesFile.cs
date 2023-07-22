@@ -1,3 +1,4 @@
+using SkiaSharp;
 using System;
 using System.IO;
 
@@ -44,19 +45,29 @@ namespace Weland {
 	    return collections[n];
 	}
 
-	public System.Drawing.Bitmap GetShape(ShapeDescriptor d) {
+	public SKBitmap GetShape(ShapeDescriptor d) {
 	    Collection coll = collections[d.Collection];
 	    if (d.Bitmap < coll.BitmapCount && d.CLUT < coll.ColorTableCount) {
 		return coll.GetShape(d.CLUT, d.Bitmap);
 	    } else {
-		System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(128, 128);
-		using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap)) {
-		    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, 128, 128);
-		    graphics.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(127, 127, 127)), rect);
-		}
 
-		return bitmap;
-	    }
+			var paint = new SKPaint
+			{
+				Color = new SKColor(127, 127, 127),
+				IsAntialias = true
+			};
+
+			int width = 128;
+			int height = 128;
+			var bitmap = new SKBitmap(width, height);
+			using (var canvas = new SKCanvas(bitmap))
+			{
+				canvas.Clear(SKColors.White);
+				var rect = new SKRect(0, 0, width, height);
+				canvas.DrawRect(rect, paint);
+				return bitmap;
+			}
+		}
 	}
     }
 }

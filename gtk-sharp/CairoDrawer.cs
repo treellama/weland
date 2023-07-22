@@ -23,7 +23,7 @@ namespace Weland
         {
             public TextureSurface(ShapeDescriptor d)
             {
-                System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
+                var bitmap = Weland.Shapes.GetShape(d);
                 byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
                 if (d.Collection >= 27)
                 {
@@ -31,12 +31,12 @@ namespace Weland
                     {
                         for (int y = 0; y < bitmap.Height; ++y)
                         {
-                            System.Drawing.Color c = bitmap.GetPixel(x, y);
+                            var color = bitmap.GetPixel(x, y);
                             int offset = (y * bitmap.Width + x) * 4;
-                            bytes[offset] = c.B;
-                            bytes[offset + 1] = c.G;
-                            bytes[offset + 2] = c.R;
-                            bytes[offset + 3] = c.A;
+                            bytes[offset] = color.Blue;
+                            bytes[offset + 1] = color.Green;
+                            bytes[offset + 2] = color.Red;
+                            bytes[offset + 3] = color.Alpha;
                         }
                     }
                 }
@@ -46,12 +46,12 @@ namespace Weland
                     {
                         for (int y = 0; y < bitmap.Height; ++y)
                         {
-                            System.Drawing.Color c = bitmap.GetPixel(x, y);
+                            var color = bitmap.GetPixel(x, y);
                             int offset = (x * bitmap.Width + y) * 4;
-                            bytes[offset] = c.B;
-                            bytes[offset + 1] = c.G;
-                            bytes[offset + 2] = c.R;
-                            bytes[offset + 3] = c.A;
+                            bytes[offset] = color.Blue;
+                            bytes[offset + 1] = color.Green;
+                            bytes[offset + 2] = color.Red;
+                            bytes[offset + 3] = color.Alpha;
                         }
                     }
                 }

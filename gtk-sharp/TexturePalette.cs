@@ -1,4 +1,5 @@
 using Gtk;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 
@@ -27,13 +28,13 @@ namespace Weland {
 
 	    for (byte i = 0; i < coll.BitmapCount; ++i) {
 		d.Bitmap = i;
-		System.Drawing.Bitmap bitmap = Weland.Shapes.GetShape(d);
+		var bitmap = Weland.Shapes.GetShape(d);
 		if (landscape) {
 		    int W = 192;
 		    int H = (int) Math.Round((double) bitmap.Height * W / bitmap.Width);
 		    bitmap = ImageUtilities.ResizeImage(bitmap, W, H);
 		} else {
-		    bitmap.RotateFlip(System.Drawing.RotateFlipType.Rotate90FlipNone);
+			bitmap = ImageUtilities.RotateBitmap(bitmap, 90);
 		    bitmap = ImageUtilities.ResizeImage(bitmap, textureSize, textureSize);
 		}
 		textureStore.AppendValues(ImageUtilities.ImageToPixbuf(bitmap));
@@ -56,7 +57,7 @@ namespace Weland {
 	    }
 	}
 
-	void SelectBitmap(int bitmap) {
+		void SelectBitmap(int bitmap) {
 	    textureIcons.SelectionChanged -= OnTextureSelected;
 	    TreePath path = new TreePath(new int[] { bitmap });
 	    textureIcons.SelectPath(path);

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Weland {
     // from Mono.TextEditor.Platform
@@ -92,8 +93,9 @@ namespace Weland {
 	    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnUnhandledException);
 	    GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(OnUnhandledException);
 	    Application.Init();
-	    
-	    ShapesFile shapes = new ShapesFile();
+
+		Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+		ShapesFile shapes = new ShapesFile();
 	    shapes.Load(Settings.GetSetting("ShapesFile/Path", ""));
 	    Shapes = shapes;
 	    MapWindow window = new MapWindow("Weland");

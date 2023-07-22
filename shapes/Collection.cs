@@ -1,7 +1,7 @@
-using System;
 using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
+using SkiaSharp;
 
 namespace Weland {
     class CollectionHeader {
@@ -189,7 +189,7 @@ namespace Weland {
             }
 	}
 
-	public System.Drawing.Bitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
+	public SKBitmap GetShape(byte ColorTableIndex, byte BitmapIndex) {
 	    Bitmap bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
 	    ColorValue[] colorTable = colorTables[ColorTableIndex];
 	    Color[] colors = new Color[colorTable.Length];
@@ -199,15 +199,18 @@ namespace Weland {
 					   color.Green >> 8,
 					   color.Blue >> 8);
 	    }
-	    
-	    System.Drawing.Bitmap result = new System.Drawing.Bitmap(bitmap.Width, bitmap.Height);
+
+		var imageBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
+
 	    for (int x = 0; x < bitmap.Width; ++x) {
 		for (int y = 0; y < bitmap.Height; ++y) {
-		    result.SetPixel(x, y, colors[bitmap.Data[x + y * bitmap.Width]]);
+			var color = colors[bitmap.Data[x + y * bitmap.Width]];
+			var skColor = new SKColor(color.R, color.G, color.B, color.A);
+			imageBitmap.SetPixel(x, y, skColor);
 		}
 	    }
 	    
-	    return result;
+	    return imageBitmap;
 	}
     }
 }
