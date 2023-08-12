@@ -14,7 +14,7 @@ namespace Weland
         {
             if (!antialias)
             {
-                Context.Antialias = Antialias.None;
+                context.Antialias = Antialias.None;
             }
             Context = context;
         }
