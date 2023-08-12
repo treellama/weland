@@ -1071,9 +1071,9 @@ namespace Weland
                 filter.AddPattern("*.sce2");
                 d.AddFilter(filter);
                 using var filter2 = new FileFilter();
-                filter.Name = "All Files";
-                filter.AddPattern("*");
-                d.AddFilter(filter);
+                filter2.Name = "All Files";
+                filter2.AddPattern("*");
+                d.AddFilter(filter2);
                 if (d.Run() == (int)ResponseType.Accept)
                 {
                     Weland.Settings.PutSetting("LastOpen/Folder", Path.GetDirectoryName(d.Filename));
