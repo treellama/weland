@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Weland.csproj" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
     <Exec Command="if not exist $(TargetDir)Plugins MkDir $(TargetDir)Plugins &#xD;&#xA;move /Y $(TargetDir)$(AssemblyName).* $(TargetDir)Plugins" />
   </Target>
 </Project>
