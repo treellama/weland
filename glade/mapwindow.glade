@@ -875,42 +875,41 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem1">
-                        <property name="label">gtk-new</property>
+                      <object class="GtkMenuItem" id="imagemenuitem1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">New</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnNew" swapped="no"/>
+                        <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem2">
-                        <property name="label">gtk-open</property>
+                      <object class="GtkMenuItem" id="imagemenuitem2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Open…</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnOpen" swapped="no"/>
+                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem3">
-                        <property name="label">gtk-save</property>
+                      <object class="GtkMenuItem" id="imagemenuitem3">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Save</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnSave" swapped="no"/>
+                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label">gtk-save-as</property>
+                      <object class="GtkMenuItem" id="imagemenuitem4">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Save As…</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnSaveAs" swapped="no"/>
                       </object>
                     </child>
@@ -936,13 +935,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="quitItem">
-                        <property name="label">gtk-quit</property>
+                      <object class="GtkMenuItem" id="quitItem">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Quit</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnQuit" swapped="no"/>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -960,12 +959,11 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="gtk-undo">
-                        <property name="label">gtk-undo</property>
+                      <object class="GtkMenuItem" id="gtk-undo">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Undo</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnUndo" swapped="no"/>
                         <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -977,43 +975,42 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
+                      <object class="GtkMenuItem" id="imagemenuitem6">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Cut</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
+                      <object class="GtkMenuItem" id="imagemenuitem7">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Copy</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
+                      <object class="GtkMenuItem" id="imagemenuitem8">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Paste</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
+                      <object class="GtkMenuItem" id="imagemenuitem9">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Delete</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                       </object>
                     </child>
                     <child>
@@ -1023,13 +1020,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="preferencesItem">
-                        <property name="label">gtk-preferences</property>
+                      <object class="GtkMenuItem" id="preferencesItem">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Preferences…</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnPreferences" swapped="no"/>
+                        <accelerator key="comma" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -1400,12 +1397,11 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="aboutItem">
-                        <property name="label">gtk-about</property>
+                      <object class="GtkMenuItem" id="aboutItem">
+                        <property name="label" translatable="yes">About…</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                         <signal name="activate" handler="OnAbout" swapped="no"/>
                       </object>
                     </child>
@@ -2362,7 +2358,7 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <object class="GtkHScrollbar" id="hscrollbar1">
+                  <object class="GtkScrollbar" id="hscrollbar1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="adjustment">adjustment_scrollbar_h</property>
@@ -2376,9 +2372,10 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVScrollbar" id="vscrollbar1">
+                  <object class="GtkScrollbar" id="vscrollbar1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
                     <property name="adjustment">adjustment_scrollbar_v</property>
                     <signal name="value-changed" handler="OnVValueChanged" swapped="no"/>
                   </object>
@@ -2401,12 +2398,11 @@
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkButton" id="paletteAddButton">
-                            <property name="label">gtk-add</property>
+                            <property name="label">Add</property>
                             <property name="use-action-appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="receives-default">True</property>
-                            <property name="use-stock">True</property>
                             <signal name="clicked" handler="OnPaletteAdd" swapped="no"/>
                           </object>
                           <packing>
@@ -2417,12 +2413,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="paletteEditButton">
-                            <property name="label">gtk-edit</property>
+                            <property name="label">Edit</property>
                             <property name="use-action-appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="receives-default">True</property>
-                            <property name="use-stock">True</property>
                             <signal name="clicked" handler="OnPaletteEdit" swapped="no"/>
                           </object>
                           <packing>
@@ -2450,9 +2445,10 @@
                             <property name="resize-mode">queue</property>
                             <property name="shadow-type">none</property>
                             <child>
-                              <object class="GtkVButtonBox" id="paletteButtonbox">
+                              <object class="GtkButtonBox" id="paletteButtonbox">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <property name="layout-style">start</property>
                                 <child>
                                   <placeholder/>
@@ -4113,6 +4109,12 @@
                     <property name="x-options"/>
                     <property name="y-options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>

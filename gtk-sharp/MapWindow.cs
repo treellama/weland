@@ -33,8 +33,8 @@ namespace Weland
         List<Drawer.Color> paintColors = new List<Drawer.Color>();
 
         [Widget] Gtk.Window window1;
-        [Widget] VScrollbar vscrollbar1;
-        [Widget] HScrollbar hscrollbar1;
+        [Widget] Scrollbar vscrollbar1;
+        [Widget] Scrollbar hscrollbar1;
         [Widget] MenuItem levelItem;
         [Widget] MenuItem pluginsItem;
         [Widget] Table table1;
@@ -93,7 +93,7 @@ namespace Weland
         [Widget] ToggleToolButton showCustomGridButton;
 
         [Widget] Box palette;
-        [Widget] VButtonBox paletteButtonbox;
+        [Widget] ButtonBox paletteButtonbox;
         [Widget] Button paletteAddButton;
         [Widget] Button paletteEditButton;
 
