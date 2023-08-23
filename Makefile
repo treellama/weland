@@ -1,6 +1,6 @@
 CC=mcs
 
-VERSION := $(shell grep "^\[assembly\:AssemblyVersionAttribute" Assembly.cs | awk -F\" '{ print $$2 }' - | awk -F\. '{printf "%s.%s", $$1, $$2; if ($$3 != '0' || $$4 != '0') printf ".%s", $$3; if ($$4 != '0') printf ".%s", $$4}')
+VERSION := $(shell grep "^\[assembly\:AssemblyVersionAttribute" Assembly.cs | awk -F\" '{ print $$2 }' - | awk -F\. '{printf "%s.%s", $$1, $$2; if ($$3 != '0' || $$4 != '0') printf ".%s", $$3; if ($$4 && $$4 != '0') printf ".%s", $$4}')
 BUILD_ZIP_DIR=.build-zip
 ZIP_DIR=weland-$(VERSION)
 

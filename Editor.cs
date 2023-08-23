@@ -1518,6 +1518,28 @@ namespace Weland {
 
 	    return false;
 	}
+
+        public void SetObjectType(MapObject o, ObjectType type) {
+            if (o.Type != type) {
+                if (o.Type == ObjectType.Monster) {
+                    if (Level.MonsterPlacement[o.Index].InitialCount > 0) {
+                        --Level.MonsterPlacement[o.Index].InitialCount;
+                    }
+                } else if (o.Type == ObjectType.Item) {
+                    if (Level.ItemPlacement[o.Index].InitialCount > 0) {
+                        --Level.ItemPlacement[o.Index].InitialCount;
+                    }
+                }
+
+                if (type == ObjectType.Monster) {
+                    ++Level.MonsterPlacement[o.Index].InitialCount;
+                } else if (type == ObjectType.Item) {
+                    ++Level.ItemPlacement[o.Index].InitialCount;
+                }
+            }
+
+            o.Type = type;
+        }
     }
 }
 
