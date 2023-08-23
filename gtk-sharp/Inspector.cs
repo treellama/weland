@@ -29,7 +29,7 @@ namespace Weland
 
         [Widget] ComboBox monsterType;
         [Widget] ComboBox monsterActivatedBy;
-        [Widget] HScale monsterAngle;
+        [Widget] Scale monsterAngle;
         [Widget] Entry monsterHeight;
         [Widget] CheckButton monsterFromCeiling;
         [Widget] CheckButton monsterTeleportsIn;
@@ -38,12 +38,12 @@ namespace Weland
         [Widget] CheckButton monsterIsDeaf;
 
         [Widget] ComboBox playerTeam;
-        [Widget] HScale playerAngle;
+        [Widget] Scale playerAngle;
         [Widget] CheckButton playerFromCeiling;
         [Widget] Entry playerHeight;
 
         [Widget] ComboBox sceneryType;
-        [Widget] HScale sceneryAngle;
+        [Widget] Scale sceneryAngle;
         [Widget] Entry sceneryHeight;
         [Widget] CheckButton sceneryFromCeiling;
 
@@ -52,14 +52,14 @@ namespace Weland
         [Widget] CheckButton itemFromCeiling;
         [Widget] CheckButton itemTeleportsIn;
         [Widget] CheckButton itemNetworkOnly;
-        [Widget] HScale itemAngle;
+        [Widget] Scale itemAngle;
 
         [Widget] Entry goalCheckpoint;
-        [Widget] HScale goalFacing;
+        [Widget] Scale goalFacing;
         [Widget] Entry goalHeight;
 
         [Widget] ComboBox soundType;
-        [Widget] HScale soundVolume;
+        [Widget] Scale soundVolume;
         [Widget] ComboBox soundLight;
         ListStore soundLightStore = new ListStore(typeof(int));
         [Widget] Entry soundHeight;

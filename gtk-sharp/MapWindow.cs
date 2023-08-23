@@ -39,8 +39,8 @@ namespace Weland
         [Widget] MenuItem pluginsItem;
         [Widget] Table table1;
 
-        [Widget] HScale viewFloorHeight;
-        [Widget] HScale viewCeilingHeight;
+        [Widget] Scale viewFloorHeight;
+        [Widget] Scale viewCeilingHeight;
 
         [Widget] RadioButton layer1;
         [Widget] RadioButton layer2;
@@ -92,12 +92,12 @@ namespace Weland
         [Widget] ToggleToolButton showSoundsButton;
         [Widget] ToggleToolButton showCustomGridButton;
 
-        [Widget] VBox palette;
+        [Widget] Box palette;
         [Widget] VButtonBox paletteButtonbox;
         [Widget] Button paletteAddButton;
         [Widget] Button paletteEditButton;
 
-        [Widget] VBox texturePalette;
+        [Widget] Box texturePalette;
 
         [Widget] Statusbar statusbar;
 
@@ -1809,7 +1809,7 @@ namespace Weland
         /*** begin custom grid code ***/
 
         [Widget] Button gridResetButton;
-        [Widget] HBox customGridHBox;
+        [Widget] Box customGridHBox;
         [Widget] Scale gridRotationScale;
         [Widget] Scale gridScaleScale;
         [Widget] RadioButton grid1Button;
