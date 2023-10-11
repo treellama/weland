@@ -32,7 +32,7 @@ public class BinaryWriterBE : BinaryWriter
     }
     
     public void WriteFixed(double value) {
-	int i = (int) Math.Floor(value * ushort.MaxValue);
+	int i = (int) Math.Truncate(value * 65536.0);
 	Write(i);
     }
 
