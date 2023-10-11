@@ -38,11 +38,10 @@ public class BinaryReaderBE : BinaryReader
         return (uint)((byte1 << 24) | (byte2 << 16) | (byte3 << 8) | (byte4));
     }
 
-    public double ReadFixed()
-    {
-        int i = ReadInt32();
-        return (double)i / ushort.MaxValue;
-    }
+	public double ReadFixed() {
+	    int i = ReadInt32();
+	    return (double) i / 65536.0;
+	}
 
     public string ReadMacString(int length)
     {

@@ -27,18 +27,16 @@ public class BinaryWriterBE : BinaryWriter
         Write((byte)(value));
     }
 
-    public override void Write(uint value)
-    {
-        Write((byte)(value >> 24));
-        Write((byte)(value >> 16));
-        Write((byte)(value >> 8));
-        Write((byte)(value));
+    public override void Write(uint value) {
+	Write((byte) (value >> 24));
+	Write((byte) (value >> 16));
+	Write((byte) (value >> 8));
+	Write((byte) (value));
     }
-
-    public void WriteFixed(double value)
-    {
-        int i = (int)Math.Floor(value * ushort.MaxValue);
-        Write(i);
+    
+    public void WriteFixed(double value) {
+	int i = (int) Math.Truncate(value * 65536.0);
+	Write(i);
     }
 
     public void WriteMacString(string s, int length)
