@@ -1,5 +1,5 @@
 using SkiaSharp;
-using BmpSharp;
+using System;
 
 namespace Weland
 {
@@ -7,8 +7,24 @@ namespace Weland
     {
         public static Gdk.Pixbuf ImageToPixbuf(SKBitmap bitmap)
         {
-            var bitmapToEncode = new BmpSharp.Bitmap(bitmap.Width, bitmap.Height, bitmap.GetPixelSpan().ToArray(), BitsPerPixelEnum.RGBA32);
-            return new Gdk.Pixbuf(bitmapToEncode.GetBmpStream(true));
+            using SKPixmap pixmap = bitmap.PeekPixels();
+            using SKImage skiaImage = SKImage.FromPixels(pixmap);
+
+            var info = new SKImageInfo(skiaImage.Width, skiaImage.Height);
+            var pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb, has_alpha: true, 8, info.Width, info.Height);
+
+            using (var newPixMap = new SKPixmap(info, pixbuf.Pixels, pixbuf.Rowstride))
+            {
+                skiaImage.ReadPixels(newPixMap, 0, 0);
+            }
+
+            if (info.ColorType == SKColorType.Bgra8888)
+            {
+                SKSwizzle.SwapRedBlue(pixbuf.Pixels, info.Width * info.Height);
+            }
+
+            GC.KeepAlive(bitmap);
+            return pixbuf;
         }
 
         public static SKBitmap ResizeImage(SKBitmap image, int width, int height)
