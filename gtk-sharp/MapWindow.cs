@@ -110,11 +110,12 @@ namespace Weland
             drawingArea.MotionNotifyEvent += OnMotion;
             drawingArea.ButtonPressEvent += OnButtonPressed;
             drawingArea.ButtonReleaseEvent += OnButtonReleased;
-            drawingArea.Events =
-            EventMask.ExposureMask |
-            EventMask.ButtonPressMask |
-            EventMask.ButtonReleaseMask |
-            EventMask.ButtonMotionMask;
+            drawingArea.ScrollEvent += OnScroll;
+            drawingArea.Events = EventMask.ExposureMask |
+                EventMask.ButtonPressMask |
+                EventMask.ButtonReleaseMask |
+                EventMask.ButtonMotionMask |
+                EventMask.ScrollMask;
 
             //all GtkTable should be replaced with GtkGrid
             table1.Attach(drawingArea, 0, 1, 0, 1, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
