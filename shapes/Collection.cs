@@ -1,7 +1,5 @@
-using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
-using SkiaSharp;
 
 namespace Weland
 {
@@ -203,32 +201,24 @@ namespace Weland
             }
         }
 
-        public SKBitmap GetShape(byte ColorTableIndex, byte BitmapIndex)
+        public Image GetShape(byte ColorTableIndex, byte BitmapIndex)
         {
-            Bitmap bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
-            ColorValue[] colorTable = colorTables[ColorTableIndex];
-            Color[] colors = new Color[colorTable.Length];
-            for (int i = 0; i < colorTable.Length; ++i)
+            var bitmap = Type == CollectionType.Wall && BitmapIndex < lowLevelShapeCount - 1 ? bitmaps[lowLevelShapes[BitmapIndex].BitmapIndex] : bitmaps[BitmapIndex];
+            var colorTable = colorTables[ColorTableIndex];
+
+            var shape = new Image(bitmap.Width, bitmap.Height);
+
+            int dst = 0;
+            int src = 0;
+            while (src < bitmap.Data.Length)
             {
-                ColorValue color = colorTable[i];
-                colors[i] = Color.FromArgb(color.Red >> 8,
-                               color.Green >> 8,
-                               color.Blue >> 8);
+                var color = colorTable[bitmap.Data[src++]];
+                shape.Data[dst++] = (byte) (color.Red >> 8);
+                shape.Data[dst++] = (byte) (color.Green >> 8);
+                shape.Data[dst++] = (byte) (color.Blue >> 8);
             }
 
-            var imageBitmap = new SKBitmap(bitmap.Width, bitmap.Height);
-
-            for (int x = 0; x < bitmap.Width; ++x)
-            {
-                for (int y = 0; y < bitmap.Height; ++y)
-                {
-                    var color = colors[bitmap.Data[x + y * bitmap.Width]];
-                    var skColor = new SKColor(color.R, color.G, color.B, color.A);
-                    imageBitmap.SetPixel(x, y, skColor);
-                }
-            }
-
-            return imageBitmap;
+            return shape;
         }
     }
 }

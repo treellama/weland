@@ -40,7 +40,7 @@ namespace Weland
                 }
                 else
                 {
-                    bitmap = ImageUtilities.RotateBitmap(bitmap, 90);
+                    bitmap = bitmap.RotateCW();
                     bitmap = ImageUtilities.ResizeImage(bitmap, textureSize, textureSize);
                 }
                 textureStore.AppendValues(ImageUtilities.ImageToPixbuf(bitmap));

@@ -1,7 +1,6 @@
 using Cairo;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Weland
 {
@@ -23,51 +22,18 @@ namespace Weland
         {
             public TextureSurface(ShapeDescriptor d)
             {
-                var bitmap = Weland.Shapes.GetShape(d);
-                byte[] bytes = new byte[bitmap.Width * bitmap.Height * 4];
-                if (d.Collection >= 27)
+                var texture = Weland.Shapes.GetShape(d);
+                if (d.Collection < 27)
                 {
-                    for (int x = 0; x < bitmap.Width; ++x)
-                    {
-                        for (int y = 0; y < bitmap.Height; ++y)
-                        {
-                            var color = bitmap.GetPixel(x, y);
-                            int offset = (y * bitmap.Width + x) * 4;
-                            bytes[offset] = color.Blue;
-                            bytes[offset + 1] = color.Green;
-                            bytes[offset + 2] = color.Red;
-                            bytes[offset + 3] = color.Alpha;
-                        }
-                    }
-                }
-                else
-                {
-                    for (int x = 0; x < bitmap.Width; ++x)
-                    {
-                        for (int y = 0; y < bitmap.Height; ++y)
-                        {
-                            var color = bitmap.GetPixel(x, y);
-                            int offset = (x * bitmap.Width + y) * 4;
-                            bytes[offset] = color.Blue;
-                            bytes[offset + 1] = color.Green;
-                            bytes[offset + 2] = color.Red;
-                            bytes[offset + 3] = color.Alpha;
-                        }
-                    }
+                    texture = texture.RotateCW();
                 }
 
-                handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-                surface = new ImageSurface(bytes, Format.ARGB32, bitmap.Width, bitmap.Height, d.Collection >= 27 ? bitmap.Width * 4 : bitmap.Height * 4);
+                surface = ImageUtilities.ImageToSurface(texture);
             }
 
             public void Dispose()
             {
                 surface.Dispose();
-
-                if (handle.IsAllocated)
-                {
-                    handle.Free();
-                }
             }
 
             public ImageSurface Surface
@@ -76,7 +42,6 @@ namespace Weland
             }
 
             private ImageSurface surface;
-            private GCHandle handle;
         }
 
         class TextureCache : IDisposable

@@ -7,7 +7,7 @@ namespace Weland
         ColumnOrder = 0x8000
     }
 
-    class Bitmap
+    public class Bitmap
     {
         public short Width;
         public short Height;

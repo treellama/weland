@@ -1,4 +1,3 @@
-using SkiaSharp;
 using System;
 using System.IO;
 
@@ -57,7 +56,7 @@ namespace Weland
             return collections[n];
         }
 
-        public SKBitmap GetShape(ShapeDescriptor d)
+        public Image GetShape(ShapeDescriptor d)
         {
             Collection coll = collections[d.Collection];
             if (d.Bitmap < coll.BitmapCount && d.CLUT < coll.ColorTableCount)
@@ -66,22 +65,14 @@ namespace Weland
             }
             else
             {
-                var paint = new SKPaint
+                var bitmap = new Image(128, 128);
+                int dst = 0;
+                while (dst < bitmap.Data.Length)
                 {
-                    Color = new SKColor(127, 127, 127),
-                    IsAntialias = true
-                };
-
-                int width = 128;
-                int height = 128;
-                var bitmap = new SKBitmap(width, height);
-                using (var canvas = new SKCanvas(bitmap))
-                {
-                    canvas.Clear(SKColors.White);
-                    var rect = new SKRect(0, 0, width, height);
-                    canvas.DrawRect(rect, paint);
-                    return bitmap;
+                    bitmap.Data[dst++] = 127;
                 }
+
+                return bitmap;
             }
         }
     }

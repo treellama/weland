@@ -1,33 +1,50 @@
-using SkiaSharp;
-using BmpSharp;
+using Cairo;
+using System.Runtime.InteropServices;
 
 namespace Weland
 {
     public class ImageUtilities
     {
-        public static Gdk.Pixbuf ImageToPixbuf(SKBitmap bitmap)
+        public static Gdk.Pixbuf ImageToPixbuf(Image image)
         {
-            var bitmapToEncode = new BmpSharp.Bitmap(bitmap.Width, bitmap.Height, bitmap.GetPixelSpan().ToArray(), BitsPerPixelEnum.RGBA32);
-            return new Gdk.Pixbuf(bitmapToEncode.GetBmpStream(true));
+            return new Gdk.Pixbuf(image.Data, false, 8, image.Width, image.Height, image.Width * 3);
         }
 
-        public static SKBitmap ResizeImage(SKBitmap image, int width, int height)
+        public static ImageSurface ImageToSurface(Image image)
         {
-            return image.Resize(new SKImageInfo(width, height), SKFilterQuality.None);
+            var surface = new ImageSurface(Format.RGB24, image.Width, image.Height);
+            var bytes = image.ToBGRA();
+            surface.Flush();
+            Marshal.Copy(bytes, 0, surface.DataPtr, bytes.Length);
+            surface.MarkDirty();
+
+            return surface;
         }
 
-        public static SKBitmap RotateBitmap(SKBitmap image, float degrees)
+        public static Image ResizeImage(Image image, int width, int height)
         {
-            var rotatedImage = new SKBitmap(image.Height, image.Width);
-            using (var canvas = new SKCanvas(rotatedImage))
+            var result = new Image(width, height);
+            using (var src = ImageToSurface(image))
             {
-                canvas.Clear(SKColors.White);
-                canvas.Translate(rotatedImage.Width, 0);
-                canvas.RotateDegrees(degrees);
-                canvas.DrawBitmap(image, 0, 0);
+                using (var dst = new ImageSurface(Format.RGB24, width, height))
+                {
+                    using (var ctx = new Context(dst))
+                    {
+                        ctx.Scale((double) width / image.Width, (double) height / image.Height);
+                        ctx.SetSource(src, 0, 0);
+                        ctx.Operator = Operator.Source;
+                        ctx.Paint();
+                    }
+
+                    var bytes = new byte[width * height * 4];
+                    dst.Flush();
+                    Marshal.Copy(dst.DataPtr, bytes, 0, bytes.Length);
+
+                    result.FromBGRA(bytes);
+                }
             }
 
-            return rotatedImage;
+            return result;
         }
     }
 }
