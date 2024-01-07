@@ -181,6 +181,8 @@ namespace Weland
         MapDrawingArea area;
         Editor editor;
 
+    #pragma warning disable 0649
+
         [Widget] Dialog dialog1;
 
         [Widget] ToggleButton antialias;
@@ -212,5 +214,7 @@ namespace Weland
         [Widget] FileChooserButton shapesFileButton;
         [Widget] FileChooserButton alephOneButton;
         [Widget] FileChooserButton scenarioButton;
+
+    #pragma warning restore 0649
     }
 }

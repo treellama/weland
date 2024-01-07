@@ -299,9 +299,11 @@ namespace Weland
 
         Point p;
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
         [Widget] Entry pointX;
         [Widget] Entry pointY;
+    #pragma warning restore 0649
 
         public Point Value
         {

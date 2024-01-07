@@ -93,6 +93,7 @@ namespace Weland
         Level level;
         short media_index;
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
         [Widget] ComboBox type;
         [Widget] ComboBox basedOn;
@@ -102,6 +103,7 @@ namespace Weland
         [Widget] Entry low;
         [Widget] Entry high;
         [Widget] CheckButton obstructed;
+    #pragma warning restore 0649
 
         ListStore basedOnStore = new ListStore(typeof(int));
         ListStore tideStore = new ListStore(typeof(int));

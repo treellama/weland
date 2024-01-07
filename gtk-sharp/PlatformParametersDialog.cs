@@ -225,6 +225,7 @@ namespace Weland
 
         ListStore basedOnStore = new ListStore(typeof(int));
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
 
         [Widget] ComboBox platformType;
@@ -265,5 +266,6 @@ namespace Weland
         [Widget] CheckButton lockedDoor;
         [Widget] CheckButton secret;
         [Widget] ComboBox tag;
+    #pragma warning restore 0649
     }
 }

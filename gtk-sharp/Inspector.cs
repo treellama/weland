@@ -23,6 +23,8 @@ namespace Weland
 
     public partial class MapWindow
     {
+
+    #pragma warning disable 0649
         [Widget] Notebook inspector;
         [Widget] ComboBox objectGroup;
         [Widget] Notebook objectNotebook;
@@ -74,6 +76,7 @@ namespace Weland
         [Widget] ComboBox polygonLight;
         [Widget] Entry teleportDestination;
         [Widget] ComboBox polygonPlatform;
+    #pragma warning restore 0649
 
         bool applyChanges = true;
 

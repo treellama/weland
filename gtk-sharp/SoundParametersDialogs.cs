@@ -32,9 +32,11 @@ namespace Weland
             return response;
         }
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
         [Widget] ComboBox type;
         [Widget] Entry volume;
+    #pragma warning restore 0649
 
         AmbientSound sound;
     }
@@ -103,6 +105,7 @@ namespace Weland
             return response;
         }
 
+    #pragma warning disable 0649
         [Widget] ComboBox type;
         [Widget] Entry volume;
         [Widget] Entry deltaVolume;
@@ -114,6 +117,7 @@ namespace Weland
         [Widget] HScale direction;
         [Widget] HScale deltaDirection;
         [Widget] Dialog dialog1;
+    #pragma warning restore 0649
 
         RandomSound sound;
     }

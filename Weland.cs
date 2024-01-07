@@ -71,7 +71,10 @@ namespace Weland
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnUnhandledException);
             GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(OnUnhandledException);
+
             Application.Init();
+
+            Gtk.Settings.Default.ApplicationPreferDarkTheme = true;
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             ShapesFile shapes = new ShapesFile();

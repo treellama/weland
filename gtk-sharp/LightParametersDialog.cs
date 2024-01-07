@@ -222,6 +222,7 @@ namespace Weland
             Load(light);
         }
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
 
         [Widget] ComboBox preset;
@@ -266,6 +267,7 @@ namespace Weland
         [Widget] Entry deltaPeriod6;
         [Widget] Entry intensity6;
         [Widget] Entry deltaIntensity6;
+    #pragma warning restore 0649
 
         ListStore basedOnStore = new ListStore(typeof(int));
 

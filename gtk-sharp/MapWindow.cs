@@ -32,6 +32,7 @@ namespace Weland
         SortedList<short, bool> paintIndexes = new SortedList<short, bool>();
         List<Drawer.Color> paintColors = new List<Drawer.Color>();
 
+    #pragma warning disable 0649
         [Widget] Gtk.Window window1;
         [Widget] Scrollbar vscrollbar1;
         [Widget] Scrollbar hscrollbar1;
@@ -100,6 +101,7 @@ namespace Weland
         [Widget] Box texturePalette;
 
         [Widget] Statusbar statusbar;
+    #pragma warning restore 0649
 
         string Filename;
         int layer = 1;
@@ -1732,11 +1734,13 @@ namespace Weland
             }
         }
 
+    #pragma warning disable 0649
         [Widget] ToggleToolButton twoWUButton;
         [Widget] ToggleToolButton oneWUButton;
         [Widget] ToggleToolButton halfWUButton;
         [Widget] ToggleToolButton quarterWUButton;
         [Widget] ToggleToolButton eighthWUButton;
+    #pragma warning restore 0649
 
         internal void OnGridSize(object o, EventArgs e)
         {
@@ -1809,6 +1813,7 @@ namespace Weland
 
         /*** begin custom grid code ***/
 
+    #pragma warning disable 0649
         [Widget] Button gridResetButton;
         [Widget] Box customGridHBox;
         [Widget] Scale gridRotationScale;
@@ -1820,6 +1825,7 @@ namespace Weland
         [Widget] RadioButton grid5Button;
         [Widget] RadioButton grid6Button;
         [Widget] Label gridScaleLabel;
+    #pragma warning restore 0649
 
         void LoadGrid()
         {

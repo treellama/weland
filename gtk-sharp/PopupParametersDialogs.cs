@@ -44,11 +44,13 @@ namespace Weland
         Level level;
         Line line;
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
 
         [Widget] CheckButton solid;
         [Widget] CheckButton transparent;
         [Widget] CheckButton decorative;
+    #pragma warning restore 0649
     }
 
     public class PointParametersDialog
@@ -86,10 +88,12 @@ namespace Weland
         Level level;
         short index;
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
 
         [Widget] Entry pointX;
         [Widget] Entry pointY;
+    #pragma warning restore 0649
     }
 
     public class GotoDialog : IDisposable
@@ -118,8 +122,10 @@ namespace Weland
             dialog1.Respond(ResponseType.Ok);
         }
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
         [Widget] public ComboBox Type;
         [Widget] public Entry Number;
+    #pragma warning restore 0649
     }
 }

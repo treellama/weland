@@ -8,9 +8,11 @@ namespace Weland
 {
     public partial class MapWindow
     {
+    #pragma warning disable 0649
         [Widget] IconView textureIcons;
         [Widget] ComboBox textureCollection;
         [Widget] ComboBox textureTransferMode;
+    #pragma warning restore 0649
 
         ListStore textureStore = new ListStore(typeof(Gdk.Pixbuf));
 

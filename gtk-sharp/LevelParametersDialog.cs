@@ -152,6 +152,7 @@ namespace Weland
 
         Level level;
 
+    #pragma warning disable 0649
         [Widget] Dialog dialog1;
 
         [Widget] Entry levelName;
@@ -190,5 +191,6 @@ namespace Weland
         [Widget] CheckButton terminalsStopTime;
         [Widget] CheckButton m1ActivationRange;
         [Widget] CheckButton m1Weapons;
+    #pragma warning restore 0649
     }
 }
