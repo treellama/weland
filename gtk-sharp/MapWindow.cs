@@ -38,7 +38,7 @@ namespace Weland
         [Widget] Scrollbar hscrollbar1;
         [Widget] MenuItem levelItem;
         [Widget] MenuItem pluginsItem;
-        [Widget] Table table1;
+        [Widget] Gtk.Grid grid1;
 
         [Widget] Scale viewFloorHeight;
         [Widget] Scale viewCeilingHeight;
@@ -108,6 +108,7 @@ namespace Weland
 
         void SetupDrawingArea()
         {
+            drawingArea.Expand = true;
             drawingArea.ConfigureEvent += OnConfigure;
             drawingArea.MotionNotifyEvent += OnMotion;
             drawingArea.ButtonPressEvent += OnButtonPressed;
@@ -119,8 +120,7 @@ namespace Weland
                 EventMask.ButtonMotionMask |
                 EventMask.ScrollMask;
 
-            //all GtkTable should be replaced with GtkGrid
-            table1.Attach(drawingArea, 0, 1, 0, 1, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink | AttachOptions.Expand | AttachOptions.Fill, 0, 0);
+            grid1.Attach(drawingArea, 0, 0, 1, 1);
 
             drawingArea.Show();
         }

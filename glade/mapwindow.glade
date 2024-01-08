@@ -2339,23 +2339,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkTable" id="table1">
+              <!-- n-columns=5 n-rows=2 -->
+              <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="n-rows">2</property>
-                <property name="n-columns">5</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
                 <child>
                   <object class="GtkScrollbar" id="hscrollbar1">
                     <property name="visible">True</property>
@@ -2364,10 +2351,8 @@
                     <signal name="value-changed" handler="OnHValueChanged" swapped="no"/>
                   </object>
                   <packing>
+                    <property name="left-attach">0</property>
                     <property name="top-attach">1</property>
-                    <property name="bottom-attach">2</property>
-                    <property name="x-options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                    <property name="y-options"/>
                   </packing>
                 </child>
                 <child>
@@ -2380,9 +2365,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
-                    <property name="right-attach">2</property>
-                    <property name="x-options"/>
-                    <property name="y-options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -2472,9 +2455,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
-                    <property name="right-attach">3</property>
-                    <property name="x-options"/>
-                    <property name="y-options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -3985,8 +3966,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
-                    <property name="right-attach">4</property>
-                    <property name="x-options"/>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -4104,28 +4084,8 @@
                   </object>
                   <packing>
                     <property name="left-attach">4</property>
-                    <property name="right-attach">5</property>
-                    <property name="x-options"/>
-                    <property name="y-options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                    <property name="top-attach">0</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
