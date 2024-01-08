@@ -74,8 +74,6 @@ namespace Weland
 
             Application.Init();
 
-            Gtk.Settings.Default.ApplicationPreferDarkTheme = true;
-
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             ShapesFile shapes = new ShapesFile();
             shapes.Load(Settings.GetSetting("ShapesFile/Path", ""));
