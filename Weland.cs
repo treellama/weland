@@ -74,6 +74,9 @@ namespace Weland
 
             Application.Init();
 
+            var App = new Application("org.Weland.Weland", GLib.ApplicationFlags.None);
+            App.Register(GLib.Cancellable.Current);
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             ShapesFile shapes = new ShapesFile();
             shapes.Load(Settings.GetSetting("ShapesFile/Path", ""));
