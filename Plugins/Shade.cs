@@ -24,51 +24,43 @@ using System.IO;
 using System.Reflection;
 using Weland;
 
-public class ShadePlugin {
-    public static bool Compatible() { 
-	return true;
-    }
+public class ShadePlugin 
+{
+    public static bool IsCompatible => true;
 
-    public static string Name() {
-	return "Auto Shade Level";
-    }
+    public static string Name => "Auto Shade Level";
 
-    const short Highlight = 3;
-    const short Shadow = 13;
-    const short Ceiling = 10;
-    const short Floor = 5;
+    private const short Highlight = 3;
+    private const short Shadow = 13;
+    private const short Ceiling = 10;
+    private const short Floor = 5;
 
-    static double Angle(Point p0, Point p1) {
-	int X = p1.X - p0.X;
-	int Y = p1.Y - p0.Y;
-	double theta = Math.Atan2(-Y, X);
-	if (theta < 0) {
-	    return -theta;
-	} else {
-	    return theta;
-	}
+    private static double Angle(Point p0, Point p1) 
+    {
+	var X = p1.X - p0.X;
+	var Y = p1.Y - p0.Y;
+	var theta = Math.Atan2(-Y, X);
+	return Math.Abs(theta);
     }
 
     public static void Run(Editor editor)
     {
-	Level level = editor.Level;
+	var level = editor.Level;
 
-	for (int side_index = 0; side_index < level.Sides.Count; ++side_index) {
-	    Side side = level.Sides[side_index];
-	    Line line = level.Lines[side.LineIndex];
-	    double theta;
-	    if (line.ClockwisePolygonSideIndex == side_index) {
-		theta = Angle(level.Endpoints[line.EndpointIndexes[0]], level.Endpoints[line.EndpointIndexes[1]]);
-	    } else {
-		theta = Angle(level.Endpoints[line.EndpointIndexes[1]], level.Endpoints[line.EndpointIndexes[0]]);
-	    }
-
-	    short lightsource = (short) (Shadow + (Highlight - Shadow) * ((Math.Cos(theta) + 1) / 2));
+	for (var side_index = 0; side_index < level.Sides.Count; ++side_index) 
+	{
+	    var side = level.Sides[side_index];
+	    var line = level.Lines[side.LineIndex];
+	    var theta = line.ClockwisePolygonSideIndex == side_index?
+                        Angle(level.Endpoints[line.EndpointIndexes[0]], level.Endpoints[line.EndpointIndexes[1]]):
+                        Angle(level.Endpoints[line.EndpointIndexes[1]], level.Endpoints[line.EndpointIndexes[0]]);
+	    var lightsource = (short)(Shadow + (Highlight - Shadow) * ((Math.Cos(theta) + 1) / 2));
 	    side.PrimaryLightsourceIndex = lightsource;
 	    side.SecondaryLightsourceIndex = lightsource;
 	}
 
-	foreach (Polygon polygon in level.Polygons) {
+	foreach (var polygon in level.Polygons) 
+	{
 	    polygon.FloorLight = Floor;
 	    polygon.CeilingLight = Ceiling;
 	}
