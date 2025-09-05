@@ -125,12 +125,12 @@ namespace Weland {
 	public override void DrawPoint(Color c, Point p) {
 	    context.Save();
 
-	    context.MoveTo(new PointD(p.X + 0.5, p.Y + 0.5));
-	    context.ClosePath();
-	    context.LineCap = LineCap.Round;
+	    context.MoveTo(new PointD(p.X - 0.5, p.Y - 0.5));
+            context.LineTo(new PointD(p.X + 1.5, p.Y - 0.5));
+            context.LineTo(new PointD(p.X + 1.5, p.Y + 1.5));
+            context.LineTo(new PointD(p.X - 0.5, p.Y + 1.5));
             context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
-	    context.LineWidth = 2.5;
-	    context.Stroke();
+            context.Fill();
 
 	    context.Restore();
 	}
