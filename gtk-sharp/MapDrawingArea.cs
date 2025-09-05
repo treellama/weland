@@ -657,7 +657,7 @@ namespace Weland {
 	    int X = (int) Transform.ToScreenX(note.X);
 	    int Y = (int) Transform.ToScreenY(note.Y);
 	    Layout layout = new Pango.Layout(this.PangoContext);
-	    layout.SetMarkup(note.Text);
+	    layout.SetMarkup(System.Web.HttpUtility.HtmlEncode(note.Text));
 	    int width, height;
 	    layout.GetPixelSize(out width, out height);
 	    this.GdkWindow.DrawLayout(this.Style.TextGC(Gtk.StateType.Normal), X, Y - height, layout);

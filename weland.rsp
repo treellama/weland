@@ -1,5 +1,6 @@
 /out:Weland.exe
 /r:Mono.Cairo
+/r:System.Web
 
 @common.rsp
 gtk-sharp/CairoDrawer.cs
