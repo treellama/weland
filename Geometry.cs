@@ -837,6 +837,39 @@ namespace Weland {
             }
 	}
 
+        private void DecrementKeys(Dictionary<short, Side> dict, short index) {
+            var keys = new List<int>();
+            foreach (var kvp in dict) {
+                if (kvp.Key > index) {
+                    keys.Add(kvp.Key);
+                }
+            }
+
+            keys.Sort();
+            
+            foreach (short key in keys) {
+                var value = dict[key];
+                dict.Remove(key);
+                dict.Add((short)(key - 1), value);
+            }
+        }
+
+        private void DecrementKeys(HashSet<short> set, short index) {
+            var keys = new List<int>();
+
+            foreach (short key in set) {
+                if (key > index) {
+                    keys.Add(key);
+                }
+            }
+
+            keys.Sort();
+            
+            foreach (short key in keys) {
+                set.Remove(key);
+                set.Add((short)(key - 1));
+            }
+        }
 
 	public void DeleteLineIndex(short index) {
 	    Line line = Lines[index];
@@ -846,13 +879,30 @@ namespace Weland {
 		ClockwiseOrphanedSides.Remove(index);
 		CounterClockwiseOrphanedSides.Remove(index);
 		LinesReflectingOrphanedSides.Remove(index);
-	    }
+            }
+
 	    Lines.RemoveAt(index);
+            
 	    foreach (Polygon poly in Polygons) {
 		poly.DeleteLine(index);
 	    }
+            
 	    foreach (Side side in Sides) {
 		side.DeleteLine(index);
+	    }
+
+            if (RememberDeletedSides) {
+                DecrementKeys(ClockwiseOrphanedSides, index);
+                DecrementKeys(CounterClockwiseOrphanedSides, index);
+                DecrementKeys(LinesReflectingOrphanedSides, index);
+                
+                foreach (var kvp in ClockwiseOrphanedSides) {
+                    kvp.Value.DeleteLine(index);
+                }
+
+                foreach (var kvp in CounterClockwiseOrphanedSides) {
+                    kvp.Value.DeleteLine(index);
+                }
 	    }
 	}
 
