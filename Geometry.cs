@@ -211,6 +211,9 @@ namespace Weland {
 	    short l1 = NewLine(e0, p);
 	    short l2 = NewLine(p, e1);
 
+            Lines[l1].Flags = line.Flags;
+            Lines[l2].Flags = line.Flags;
+
 	    if (line.ClockwisePolygonOwner != -1) {
 		Polygon polygon = Polygons[line.ClockwisePolygonOwner];
 
@@ -342,14 +345,6 @@ namespace Weland {
 
 		Lines[l1].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
 		Lines[l2].CounterclockwisePolygonOwner = line.CounterclockwisePolygonOwner;
-
-		if (Lines[l1].ClockwisePolygonOwner != -1) {
-		    Lines[l1].Transparent = true;
-		}
-
-		if (Lines[l2].ClockwisePolygonOwner != -1) {
-		    Lines[l2].Transparent = true;
-		}
 	    }
 
 	    if (line.ClockwisePolygonSideIndex != -1) {
