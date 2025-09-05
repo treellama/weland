@@ -381,7 +381,7 @@ namespace Weland {
 	    } else {
 		soundLight.Sensitive = true;
 		soundLightStore.Clear();
-		for (int i = 0; i < Level.Lights.Count; ++i) {
+		for (int i = 1; i < Level.Lights.Count; ++i) {
 		    soundLightStore.AppendValues(i);
 		}
 		soundVolume.Sensitive = false;
