@@ -15,14 +15,12 @@ higher), as well as GTK#
 
 1. Make sure you have the .NET runtime installed
 
-    http://msdn.microsoft.com/en-us/netframework/default.aspx
+    https://www.microsoft.com/en-in/download/details.aspx?id=30653
     
-2. Install the GTK# for .NET package
+2. Install the GTK# for .NET package. _(This version seems to work best with Windows, and the official installers have gone offline, so I added it to the Weland releases page)_
 
-    https://www.mono-project.com/download/stable/#download-win
-    
-    Do not install Mono! Just GTK# for .NET
-    
+    https://github.com/treellama/weland/releases/download/gtk-sharp/gtk-sharp-2.12.26.msi
+
 3. Open Weland.exe like any other app
 
 ## Mac OS X
