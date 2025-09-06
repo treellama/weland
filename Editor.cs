@@ -705,6 +705,7 @@ namespace Weland {
 		MapObject obj = Level.Objects[Selection.Object];
 		AddDirty(new Point(obj.X, obj.Y));
 		Point p = new Point((short) (X), (short) (Y));
+		p = GridAdjust(p);
 		short polygon_index = Level.GetEnclosingPolygon(p);
 		if (polygon_index != -1) {
 		    obj.X = p.X;
@@ -1112,13 +1113,16 @@ namespace Weland {
 		    Select(X, Y);
 		}
 	    } else if (!RightClick(mods)) {
+		Point p = new Point(X, Y);
+
 		if (Tool == Tool.Line) {
 		    StartLine(X, Y);
 		} else if (Tool == Tool.Fill) {
 		    undoSet = false;
 		    Fill(X, Y);
 		} else if (Tool == Tool.Object) {
-		    PlaceObject(X, Y);
+		    p = GridAdjust(p);
+		    PlaceObject(p.X, p.Y);
 		} else if (Tool == Tool.Annotation) {
 		    PlaceAnnotation(X, Y);
 		} else if (Tool == Tool.VisualMode) {
