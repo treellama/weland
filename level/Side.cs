@@ -80,14 +80,12 @@ namespace Weland
             }
         }
 
-        public bool IsPlatformSwitch()
-        {
-            return controlPanelClasses[ControlPanelType] == ControlPanelClass.PlatformSwitch;
-        }
+	public bool IsPlatformSwitch() {
+	    return ControlPanelClasses[ControlPanelType] == ControlPanelClass.PlatformSwitch;
+	}
 
-        public bool IsTagSwitch()
-        {
-            return controlPanelClasses[ControlPanelType] == ControlPanelClass.TagSwitch;
+	public bool IsTagSwitch() {
+	    return ControlPanelClasses[ControlPanelType] == ControlPanelClass.TagSwitch;
         }
 
         public SideType Type;
@@ -179,7 +177,7 @@ namespace Weland
             }
         }
 
-        static ControlPanelClass[] controlPanelClasses = {
+	static public readonly ControlPanelClass[] ControlPanelClasses = {
 	    // Water
 	    ControlPanelClass.Oxygen,
         ControlPanelClass.Shield,

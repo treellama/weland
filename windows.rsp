@@ -4,6 +4,7 @@
 /platform:x86
 
 /r:Mono.Cairo
+/r:System.Web
 
 @common.rsp
 gtk-sharp/CairoDrawer.cs

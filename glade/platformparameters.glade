@@ -210,10 +210,10 @@
                               <object class="GtkEntry" id="minHeight">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="max_length">6</property>
-                                <property name="invisible_char">●</property>
-                                <property name="width_chars">6</property>
-                              </object>
+                                <property name="max_length">8</property>
+                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="width_chars">8</property>
+                              </widget>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
@@ -262,10 +262,10 @@
                               <object class="GtkEntry" id="maxHeight">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="max_length">6</property>
-                                <property name="invisible_char">●</property>
-                                <property name="width_chars">6</property>
-                              </object>
+                                <property name="max_length">8</property>
+                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="width_chars">8</property>
+                              </widget>
                               <packing>
                                 <property name="position">1</property>
                               </packing>

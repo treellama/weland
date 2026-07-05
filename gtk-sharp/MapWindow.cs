@@ -263,6 +263,7 @@ namespace Weland
             }
 
             Level.FilterPoints = !Weland.Settings.GetSetting("MapWindow/ShowHiddenVertices", true);
+            Level.RememberDeletedSides = Weland.Settings.GetSetting("Editor/RememberDeletedSides", false);
 
             // glade doesn't hook this up?
             textureIcons.SelectionChanged += OnTextureSelected;

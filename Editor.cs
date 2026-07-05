@@ -666,12 +666,9 @@ namespace Weland
                     Selection.Object = object_index;
                     lastObject = o;
 
-                    if (o.Type == ObjectType.Monster)
-                    {
-                        Level.MonsterPlacement[o.Index].InitialCount++;
-                    }
-                    else if (o.Type == ObjectType.Item)
-                    {
+		    if (o.Type == ObjectType.Monster && o.Index < Level.MonsterPlacement.Count) {
+			Level.MonsterPlacement[o.Index].InitialCount++;
+		    } else if (o.Type == ObjectType.Item && o.Index < Level.ItemPlacement.Count) {
                         Level.ItemPlacement[o.Index].InitialCount++;
                     }
                     Changed = true;
@@ -2006,31 +2003,23 @@ namespace Weland
             return false;
         }
 
-        public void SetObjectType(MapObject o, ObjectType type)
-        {
-            if (o.Type != type)
-            {
-                if (o.Type == ObjectType.Monster)
-                {
-                    if (Level.MonsterPlacement[o.Index].InitialCount > 0)
-                    {
+        public void SetObjectType(MapObject o, ObjectType type) {
+            if (o.Type != type) {
+                if (o.Type == ObjectType.Monster) {
+                    if (o.Index < Level.MonsterPlacement.Count &&
+                        Level.MonsterPlacement[o.Index].InitialCount > 0) {
                         --Level.MonsterPlacement[o.Index].InitialCount;
                     }
-                }
-                else if (o.Type == ObjectType.Item)
-                {
-                    if (Level.ItemPlacement[o.Index].InitialCount > 0)
-                    {
+                } else if (o.Type == ObjectType.Item) {
+                    if (o.Index < Level.ItemPlacement.Count &&
+                        Level.ItemPlacement[o.Index].InitialCount > 0) {
                         --Level.ItemPlacement[o.Index].InitialCount;
                     }
                 }
 
-                if (type == ObjectType.Monster)
-                {
+                if (type == ObjectType.Monster && o.Index < Level.MonsterPlacement.Count) {
                     ++Level.MonsterPlacement[o.Index].InitialCount;
-                }
-                else if (type == ObjectType.Item)
-                {
+                } else if (type == ObjectType.Item && o.Index < Level.ItemPlacement.Count) {
                     ++Level.ItemPlacement[o.Index].InitialCount;
                 }
             }

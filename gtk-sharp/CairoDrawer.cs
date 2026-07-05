@@ -98,12 +98,12 @@ namespace Weland
         {
             Context.Save();
 
-            Context.MoveTo(new PointD(p.X + 0.5, p.Y + 0.5));
-            Context.ClosePath();
-            Context.LineCap = LineCap.Round;
-            Context.SetSourceRGB(c.R, c.G, c.B);
-            Context.LineWidth = 2.5;
-            Context.Stroke();
+	    Context.MoveTo(new PointD(p.X - 0.5, p.Y - 0.5));
+            Context.LineTo(new PointD(p.X + 1.5, p.Y - 0.5));
+            Context.LineTo(new PointD(p.X + 1.5, p.Y + 1.5));
+            Context.LineTo(new PointD(p.X - 0.5, p.Y + 1.5));
+            Context.SetSourceRGBA(c.R, c.G, c.B, 1.0);
+            Context.Fill();
 
             Context.Restore();
         }
