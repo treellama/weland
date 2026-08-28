@@ -213,7 +213,7 @@
                                 <property name="max_length">8</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">8</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
@@ -265,7 +265,7 @@
                                 <property name="max_length">8</property>
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="width_chars">8</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
